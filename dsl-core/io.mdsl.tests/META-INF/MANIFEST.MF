@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: io.mdsl.tests
+Bundle-ManifestVersion: 2
+Bundle-Name: io.mdsl.tests
+Bundle-Vendor: MDSL Project
+Bundle-Version: 1.2.1.qualifier
+Bundle-SymbolicName: io.mdsl.tests; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: io.mdsl,
+ org.junit.jupiter.api;bundle-version="[5.0.0,6.0.0)",
+ org.eclipse.xtext.testing,
+ org.eclipse.xtext.xbase.testing,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
+ org.apache.commons.io;bundle-version="2.6.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: io.mdsl.tests;x-internal=true

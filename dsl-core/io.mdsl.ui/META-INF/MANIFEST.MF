@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: io.mdsl.ui
+Bundle-ManifestVersion: 2
+Bundle-Name: io.mdsl.ui
+Bundle-Vendor: MDSL Project
+Bundle-Version: 1.2.1.qualifier
+Bundle-SymbolicName: io.mdsl.ui; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: io.mdsl,
+ io.mdsl.ide,
+ org.eclipse.xtext.ui,
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.ui.editors;bundle-version="3.5.0",
+ org.eclipse.ui.ide;bundle-version="3.5.0",
+ org.eclipse.ui,
+ org.eclipse.compare,
+ org.eclipse.xtext.builder
+Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: io.mdsl.ui.internal,
+ io.mdsl.ui.contentassist,
+ io.mdsl.ui.quickfix
+Bundle-Activator: io.mdsl.ui.internal.MdslActivator

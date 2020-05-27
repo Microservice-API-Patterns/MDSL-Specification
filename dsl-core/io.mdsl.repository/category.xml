@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<feature id="io.mdsl.feature" version="0.0.0">
+		<category name="main"/>
+	</feature>
+	<feature id="io.mdsl.feature.source" version="0.0.0">
+		<category name="main"/>
+	</feature>
+	<bundle id="org.freemarker.freemarker">
+		<category name="main"/>
+	</bundle>
+	<category-def name="main" label="Microservices Domain-Specific Language (MDSL)"/>
+	<repository-reference location="https://dl.bintray.com/contextmapper/context-mapper-osgi-bundles/" enabled="true" />
+</site>
