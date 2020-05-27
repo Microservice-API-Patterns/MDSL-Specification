@@ -1,0 +1,18 @@
+API description HelloWorldAPI
+
+data type SampleDTO {ID, V} 
+
+endpoint type HelloWorldEndpoint
+exposes 
+  operation s 
+    expecting payload V<string>  
+    delivering payload SampleDTO 
+
+API provider HelloWorldAPIProvider1
+offers HelloWorldEndpoint
+
+
+API client HelloWorldAPIClient1
+consumes HelloWorldEndpoint
+ 
+IPA

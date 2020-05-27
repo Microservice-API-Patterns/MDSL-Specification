@@ -1,0 +1,98 @@
+API description MAPServiceTypeSketches 
+	data type A P // A is some unspecified data structure P (P for parameter)
+	data type B P // B is another data structure, different from A but also unspecified
+	data type EventFormatA P // A is some unspecified data structure P (P for parameter)
+	data type EventFormatB P // B is another data structure, different from A but also unspecified
+	data type NoParameters P // placeholder for empty parameter list (which is not allowed by current grammar)
+	
+	// skeleton:
+	endpoint type ect1 exposes 
+		operation op1 
+			expecting payload A
+			delivering payload B
+			
+	// example 1: stateless and side-effect free processing resource:
+	endpoint type PureComputationResource serves as PROCESSING_RESOURCE and GROUND_RESOURCE
+	exposes
+		operation convertAtoB with responsibility COMPUTATION_FUNCTION
+			expecting payload A
+			delivering payload B
+		operation calculate with responsibility COMPUTATION_FUNCTION
+			expecting payload {V, V, P} // any number of unspecified values (flat/basic) and/or entities (structured, self-contained)
+			delivering payload "some result"
+
+	// example 2: stateful processing resource (ground level, no outbound dependencies?)
+	endpoint type PureOrchestrator serves as PROCESSING_RESOURCE 
+	exposes 
+		operation createProcessInstance with responsibility EVENT_PROCESSOR
+			expecting payload NoParameters // represents empty parameter list
+			delivering payload {("successFlag":V<bool>, "uri":L)}
+		operation activity1 with responsibility BUSINESS_ACTIVITY_PROCESSOR
+			expecting payload "some activity input":V
+			delivering payload "some activity output":V
+		operation activityN with responsibility BUSINESS_ACTIVITY_PROCESSOR
+			expecting payload "some activity input":V
+			delivering payload "some activity output":V
+		operation cancelProcessInstance with responsibility EVENT_PROCESSOR
+			expecting payload ID
+			delivering payload V<bool>
+		operation finishProcessInstance with responsibility EVENT_PROCESSOR
+			expecting payload "some activity input":V
+			delivering payload {"successFlag":V<bool>, "uri":L}
+			
+	// example 3: Information Holder Resource 1 "Pure Data Provider" a.k.a. Entity Service, CRUD Service, Ground Information Holder
+	endpoint type PureDataProvider serves as INFORMATION_HOLDER_RESOURCE
+	exposes 
+		operation createInformationItem with responsibility EVENT_PROCESSOR
+			expecting payload "some information item":V
+			delivering payload {("successFlag":V<bool>, "uri":L)}
+		operation readInformationItem with responsibility RETRIEVAL_OPERATION
+			expecting payload ID // any number of unspecified values (flat/basic) and/or entities (structured, self-contained)
+			delivering payload "requested information item"
+		operation updateInformationItem with responsibility EVENT_PROCESSOR
+			expecting payload A // TODO tbc
+			delivering payload {"successFlag":V<bool>, "uri":L}
+		operation deleteInformationItem with responsibility EVENT_PROCESSOR
+			expecting payload ID // needed?
+			delivering payload V<bool> 
+		operation searchInformationItemSet with responsibility RETRIEVAL_OPERATION
+			expecting payload {"search scope", "search criteria", "result filter"}
+			delivering payload "result set"			
+					
+						
+	// example 4: Gateway/Guard Resource 1 "Connector (bidirectional)" a.k.a. Integration Service, Provider Interfacer, Provider Guard
+	endpoint type PureConnectorResource serves as GUARD_RESOURCE 
+	exposes
+		operation receiveEvent with responsibility EVENT_PROCESSOR 
+			expecting payload "some event":EventFormatB // note: E is entity, not event
+			delivering payload "acknowledgment":V
+		operation receiveAndPassOnEvent with responsibility EVENT_PROCESSOR // EMITTER // no 'and' possible here (SRP)
+			expecting payload "some event":EventFormatA // note: E is entity, not event
+			delivering payload "acknowledgment":V
+		operation transformMessageFormatAtoB with responsibility COMPUTATION_FUNCTION
+			expecting payload EventFormatA
+			delivering payload EventFormatB
+		operation transformMessageFormatBtoA with responsibility COMPUTATION_FUNCTION
+			expecting payload EventFormatB
+			delivering payload EventFormatA
+						
+	// example 5: stateful processing resource (guard level, so outbound dependencies?):
+	// TODO, , combines 2 and 4 
+	endpoint type ect1 serves as GUARD_RESOURCE and PROCESSING_RESOURCE 
+	exposes 
+		operation op1 
+			expecting payload A
+			delivering payload B
+
+	// example 6: Gateway/Guard Resource 2 "Legacy System Orchestrator Guard" a.k.a. Legacy Service Activator, Legacy Workflow Guard
+	// TODO, combines 3 and 4 
+	endpoint type ect1 serves as GUARD_RESOURCE and INFORMATION_HOLDER_RESOURCE
+	exposes 
+		operation op1 
+			expecting payload A
+			delivering payload B			
+	
+	// example 7: mixed ms
+	// TODO
+	
+IPA

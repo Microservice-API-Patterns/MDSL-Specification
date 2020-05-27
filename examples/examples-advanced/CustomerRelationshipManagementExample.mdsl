@@ -1,0 +1,188 @@
+/* Grammar "cheat sheet" aka abstract examples (payload structure only): 
+ * 
+ * NEW (V2): 
+ * 
+ * payload [ {ptree1}; {ptree2} ] // Parameter Forest
+ * payload {{subtree1},{subtree2}, apl} // Parameter Tree (can also appear in pforest)
+ * payload (apl) // Atomic Parameter List (can also appear in ptree) 
+ * payload ap // Atomic Parameter (can also appear in ptree and apl) 
+ * 
+ * OLD (V1):
+ * 
+ *  payload [ {ptree1}, {ptree2} ] // Parameter Forest
+ * payload {{subtree1},{subtree2}, {apl},{ap}} // Parameter Tree (can also appear in pforest)
+ * payload (apl) // Atomic Parameter List (can also appear in ptree) 
+ * payload ap // Atomic Parameter (can also appear in ptree and apl) 
+ * 
+ * AP syntax (V1, V2):
+ * <<pattern>>"name":Role<Type> // pattern stereotype, name and type are optional; stereotype can also be assigned to other tree nodes (apls and ptrees)
+ * 
+ *  Concrete AP types: ID, E, V, L, MD; abstract type: P  
+ * */
+ 
+API description SampleCRMScenario
+usage context PUBLIC_API for FRONTEND_INTEGRATION and BACKEND_INTEGRATION
+
+endpoint type CustomerManagementContract
+  serves as INFORMATION_HOLDER_RESOURCE and TRANSFER_RESOURCE
+  exposes 
+  	operation lookupSingleCustomer 
+	  with responsibility RETRIEVAL_OPERATION 
+	  expecting 
+	    // request message payload (representation)
+		payload ID<string> // some entity E whose structure is not yet known  
+	  delivering  
+	    // response message  payload (representation)
+		payload {"customerId":ID,
+		          "name":V,
+		          "address"} // name and of atomic parameters known, but type not specified yet; two roles known, one left open (default V)
+	    structured as MAP_TYPE
+				
+  	operation lookupCustomerDirectory
+	  with responsibility RETRIEVAL_OPERATION
+	  expecting 
+		payload <<Request_Bundle>> "customerId":V<int> // Atomic Parameter, with name, role, type known and specified
+	  delivering
+		payload
+		    "customerRecord": { 
+				"cid":ID!, // ! means mandatory, exactly one (default)
+				"nameTuple":("firstname":V, "lastname":V), 
+				"addressTuple":("street":V<string>, "poBox":V?, "zipCode":V, "city":V)+, // po box is optional, one or more addresses can be given
+				"segment":("REGULAR":V|"VIP":V) // the mid symbol | represents XOR choice (here: enum)
+		}*
+
+// copy pasted and comments removed (for screenshot):
+
+endpoint type CustomerManagementContract  
+  serves as INFORMATION_HOLDER_RESOURCE and TRANSFER_RESOURCE
+  exposes 
+  	operation lookupSingleCustomer 
+	  with responsibility RETRIEVAL_OPERATION 
+	  expecting 
+	    // request message payload (representation)
+		payload ID<string> // some entity E whose structure is not yet known
+	  delivering  
+	    // response message  payload (representation)
+		payload {"customerId":ID,
+		          "name":V,
+		          "address"} // name and of atomic parameters known,  type not specified yet
+	    structured as MAP_TYPE
+				
+  	operation lookupCustomerDiretory
+	  with responsibility RETRIEVAL_OPERATION
+	  expecting 
+		payload "customerId":V<int> // Atomic Parameter,  name, role, type known and specified
+	  delivering
+		payload
+		    "customerRecord": { 
+				"cid":ID!, // ! means mandatory, exactly one (default)
+				"nameTuple":("firstname":V, "lastname":V), 
+				"addressTuple":("street":V<string>, "poBox":V?, "zipCode":V, "city":V)+,
+				"segment":("REGULAR":V|"VIP":V) 
+		}*
+		
+
+endpoint type CustomerManagementContract2 
+  serves as INFORMATION_HOLDER_RESOURCE and TRANSFER_RESOURCE // endpoint serves as. not CT
+  exposes 
+  	operation lookupSingleCustomer 
+	  with responsibility RETRIEVAL_OPERATION 
+	  expecting
+		payload "uri":ID<string> // "customerId":V<int>
+	  delivering
+		payload {("cid":ID, "name":V, "address":V, "dataOwner":MD, "moreInformation":L)}
+	    structured as MAP_TYPE
+				
+  	operation lookupCustomerDirecory 
+	  with responsibility RETRIEVAL_OPERATION
+	  expecting 
+		payload "customerId":V<int>
+	  delivering
+		payload { 
+			<<Entity>>"customerRecord": 
+				("cid":ID!), 
+				"segment":("REGULAR":V|"VIP":V), // XOR (choice/union)
+				{"name":("firstname":V, "lastname":V)}, 
+				"address":("street":V<string>, "poBox":V?, "zipCode":V, "city":V)+
+		}*
+		
+				
+// ** provider example
+
+SLA template externalPerformanceSLAExample
+ type QUANTITATIVE
+ objective performanceSLO1 "responseTimeUnder" 5 seconds
+ penalty "If the SLA is not met, the penalty is ..."
+ notification "To report SLA violations, you have to ..."
+ rate plan FREEMIUM
+ rate limit DATA_QUOTA 1 call within 24 hours
+ 
+SLA template externalPerformanceSLAExampleLandingZone
+ type QUANTITATIVE
+ objective performanceSLO1 "responseTimeUnder" 
+   minimal 5 seconds
+   target 3 seconds
+   optimal 1 seconds
+
+API provider SampleAPIProvider1 
+  offers CustomerManagementContract 
+  at endpoint location "http://www.testdomain.io:80/path/subpath" 
+  via protocol RESTful_HTTP
+  with endpoint SLA externalPerformanceSLAExample
+ 
+  at endpoint location "http://www.testdomain.io:81/path/subpath" 
+  via protocol "undisclosed/proprietary"
+  with endpoint SLA objective o1 "concurrentRequestsPerSecond" 100
+
+  offers CustomerManagementContract2
+  at endpoint location "http://www.testdomain.io:80/path/subpath" // full URI: https://a.b.c:9090/d/e.map?p1=v1&p2=v2;
+  via protocol RESTful_HTTP
+  with endpoint SLA // inlined/embedded SLA
+  	type QUANTITATIVE
+    objective performanceSLO1 "responseTimeUnder" 5 seconds
+    penalty "If the SLA is not met, the penalty is ..."
+    notification "To report SLA violations, you have to ..."
+    rate plan FREEMIUM
+    rate limit DATA_QUOTA 1 "call" within 24 hours
+  endpoint governance AGGRESSIVE_OBSOLESCENCE
+  
+  /* 
+  with providerSLA provider1SLA
+  type QUALITATIVE
+  objective performanceSLO2 "availability": 100 "every commercially reasonable effort, but not guaranteed"
+  */
+  
+  under conditions "Some Ts and Cs"
+  provider governance LIMITED_GUARANTEED_LIFETIME    
+
+
+// ** client example
+
+API client SampleAPICLient 
+  consumes CustomerManagementContract
+  consumes CustomerManagementContract2
+
+
+// ** gateway example 
+
+API gateway SampleAPIGatweway
+
+  // Gate 1
+  offers CustomerManagementContract
+  at endpoint location "ExternalURI"
+  via protocol RESTful_HTTP
+
+  consumes CustomerManagementContract2 
+  from SampleAPIProvider1
+  via protocol gRPC
+
+  // Gate 2:
+  offers CustomerManagementContract
+  at endpoint location "ExternalURI" 
+  via protocol RESTful_HTTP
+
+  consumes CustomerManagementContract2 
+  from SampleAPIProvider1
+  via protocol gRPC
+
+IPA // end of API specification

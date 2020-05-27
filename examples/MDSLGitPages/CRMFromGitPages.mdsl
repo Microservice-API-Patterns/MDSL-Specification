@@ -1,0 +1,84 @@
+API description SampleCRMScenario
+usage context PUBLIC_API for FRONTEND_INTEGRATION 
+
+// template on skeleton page:
+/*
+API description [name]
+usage context [visibility] for [direction] // MAP pattern tags (optional)
+
+data type [name] [...] // reusable data contract elements (optional) 
+
+endpoint type [name]  
+  version x.y.z // semantic versioning information (optional) 
+  serves as [role_enum] // MAP tag(s) (optional)
+  exposes 
+  	operation [name]
+	  with responsibility [resp_enum] // MAP tag (optional)
+	  expecting
+	    headers [...] // optional 
+		payload [...] // mandatory, e.g., {V}
+	  delivering  
+	    headers [...] // optional
+		payload [...] // mandatory in request-response exchanges
+	  reporting 
+	  	[...] // see bottom of page for explanation (optional)
+ */
+
+// snippets on data contract page:
+data type MoveHistory {"from", "to", "when"}  
+data type CustomerWithAddressAndMoveHistory { 
+    "CustomerCoreData", 
+    "AddressRecords", 
+    MoveHistory* // type reference
+} 
+
+data type MoveHistory {D, D, D}  // record, modeled as Parameter Tree
+data type CustomerWithAddressAndMoveHistory { 
+    D, 
+    D, 
+    MoveHistory* // type reference
+} 
+
+data type AddressRecord (
+    "street":D<string>, 
+    "zipCode":D<int>, 
+    "city":D<string>) // Atomic Parameter List in '()' syntax
+
+data type MoveHistory 
+    {"from":AddressRecord, "to":AddressRecord, "when":D<string>} // no Date in MDSL 1.0
+
+data type CustomerWithAddressAndMoveHistory { 
+    <<Entity>>"CustomerCoreData":D, 
+    "AddressRecords":AddressRecord+, // one or more
+    "MoveHistory": MoveHistory* // type reference, collection
+} 
+
+endpoint type CustomerManagementContract
+  serves as INFORMATION_HOLDER_RESOURCE
+  exposes 
+  	operation lookupSingleCustomer 
+	  with responsibility RETRIEVAL_OPERATION 
+	  expecting 
+		payload ID<string> 
+	  delivering  
+		payload {"customerId":ID<int>,
+		          "name":V,
+		          "address"} 
+	    structured as MAP_TYPE
+				
+  	operation lookupCustomerDirectory
+	  with responsibility RETRIEVAL_OPERATION
+	  expecting 
+		payload <<Request_Bundle>> "customerId":ID<int>+ 
+	  delivering
+		payload
+		  "customerRecord": { 
+			"cid":ID!, // ! mandatory, exactly one
+			"nameTuple":("firstname":V, "lastname":V), 
+			"addressTuple":(
+			  "street":V<string>, 
+			  "poBox":V?, // optional
+			  "zipCode":V, 
+			  "city":V)+,
+			"segment":("REGULAR":V|"VIP":V) // choice 
+		}* // zero or more 

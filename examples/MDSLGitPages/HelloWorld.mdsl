@@ -1,0 +1,15 @@
+API description HelloWorldAPI
+
+data type SampleDTO {ID, D} 
+
+endpoint type HelloWorldEndpoint
+exposes 
+  operation sayHello 
+    expecting payload D<string>  
+    delivering payload SampleDTO
+
+API provider HelloWorldAPIProvider
+  offers HelloWorldEndpoint
+
+API client HelloWorldAPIClient
+  consumes HelloWorldEndpoint

@@ -1,0 +1,29 @@
+API description MAPTutorial0Sample
+
+data type Customer {
+  "name": D<string>, 
+  "address": D<string>, 
+  "birthday": D<string>}
+data type CustomerPage {
+  "pageContent": Customer*,
+  "navigation": PageCursor, 
+  "statistics": PageMetadata?}
+data type PageCursor {
+  "thisPage": PageID, 
+  "previousPage": PageID, 
+  "nextPage": PageID}
+data type PageMetadata {
+  "totalResultCount": MD<int>, 
+  "pageSize": MD<int>, 
+  "offsetNumber": PageID}
+data type PageID L<string>
+
+endpoint type CustomerLookup 
+exposes 
+  operation findCustomer with responsibility RETRIEVAL_OPERATION
+    expecting payload "searchFilter": D<string> 
+    delivering payload "customerList": Customer*
+
+  operation findCustomerPaginated with responsibility RETRIEVAL_OPERATION
+    expecting payload "searchFilter": D<string> // could specify page size here  
+    delivering payload "customerPage": CustomerPage 

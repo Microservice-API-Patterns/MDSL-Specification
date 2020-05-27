@@ -1,0 +1,33 @@
+API description MAPContextRepresentationSketch
+
+data type SharedContext (
+    "apiKey":ID<int>?, 
+    "sessionId":V<int>?, 
+    "otherQoSPropertiesThatShouldNotGoToProtocolHeader":V<string>*)
+
+endpoint type CustomerInformationHolderService 
+  exposes 
+    operation getCustomerAttributes
+      expecting
+        payload
+        { <<Context_Representation>> 
+          { 
+            {<<Annotated_Parameter_Collection>>"qosControl": SharedContext},
+            {<<Wish_List>>"desiredAttributes":ID<string>+}
+          }, // end of context representation
+          {
+            "actualPayload":V // SomeInParameters
+          } // end of actual/inner payload
+        } // end of entire/outer payload
+      delivering
+        payload {
+          <<Context_Representation>> {
+            {SharedContext},
+            {<<Error_Report>>("errorCode":V<int>, "errorMessage":V<string>)}
+          },
+          {<<Pagination>>(
+             "thisPageContent":V, // "SomeOutParameterSet",  
+             "previousPage":ID?, 
+             "nextPage":ID?)
+          }     
+        }

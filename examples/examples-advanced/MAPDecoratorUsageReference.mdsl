@@ -1,0 +1,186 @@
+/* 
+ * payload [ {ptree1}, {ptree2} ] // Parameter Forest
+ * payload {{subtree1},{subtree2}, {apl},{ap}} // Parameter tree (can also appear in pforest)
+ * payload (apl) // Atomic Parameter List (can also appear in ptree) 
+ * payload ap // Atomic Parameter (can also appear in ptree and apl) 
+ * 
+ * AP syntax:
+ * <<pattern>>"name":Role<Type> // pattern stereotype, name and type are optional; stereotype can also be assigned to other tree nodes (apls and ptrees)
+ *  
+ * */
+
+API description AllPatternsInActionDemo
+version 1.0.0
+usage context SOLUTION_INTERNAL_API for BACKEND_INTEGRATION
+
+// data type Entity1 (ID,V) // how about ", ..." as a placeholder for iteration/recursion, tbd TODO
+
+// feature struct patterns as data types so that newbies do not get overwhelmed by big picture operations
+data type SampleAtomicParameter "sap":V<string>
+data type SampleAtomicParameterList ("ap1":V<int>,"ap2":V<string>)
+data type SampleParameterTree {{P},{"ap1":V<int>,"ap2"}}
+data type SampleParameterForest [{P};{P}]
+
+data type SampleAtomicParameter1 "sap":V<string>
+data type SampleAtomicParameterList1 (ID,V)
+data type SampleParameterTree1 {{P}, {SampleAtomicParameterList1}}
+data type SampleParameterForest1 [{P}; {SampleParameterTree1}]
+
+data type BooleanExpression version 1 V<bool>
+data type UUID version 0.1 V<int>
+data type SharedContext version 0.1.1 {"api Key":UUID?, "session Id":V<int>?, "otherQoSPropertiesThatShouldNotGoToProtocolHeader":V<string>*}
+data type Page (V*|L*) // a page either is a set of value parameters or a set of links
+data type PersonalData <<Entity>>V
+data type Address <<Entity>>V
+data type CustomerEntity {{PersonalData}, {Address}}
+
+data type X "parameter_tree":{{V<int>}, (V<int>)}
+
+data type CustomerWithAddressAndMoveHistory { 
+    <<Entity>>"CustomerCoreData":V, 
+    "AddressRecords":Address+, // one or more
+    "MoveHistory": PersonalData* // type reference
+} 
+
+data type SampleJolieMapping "tbc"
+data type SampleYAMLMapping "customer: {name: string, address: E}"
+data type SampleYAMLSequence "- customerList: {name: string, address: E}"
+
+data type SOAPFaultElement {"code":V<int>, "string": V<string>, "actor":V<string>, "detail":V<string>}
+
+endpoint type PatternStereotypesDemoContract
+  version 1.0 
+  serves as INFORMATION_HOLDER_RESOURCE role
+  // identified by ("id":V<int>, "filter":V<string>) // needed for URI templating (SOAP: turn into top-level XML element "(elementParams, opParams)"?)
+  // identified by {"id", "filter"} // needed for URI templating (SOAP: turn into top-level XML element "(elementParams, opParams)"?) linter needs to catch usage of PF, nested PT!
+  exposes 
+      operation testOpEverythingButRequestBundle
+	  with responsibility RETRIEVAL_OPERATION
+	  expecting
+	    headers {"header1":V<int> | "header2":V<string>}
+	  	payload {
+	  			{<<Request_Condition>> BooleanExpression},
+	  			{<<Context_Representation>>{
+	  					{{<<Wish_List>>"desiredAttributes":V<string>+} | {<<Wish_Template>>"mockTree":SampleParameterTree}} // could also place WL on same level as CR, "|" is XOR cardinality (experimental)
+	  				} 
+	  			},
+	  			{"payload":SampleParameterTree} // links to Structure patterns category
+	  	}+
+	    structured as MAP_TYPE
+	  delivering
+		payload {
+				{<<Context_Representation>>SharedContext},
+				{<<Pagination>>"payload":Page, "metadata":MD*, "previousPage":Page?, "nextPage":Page?}	
+		} structured as MAP_TYPE
+	  reporting 
+	  	  error "Not Found": V<bool>
+	  	  error "General_Error": V<string>
+	  	  error "Unauthenticated"
+	  	  error P
+	  	  error V<int>
+	  	  error {<<Error_Report>>("errorCode":V<int>, "errorMessage":V<string>)}+
+	  	  analytics "tracking": ID // experimental
+
+  	operation testOpEverything
+	  // with responsibility CRUD // CRUD no longer supported   
+	  expecting
+	  	payload <<Request_Bundle>> [
+	  		{ // one tree per bundle element
+	  			{<<Request_Condition>>V},
+	  			{<<Context_Representation>>{
+	  					{{<<Wish_List>>V} | {<<Wish_Template>>V}} // could also place WL on same level as CR, "|" is XOR cardinality (experimental)
+	  				}
+	  			},
+	  			{"payload":SampleParameterTree} // links to Structure patterns category
+	  		}+ // at least one element in bundle, so + cardinality
+		]
+	    structured as MAP_TYPE
+	  delivering
+		payload [ // because request is a bundle ] // add a stereotype Response_Bundle that also links to Request Bundle pattern as we do not have a Response Bundle Pattern 
+				{<<Context_Representation>>V};
+				{"payload":P}; 
+				{<<Error_Report>>("errorCode":V<int>, "errorMessage":V<string>)}+
+				
+				// TODO add pagination here too?
+		]
+		structured as MAP_TYPE
+		reporting 
+			error "Internal Server Error"
+			error "400 Bad Request": V<string>
+			error <<Error_Report>>"resource not found": {"errorCode":V<int>, "errorMessage":V<string>}+	
+			error <<Error_Report>>{("402":V<int>, "notAuthorized":V<string>) | ("403":V<int>, "anotherMessage":V<string>)}	
+			error "500 tbd": SOAPFaultElement
+			analytics "usage statistics": P
+
+	    
+  	operation testOpJolieYaml
+	  expecting
+	  	payload SampleJolieMapping
+	    structured as JOLIE_TYPE
+	  delivering
+		payload SampleYAMLSequence
+	    structured as OTHER // "YAML_RX"	   
+	    
+endpoint type CustomerInformationHolderService serves as INFORMATION_HOLDER_RESOURCE 
+  exposes 
+    operation getCustomerAttributes
+	  expecting
+		payload
+		{ <<Context_Representation>> 
+		  { 
+	  	    {<<Annotated_Parameter_Collection>>"qosControl": SharedContext},
+	  	  	{<<Wish_List>>"desiredAttributes":ID<string>+}
+	  	  }, // end of context representation
+	      {
+	        "actualPayload":V // <"SomeInParameters">
+	      } // end of actual/inner payload
+	    } // end of entire/outer payload
+	  delivering
+		payload {
+		  <<Context_Representation>> {
+		    {SharedContext},
+			{<<Error_Report>>("errorCode":V<int>, "errorMessage":V<string>)}
+		  },
+		  {<<Pagination>>(
+			 "thisPageContent":V, // <"SomeOutParameterSet">,  
+			 "previousPage":ID?, 
+			 "nextPage":ID?)
+		  }		
+		}
+    operation getCustomerAttributes
+	  expecting
+		payload { 
+	  	  	{<<Wish_Template>>"mockObject":CustomerEntity},
+	      {
+	        "actualPayload":V // <"SomeInParameters">
+	      } // end of actual/inner payload
+	    } // end of entire/outer payload
+	  delivering
+		payload {
+		  {<<Entity>> CustomerEntity*
+		  }		
+		}		
+// end of contract
+
+// TODO feature Identifier, Link, Metadata stereotypes 
+
+// TODO feature Embedded Information Holder, Linked Information Holder
+	   
+API provider SampleAPIProvider1 
+  offers PatternStereotypesDemoContract 
+    at endpoint location "http://www.testdomain.io:80/path/subpath?p1=v1&p2=v2"
+    via protocol RESTful_HTTP   
+  	with endpoint SLA // provider1Endpoint1SLA
+      type QUANTITATIVE // optional now
+    	objective performanceSLO1 "responseTimeUnder" 5 seconds // "in 80% of calls)"
+    	penalty "If the SLA is not met, the penalty is ..."
+    	notification "To report SLA violations, you have to ..."
+    	rate plan USAGE_BASED
+    	rate limit MAX_CALLS 5 within 24 hours
+    endpoint governance AGGRESSIVE_OBSOLESCENCE
+  with provider SLA // provider1SLA
+  type QUALITATIVE
+  objective performanceSLO2 "availability" 100 "every commercially reasonable effort, but not guaranteed"
+  provider governance TWO_IN_PRODUCTION
+                  
+IPA // end of API specification

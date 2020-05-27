@@ -1,0 +1,43 @@
+API description MAPElementSterotypesSketch
+usage context PUBLIC_API for FRONTEND_INTEGRATION	
+
+data type URI L<string>
+data type CustomerDTO {"customerId":ID?, "name", "birthday", "address"} // partially modeled
+data type SampleParameterTree P // P will be refined/modeled later 
+data type Page {V*|L*} // a page either is a set of values or a set of links
+
+endpoint type CustomerRegistrationWorkflow serves as PROCESSING_RESOURCE 
+exposes 
+  operation placeRegistrationRequest with responsibility BUSINESS_ACTIVITY_PROCESSOR
+    expecting payload {
+	  <<Entity>> "customerToBeRegistered":CustomerDTO*
+	  }+
+	delivering payload {
+		<<Link>> "registrationRequestCode":URI,
+		<<Error_Report>>("errorCode":V<int> | "errorMessage":V<string>)?	
+	}
+	
+  operation completeRegistrationRequest with responsibility BUSINESS_ACTIVITY_PROCESSOR
+    expecting payload {
+	  <<Link>>"registrationRequestCode":URI
+	  }+
+	delivering payload {
+	  <<Entity>>"registeredCustomer":CustomerDTO*,
+	  <<Metadata>> "elapsedTime": MD<int>,
+	  <<Error_Report>>("errorCode":V<int> | "errorMessage":V<string>)?	
+  }
+  
+  // copied from other example: 
+  
+  operation provideRegistrationStatistics with responsibility RETRIEVAL_OPERATION
+    expecting payload {
+	  {<<Context_Representation>>{
+	  	<<Wish_List>>"desiredAttributes":V<string>+ | <<Wish_Template>>"mockTree":SampleParameterTree},
+	  	<<Metadata>>"someMoreContextInfo":V
+	  },
+	  {"payload":SampleParameterTree}
+	}+
+	delivering payload {
+		{<<Pagination>>"payload":Page, "metadata":MD*, "previousPage":Page?, "nextPage":Page?},
+		{<<Error_Report>>("errorCode":V<int>, "errorMessage":V<string>)}+		
+}

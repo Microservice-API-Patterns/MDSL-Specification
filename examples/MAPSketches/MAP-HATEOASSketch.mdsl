@@ -1,0 +1,8 @@
+API description MAPContextRepresentationSketch
+
+// HATEOAS support:
+data type HTTPVerbs {"GET"|"PUT"|"POST"|"PATCH"|"DELETE"} // TODO test this combo of choice and id/name only P... actually yields an enum
+// data type WebLink V<void> // marker type 
+data type WebLink {"target":V<string>, "type":V<string>, "verb methods":HTTPVerbs+} // marker type 
+
+endpoint type DummyEndpoint exposes operation dummyOp expecting payload V<void> delivering payload WebLink*  

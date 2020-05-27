@@ -1,0 +1,68 @@
+API description SampleAPI 
+
+	data type Opaque P
+	data type Opaque2 "Opaque"
+	data type Opaque3 "OPaque":P
+	data type Null D<void> // default if only D is specified (or string?)
+	data type ByteArray V<raw> 
+	data type SampleDTO1 {Identifier, Data, Metadata, Link}
+	data type SampleDTO2 {ID, D, MD, L} 
+	data type SampleAPL1 (D, D<int>, "a":D, "b":D<bool>)
+	data type SampleAPL2 ("a":Data, "b":Data, Data, Data<int>)
+	data type VersionedDataType version 0.0.1 {ID, P}
+	data type HTTPHeaders HTTPHeader*
+	data type HTTPHeader {"key":V<string>, "value":V<string>} 
+	data type HTTPHeader2 {"key":HTTPHeaderEnum, "value":V<string>} // not supporting custom headers this way
+	data type HTTPHeaderEnum { "User-Agent" | "Content-Type" /* etc., see https://en.wikipedia.org/wiki/List_of_HTTP_header_fields */ }
+	
+	data type HTTPStatusCode {"code":HTTPStatusCodeEnum, "text": HTTPStatusTextEnum} // could replace ", " with "|"?
+	data type HTTPStatusCodeEnum { "200" | "400" /* etc., see https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */ }
+	data type HTTPStatusTextEnum { "OK" | "Bad Request" /* etc., see https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */ }
+	
+	// data type StatusAndErrorInformation P
+	data type SampleOperationErrorResponse {HTTPStatusCodeEnum, <<Error_Report>>{"errorMessage": V<string>|"errorObject":P}}
+
+	data type SomeUnspecifiedEntity <<Entity>>V 
+	data type DTO <<Entity>>{"field1":V<int>, "field2":V<string>}
+	data type DTOWithLinks <<Entity>>{"field1":V<int>, "field2":V<string>, "references":L<string>*}
+	
+	data type SampleOperationRequestData {"someTextData":V<string> | "someCounter": V<int>} // either text or number (choice on tree level)
+	data type SampleOperationResponseData {"someMetadata":MD<string>, "someText":V<string>, "someDataTransferObject":DTOWithLinks}
+	
+	data type TestType <<Entity>> "name":V<double>
+	data type ChoiceDemo {"optionA":V|"optionB":V} 
+	data type AnIntegerOrAString (V<int> | V<string>)
+		
+	endpoint type MostBasicPortContract version 0.0.1 
+		exposes operation sampleOperation 
+			expecting payload P // P is an abstract/unspecified parameter placeholder
+				structured as MAP_TYPE // default, so not specified everywhere
+			delivering payload P
+				structured as MAP_TYPE
+	
+	endpoint type PartialPortContract 
+		exposes operation sampleOperation 
+			expecting payload {"someData", V<int>, ID} // three atomic parameters: first one only has a name, second one has role and type, third one has role only 
+			delivering payload {"someMetadata":MD, "someText":V<string>, "someDataTransferObject":DTO}
+
+	endpoint type PartialPortContractVersioned 
+		exposes operation sampleOperation version 0.0.1 with responsibility EVENT_PROCESSOR
+			expecting payload {"someData", V<int>, ID} // three atomic parameters: first one only has a name, second one has role and type, third one has role only 
+			delivering payload VersionedDataType
+	
+	endpoint type ElaboratePortContract 
+		exposes operation sampleOperation 
+			expecting 
+				payload SampleOperationRequestData
+			delivering 
+				payload SampleOperationResponseData
+			
+		endpoint type ElaboratePortContractWithErorInformation 
+		exposes operation sampleOperation 
+			expecting 
+				headers HTTPHeaders
+				payload SampleOperationRequestData
+			delivering 
+				headers {HTTPStatusCodeEnum, HTTPHeaders}
+				payload {SampleOperationErrorResponse | SampleOperationResponseData}
+IPA

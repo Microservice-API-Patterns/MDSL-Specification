@@ -1,0 +1,32 @@
+API description SampleCustomerManagementAPI version "1.0.0"
+usage context PUBLIC_API for FRONTEND_INTEGRATION 
+
+endpoint type CustomerManagementContract 
+  version "1.0.0" 
+  serves as INFORMATION_HOLDER_RESOURCE
+  exposes 
+  	operation lookupSingleCustomer version "1.0.1"
+	  with responsibility RETRIEVAL_OPERATION 
+	  expecting 
+		payload ID<string> 
+	  delivering  
+		payload {"customerId":ID<int>,
+		          "name":D,
+		          "address"} 
+				
+  	operation lookupCustomerDirectory // no version information
+	  with responsibility RETRIEVAL_OPERATION
+	  expecting 
+		payload <<Request_Bundle>> "customerId":ID<int>+ // at least one
+	  delivering
+		payload
+		  "customerRecord": { 
+			"cid":ID!, // ! mandatory, exactly one
+			"nameTuple":("firstname":D, "lastname":D), 
+			"addressTuple":(
+			  "street":D<string>, 
+			  "poBox":D?, // optional
+			  "zipCode":D, 
+			  "city":D)+,
+			"segment":("REGULAR":D|"VIP":D) // choice 
+		}* // zero or more

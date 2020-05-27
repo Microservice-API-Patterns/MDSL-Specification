@@ -1,0 +1,9 @@
+API description MAPTutorial0Sample
+
+data type Customer {"name": D<string>, "address": D<string>, "bday": D<string>}
+
+endpoint type CustomerLookup 
+exposes 
+  operation findCustomer 
+    expecting payload "searchFilter": D<string> 
+    delivering payload "customerList": Customer*

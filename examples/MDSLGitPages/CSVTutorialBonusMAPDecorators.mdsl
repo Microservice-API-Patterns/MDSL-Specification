@@ -1,0 +1,31 @@
+API description SpreadSheetExchangeAPI
+
+data type CSVSpreadsheet CSVSheetTab*
+data type CSVSheetTab {"name": D<string>, 
+                       "content": Rows*}
+data type Rows {"line": ID<int>, 
+                "columns":Column+}
+data type Column {"position": ID<string>, 
+                  "header": D<string>?, 
+                  <<Entity>> "cell": Cell}
+data type Cell {"formula":D<string> 
+               | "intValue": D<int> 
+               | "longValue": D<long> 
+               | "text": D<string>}
+
+endpoint type SpreadSheetExchangeEndpoint serves as TRANSFER_RESOURCE
+exposes 
+  operation uploadSpreadheet with responsibility NOTIFICATION_OPERATION
+    expecting payload CSVSpreadsheet
+    delivering payload {"successFlag":D<bool>, ID}
+    
+  operation downloadCSVFile with responsibility RETRIEVAL_OPERATION
+    expecting payload ID 
+    delivering payload CSVSpreadsheet
+      reporting error "SheetNotFound" 
+
+API provider SpreadSheetExchangeAPIProvider
+offers SpreadSheetExchangeEndpoint
+
+API client SpreadSheetExchangeAPIClient
+consumes SpreadSheetExchangeEndpoint

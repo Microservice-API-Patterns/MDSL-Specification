@@ -1,0 +1,48 @@
+API description HelloWorldAPI
+
+data type SampleDTO {ID, D} // partial, incomplete specification
+
+endpoint type SomeDemoContract
+exposes 
+  operation s 
+    expecting payload D<string>  
+    delivering payload SampleDTO
+
+API provider SampleAPIProvider1 
+  offers SomeDemoContract 
+    at endpoint location "http://www.testdomain.io:80/path/subpath"
+    via protocol RESTful_HTTP   
+  	with endpoint SLA // provider1Endpoint1SLA
+      type QUANTITATIVE // optional now
+    	objective performanceSLO1 "responseTimeUnder" 5 seconds
+    	penalty "If the SLA is not met, the penalty is ..."
+    	notification "To report SLA violations, you have to ..."
+    	rate plan USAGE_BASED
+    	rate limit MAX_CALLS 5 within 24 hours
+    endpoint governance AGGRESSIVE_OBSOLESCENCE
+  with provider SLA // provider1SLA
+  type QUALITATIVE
+  objective performanceSLO2 "availability" 
+     100 "every commercially reasonable effort, but not guaranteed"
+  provider governance TWO_IN_PRODUCTION
+  
+API provider sampleProvider
+offers SomeDemoContract
+at endpoint location "http://www.tbc.io:80/path/subpath"
+via protocol RESTful_HTTP // or other supported protocol
+under conditions "See http://www.tbc.io/terms-and-conditions.html"
+provider governance AGGRESSIVE_OBSOLESCENCE
+
+API client SampleAPIClient
+consumes SomeDemoContract
+from sampleProvider
+via protocol RESTful_HTTP
+
+API gateway SampleAPIGatweway
+  offers SomeDemoContract
+  at endpoint location "ExternalURI"
+  via protocol SOAP_HTTP
+
+  consumes SomeDemoContract 
+  from SampleAPIProvider1
+  via protocol gRPC
