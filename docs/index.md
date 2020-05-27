@@ -6,7 +6,7 @@ copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 
 
 ## TL;DR
-Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as Swagger, WSDL, and <!-- gRPC --> Protocol Buffers. Grammar, [editor (Eclipse plugin)](./updates/), [tutorial](./tutorial), [examples](./examples) and a [quick reference](./quickreference)<!-- providing skeletons--> are available already; <!-- validation and generation tools are under construction --> more to come.
+Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as Swagger, WSDL, and <!-- gRPC --> Protocol Buffers. [Grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext), [editor (Eclipse plugin)](./updates/), [tutorial](./tutorial), [examples](./examples) and a [quick reference](./quickreference)<!-- providing skeletons--> are available already; <!-- validation and generation tools are under construction --> more to come.
 
 ## Getting Started with MDSL
 
@@ -138,7 +138,7 @@ Ready to start/learn more? Click [here](./tutorial).
 
 ### Direct links into repository
 
-* [Full grammar](https://microservice-api-patterns.github.io/MDSL-Specification/blob/master/dslws/io.mdsl/src/org/map/mdsl/MDSL.xtext)
+* [Full grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext)
 * [Examples](https://microservice-api-patterns.github.io/MDSL-Specification/tree/master/examples)
 
 

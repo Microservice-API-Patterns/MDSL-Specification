@@ -37,7 +37,7 @@ These two languages can be used independently of each other; for instance, data 
 
 * Presentations featuring Context Mapper, MAP and MDSL can be found [here](https://ozimmer.ch/papers/).
 * The [GitHub Pages for MDSL](https://microservice-api-patterns.github.io/MDSL-Specification/) provide a tutorial and language reference information.
-* There is an [Eclipse update site](https://microservice-api-patterns.github.io/MDSL-Specification/updates/) for the MDSL editor. 
+* There is an Eclipse update site [https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/) for the MDSL editor. 
 * As a contributor, please consult the [readme file of the dsl-core](./dsl-core/README.md) project for getting started information and prerequisites.
 
 
