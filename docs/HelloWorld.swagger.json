@@ -1,0 +1,86 @@
+{
+    "swagger": "2.0",
+    "basePath": "/",
+    "paths": {
+        "/HelloWorldEndpoint/": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/helloWorldResponse"
+                        }
+                    }
+                },
+                "summary": "generated fom MDSL",
+                "operationId": "helloWorld with responsibility unknown",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/helloWorldRequest"
+                        }
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "HelloWorldEndpoint"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "HelloWorldAPI",
+        "version": "0.1",
+        "description": "The MDSL service contract specified the usage scenario as: UNDISCLOSED_VISIBILITY ANY_INTEGRATION_DIRECTION, see endpoints for role information and operations for responsibilities"
+    },
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "tags": [
+        {
+            "name": "HelloWorldEndpoint",
+            "description": "This endpoint has the following MAP roles: undisclosed"
+        }
+    ],
+    "definitions": {
+        "helloWorldRequest": {
+            "properties": {
+                "identifier1": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "helloWorldResponse": {
+            "properties": {
+                "identifier2": {
+                    "type": "string"
+                },
+                "identifier3": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "responses": {
+        "ParseError": {
+            "description": "When a mask can't be parsed"
+        },
+        "MaskError": {
+            "description": "When any error occurs on mask"
+        }
+    }
+}

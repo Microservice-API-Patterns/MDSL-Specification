@@ -1,0 +1,14 @@
+_site
+.sass-cache
+.jekyll-metadata
+.jekyll-cache
+*.gem
+.bundle
+vendor/bundle
+
+Gemfile.lock
+
+# IDEs
+.idea
+*.iml
+
