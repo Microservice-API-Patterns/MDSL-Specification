@@ -3,7 +3,7 @@
 <plugin>
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package 
-			uri = "http://www.mdsl.org/APIDescription"
+			uri = "http://www.mdsl.io/APIDescription"
 			class = "io.mdsl.apiDescription.ApiDescriptionPackage"
 			genModel = "model/generated/APIDescription.genmodel" />
 	</extension>
