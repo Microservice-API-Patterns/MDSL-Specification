@@ -37,7 +37,7 @@ These two languages can be used independently of each other; for instance, data 
 
 * Presentations featuring Context Mapper, MAP and MDSL can be found [here](https://ozimmer.ch/papers/).
 * The [GitHub Pages for MDSL](https://microservice-api-patterns.github.io/MDSL-Specification/) provide a tutorial and language reference information.
-* There is an [Eclipse update site](https://socadk.github.io/MDSL/updates/) for the MDSL editor. 
+* There is an [Eclipse update site](https://microservice-api-patterns.github.io/MDSL-Specification/updates/) for the MDSL editor. 
 * As a contributor, please consult the [readme file of the dsl-core](./dsl-core/README.md) project for getting started information and prerequisites.
 
 
@@ -69,16 +69,16 @@ All [Microservice API Patterns (MAP)](https://microservice-api-patterns.org/) ar
 * As enums for roles and responsibilities
 * As stereotypes annotating representation elements
 
-See ["MAP Decorators" section of the MDSL tutorial](https://socadk.github.io/MDSL/tutorial) for more information. <!-- TODO copy one-pager in SummerSoC paper to GitHub pages or elsewhere in repo -->
+See ["MAP Decorators" section of the MDSL tutorial](https://microservice-api-patterns.github.io/MDSL-Specification/tutorial) for more information. <!-- TODO copy one-pager in SummerSoC paper to GitHub pages or elsewhere in repo -->
 
 The MDSL grammar (to be found in dsl-core, in src folder of org.mdsl project) was originally developed with Eclipse Photon (4.8.0) and Xtext (2.14) as provided by the Eclipse Modeling Platform. MDSL makes use of the referencing feature in Xtext ('name' attribute). Future work is required to also support  this technology in other IDEs (such as Visual Studio Code).
 
-A derived (but not yet fully equivalent) version of the grammar for antlr4 can be found [in this folder](https://github.com/socadk/MDSL/blob/master/antlr4/). 
+<!-- A derived (but not yet fully equivalent) version of the grammar for antlr4 can be found [in this folder](https://microservice-api-patterns.github.io/MDSL-Specification/blob/master/antlr4/). -->
 
 
 ##  Acknowledgements 
 
-The creation and release of MDSL 3.0 was supported by the [Hasler Foundation](https://haslerstiftung.ch/en/welcome-to-the-hasler-foundation/).
+The creation and open source release of MDSL 3.0 was supported by the [Hasler Foundation](https://haslerstiftung.ch/en/welcome-to-the-hasler-foundation/).
 
 Contributors (input, DevOps support, feedback): 
 

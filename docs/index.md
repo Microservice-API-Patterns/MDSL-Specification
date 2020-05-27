@@ -66,9 +66,9 @@ To achieve the above design goals, we decided that:
 ### Eclipse Plugin (MDSL Editor)
 The MDSL Eclipse plugin provides editing support (syntax highlighting, auto completion, etc.) for our DSL. You can install the plugin in your Eclipse from the following update site:
 
-[https://socadk.github.io/MDSL/updates/](https://socadk.github.io/MDSL/updates/)
+[https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
 
-Once you have installed the plugin successfully, the MDSL editor should open for any file that ends with `.mdsl`. You can create one and copy-paste the above hello world example, or find additional examples [in this folder](https://github.com/socadk/MDSL/tree/master/examples).
+Once you have installed the plugin successfully, the MDSL editor should open for any file that ends with `.mdsl`. You can create one and copy-paste the above hello world example, or find additional examples [in this folder](https://microservice-api-patterns.github.io/MDSL-Specification/tree/master/examples).
 
 If you want to check whether the plugin has installed successfully, you can go to the Eclipse "Help" menu, select "About Eclipse IDE" and then "Installation Details". Two MDSL entries should be there.
 
@@ -134,14 +134,12 @@ Ready to start/learn more? Click [here](./tutorial).
 * Optional/experimental [language elements on the instance level (provider, client, gateway)](./optionalparts)
 
 ### Installation in Eclipse
- * Update site: [https://socadk.github.io/MDSL/updates/](https://socadk.github.io/MDSL/updates/)
+ * Update site: [https://microservice-api-patterns.github.io/MDSL-Specification/MDSL/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
 
 ### Direct links into repository
 
-At this point, the plugin and the documentation pages are available openly; the repository that contains the grammar is still private (please contact [socadk](https://ozimmer.ch/about/) to request access). <!-- TODO 2020 update all links when repo is moved and made public -->
-
-* [Full grammar](https://github.com/socadk/MDSL/blob/master/dslws/org.map.mdsl.parent/org.map.mdsl/src/org/map/mdsl/MDSL.xtext)
-* [Examples](https://github.com/socadk/MDSL/tree/master/examples)
+* [Full grammar](https://microservice-api-patterns.github.io/MDSL-Specification/blob/master/dslws/io.mdsl/src/org/map/mdsl/MDSL.xtext)
+* [Examples](https://microservice-api-patterns.github.io/MDSL-Specification/tree/master/examples)
 
 
 ### External links 
@@ -150,6 +148,6 @@ At this point, the plugin and the documentation pages are available openly; the 
 * [Lakeside Mutual](https://github.com/Microservice-API-Patterns/LakesideMutual) repository, featuring [Domain-Driven Design (DDD)](https://www.ifs.hsr.ch/index.php?id=15666&L=4) and [microservices](https://www.ifs.hsr.ch/index.php?id=15266&L=4) in an insurance company scenario (JavaScript frontends and Spring Boot backends)
 * [Context Mapper](https://contextmapper.github.io/), a DSL for strategic DDD and rapid OOAD
 
-*Copyright: [Olaf Zimmermann](https://ozimmer.ch/index.html), 2018-2020. All rights reserved. See [license information](https://github.com/socadk/MDSL/blob/master/LICENSE).*
+*Copyright: [Olaf Zimmermann](https://ozimmer.ch/index.html), 2018-2020. All rights reserved. See [license information](https://microservice-api-patterns.github.io/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->
