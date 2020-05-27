@@ -1,4 +1,4 @@
-theme: jekyll-theme-midnight
+theme: jekyll-theme-slate
 
 title: Microservice DSL (MDSL)
 description: A Domain-Specific Language (DSL) to specify (micro-)service contracts, their data representations and API endpoints.
