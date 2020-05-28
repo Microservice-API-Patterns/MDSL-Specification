@@ -191,6 +191,6 @@ In addition to MAP patterns, any string can decorate endpoints and operations; i
 * Back to [MDSL homepage](./index). 
 * [Microservice API Patterns](https://microservice-api-patterns.org/).
 
-*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/socadk/MDSL/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

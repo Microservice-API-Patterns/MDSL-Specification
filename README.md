@@ -71,7 +71,7 @@ All [Microservice API Patterns (MAP)](https://microservice-api-patterns.org/) ar
 
 See ["MAP Decorators" section of the MDSL tutorial](https://microservice-api-patterns.github.io/MDSL-Specification/tutorial) for more information. <!-- TODO copy one-pager in SummerSoC paper to GitHub pages or elsewhere in repo -->
 
-The MDSL grammar (to be found in dsl-core, in src folder of org.mdsl project) was originally developed with Eclipse Photon (4.8.0) and Xtext (2.14) as provided by the Eclipse Modeling Platform. MDSL makes use of the referencing feature in Xtext ('name' attribute). Future work is required to also support  this technology in other IDEs (such as Visual Studio Code).
+The [MDSL grammar](dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) was originally developed with Eclipse Photon (4.8.0) and Xtext (2.14) as provided by the Eclipse Modeling Platform. MDSL makes use of the referencing feature in Xtext ('name' attribute). Future work is required to also support  this technology in other IDEs (such as Visual Studio Code).
 
 <!-- A derived (but not yet fully equivalent) version of the grammar for antlr4 can be found [in this folder](https://microservice-api-patterns.github.io/MDSL-Specification/blob/master/antlr4/). -->
 
