@@ -139,7 +139,7 @@ Ready to start/learn more? Click [here](./tutorial).
 ### Direct links into repository
 
 * [Full grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext)
-* [Examples](https://microservice-api-patterns.github.io/MDSL-Specification/tree/master/examples)
+* [Examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples)
 
 
 ### External links 
@@ -148,6 +148,6 @@ Ready to start/learn more? Click [here](./tutorial).
 * [Lakeside Mutual](https://github.com/Microservice-API-Patterns/LakesideMutual) repository, featuring [Domain-Driven Design (DDD)](https://www.ifs.hsr.ch/index.php?id=15666&L=4) and [microservices](https://www.ifs.hsr.ch/index.php?id=15266&L=4) in an insurance company scenario (JavaScript frontends and Spring Boot backends)
 * [Context Mapper](https://contextmapper.github.io/), a DSL for strategic DDD and rapid OOAD
 
-*Copyright: [Olaf Zimmermann](https://ozimmer.ch/index.html), 2018-2020. All rights reserved. See [license information](https://microservice-api-patterns.github.io/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: [Olaf Zimmermann](https://ozimmer.ch/index.html), 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

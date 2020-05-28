@@ -147,7 +147,7 @@ exposes
 	protected by policy {"userId":D<string>, "password":D<raw>} 
 ~~~
 
-In this example, the error report is a simple numeric `code`; more elaborate [error reports](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ErrorReport) can be modeled as well; any MDSL [data type](/datacontract) can be used.
+In this example, the error report is a simple numeric `code`; more elaborate [error reports](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ErrorReport) can be modeled as well; any MDSL [data type](./datacontract) can be used.
 
 The security `policy` also is modelled as an MDSL data contract; it can be used to define the various security assertions and protocol headers that exist. This MDSL feature is still under design construction; future versions of the MDSL documentation pages will provide more exmaples.
 
