@@ -1,5 +1,5 @@
 API description MAPElementSterotypesSketch
-usage context PUBLIC_API for FRONTEND_INTEGRATION	
+usage context PUBLIC_API for FRONTEND_INTEGRATION
 
 data type URI L<string>
 data type CustomerDTO {"customerId":ID?, "name", "birthday", "address"} // partially modeled
@@ -35,9 +35,9 @@ exposes
 	  	<<Wish_List>>"desiredAttributes":D<string>+ | <<Wish_Template>>"mockTree":SampleParameterTree},
 	  	<<Metadata_Element>>"someMoreContextInfo":D
 	  },
-	  {"payload":SampleParameterTree}
+	  {"payload1":SampleParameterTree}
 	}+
 	delivering payload {
-		{<<Pagination>>"payload":Page, "metadata":MD*, "previousPage":Page?, "nextPage":Page?},
+		{<<Pagination>>"payload2":Page, "metadata":MD*, "previousPage":Page?, "nextPage":Page?},
 		{<<Error_Report>>("errorCode":D<int>, "errorMessage":D<string>)}+		
 }

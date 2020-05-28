@@ -52,8 +52,7 @@ endpoint type CustomerManagementContract
 		}*
 
 // copy pasted and comments removed (for screenshot):
-
-endpoint type CustomerManagementContract  
+endpoint type CustomerManagementContractPlain  
   serves as INFORMATION_HOLDER_RESOURCE and TRANSFER_RESOURCE
   exposes 
   	operation lookupSingleCustomer 
@@ -135,7 +134,7 @@ API provider SampleAPIProvider1
   with endpoint SLA objective o1 "concurrentRequestsPerSecond" 100
 
   offers CustomerManagementContract2
-  at endpoint location "http://www.testdomain.io:80/path/subpath" // full URI: https://a.b.c:9090/d/e.map?p1=v1&p2=v2;
+  at endpoint location "http://www.testdomain.io:80/path2/subpath2" // full URI: https://a.b.c:9090/d/e.map?p1=v1&p2=v2;
   via protocol RESTful_HTTP
   with endpoint SLA // inlined/embedded SLA
   	type QUANTITATIVE
@@ -178,7 +177,7 @@ API gateway SampleAPIGatweway
 
   // Gate 2:
   offers CustomerManagementContract
-  at endpoint location "ExternalURI" 
+  at endpoint location "ExternalURI2" 
   via protocol RESTful_HTTP
 
   consumes CustomerManagementContract2 

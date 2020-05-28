@@ -12,7 +12,7 @@ API description MAPServiceTypeSketches
 			delivering payload B
 			
 	// example 1: stateless and side-effect free processing resource:
-	endpoint type PureComputationResource serves as PROCESSING_RESOURCE and GROUND_RESOURCE
+	endpoint type PureComputationResource serves as PROCESSING_RESOURCE // and GROUND_RESOURCE
 	exposes
 		operation convertAtoB with responsibility COMPUTATION_FUNCTION
 			expecting payload A
@@ -61,7 +61,7 @@ API description MAPServiceTypeSketches
 					
 						
 	// example 4: Gateway/Guard Resource 1 "Connector (bidirectional)" a.k.a. Integration Service, Provider Interfacer, Provider Guard
-	endpoint type PureConnectorResource serves as GUARD_RESOURCE 
+	endpoint type PureConnectorResource // serves as GUARD_RESOURCE 
 	exposes
 		operation receiveEvent with responsibility EVENT_PROCESSOR 
 			expecting payload "some event":EventFormatB // note: E is entity, not event
@@ -75,24 +75,5 @@ API description MAPServiceTypeSketches
 		operation transformMessageFormatBtoA with responsibility COMPUTATION_FUNCTION
 			expecting payload EventFormatB
 			delivering payload EventFormatA
-						
-	// example 5: stateful processing resource (guard level, so outbound dependencies?):
-	// TODO, , combines 2 and 4 
-	endpoint type ect1 serves as GUARD_RESOURCE and PROCESSING_RESOURCE 
-	exposes 
-		operation op1 
-			expecting payload A
-			delivering payload B
-
-	// example 6: Gateway/Guard Resource 2 "Legacy System Orchestrator Guard" a.k.a. Legacy Service Activator, Legacy Workflow Guard
-	// TODO, combines 3 and 4 
-	endpoint type ect1 serves as GUARD_RESOURCE and INFORMATION_HOLDER_RESOURCE
-	exposes 
-		operation op1 
-			expecting payload A
-			delivering payload B			
-	
-	// example 7: mixed ms
-	// TODO
-	
+							
 IPA

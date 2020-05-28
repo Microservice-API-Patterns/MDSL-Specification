@@ -17,13 +17,13 @@ data type Cell {"text":D<string>
 data type OASSecuritySchemeObject {
 	// remodeling https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#securitySchemeObject:
 	"type":ID, 
-	"description": D<string>? default is "Some OASSecuritySchemeObject", 	
+	"description": D<string>?, 	
 	"name": D<string>, 
 	"in": D<string>, 
 	"scheme": D<string>, 
 	"bearerFormat": D<string>, 
 	"flows": OAuthFlowsObject,
-	"openIdConnectUrl":D<string>}
+	"openIdConnectUrl":D<string>} default is "Some OASSecuritySchemeObject"
 
 data type OAuthFlowsObject {
 	"implicit": OAuthFlowsObject,

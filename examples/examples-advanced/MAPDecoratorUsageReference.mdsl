@@ -64,13 +64,13 @@ endpoint type PatternStereotypesDemoContract
 	  					{{<<Wish_List>>"desiredAttributes":D<string>+} | {<<Wish_Template>>"mockTree":SampleParameterTree}} // could also place WL on same level as CR, "|" is XOR cardinality (experimental)
 	  				} 
 	  			},
-	  			{"payload":SampleParameterTree} // links to Structure patterns category
+	  			{"payload1":SampleParameterTree} // links to Structure patterns category
 	  	}+
 	    structured as MAP_TYPE
 	  delivering
 		payload {
 				{<<Context_Representation>>SharedContext},
-				{<<Pagination>>"payload":Page, "metadata":MD*, "previousPage":Page?, "nextPage":Page?}	
+				{<<Pagination>>"payload2":Page, "metadata":MD*, "previousPage":Page?, "nextPage":Page?}	
 		} structured as MAP_TYPE
 	  reporting 
 	  	  error "Not Found": D<bool>
@@ -147,7 +147,7 @@ endpoint type CustomerInformationHolderService serves as INFORMATION_HOLDER_RESO
 			 "nextPage":ID?)
 		  }		
 		}
-    operation getCustomerAttributes
+    operation getCustomerAttributesWithWishlist
 	  expecting
 		payload { 
 	  	  	{<<Wish_Template>>"mockObject":CustomerEntity},
