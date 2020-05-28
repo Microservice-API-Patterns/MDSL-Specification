@@ -1,21 +1,21 @@
 API description NN
 usage context COMMUNITY_API for BACKEND_INTEGRATION // MAP pattern tags (optional)
 
-data type nn {V} // reusable data contract elements (optional) 
+data type nn {D} // reusable data contract elements (optional) 
 
 endpoint type NN  
-  version 1.0.0 // semantic versioning information (optional) 
+  version "1.0.0" // semantic versioning information (optional) 
   serves as PROCESSING_RESOURCE // MAP pattern tag(s) (optional)
   exposes 
   	operation o
 	  with responsibility BUSINESS_ACTIVITY_PROCESSOR // MAP pattern tag (optional)
 	  expecting
 	    headers "Name" // optional 
-		payload  {V}
+		payload  {D}
 				structured as MAP_TYPE
 	  delivering  
-	    headers {V} // optional
-		payload {V} 
+	    headers {D} // optional
+		payload {D} 
 		structured as MAP_TYPE
 	  reporting 
-	  	error {V} // see bottom of page for explanation (optional)
+	  	error {D} // see bottom of page for explanation (optional)

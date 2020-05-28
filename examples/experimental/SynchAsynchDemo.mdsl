@@ -1,8 +1,8 @@
-API description SyncAsynchDemo version 0.2
+API description SyncAsynchDemo version "0.2"
 
 endpoint type SpreadSheetExchangeEndpointContract serves as DATA_TRANSFER_RESOURCE
 exposes 
-  operation uploadSpreadsheet with responsibility NOTIFICATION_OPERATION 
+  operation uploadSpreadsheet with responsibility STATE_CREATION_OPERATION 
    in REQUEST_REPLY conversation
     expecting payload P
     delivering payload {"successFlag":D<bool>, ID}

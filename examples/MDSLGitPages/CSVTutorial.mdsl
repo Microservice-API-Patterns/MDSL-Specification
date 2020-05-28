@@ -1,23 +1,23 @@
 API description SpreadSheetExchangeAPI
 
 data type CSVSpreadsheet CSVSheetTab*
-data type CSVSheetTab {"name": V<string>, 
+data type CSVSheetTab {"name": D<string>, 
                        "content": Rows*}
 data type Rows {"line": ID<int>, 
                 "columns":Column+}
 data type Column {"position": ID<string>, 
-                  "header": V<string>?, 
+                  "header": D<string>?, 
                   <<Entity>> "cell": Cell}
-data type Cell {"text":V<string> 
-               | "intValue": V<int> 
-               | "longValue": V<long> 
-               | "formula": V<string>}
+data type Cell {"text":D<string> 
+               | "intValue": D<int> 
+               | "longValue": D<long> 
+               | "formula": D<string>}
 
 endpoint type SpreadSheetExchangeEndpoint
 exposes 
   operation uploadSpreadsheet
     expecting payload CSVSpreadsheet
-    delivering payload {"successFlag":V<bool>, ID}
+    delivering payload {"successFlag":D<bool>, ID}
     
   operation downloadSpreadsheet
     expecting payload ID

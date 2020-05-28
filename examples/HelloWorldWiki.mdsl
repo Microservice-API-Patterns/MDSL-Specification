@@ -1,11 +1,11 @@
 API description HelloWorldAPI
 
-data type SampleDTO {ID, V} 
+data type SampleDTO {ID, D} 
 
 endpoint type HelloWorldEndpoint
 exposes 
   operation s 
-    expecting payload V<string>  
+    expecting payload D<string>  
     delivering payload SampleDTO 
 
 API provider HelloWorldAPIProvider1

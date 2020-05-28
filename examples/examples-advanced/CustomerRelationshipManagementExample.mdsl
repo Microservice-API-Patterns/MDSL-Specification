@@ -34,21 +34,21 @@ endpoint type CustomerManagementContract
 	  delivering  
 	    // response message  payload (representation)
 		payload {"customerId":ID,
-		          "name":V,
+		          "name":D,
 		          "address"} // name and of atomic parameters known, but type not specified yet; two roles known, one left open (default V)
 	    structured as MAP_TYPE
 				
   	operation lookupCustomerDirectory
 	  with responsibility RETRIEVAL_OPERATION
 	  expecting 
-		payload <<Request_Bundle>> "customerId":V<int> // Atomic Parameter, with name, role, type known and specified
+		payload <<Request_Bundle>> "customerId":D<int> // Atomic Parameter, with name, role, type known and specified
 	  delivering
 		payload
 		    "customerRecord": { 
 				"cid":ID!, // ! means mandatory, exactly one (default)
-				"nameTuple":("firstname":V, "lastname":V), 
-				"addressTuple":("street":V<string>, "poBox":V?, "zipCode":V, "city":V)+, // po box is optional, one or more addresses can be given
-				"segment":("REGULAR":V|"VIP":V) // the mid symbol | represents XOR choice (here: enum)
+				"nameTuple":("firstname":D, "lastname":D), 
+				"addressTuple":("street":D<string>, "poBox":D?, "zipCode":D, "city":D)+, // po box is optional, one or more addresses can be given
+				"segment":("REGULAR":D|"VIP":D) // the mid symbol | represents XOR choice (here: enum)
 		}*
 
 // copy pasted and comments removed (for screenshot):
@@ -64,21 +64,21 @@ endpoint type CustomerManagementContract
 	  delivering  
 	    // response message  payload (representation)
 		payload {"customerId":ID,
-		          "name":V,
+		          "name":D,
 		          "address"} // name and of atomic parameters known,  type not specified yet
 	    structured as MAP_TYPE
 				
   	operation lookupCustomerDiretory
 	  with responsibility RETRIEVAL_OPERATION
 	  expecting 
-		payload "customerId":V<int> // Atomic Parameter,  name, role, type known and specified
+		payload "customerId":D<int> // Atomic Parameter,  name, role, type known and specified
 	  delivering
 		payload
 		    "customerRecord": { 
 				"cid":ID!, // ! means mandatory, exactly one (default)
-				"nameTuple":("firstname":V, "lastname":V), 
-				"addressTuple":("street":V<string>, "poBox":V?, "zipCode":V, "city":V)+,
-				"segment":("REGULAR":V|"VIP":V) 
+				"nameTuple":("firstname":D, "lastname":D), 
+				"addressTuple":("street":D<string>, "poBox":D?, "zipCode":D, "city":D)+,
+				"segment":("REGULAR":D|"VIP":D) 
 		}*
 		
 
@@ -88,22 +88,22 @@ endpoint type CustomerManagementContract2
   	operation lookupSingleCustomer 
 	  with responsibility RETRIEVAL_OPERATION 
 	  expecting
-		payload "uri":ID<string> // "customerId":V<int>
+		payload "uri":ID<string> // "customerId":D<int>
 	  delivering
-		payload {("cid":ID, "name":V, "address":V, "dataOwner":MD, "moreInformation":L)}
+		payload {("cid":ID, "name":D, "address":D, "dataOwner":MD, "moreInformation":L)}
 	    structured as MAP_TYPE
 				
   	operation lookupCustomerDirecory 
 	  with responsibility RETRIEVAL_OPERATION
 	  expecting 
-		payload "customerId":V<int>
+		payload "customerId":D<int>
 	  delivering
 		payload { 
 			<<Entity>>"customerRecord": 
 				("cid":ID!), 
-				"segment":("REGULAR":V|"VIP":V), // XOR (choice/union)
-				{"name":("firstname":V, "lastname":V)}, 
-				"address":("street":V<string>, "poBox":V?, "zipCode":V, "city":V)+
+				"segment":("REGULAR":D|"VIP":D), // XOR (choice/union)
+				{"name":("firstname":D, "lastname":D)}, 
+				"address":("street":D<string>, "poBox":D?, "zipCode":D, "city":D)+
 		}*
 		
 				

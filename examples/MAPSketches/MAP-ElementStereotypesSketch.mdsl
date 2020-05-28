@@ -4,7 +4,7 @@ usage context PUBLIC_API for FRONTEND_INTEGRATION
 data type URI L<string>
 data type CustomerDTO {"customerId":ID?, "name", "birthday", "address"} // partially modeled
 data type SampleParameterTree P // P will be refined/modeled later 
-data type Page {V*|L*} // a page either is a set of values or a set of links
+data type Page {D*|L*} // a page either is a set of values or a set of links
 
 endpoint type CustomerRegistrationWorkflow serves as PROCESSING_RESOURCE 
 exposes 
@@ -13,18 +13,18 @@ exposes
 	  <<Entity>> "customerToBeRegistered":CustomerDTO*
 	  }+
 	delivering payload {
-		<<Link>> "registrationRequestCode":URI,
-		<<Error_Report>>("errorCode":V<int> | "errorMessage":V<string>)?	
+		<<Link_Element>> "registrationRequestCode":URI,
+		<<Error_Report>>("errorCode":D<int> | "errorMessage":D<string>)?	
 	}
 	
   operation completeRegistrationRequest with responsibility BUSINESS_ACTIVITY_PROCESSOR
     expecting payload {
-	  <<Link>>"registrationRequestCode":URI
+	  <<Link_Element>>"registrationRequestCode":URI
 	  }+
 	delivering payload {
 	  <<Entity>>"registeredCustomer":CustomerDTO*,
-	  <<Metadata>> "elapsedTime": MD<int>,
-	  <<Error_Report>>("errorCode":V<int> | "errorMessage":V<string>)?	
+	  <<Metadata_Element>> "elapsedTime": MD<int>,
+	  <<Error_Report>>("errorCode":D<int> | "errorMessage":D<string>)?	
   }
   
   // copied from other example: 
@@ -32,12 +32,12 @@ exposes
   operation provideRegistrationStatistics with responsibility RETRIEVAL_OPERATION
     expecting payload {
 	  {<<Context_Representation>>{
-	  	<<Wish_List>>"desiredAttributes":V<string>+ | <<Wish_Template>>"mockTree":SampleParameterTree},
-	  	<<Metadata>>"someMoreContextInfo":V
+	  	<<Wish_List>>"desiredAttributes":D<string>+ | <<Wish_Template>>"mockTree":SampleParameterTree},
+	  	<<Metadata_Element>>"someMoreContextInfo":D
 	  },
 	  {"payload":SampleParameterTree}
 	}+
 	delivering payload {
 		{<<Pagination>>"payload":Page, "metadata":MD*, "previousPage":Page?, "nextPage":Page?},
-		{<<Error_Report>>("errorCode":V<int>, "errorMessage":V<string>)}+		
+		{<<Error_Report>>("errorCode":D<int>, "errorMessage":D<string>)}+		
 }

@@ -2,8 +2,8 @@ API description MAPContextRepresentationSketch
 
 data type SharedContext (
     "apiKey":ID<int>?, 
-    "sessionId":V<int>?, 
-    "otherQoSPropertiesThatShouldNotGoToProtocolHeader":V<string>*)
+    "sessionId":D<int>?, 
+    "otherQoSPropertiesThatShouldNotGoToProtocolHeader":D<string>*)
 
 endpoint type CustomerInformationHolderService 
   exposes 
@@ -16,17 +16,17 @@ endpoint type CustomerInformationHolderService
             {<<Wish_List>>"desiredAttributes":ID<string>+}
           }, // end of context representation
           {
-            "actualPayload":V // SomeInParameters
+            "actualPayload":D // SomeInParameters
           } // end of actual/inner payload
         } // end of entire/outer payload
       delivering
         payload {
           <<Context_Representation>> {
             {SharedContext},
-            {<<Error_Report>>("errorCode":V<int>, "errorMessage":V<string>)}
+            {<<Error_Report>>("errorCode":D<int>, "errorMessage":D<string>)}
           },
           {<<Pagination>>(
-             "thisPageContent":V, // "SomeOutParameterSet",  
+             "thisPageContent":D, // "SomeOutParameterSet",  
              "previousPage":ID?, 
              "nextPage":ID?)
           }     

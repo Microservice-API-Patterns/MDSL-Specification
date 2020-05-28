@@ -1,6 +1,6 @@
 API description LakesideMutual 
 data type Address {"country":D<string>, 
-    ("street":V<string>|"pobox":D<int>), "zip":D<int>, "city":D<string> }
+    ("street":D<string>|"pobox":D<int>), "zip":D<int>, "city":D<string> }
 data type PhoneNumber ("country":D<string>, "number":D<string>)
 data type CustomerDTO <<Entity>> {"id", "name", "addresses":Address*, 
     "phoneNumbers":PhoneNumber*}
@@ -10,14 +10,14 @@ endpoint type CustomerManagementTake2
 serves as INFORMATION_HOLDER_RESOURCE
 exposes 
   operation findCustomer with responsibility RETRIEVAL_OPERATION
-    expecting payload V<void> // no payload 
-    delivering payload <<Identifier>>"customerIDList":ID<int>*
+    expecting payload D<void> // no payload 
+    delivering payload <<Identifier_Element>>"customerIDList":ID<int>*
     
   operation readCustomer with responsibility RETRIEVAL_OPERATION
     expecting payload <<Entity>>"customerIDList":ID<int>* 
     delivering payload CustomerDTO?
 
-  operation updateCustomer with responsibility NOTIFICATION_OPERATION
+  operation updateCustomer with responsibility STATE_CREATION_OPERATION
     expecting payload CustomerDTO?  
     delivering payload SuccessCode  
 

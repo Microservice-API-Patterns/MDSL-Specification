@@ -11,9 +11,9 @@ data type RefactoredCustomerDTO <<Entity>> {"id", "name",
 data type SuccessCode <<Annotated_Parameter_Collection>>(MD<bool>,L)
 
 // syntactic sugar demo:
-data type I <<Identifier>> D<int> // int is a UUID or so
+data type I <<Identifier_Element>> D<int> // int is a UUID or so
 data type E <<Entity>> D
-data type URI <<Link>> D<string>
+data type URI <<Link_Element>> D<string>
 data type HateoasEnabledRecord {I, E, L, URI*}
 data type RichHyperlinkForRESTMaturityLevel3 { 
 	"target": URI, 
@@ -29,10 +29,10 @@ exposes
     
   operation readCustomer with responsibility RETRIEVAL_OPERATION
     expecting payload "customerID":ID 
-    delivering payload "customerDTO":V?
+    delivering payload "customerDTO":D?
 
   operation updateCustomer with responsibility EVENT_PROCESSOR
-    expecting payload "customerDTO":V?  
+    expecting payload "customerDTO":D?  
     delivering payload SuccessCode  
 
 endpoint type CustomerManagementTake2 serves as INFORMATION_HOLDER_RESOURCE
@@ -49,7 +49,7 @@ exposes
     expecting payload CustomerDTO?  
     delivering payload SuccessCode  
 
-endpoint type CustomerManagementTake3 version 0.3.0 serves as INFORMATION_HOLDER_RESOURCE
+endpoint type CustomerManagementTake3 version "0.3.0" serves as INFORMATION_HOLDER_RESOURCE
 
 exposes 
   operation findCustomer with responsibility RETRIEVAL_OPERATION

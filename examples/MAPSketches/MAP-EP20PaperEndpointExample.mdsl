@@ -1,15 +1,15 @@
 API description SampleScenarioForEuroPLoP2020
 
-data type Customer {"name": V<string>, 
-                    "address": V<string>, 
-                    "bday": V<string>}
+data type Customer {"name": D<string>, 
+                    "address": D<string>, 
+                    "bday": D<string>}
 
 endpoint type CustomerRelationshipManager serves as PROCESSING_RESOURCE
 exposes 
   operation validateCustomerRecord with responsibility COMPUTATION_FUNCTION
     expecting payload "customerRecord": Customer
     delivering payload "isCompleteAndSound": D<bool>
-  operation createCustomer with responsibility NOTIFICATION_OPERATION
+  operation createCustomer with responsibility STATE_CREATION_OPERATION
     expecting payload "customerRecord": Customer
     delivering payload "customerId": D<int>
   operation upgradeCustomer with responsibility STATE_TRANSITION_OPERATION
@@ -19,5 +19,5 @@ exposes
 endpoint type CustomerRepository serves as INFORMATION_HOLDER_RESOURCE
 exposes 
   operation findCustomer with responsibility RETRIEVAL_OPERATION
-    expecting payload "searchFilter": V<string> 
+    expecting payload "searchFilter": D<string> 
     delivering payload "customerList": Customer*

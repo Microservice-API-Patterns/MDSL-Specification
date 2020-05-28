@@ -15,7 +15,7 @@ data type Cell {"formula":D<string>
 
 endpoint type SpreadSheetExchangeEndpoint serves as TRANSFER_RESOURCE
 exposes 
-  operation uploadSpreadheet with responsibility NOTIFICATION_OPERATION
+  operation uploadSpreadheet with responsibility STATE_CREATION_OPERATION
     expecting payload CSVSpreadsheet
     delivering payload {"successFlag":D<bool>, ID}
     

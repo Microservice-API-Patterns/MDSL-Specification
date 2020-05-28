@@ -16,7 +16,7 @@ endpoint type [name]
 	  with responsibility [resp_enum] // MAP tag (optional)
 	  expecting
 	    headers [...] // optional 
-		payload [...] // mandatory, e.g., {V}
+		payload [...] // mandatory, e.g., {D}
 	  delivering  
 	    headers [...] // optional
 		payload [...] // mandatory in request-response exchanges
@@ -62,7 +62,7 @@ endpoint type CustomerManagementContract
 		payload ID<string> 
 	  delivering  
 		payload {"customerId":ID<int>,
-		          "name":V,
+		          "name":D,
 		          "address"} 
 	    structured as MAP_TYPE
 				
@@ -74,11 +74,11 @@ endpoint type CustomerManagementContract
 		payload
 		  "customerRecord": { 
 			"cid":ID!, // ! mandatory, exactly one
-			"nameTuple":("firstname":V, "lastname":V), 
+			"nameTuple":("firstname":D, "lastname":D), 
 			"addressTuple":(
-			  "street":V<string>, 
-			  "poBox":V?, // optional
-			  "zipCode":V, 
-			  "city":V)+,
-			"segment":("REGULAR":V|"VIP":V) // choice 
+			  "street":D<string>, 
+			  "poBox":D?, // optional
+			  "zipCode":D, 
+			  "city":D)+,
+			"segment":("REGULAR":D|"VIP":D) // choice 
 		}* // zero or more 

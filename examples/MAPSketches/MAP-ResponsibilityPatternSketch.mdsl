@@ -18,7 +18,7 @@ API description MAPServiceTypeSketches
 			expecting payload A
 			delivering payload B
 		operation calculate with responsibility COMPUTATION_FUNCTION
-			expecting payload {V, V, P} // any number of unspecified values (flat/basic) and/or entities (structured, self-contained)
+			expecting payload {D, D, P} // any number of unspecified values (flat/basic) and/or entities (structured, self-contained)
 			delivering payload "some result"
 
 	// example 2: stateful processing resource (ground level, no outbound dependencies?)
@@ -26,35 +26,35 @@ API description MAPServiceTypeSketches
 	exposes 
 		operation createProcessInstance with responsibility EVENT_PROCESSOR
 			expecting payload NoParameters // represents empty parameter list
-			delivering payload {("successFlag":V<bool>, "uri":L)}
+			delivering payload {("successFlag":D<bool>, "uri":L)}
 		operation activity1 with responsibility BUSINESS_ACTIVITY_PROCESSOR
-			expecting payload "some activity input":V
-			delivering payload "some activity output":V
+			expecting payload "some activity input":D
+			delivering payload "some activity output":D
 		operation activityN with responsibility BUSINESS_ACTIVITY_PROCESSOR
-			expecting payload "some activity input":V
-			delivering payload "some activity output":V
+			expecting payload "some activity input":D
+			delivering payload "some activity output":D
 		operation cancelProcessInstance with responsibility EVENT_PROCESSOR
 			expecting payload ID
-			delivering payload V<bool>
+			delivering payload D<bool>
 		operation finishProcessInstance with responsibility EVENT_PROCESSOR
-			expecting payload "some activity input":V
-			delivering payload {"successFlag":V<bool>, "uri":L}
+			expecting payload "some activity input":D
+			delivering payload {"successFlag":D<bool>, "uri":L}
 			
 	// example 3: Information Holder Resource 1 "Pure Data Provider" a.k.a. Entity Service, CRUD Service, Ground Information Holder
 	endpoint type PureDataProvider serves as INFORMATION_HOLDER_RESOURCE
 	exposes 
 		operation createInformationItem with responsibility EVENT_PROCESSOR
-			expecting payload "some information item":V
-			delivering payload {("successFlag":V<bool>, "uri":L)}
+			expecting payload "some information item":D
+			delivering payload {("successFlag":D<bool>, "uri":L)}
 		operation readInformationItem with responsibility RETRIEVAL_OPERATION
 			expecting payload ID // any number of unspecified values (flat/basic) and/or entities (structured, self-contained)
 			delivering payload "requested information item"
 		operation updateInformationItem with responsibility EVENT_PROCESSOR
 			expecting payload A // TODO tbc
-			delivering payload {"successFlag":V<bool>, "uri":L}
+			delivering payload {"successFlag":D<bool>, "uri":L}
 		operation deleteInformationItem with responsibility EVENT_PROCESSOR
 			expecting payload ID // needed?
-			delivering payload V<bool> 
+			delivering payload D<bool> 
 		operation searchInformationItemSet with responsibility RETRIEVAL_OPERATION
 			expecting payload {"search scope", "search criteria", "result filter"}
 			delivering payload "result set"			
@@ -65,10 +65,10 @@ API description MAPServiceTypeSketches
 	exposes
 		operation receiveEvent with responsibility EVENT_PROCESSOR 
 			expecting payload "some event":EventFormatB // note: E is entity, not event
-			delivering payload "acknowledgment":V
+			delivering payload "acknowledgment":D
 		operation receiveAndPassOnEvent with responsibility EVENT_PROCESSOR // EMITTER // no 'and' possible here (SRP)
 			expecting payload "some event":EventFormatA // note: E is entity, not event
-			delivering payload "acknowledgment":V
+			delivering payload "acknowledgment":D
 		operation transformMessageFormatAtoB with responsibility COMPUTATION_FUNCTION
 			expecting payload EventFormatA
 			delivering payload EventFormatB

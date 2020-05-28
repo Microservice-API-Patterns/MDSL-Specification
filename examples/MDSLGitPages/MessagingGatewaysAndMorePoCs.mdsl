@@ -1,29 +1,29 @@
 API description SpreadSheetExchangeAPI
 
 data type CSVSpreadsheet CSVSheetTab*
-data type CSVSheetTab {"name": V<string>, 
+data type CSVSheetTab {"name": D<string>, 
                        "content": Rows*}
 data type Rows {"line": ID<int>, 
                 "columns":Column+}
 data type Column {"position": ID<string>, 
-                  "header": V<string>?, 
+                  "header": D<string>?, 
                   <<Entity>> "cell": Cell}
-data type Cell {"text":V<string> 
-               | "intValue": V<int> 
-               | "longValue": V<long> 
-               | "formula": V<string>}
+data type Cell {"text":D<string> 
+               | "intValue": D<int> 
+               | "longValue": D<long> 
+               | "formula": D<string>}
                
 // TODO remodel with choice and subtypes
 data type OASSecuritySchemeObject {
 	// remodeling https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#securitySchemeObject:
 	"type":ID, 
-	"description": V<string>? default is "Some OASSecuritySchemeObject", 	
-	"name": V<string>, 
-	"in": V<string>, 
-	"scheme": V<string>, 
-	"bearerFormat": V<string>, 
+	"description": D<string>? default is "Some OASSecuritySchemeObject", 	
+	"name": D<string>, 
+	"in": D<string>, 
+	"scheme": D<string>, 
+	"bearerFormat": D<string>, 
 	"flows": OAuthFlowsObject,
-	"openIdConnectUrl":V<string>}
+	"openIdConnectUrl":D<string>}
 
 data type OAuthFlowsObject {
 	"implicit": OAuthFlowsObject,
@@ -33,15 +33,15 @@ data type OAuthFlowsObject {
 }
 
 data type OAuthFlowObject {
-	"authorizationUrl": V<string>,
-	"tokenUrl": V<string>,
-	"refreshUrl": V<string>,
-	"scopes": {"name": V<string>, "shortDescription": V<string>}
+	"authorizationUrl": D<string>,
+	"tokenUrl": D<string>,
+	"refreshUrl": D<string>,
+	"scopes": {"name": D<string>, "shortDescription": D<string>}
 }
 
-// data type OASSecurityObject {"type":ID, "credential": V<string>, "whatever":P}
+// data type OASSecurityObject {"type":ID, "credential": D<string>, "whatever":P}
 
-data type GenericDomainEvent { ID, "dateAndTime", "content":V?}
+data type GenericDomainEvent { ID, "dateAndTime", "content":D?}
 data type SpreadsheetChanged { "genercDomainEvent": GenericDomainEvent, "content":CSVSpreadsheet}
 
 endpoint type SpreadSheetExchangeEndpoint serves as TRANSFER_RESOURCE
@@ -49,7 +49,7 @@ endpoint type SpreadSheetExchangeEndpoint serves as TRANSFER_RESOURCE
  exposes 
   operation uploadSpreadsheet with responsibility EVENT_PROCESSOR
     expecting payload CSVSpreadsheet
-    delivering payload {"successFlag":V<bool>, ID}
+    delivering payload {"successFlag":D<bool>, ID}
     
   operation downloadSpreadsheet with responsibility RETRIEVAL_OPERATION
     expecting payload ID 

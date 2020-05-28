@@ -10,7 +10,7 @@ exposes
     expecting payload "customerID":ID 
     delivering payload "customerDTO":D?
 
-  operation updateCustomer with responsibility NOTIFICATION_OPERATION
+  operation updateCustomer with responsibility STATE_CREATION_OPERATION
     expecting payload "customerDTO":D?  
     delivering payload StatusInformation  
 IPA
