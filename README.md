@@ -39,7 +39,6 @@ These two languages can be used independently of each other; for instance, data 
 
 * Presentations featuring Context Mapper, MAP and MDSL can be found [here](https://ozimmer.ch/papers/).
 * The [GitHub Pages for MDSL](https://microservice-api-patterns.github.io/MDSL-Specification) provide a tutorial and language reference information.
-* There is a [Project Wiki](https://github.com/Microservice-API-Patterns/MDSL-Specification/wiki/Getting-Started-with-MDSL), which is not populated much (yet) and not kept up to date as much as the GitHub pages.
 * There is an [Eclipse update site](https://microservice-api-patterns.github.io/MDSL-Specification/updates/) for the MDSL editor. 
 * As a contributor, please consult the [readme file of the dsl-core](./dsl-core/README.md) project for getting started information and prerequisites.
 
@@ -52,7 +51,6 @@ The current version of MDSL is 3.3.2. See [release notes](https://github.com/Mic
 This repository contains:
 
 * [dsl-core](dsl-core), the DSL project, Xtext grammar and everything else needed to build an Eclipse plugin providing a MDSL editor.
-* An antlr4 version of the grammar in [this folder](antlr4).
 * Various [examples](examples).
 * The [sources of the GitHub pages](docs) for MDSL.
 * Some [background information](background) on other IDLs and related projects.
@@ -73,8 +71,6 @@ All [Microservice API Patterns (MAP)](https://microservice-api-patterns.org/) ar
 See ["MAP Decorators" section of the MDSL tutorial](https://microservice-api-patterns.github.io/MDSL-Specification/tutorial) for more information. <!-- TODO copy one-pager in SummerSoC paper to GitHub pages or elsewhere in repo -->
 
 The MDSL grammar (to be found in dsl-core, in src folder of org.mdsl project) was originally developed with Eclipse Photon (4.8.0) and Xtext (2.14) as provided by the Eclipse Modeling Platform. MDSL makes use of the referencing feature in Xtext ('name' attribute). Future work is required to also support  this technology in other IDEs (such as Visual Studio Code).
-
-A derived (but not yet fully equivalent) version of the grammar for antlr4 can be found [in this folder](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/antlr4/). 
 
 Feedback and contributions welcome!
 
