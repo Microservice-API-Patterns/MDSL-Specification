@@ -45,7 +45,7 @@ These two languages can be used independently of each other; for instance, data 
 
 ## Change Log
 
-The current version of MDSL is 3.1.0. See [change log](changelog.md) for an evolution history; see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases) for additional update information.
+The current version of MDSL is 3.3.2. See [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases) for additional update information.
 
 ## Repository Structure 
 
