@@ -153,9 +153,7 @@ Ready to start/learn more? Click [here](./tutorial).
 
 ### Direct links into repository
 
-At this point, the plugin and the documentation pages are available openly; the repository that contains the grammar is still private (please contact [socadk](https://ozimmer.ch/about/) to request access). <!-- TODO 2020 update all links when repo is moved and made public -->
-
-* [Full grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dslws/org.map.mdsl.parent/org.map.mdsl/src/org/map/mdsl/MDSL.xtext)
+* [Full grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext)
 * [Examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples)
 
 
