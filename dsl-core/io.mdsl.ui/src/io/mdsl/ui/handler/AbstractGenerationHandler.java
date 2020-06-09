@@ -72,6 +72,7 @@ public abstract class AbstractGenerationHandler extends AbstractHandler implemen
 				fsa.setOutputPath(getGenFolder(file).toString());
 				fsa.setMonitor(new NullProgressMonitor());
 				runGeneration(resource, event, fsa);
+				postGeneration(event);
 			} catch (MDSLException e) {
 				MessageDialog.openInformation(HandlerUtil.getActiveShell(event), "Model Input", e.getMessage());
 			} catch (Exception e) {
@@ -95,6 +96,10 @@ public abstract class AbstractGenerationHandler extends AbstractHandler implemen
 			StatusManager.getManager().handle(status);
 			ErrorDialog.openError(HandlerUtil.getActiveShell(event), "Error", "Exception occured during execution of command!", createMultiStatus(e.getLocalizedMessage(), e));
 		}
+	}
+	
+	protected void postGeneration(ExecutionEvent event) {
+		// do something after the successful generation
 	}
 
 	protected IFile getSelectedFile(ExecutionEvent event) {

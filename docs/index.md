@@ -6,7 +6,7 @@ copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 
 
 ## TL;DR
-Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as Swagger, WSDL, and <!-- gRPC --> Protocol Buffers. [Grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext), [editor (Eclipse plugin)](./updates/), [tutorial](./tutorial), [examples](./examples) and a [quick reference](./quickreference)<!-- providing skeletons--> are available already; <!-- validation and generation tools are under construction --> more to come.
+Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as Swagger, WSDL, and <!-- gRPC --> Protocol Buffers. Grammar, [editor (Eclipse plugin)](./updates/), [tutorial](./tutorial), [examples](./examples) and a [quick reference](./quickreference)<!-- providing skeletons--> are available already; <!-- validation and generation tools are under construction --> more to come.
 
 ## Getting Started with MDSL
 
@@ -109,16 +109,31 @@ MDSL supports all [Microservice API Patterns](https://microservice-api-patterns.
 The four types of decorators/annotations and stereotypes are optional; if present, they make the API description more expressive and can be processed by tools such as API linters/contract validators, code/configuration generators, MDSL to Open API or WSDL converters (work in progress).
 
 ### Tools
-At present, the DSL editor generated from the grammar comes as an Eclipse plugin. In addition to the usual editor features such as syntax highlighting, completion and validations, it implements a few simple validators (as a basic *API linter* demonstrator):
+At present, the DSL editor generated from the grammar comes as an Eclipse plugin. In addition to the usual editor features such as syntax highlighting, completion and syntax checking, it implements a few simple semantic validators (as a basic *API linter* demonstrator):
 
 * The modeler is warned about incomplete and unsuited data types such as `P` and `ID<bool>`.
 * The constraints of the message exchange pattern REQUEST_REPLY are validated (if specified).
-* One MAP pattern decorator combinations is checked (COMPUTATION_FUNCTION in INFORMATION_HOLDER_RESOURCE).
-* The number of operations per endpoint is reported. 
+* One MAP pattern decorator combination is checked (COMPUTATION_FUNCTION in INFORMATION_HOLDER_RESOURCE).
+* The number of operations per endpoint is reported; it is likely that the endpoint cannot be mapped to OpenAPI due to a large amount of operations, the user is warned.
 
 These validations are run every time a file is saved; their output appears in the Problems view.
 
-<!-- TODO 2020 feature more here as they emerge -->
+*Update in plugin version 3.3.1:* There now is an early version of an OpenAPI specification generator. It maps endpoint types to HTTP resource paths, and operations to HTTP methods/verbs like this:
+
+* If a MAP decorator is used, it is mapped as this:
+    * `STATE_CREATION_OPERATION` is transformed to `PUT` (yes, `POST` also would make sense)
+    * `RETRIEVAL_OPERATION` is transformed to `GET` 
+    * `STATE_TRANSITION_OPERATION` is transformed to `PATCH`
+    * `COMPUTATION_FUNCTION` is transformed to `POST`
+* If an HTTP verb is used instead of a MAP decorator (`"GET"`, `"POST"` etc.), it is passed through 
+* If the operation name suggests CRUDish semantics or starts with HTTP verb names, it is mapped as this: 
+    * createX is transformed into `POST` 
+    * readX and updateX are transformed into `GET`
+    * updateX and patchX are transformed into `PATCH`
+    * putX is transformed into `PUT` 
+    * deleteX is transformed into `DELETE`
+
+If an HTTP verb appears more than once in a resource endpoint, nothing will be generated but an error message displayed.
 
 ### Tutorial 
 Ready to start/learn more? Click [here](./tutorial).
@@ -134,11 +149,13 @@ Ready to start/learn more? Click [here](./tutorial).
 * Optional/experimental [language elements on the instance level (provider, client, gateway)](./optionalparts)
 
 ### Installation in Eclipse
- * Update site: [https://microservice-api-patterns.github.io/MDSL-Specification/MDSL/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
+ * Update site: [https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
 
 ### Direct links into repository
 
-* [Full grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext)
+At this point, the plugin and the documentation pages are available openly; the repository that contains the grammar is still private (please contact [socadk](https://ozimmer.ch/about/) to request access). <!-- TODO 2020 update all links when repo is moved and made public -->
+
+* [Full grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dslws/org.map.mdsl.parent/org.map.mdsl/src/org/map/mdsl/MDSL.xtext)
 * [Examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples)
 
 

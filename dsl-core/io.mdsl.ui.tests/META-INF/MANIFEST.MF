@@ -3,7 +3,7 @@ Automatic-Module-Name: io.mdsl.ui.tests
 Bundle-ManifestVersion: 2
 Bundle-Name: io.mdsl.ui.tests
 Bundle-Vendor: MDSL Project
-Bundle-Version: 1.2.1.qualifier
+Bundle-Version: 3.3.2.qualifier
 Bundle-SymbolicName: io.mdsl.ui.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: io.mdsl.ui,

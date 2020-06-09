@@ -1,0 +1,17 @@
+API description TestAPI
+
+data type Test P
+
+endpoint type TestEndpoint
+  serves as INFORMATION_HOLDER_RESOURCE
+  exposes
+    operation postTest
+      with responsibility "Creates new Test object"
+      expecting
+        payload Test
+    operation getTest
+      with responsibility "Gets a Test object"
+      delivering
+        payload Test
+
+IPA

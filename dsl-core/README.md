@@ -16,7 +16,7 @@ mvn clean verify
 ```
 
 ## IDE Setup
-If you want to work on our Xtext project you can import the project into Eclipse (you have to use Eclipse for Xtext) as a Maven project.
+If you want to work on our Xtext project you can import the project into Eclipse (you have to use Eclipse for Xtext) as a Maven project. Ensure that your local (cloned) state builds with `mvn clean verify` before you import the project to Eclipse.
 
 _Hint:_ Ensure you have the Xtext framework installed in your Eclipse. We recommend to use the [Eclipse IDE for Java and DSL Developers](https://www.eclipse.org/downloads/packages/release/2020-03/r/eclipse-ide-java-and-dsl-developers).
 
@@ -37,11 +37,26 @@ Import the project into your Eclipse IDE as follows:
  4. Press _Select All_ to import all projects.
  5. Press _Finish_ to import the project.
  
+### Cleaning Build Errors in Eclipse
+Once you imported the project into Eclipse it is likely that you will have build errors. To build the project in Eclipse without errors, follow these steps:
+
+ 1. Load and set the target platform:
+    1. Open the file `io.mdsl.target/io.mdsl.target.target`
+    2. Wait until Eclipse resolved all the dependencies
+    3. Click _Set as Active Target Platform_ (or _Reload Target Platform_ in case you already set it once)
+ 2. Run the MWE2 workflow:
+    1. Find the following file in the project explorer: `io.mdsl/src/io/mdsl/GenerateAPIDescription.mwe2`
+    2. Right-click on the file and press _Run As_ -> _MWE2 Workflow_
+ 3. Build all project:
+    1. In the main menu click: _Project_ -> _Clean..._
+    2. Select _Clean all projects_
+    3. Press _Clean_
+ 
  ## Build Eclipse Update Site Locally
  The Maven build of the project creates an Update Site as ZIP file. You can use the ZIP file to install the MDSL plugin in any Eclipse IDE.
  
  1. Run `mvn clean verify` in the `dsl-core` directory of this repository.
- 2. Find the ZIP file here: `dsl-core/io.mdsl.repository/target/io.mdsl.repository-x.x.x-SNAPSHOT.zip`
+ 2. Find the ZIP file here: `dsl-core/io.mdsl.repository/target/io.mdsl.repository-x.y.z-SNAPSHOT.zip`
  3. Use the ZIP file to install the MDSL plugin in Eclipse:
     1. _Help -> Install New Software..._
     2. Press _Add..._ and then _Archive..._ 
@@ -49,6 +64,14 @@ Import the project into your Eclipse IDE as follows:
     4. Press _Add_.
     5. Press _Select All_ and then _Next >_.
     6. Finish the installation wizard and restart Eclipse.
+
+## Bumping Snapshot Version
+To update all the POM and MANIFEST files to a new snapshot version use the following two commands:
+
+ 1. `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=x.y.z-SNAPSHOT` (replace _x.y.z_ with the preferred version)
+ 2. `mvn org.eclipse.tycho:tycho-versions-plugin:1.2.0:update-eclipse-metadata` (do *not* replace 1.2.0, the version of the Tycho plugin)
+ 
+Having the two commands executed, you can commit the changed pom.xml's, MANIFEST.MF's and feature.xml files. You may want to build again from scratch too (see above). 
 
 ## Context Mapper 
 Context Mapper can generate MDSL from bounded contexts and their aggregates. So you might want to install it too.

@@ -1,0 +1,24 @@
+openapi: 3.0.1
+info:
+  title: TestAPI
+  version: "1.0"
+tags:
+- name: TestEndpoint
+  externalDocs:
+    url: https://microservice-api-patterns.org/patterns/responsibility/
+paths:
+  /TestEndpoint:
+    description: ""
+components:
+  schemas:
+    TestType:
+      type: array
+      items:
+        type: object
+        properties:
+          testAttribute1:
+            type: string
+          testAttribute2:
+            type: array
+            items:
+              type: string

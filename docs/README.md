@@ -21,7 +21,10 @@ To be able to preview the page as described above, you must have installed the f
 ## Eclipse Update Site
 The folder _updates_ of this Github page contains an Eclipse update site with the latest version of the MDSL plugin. The update site can be updated as follows:
 
- 1. Build the Update Site ZIP file as described in the README of the Xtext project: [Xtext project README](./../dslws/org.map.mdsl.parent#build-eclipse-update-site-locally)
- 2. Unzip the generated file
+ 1. Build the Update Site ZIP file as described in the README of the Xtext project: [Xtext project README](./../dsl-core#build-eclipse-update-site-locally) (`mvn clean verify`)
+ 2. Unzip the generated file (`dsl-core/io.mdsl.repository/target/io.mdsl.repository-x.x.x-SNAPSHOT.zip`)
  3. Copy the contents to the `docs/updates` folder of this repository (overwrite)
  4. Commit and push the changes
+    1. `git add docs/updates/* -f`
+    2. `git commit -m "Update MDSL update site for release vx.x.x"`
+    3. `git push origin master`

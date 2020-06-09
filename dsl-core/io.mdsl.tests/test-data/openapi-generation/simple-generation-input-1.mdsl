@@ -1,0 +1,5 @@
+API description TestAPI
+
+endpoint type TestEndpoint // MDSL compiles only with at least one endpoint
+
+IPA

@@ -21,7 +21,7 @@ grammar io.mdsl.APIDescription with org.eclipse.xtext.common.Terminals
 title: Microservices Domain Specific Language (MDSL) Grammar
 author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2018-2020. All rights reserved.
-version: "3.1.0 (last update: May 26, 2020)"
+version: "3.3.2 (last update: June 8, 2020)"
 ---
 */ 
 
@@ -61,12 +61,11 @@ dataContract:
 	'data' 'type' name=ID 
 	('version' svi=semanticVersioningIdentifier)? 
 	structure=elementStructure
-	default=defaultValue? // moved here on May 22, 2020; experimental
+	default=defaultValue? // moved here for v3; still experimental
 ;
 
 
 // *** Part B: service endpoint contracts (with operations)
-
 endpointContract:
 	('endpoint' | 'channel' ) 'type' name=ID
 	('version' svi=semanticVersioningIdentifier)? 
@@ -75,16 +74,15 @@ endpointContract:
 	('exposes' ops+=operation+)? // optional because early incomplete specifications do not have to expose any operations 
 ;
 
-semanticVersioningIdentifier: STRING; // correct format can be checked by API linters 
-// semanticVersioningIdentifier: major=INT ('.' minor=INT ('.' patch=INT)?)?;
+semanticVersioningIdentifier: STRING; // correct format to be checked by API linters 
 
  // v3.1.0: removed experimental ones 'GATEWAY_RESOURCE' | 'COMPOSITION_RESOURCE' | 'GUARD_RESOURCE' | 'GROUND_RESOURCE'
 ResourceRole: 'PROCESSING_RESOURCE' | 'INFORMATION_HOLDER_RESOURCE' | 'OPERATIONAL_DATA_HOLDER' | 'MASTER_DATA_HOLDER' | 'REFERENCE_DATA_HOLDER' | 'TRANSFER_RESOURCE' | 'LOOKUP_RESOURCE' | 'DATA_TRANSFER_RESOURCE' | 'LINK_LOOKUP_RESOURCE'  | STRING;
 
 operation:
-	('operation' | 'event' ) name=ID // 'event' is VSS 19 suggestion (experimental)
+	('operation' | 'event' ) name=ID // 'event' is experimental still
 	('version' svi=semanticVersioningIdentifier)?
-	('with' 'responsibility' responsibilities=operationResponsibility)? 
+	('with' 'responsibility' responsibility=operationResponsibility)? 
 	('in'  mep=messageExchangePattern 'conversation')? 
 	('expecting' requestMessage=dataTransferRepresentation)? // request message is optional
 	('delivering' responseMessage=dataTransferRepresentation 
@@ -101,7 +99,7 @@ statusReport:
 	(('error' | 'analytics') reportMessage+=elementStructure)+ 
 ;
 
-operationResponsibility: 'COMPUTATION_FUNCTION' | 'STATE_CREATION_OPERATION' | 'RETRIEVAL_OPERATION' | 'STATE_TRANSITION_OPERATION' | 'EVENT_PROCESSOR' | 'BUSINESS_ACTIVITY_PROCESSOR' | STRING; // removed in v3.1.0: 'NOTIFICATION_OPERATION'
+operationResponsibility: cf='COMPUTATION_FUNCTION' | sco='STATE_CREATION_OPERATION' | ro='RETRIEVAL_OPERATION' | sto='STATE_TRANSITION_OPERATION' | ep='EVENT_PROCESSOR' | bap='BUSINESS_ACTIVITY_PROCESSOR' | other=STRING; // removed in v3.1.0: 'NOTIFICATION_OPERATION'
 
 messageExchangePattern: 'ONE_WAY' | 'REQUEST_REPLY' | 'NOTIFICATION' | STRING;	
 	
@@ -143,7 +141,8 @@ singleParameterNode:
 
 genericParameter: 
 	 name=STRING // this makes it possible to only have a name/id, but no role (yet)
-	| p='P' // unspecified 'Parameter' or 'PayloadPart' (could be Value/Entity, Metadata, Identifier, Link or something composed/external)
+	// unspecified 'Parameter' or 'PayloadPart' or 'Placeholder'
+	| p='P'  
 	| name=STRING ":" 'P'
 ;
 
@@ -171,11 +170,16 @@ roleAndType:
 ;
 
 defaultValue:
-	'default' 'is' STRING // TODO tbd: do we need something more concrete here? (experimental)
+	'default' 'is' default=STRING // TODO tbd: do we need something more concrete here? (experimental)
 ;
 
 patternStereotype:
-    '<<' (pattern=MapPattern | name=ID) '>>' 
+    '<<' (pattern=MapPattern | eip=EipPattern | name=ID) '>>' 
+;
+
+EipPattern:
+	// updated in version 3.1.1 (June 2020):
+	'Command_Message' | 'Document_Message' | 'Event_Message'
 ;
 
 MapPattern:
@@ -184,8 +188,6 @@ MapPattern:
 	| 'Embedded_Entity' | 'Linked_Information_Holder' | 'Annotated_Parameter_Collection' | 'Pagination' 
 	| 'Data_Element' | 'Identifier_Element' | 'Link_Element' | 'Metadata_Element'  | 'Control_Metadata' | 'Aggregated_Metadata' | 'Provenance_Metadata' 
 	| STRING   
-	
-	
 ;
 
 ParameterRole:
@@ -197,17 +199,14 @@ ParameterRole:
 	| 'Metadata'
 	| 'Identifier'
 	| 'Link' 
-	// | 'V' // DEPRECATED, removed 5/2020 (in version 3.0.0)
 ;
 
 BasicDataType:
  	'bool' | 'int' | 'long' | 'double' | 'string' | 'raw' | 'void' // 'record' and 'map' and 'array' do not make sense here
 	;
 
-// actions added to get rid of warning 
 Cardinality:
-	{Cardinality} (('?' | '*')) // from (E)BNF, optionality expressed by '?', more powerful and shorter than 'required' flag
-	| {Cardinality} '+' | {Cardinality} '!' // "!" means required, exactly one (default if not specified)
+	zeroOrOne='?' | zeroOrMore='*' | atLeastOne='+' | exactlyOne='!'
 ;
 
 TypeSystem: 
@@ -217,6 +216,7 @@ TypeSystem:
 
 // *** C.1: provider/endpoint part 
 
+// does not seem to be used (?)
 providerReferenceList:
 	first=[provider] (',' next+=[provider])* 
 ;
@@ -225,7 +225,7 @@ providerReferenceList:
 provider:
 	(ap= 'API' 'provider' | ms= 'Message' 'sender')
 	name=ID
-	('contained' 'in' parent=[provider])? // subresource (OAS has this) 
+	('contained' 'in' parent=[provider])? // subresource (OAS has this), still experimental
 	epl+=endpointList+
 	('under' 'conditions' tsandcs=STRING | 'with' 'provider' sla=SLA)? // neither Ts&Cs nor SLA must be present
 	('provider' 'governance'  evolStrat=EvolutionStrategy)? 
@@ -238,31 +238,76 @@ endpointList:
 
 endpointInstance: 
 	('at' 'endpoint' 'location' | 'via' 'channel' ) name=STRING
-	pb=protocolBinding?
+	pb+=ProtocolBinding*
 	('with' 'endpoint' sla=SLA)? // SLA is optional
 	('endpoint' 'governance'  evolStrat=EvolutionStrategy)?
 ;
 
-protocolBinding:
-	'via' 'protocol' bindings+=transportProtocol ('mapping' ms+=parameterBinding)*
+// ** technology binding (simple/advanced)
+
+ProtocolBinding:
+	'via' 'protocol' protocol=TransportProtocol ('binding' tB=TransportBinding)? ('mapping' ms+=V2ParameterBinding)* // TODO delete mapping part here
 ;
 
-transportProtocol:
-	// TODO add parameter mapping info to RESTful_HTTP binding; default body, but path and query also supported (APs only)
-	'RESTful_HTTP'| 'SOAP_HTTP' | 'gRPC' |  'Avro_RPC' | 'Thrift' | 'AMQP' | 'JMS_ActiveMQ' |  'STOMP' | 'Kafka' | 'MQTT' | STRING 
+TransportProtocol:
+	http='HTTP' | rest='RESTful_HTTP'| soap='SOAP_HTTP' | gRPC='gRPC' |  avro='Avro_RPC' | thrift='Thrift' | amqp='AMQP' | jms='JMS_ActiveMQ' | stomp='STOMP' | kafka='Kafka' | mqtt='MQTT' | local='Local_Java_Call' | other=STRING 
 ;
 
-// action added to get rid of warning (Eclipse quick fix)
-parameterBinding:
+// binding concept is inspired by HTTP and Java in V3; TODO split and support gRPC,, MOM, etc.
+TransportBinding:
+	opsB+=OperationBinding+
+;
+
+OperationBinding:
+	'operation' boundOp=ID 'to' (method=HTTPVerb | other=STRING) ('at' subresource=STRING)?
+	pB+=ParameterBinding*
+	rB+=ReportBinding*	
+	sB+=SecurityBinding*
+;
+
+// TODO use name references instead of IDs, add semantic checks to validators
+ParameterBinding:
+	'element' ID 'realized' 'as' (pm=ParameterMapping | other=STRING) 'parameter' ('with' details=elementStructure)? // type vs. instance elementStructureInstance rule?
+;
+
+ParameterMapping:
+	http=HTTPParameter | java=JavaParameter
+;
+
+enum HTTPVerb: GET | PUT | POST | PATCH | DELETE | HEAD | OPTIONS
+;
+
+enum HTTPParameter: PATH | QUERY | FORM | COOKIE | BODY // BODY is default
+;
+
+enum JavaParameter: byte | short | int | long | float | double | boolean | char | String; // String needed? 
+
+SecurityBinding:
+	'policy' name=ID 'realized' 'as' (http=OASSecurity | other=STRING) ('with' details=elementStructure)?
+;
+
+enum OASSecurity: BASIC_AUTHENTICATION | API_KEY | OAUTH_FLOW | OTHER_MEANS | TBC // BASIC is default (?)
+    // TODO allow to specify OAuth Flow Object for OAS (etc.)
+;
+
+ReportBinding:
+	'report' name=ID 'realized' 'as' httpStatusCode=INT ('with' details=elementStructure)?
+;
+
+
+// experimental/deprecated (?):
+V2ParameterBinding:
 	('path' 'parameters' pp=identifierList)
 	| ('query' 'parameters' qp=identifierList)
 	| ('form' 'parameters' fp=identifierList)
-	| {parameterBinding} 'default' 'body'
+	| default='default' 'body'
 ;
 
 identifierList:
 	'(' name1=ID (',' moreNames+=ID )* ')'
 ;
+
+// **** SLA
 
 SLA:
 	'SLA' (builtin=internalSLA | external=[SLATemplate])
@@ -275,7 +320,7 @@ SLATemplate:
 ;
 
 internalSLA:
-	('type' type=SLAType)? // note: not checked/used at present (leads to a semantic check) 
+	('type' type=SLAType)? // note: not checked/used at present (semantic check?) 
 	slos+=SLO+
 	('penalty' penalties=STRING)?
 	('notification' reporting=STRING)?
@@ -317,6 +362,7 @@ landingZone:
 	('optimal' o=simpleMeasurement)?
 ;
 
+// **** evolution
 
 enum EvolutionStrategy: 
 	ETERNAL_LIFETIME | LIMITED_GUARANTEED_LIFETIME | TWO_IN_PRODUCTION | AGGRESSIVE_OBSOLESCENCE | EXPERIMENTAL_PREVIEW // MAPs
@@ -336,7 +382,7 @@ consumption:
 	('consumes'|'subscribes') contract=[endpointContract]
 	// if present, the provider reference creates a static binding between client and server:
 	('from' providerReference=[provider] | 'through' gatewayReference=[gateway])? // could also go down to endpoint level
-	('via' 'protocol'  binding+=transportProtocol)? // must match provider-side information
+	('via' 'protocol'  binding+=TransportProtocol)? // must match provider-side information (linter!)
 ;
 
 // *** C.3: Gateway (experimental)

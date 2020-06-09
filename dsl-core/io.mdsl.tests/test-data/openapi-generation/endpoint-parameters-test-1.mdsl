@@ -1,0 +1,14 @@
+API description TestAPI
+
+data type Test P
+
+endpoint type TestEndpoint
+  serves as INFORMATION_HOLDER_RESOURCE
+  exposes
+    operation getTest
+      expecting
+        payload ("attr1":D<string>, "attr2":D<string>)
+      delivering
+        payload Test
+
+IPA

@@ -66,12 +66,12 @@ dataTransferRepresentation:
 ~~~
 
 
-The notation used above is the [grammar language of Xtext](https://www.eclipse.org/Xtext/documentation/301_grammarlanguage.html) (which close to that of antlr4). The full MSDL grammar can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext).
+The notation used above is the [grammar language of Xtext](https://www.eclipse.org/Xtext/documentation/301_grammarlanguage.html) (which close to that of antlr4). The full MSDL grammar can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/org.mdsl/src/org/mdsl/APIDescription.xtext) (*note:* still a private repo). <!-- TODO 2020 update when released -->
 
 
 ## Example
 
-The following exemplary API specification compiles against the [MDSL grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) sketched above: 
+The following exemplary API specification compiles against the [MDSL grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/org.mdsl/src/org/mdsl/APIDescription.xtext) sketched above: 
 
 <!-- TODO feature new role keyword (if we keep it)? -->
 
@@ -142,14 +142,16 @@ exposes
     expecting payload D<string>  
     delivering payload SampleDTO
       // message level status report:
-      reporting error "code": D<int> 
+      reporting error "400": D<int> // bad request (HTTP error code) 
     // operation level:
-	protected by policy {"userId":D<string>, "password":D<raw>} 
+	protected by policy "HTTPBasicAuthentication":MD
 ~~~
 
-In this example, the error report is a simple numeric `code`; more elaborate [error reports](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ErrorReport) can be modeled as well; any MDSL [data type](./datacontract) can be used.
+<!-- protected by policy {"userId":D<string>, "password":D<raw>} -->
 
-The security `policy` also is modelled as an MDSL data contract; it can be used to define the various security assertions and protocol headers that exist. This MDSL feature is still under design construction; future versions of the MDSL documentation pages will provide more exmaples.
+In this example, the error report is a simple numeric code (`400`); elaborate [error reports](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ErrorReport) can be modeled as well, as any MDSL [data type](/datacontract) can be used. *Important note*: This MDSL feature is still under design and construction and therefore incomplete (tech. preview); future versions of the MDSL documentation pages will provide more examples.
+
+The security `policy` also is modelled as an MDSL data contract; it can be used to define the various security assertions and protocol headers that exist (for instance, basic authentication in HTTP, as explained in the [OpenAPI specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securitySchemeObject)). *Important note*: This MDSL feature is still under design and construction and therefore incomplete (tech. preview); future versions of the MDSL documentation pages will provide more examples.
 
 <!-- TODO 2020 analysis report not featured yet -->
 

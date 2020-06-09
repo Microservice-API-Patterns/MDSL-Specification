@@ -74,7 +74,7 @@ Skeleton data contracts for `headers` and `payload` elements and `data type` def
 
 The `ap` from the above contract skeleton resolves to `<<pattern>>"name": Role<Type>`. A first example featuring all parts hence is `<<API_Key>>"accessToken1":D<string>`. 
 
-Pattern stereotype and type information are optional; either the role or the name of the representation element have to be specified. Therefore, more compact examples are `ID`, `D<bool>`, `L<string>`, and `"resultCounter":MD<int>`.
+Pattern stereotype and type information are optional; either the role or the name of the representation element have to be specified. Theefore, more compact examples are `ID`, `D<bool>`, `L<string>`, and `"resultCounter":MD<int>`.
 
 Furthermore, an abstract, unspecified element can be represented as `P` (for parameter or payload part). It must not contain a stereotype or  role and type information (but can have an identifier). 
 
@@ -84,10 +84,10 @@ The `<<pattern>>` stereotype can take one of the following values from the [Micr
 > API_Key | Context_Representation | Request_Bundle | Request_Condition 
 > Wish_List | Wish_Template | Pagination | Error_Report 
 > Embedded_Entity | Linked_Information_Holder | Annotated_Parameter_Collection |
-> Data_Element | Metadata_Element | Identifier_Element | Link_Element
+> Data_Element | Metadata_Element | Identifier_Element | Link_ELement
 > Control_Metadata | Aggregated_Metadata | Provenance_Metadata 
 
-`Data_Element` is the default; `L` is a shorthand for `<<Link_Element>> D`, `ID` is short for `<<Identifier_ELement>> D`, and `MD` is short for `<<Metadata_ELement>> D`. 
+`Data_Element` is the default; `L` is a shorthand for `<<Link_ELement>> D`, `ID` is short for `<<Identifier_ELement>> D`, and `MD` is short for `<<Metadata_ELement>> D`. 
 
 A pattern stereotype can also be assigned to other tree nodes (apls and ptrees). This is optional.
 

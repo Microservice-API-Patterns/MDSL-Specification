@@ -45,16 +45,17 @@ public class GeneratorsActionGroup extends ActionGroup {
 			IHandler handler = new MDSLQuickMenuCreator() {
 				@Override
 				protected void fillMenu(IMenuManager menu) {
-					fillRefactorMenu(menu);
+					fillGeneratorMenu(menu);
 				}
 			}.createHandler();
 			handlerService.activateHandler(QUICK_MENU_ID, handler);
 		}
 	}
 
-	private int fillRefactorMenu(IMenuManager generatorSubmenu) {
+	private int fillGeneratorMenu(IMenuManager generatorSubmenu) {
 		int added = 0;
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.TextFileGenerationCommand"));
+		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.OpenAPIGenerationCommand"));
 		// generatorSubmenu.add(new Separator());
 		// added += addAction(generatorSubmenu, createAction("some other generator"));
 		return added;
@@ -88,7 +89,7 @@ public class GeneratorsActionGroup extends ActionGroup {
 	private void addGeneratorSubmenu(IMenuManager menu) {
 		MenuManager contextMenu = new MenuManager("MDSL", "io.mdsl.ui.generator.menu");
 		contextMenu.setActionDefinitionId(QUICK_MENU_ID);
-		if (fillRefactorMenu(contextMenu) > 0)
+		if (fillGeneratorMenu(contextMenu) > 0)
 			menu.insertAfter("additions", contextMenu);
 	}
 

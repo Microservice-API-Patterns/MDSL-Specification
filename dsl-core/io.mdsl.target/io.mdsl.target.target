@@ -35,8 +35,12 @@
 			<repository location="https://download.eclipse.org/tools/orbit/downloads/2020-03"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-			<repository location="https://dl.bintray.com/contextmapper/context-mapper-osgi-bundles/"/>
+			<repository location="https://dl.bintray.com/contextmapper/context-mapper-osgi-bundles/updatesites/1.1.0/"/>
 			<unit id="contextmapper.freemarker.feature.group" version="2.3.30"/>
+			<unit id="contextmapper.swagger.core.feature.group" version="2.1.2"/>
+			<unit id="contextmapper.swagger.core.source.feature.group" version="2.1.2"/>
+			<unit id="contextmapper.swagger.parser.feature.group" version="2.0.20"/>
+			<unit id="contextmapper.swagger.parser.source.feature.group" version="2.0.20"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<unit id="org.apache.commons.io" version="2.2.0.v201405211200"/>

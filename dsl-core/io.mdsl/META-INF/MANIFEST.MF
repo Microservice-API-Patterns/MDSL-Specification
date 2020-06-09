@@ -3,7 +3,7 @@ Automatic-Module-Name: io.mdsl
 Bundle-ManifestVersion: 2
 Bundle-Name: io.mdsl
 Bundle-Vendor: MDSL Project
-Bundle-Version: 1.2.1.qualifier
+Bundle-Version: 3.3.2.qualifier
 Bundle-SymbolicName: io.mdsl; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
@@ -14,7 +14,20 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.util,
  org.eclipse.emf.common,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
- org.freemarker.freemarker;bundle-version="2.3.30"
+ org.freemarker.freemarker;bundle-version="2.3.30",
+ io.swagger.core.v3.swagger-core;bundle-version="2.1.2",
+ io.swagger.core.v3.swagger-models;bundle-version="2.1.2",
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.10.1",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.10.1",
+ com.fasterxml.jackson.dataformat.jackson-dataformat-yaml;bundle-version="2.10.1",
+ com.fasterxml.jackson.datatype.jackson-datatype-jsr310;bundle-version="2.10.1",
+ com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.10.1",
+ org.yaml.snakeyaml;bundle-version="1.24.0",
+ io.swagger.parser.v3.swagger-parser-v3;bundle-version="2.0.20",
+ io.swagger.parser.v3.swagger-parser-core;bundle-version="2.0.20",
+ org.apache.commons.lang;bundle-version="2.6.0",
+ org.apache.commons.lang3;bundle-version="3.7.0",
+ org.slf4j.api
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: io.mdsl,
  io.mdsl.apiDescription,

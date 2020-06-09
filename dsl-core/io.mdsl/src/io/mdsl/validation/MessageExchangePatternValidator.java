@@ -31,7 +31,6 @@ public class MessageExchangePatternValidator extends AbstractDeclarativeValidato
 			}
 		}
 		// TODO also check ONE_WAY, NOTIFICATION (?), other STRING (warning)
-		// TODO align with grammar, optionality seems to be in wrong place  
-		// (is it possible to model operation w/o any message? yes for early stage (warning!)
+		// it is possible to model operation w/o any message, for early stage (warning?)
 	}
 }

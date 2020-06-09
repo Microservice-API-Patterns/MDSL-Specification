@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 // import org.apache.commons.io.FileUtils;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -13,6 +14,7 @@ import org.eclipse.xtext.generator.JavaIoFileSystemAccess;
 import org.eclipse.xtext.parser.IEncodingProvider;
 import org.eclipse.xtext.service.AbstractGenericModule;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.google.common.collect.Iterators;
 import com.google.inject.Guice;
@@ -22,9 +24,14 @@ import io.mdsl.apiDescription.serviceSpecification;
 
 public abstract class AbstractMDSLInputIntegrationTest {
 
+	@BeforeEach
+	public void prepare() throws IOException {
+		FileUtils.deleteDirectory(getGenerationDirectory());
+	}
+
 	protected serviceSpecification getTestSpecification(Resource resource) throws IOException {
-		List<serviceSpecification> serviceSpecifications = IteratorExtensions
-				.<serviceSpecification>toList(Iterators.<serviceSpecification>filter(resource.getAllContents(), serviceSpecification.class));
+		List<serviceSpecification> serviceSpecifications = IteratorExtensions.<serviceSpecification>toList(
+				Iterators.<serviceSpecification>filter(resource.getAllContents(), serviceSpecification.class));
 
 		if (serviceSpecifications.isEmpty())
 			throw new RuntimeException("Cannot find MDSL spec in input resource.");
@@ -45,7 +52,7 @@ public abstract class AbstractMDSLInputIntegrationTest {
 	}
 
 	protected File getGenerationDirectory() {
-		return new File(Paths.get("").toAbsolutePath().toString(), "src-gen");
+		return new File(Paths.get("").toAbsolutePath().toString(), "src-test-gen");
 	}
 
 	/**

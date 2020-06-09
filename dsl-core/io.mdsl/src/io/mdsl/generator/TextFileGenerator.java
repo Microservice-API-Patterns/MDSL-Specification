@@ -15,6 +15,9 @@ import io.mdsl.generator.freemarker.FreemarkerEngineWrapper;
 
 /**
  * Generator to generate arbitrary text files (using a Freemarker template).
+ * 
+ * @author ska
+ * 
  */
 public class TextFileGenerator extends AbstractMDSLGenerator {
 

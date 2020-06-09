@@ -1,0 +1,43 @@
+openapi: 3.0.1
+info:
+  title: TestAPI
+  version: "1.0"
+tags:
+- name: TestEndpoint
+  description: general data-oriented endpoint
+  externalDocs:
+    description: INFORMATION_HOLDER_RESOURCE
+    url: https://microservice-api-patterns.org/patterns/responsibility/
+paths:
+  /TestEndpoint:
+    summary: general data-oriented endpoint
+    description: 'MAP link: INFORMATION_HOLDER_RESOURCE available at [the MAP website](https://microservice-api-patterns.org/)'
+    get:
+      tags:
+      - TestEndpoint
+      description: unspecified operation responsibility
+      operationId: getTest
+      parameters:
+      - name: attr1
+        in: query
+        description: unspecified
+        required: true
+        schema:
+          type: string
+      - name: attr2
+        in: query
+        description: unspecified
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: response message payload (success case)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+components:
+  schemas:
+    Test:
+      type: object

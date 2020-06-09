@@ -110,7 +110,7 @@ data type CustomerWithAddressAndMoveHistory {
 } 
 ~~~
 
-Alternatively, one can start with [element stereotypes](https://microservice-api-patterns.org/patterns/structure/) and pure structure instead of element names: 
+Alternatively, one can start with [element stereotypes](https://microservice-api-patterns.org/patterns/structure/elementStereotypes) and pure structure instead of element names: 
 
 ~~~
 data type MoveHistory {D, D, D}  // record, modeled as Parameter Tree
@@ -224,9 +224,9 @@ type sayhelloAgainResponseType {stringList: [String]}
 <!-- TODO also feature Thrift and Avro (later) -->
 
 ### Jolie 
-The MAP base types map to [simple data in Jolie](https://jolielang.gitbook.io/docs/language-tools-and-standard-library/basics/handling_simple_data) in a straightforward manner. 
+The MAP base types map to [simple data in Jolie](https://jolielang.gitbook.io/docs/basics/handling_simple_data) in a straightforward manner. 
 
-The same holds for the mapping of parameter trees to [Jolie data structures](https://jolielang.gitbook.io/docs/language-tools-and-standard-library/basics/data_structures). 
+The same holds for the mapping of parameter trees to [Jolie data structures](https://jolielang.gitbook.io/docs/basics/data_structures). 
 
 An example can be downloaded [here](./HelloWorldAPIJolieInterfaceAndPort.ol). 
 
