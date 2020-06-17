@@ -37,9 +37,10 @@ These two languages can be used independently of each other; for instance, data 
 
 ## Getting Started
 
-* Presentations featuring Context Mapper, MAP and MDSL can be found [here](https://ozimmer.ch/papers/).
+* Presentations featuring Context Mapper, MAP and MDSL can be found [on this website](https://ozimmer.ch/papers/). [The most recent one](https://ozimmer.ch/assets/presos/ZIO-ICWEKeynoteWADEC3v10p.pdf) features MDSL and Open API in Part 2 (pages 14 to 24).
 * The [GitHub Pages for MDSL](https://microservice-api-patterns.github.io/MDSL-Specification) provide a tutorial and language reference information.
 * There is an [Eclipse update site](https://microservice-api-patterns.github.io/MDSL-Specification/updates/) for the MDSL editor. 
+* Instructions for an end-to-end demo starting with a user stories, continuing with domain-driven design (in Context Mapper) and service design (MDSL, Open API) and finishing with a JHipster prototype can be found [in this blog post](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html).  
 * As a contributor, please consult the [readme file of the dsl-core](./dsl-core/README.md) project for getting started information and prerequisites.
 
 ## Change Log
