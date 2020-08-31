@@ -1,15 +1,13 @@
-Microservice Domain-Specific Language (MDSL) 
-============================================
-
-[![Build Status](https://travis-ci.com/Microservice-API-Patterns/MDSL-Specification.svg?branch=master)](https://travis-ci.com/Microservice-API-Patterns/MDSL-Specification) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+Microservice Domain-Specific Language (MDSL) 4.0
+================================================
 
 Author: Olaf Zimmermann, (c) 2018-2020. All rights reserved.
 
 ## What is MDSL?
 
-MDSL supports the [API Description](https://microservice-api-patterns.org/patterns/foundation/APIDescription) pattern from [Microservice API Patterns (MAP)](https://ozimmer.ch/patterns/2020/05/07/MAPMetaPost.html). 
+MDSL supports the [API Description](https://microservice-api-patterns.org/patterns/foundation/APIDescription) pattern from [Microservice API Patterns (MAP)](https://ozimmer.ch/patterns/2020/05/07/MAPMetaPost.html) ("polyglot service design"). 
 
-This is the "hello world" of service contracting, specified in MDSL: 
+This is the "hello world" of cross-platform service contracting, specified in MDSL: 
 
 ~~~
 API description HelloWorldAPI
@@ -39,15 +37,23 @@ These two languages can be used independently of each other; for instance, data 
 
 ## Getting Started
 
-* Presentations featuring Context Mapper, MAP and MDSL can be found [on this website](https://ozimmer.ch/papers/). [The most recent one](https://ozimmer.ch/assets/presos/ZIO-ICWEKeynoteWADEC3v10p.pdf) features MDSL and Open API in Part 2 (pages 14 to 24).
-* The [GitHub Pages for MDSL](https://microservice-api-patterns.github.io/MDSL-Specification) provide a tutorial and language reference information.
-* There is an [Eclipse update site](https://microservice-api-patterns.github.io/MDSL-Specification/updates/) for the MDSL editor. 
-* Instructions for an end-to-end demo starting with a user stories, continuing with domain-driven design (in Context Mapper) and service design (MDSL, Open API) and finishing with a JHipster prototype can be found [in this blog post](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html).  
+* Presentations featuring Context Mapper, MAP and MDSL can be found [here](https://ozimmer.ch/papers/).
+* The [GitHub Pages for MDSL](https://socadk.github.io/MDSL) provide a tutorial and language reference information.
+* There is an [Eclipse update site](https://socadk.github.io/MDSL/updates/) for the MDSL editor. 
+* Since Version 4.0, all generators are available via a Command Line Interface (CLI); see [this readme](./dsl-core/io.mdsl.cli/README.md) and [these examples](./examples/mdsl-standalone-example).
 * As a contributor, please consult the [readme file of the dsl-core](./dsl-core/README.md) project for getting started information and prerequisites.
 
-## Change Log
 
-The current version of MDSL is 3.3.2. See [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases) for additional update information.
+## Language Specification 
+
+* [Overview](https://socadk.github.io/MDSL)
+* [Endpoint types](https://socadk.github.io/MDSL/servicecontract) (a.k.a. ports)
+* [Bindings](https://socadk.github.io/MDSL/bindings) (a.k.a. adapters)
+* [Data types](https://socadk.github.io/MDSL/datacontract) (a.k.a. published language)
+* [Instance-level concepts](https://socadk.github.io/MDSL/optionalparts) (provider, client, gateway)
+
+An implemented proposal of a language extension supporting queue-based messaging endpoints is [AsyncMDSL](https://github.com/giacomodeliberali/MDSL/tree/master/examples/asyncMDSL). 
+
 
 ## Repository Structure 
 
@@ -63,6 +69,17 @@ If you want to contribute to MDSL, you have to clone this repo and generate the 
 *Note:* Setup and build process have been improved recently to ease integration with [Context Mapper](https://contextmapper.org/). As a consequence, the project has to be imported as an existing Maven project, and an adjustment of the IDE setup is required. The [readme](dsl-core/README.md) of the main project contains detailed instructions.
 
 
+## Change Log
+
+The current version of MDSL is 4.0. See [change log](changelog.md) for an evolution history; see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases) for additional update information.
+
+A possible roadmap for langiage and tools is (subject to change at any time): 
+
+* Integrate AsyncMDSL into this repository (and MDSL 4.0); it extends MDSL 3 at present.
+* Java binding validation and tool support
+* GraphQL Schema Language support
+
+
 ## Context Information: MAP and Xtext
 
 All [Microservice API Patterns (MAP)](https://microservice-api-patterns.org/) are supported and integrated one way or another:
@@ -71,25 +88,27 @@ All [Microservice API Patterns (MAP)](https://microservice-api-patterns.org/) ar
 * As enums for roles and responsibilities
 * As stereotypes annotating representation elements
 
-See ["MAP Decorators" section of the MDSL tutorial](https://microservice-api-patterns.github.io/MDSL-Specification/tutorial) for more information. <!-- TODO copy one-pager in SummerSoC paper to GitHub pages or elsewhere in repo -->
+See ["MAP Decorators" section of the MDSL tutorial](https://socadk.github.io/MDSL/tutorial) for more information. <!-- TODO copy one-pager in SummerSoC paper to GitHub pages or elsewhere in repo -->
 
-The MDSL grammar (to be found in dsl-core, in src folder of org.mdsl project) was originally developed with Eclipse Photon (4.8.0) and Xtext (2.14) as provided by the Eclipse Modeling Platform. MDSL makes use of the referencing feature in Xtext ('name' attribute). Future work is required to also support  this technology in other IDEs (such as Visual Studio Code).
+The MDSL grammar, to be found in src folder of the `dsl-core/io.mdsl` project, was originally developed with Eclipse Photon (4.8.0) and Xtext (2.14) as provided by the Eclipse Modeling Platform. MDSL makes use of the referencing feature in Xtext ('name' attribute). Future work is required to also support  this technology in other IDEs (such as Visual Studio Code).
 
 Feedback and contributions welcome!
 
 [ZIO (a.k.a. socadk)](https://ozimmer.ch/index.html)
 
+
 ##  Acknowledgements 
 
-The creation and release of MDSL 3.0 was supported by the [Hasler Foundation](https://haslerstiftung.ch/en/welcome-to-the-hasler-foundation/).
+The creation and release of MDSL 3 was supported by the [Hasler Foundation](https://haslerstiftung.ch/en/welcome-to-the-hasler-foundation/).
 
 Contributors (input, DevOps support, feedback): 
 
 * [Olaf Zimmermann (ZIO)](https://ozimmer.ch)
+* Stefan Kapferer (also the author of the [MDSL generator in Context Mapper](https://contextmapper.org/docs/mdsl/))
 * MAP co-authors: Mirko Stocker, Daniel Lübke, Cesare Pautasso, Uwe Zdun
-* Bachelor students
+* Bachelor ans master students
 * MS 2019 and VSS 2019 participants 
-* Stefan Kapferer (author of MDSL generator in Context Mapper)
+
 
 ## Getting involved 
 

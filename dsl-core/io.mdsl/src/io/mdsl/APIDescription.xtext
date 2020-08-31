@@ -21,169 +21,123 @@ grammar io.mdsl.APIDescription with org.eclipse.xtext.common.Terminals
 title: Microservices Domain Specific Language (MDSL) Grammar
 author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2018-2020. All rights reserved.
-version: "3.3.2 (last update: June 8, 2020)"
+version: "3.5 (last update: August 25, 2020)"
 ---
 */ 
 
 generate apiDescription "http://www.mdsl.io/APIDescription"
 
-serviceSpecification hidden(WS, ML_COMMENT, SL_COMMENT): 
+ServiceSpecification hidden(WS, ML_COMMENT, SL_COMMENT): 
 	'API' 'description' name=ID
 	('version' svi=semanticVersioningIdentifier)?  
-	('usage' 'context' reach=visibility 'for' direction+=directionList)?
-	types+=dataContract*
-	contracts+=endpointContract+
+	('usage' 'context' reach=Visibility 'for' direction+=DirectionList)?
+	types+=DataContract*
+	contracts+=EndpointContract+
 	slas+=SLATemplate*
-	providers+=provider*
-	clients+=client*
-	gateways+=gateway*
+	providers+=Provider*
+	clients+=Client*
+	gateways+=Gateway*
+	realizations+=ProviderImplementation*
 	('IPA')? // IPA is the inversion of API; optional
 ;
 
-visibility: 'PUBLIC_API' | 'COMMUNITY_API' | 'SOLUTION_INTERNAL_API' | STRING;
+Visibility: 'PUBLIC_API' | 'COMMUNITY_API' | 'SOLUTION_INTERNAL_API' | STRING;
 
-directionList:
-	primaryDirection=direction ('and' otherDirection=direction)?
+DirectionList:
+	primaryDirection=Direction ('and' otherDirection=Direction)?
 ;
 
-direction: 'FRONTEND_INTEGRATION' | 'BACKEND_INTEGRATION' | STRING;
+Direction: 'FRONTEND_INTEGRATION' | 'BACKEND_INTEGRATION' | STRING;
 
 // ** This MDSL grammar defines several sub-languages (orthogonal to each other): 
 //
 // * A) schema (data types)
 // * B) service endpoints (including operations) 
-// * C) instance-level concepts (provider, client; gateway)
+// * C) instance-level concepts (provider, client, gateway; implementation)
 
 
 // *** Part A: data contract/types 
 
-dataContract:
+DataContract:
 	'data' 'type' name=ID 
 	('version' svi=semanticVersioningIdentifier)? 
-	structure=elementStructure
-	default=defaultValue? // moved here for v3; still experimental
+	structure=ElementStructure
+	default=DefaultValue? // moved here in v3; still experimental
 ;
 
-
-// *** Part B: service endpoint contracts (with operations)
-endpointContract:
-	('endpoint' | 'channel' ) 'type' name=ID
-	('version' svi=semanticVersioningIdentifier)? 
-	('serves' 'as' primaryRole=ResourceRole ('and' otherRoles+=ResourceRole)* 'role'?)?
-	sp=securityPolicy?
-	('exposes' ops+=operation+)? // optional because early incomplete specifications do not have to expose any operations 
+ElementStructure: 
+	pf=ParameterForest | pt=ParameterTree | apl=AtomicParameterList  | np=SingleParameterNode
 ;
 
-semanticVersioningIdentifier: STRING; // correct format to be checked by API linters 
-
- // v3.1.0: removed experimental ones 'GATEWAY_RESOURCE' | 'COMPOSITION_RESOURCE' | 'GUARD_RESOURCE' | 'GROUND_RESOURCE'
-ResourceRole: 'PROCESSING_RESOURCE' | 'INFORMATION_HOLDER_RESOURCE' | 'OPERATIONAL_DATA_HOLDER' | 'MASTER_DATA_HOLDER' | 'REFERENCE_DATA_HOLDER' | 'TRANSFER_RESOURCE' | 'LOOKUP_RESOURCE' | 'DATA_TRANSFER_RESOURCE' | 'LINK_LOOKUP_RESOURCE'  | STRING;
-
-operation:
-	('operation' | 'event' ) name=ID // 'event' is experimental still
-	('version' svi=semanticVersioningIdentifier)?
-	('with' 'responsibility' responsibility=operationResponsibility)? 
-	('in'  mep=messageExchangePattern 'conversation')? 
-	('expecting' requestMessage=dataTransferRepresentation)? // request message is optional
-	('delivering' responseMessage=dataTransferRepresentation 
-	  ('reporting' reportData=statusReport)? // optional within 'delivering'
-	)? // response message is optional for 'operation'
-	sp=securityPolicy?
-;
-
-securityPolicy: 
-	'protected' 'by' 'policy'  securityObject+=elementStructure+ 
-;
-
-statusReport:
-	(('error' | 'analytics') reportMessage+=elementStructure)+ 
-;
-
-operationResponsibility: cf='COMPUTATION_FUNCTION' | sco='STATE_CREATION_OPERATION' | ro='RETRIEVAL_OPERATION' | sto='STATE_TRANSITION_OPERATION' | ep='EVENT_PROCESSOR' | bap='BUSINESS_ACTIVITY_PROCESSOR' | other=STRING; // removed in v3.1.0: 'NOTIFICATION_OPERATION'
-
-messageExchangePattern: 'ONE_WAY' | 'REQUEST_REPLY' | 'NOTIFICATION' | STRING;	
-	
-dataTransferRepresentation:
-	('headers' headers=elementStructure)? 
-	'payload' payload=elementStructure // note: this could be an embedded XSD or JSON Schema (or an external one referenced via URI)
-	('structured' 'as' ts=TypeSystem)? 
-;
-
-elementStructure: 
-	pf=parameterForest | pt=parameterTree | apl=atomicParameterList  | np=singleParameterNode
-;
-
-parameterForest:
-	classifier=patternStereotype?
-	'[' ptl=parameterTreeList ']' 
+ParameterForest:
+	classifier=PatternStereotype?
+	'[' ptl=ParameterTreeList ']' 
 ;
  
-parameterTreeList:
-	first=parameterTree (';' next+=parameterTree)*
+ParameterTreeList:
+	first=ParameterTree (';' next+=ParameterTree)*
 ;
 
-parameterTree:
-	classifier=patternStereotype? 
+ParameterTree:
+	classifier=PatternStereotype? 
 	(name=STRING':')?
 	'{' 
-	  first=treeNode ((','|'|') nexttn+=treeNode)* 
+	  first=TreeNode ((','|'|') nexttn+=TreeNode)* 
 	'}' 
 	card=Cardinality? 
 ;
 
-treeNode:
-	pn=singleParameterNode | apl=atomicParameterList | children=parameterTree
+TreeNode:
+	pn=SingleParameterNode | apl=AtomicParameterList | children=ParameterTree
 ;
 
-singleParameterNode: 
-	genP=genericParameter | atomP=atomicParameter | tr=typeReference 
+SingleParameterNode: 
+	genP=GenericParameter | atomP=AtomicParameter | tr=TypeReference 
 ;
 
-genericParameter: 
+GenericParameter: 
 	 name=STRING // this makes it possible to only have a name/id, but no role (yet)
-	// unspecified 'Parameter' or 'PayloadPart' or 'Placeholder'
-	| p='P'  
+	| p='P' // unspecified, P stands for 'Parameter' or 'PayloadPart' or 'Placeholder'
 	| name=STRING ":" 'P'
 ;
 
-typeReference: 
-	classifier=patternStereotype? 
-	(name=STRING':')? dcref=[dataContract] 
+TypeReference: 
+	classifier=PatternStereotype? 
+	(name=STRING':')? dcref=[DataContract] 
 	card=Cardinality?
 ;
 
-atomicParameterList:
-	classifier=patternStereotype? 
+AtomicParameterList:
+	classifier=PatternStereotype? 
 	(name=STRING':')? 
-	'(' first=atomicParameter ((','|'|') nextap+=atomicParameter)* ')' 
+	'(' first=AtomicParameter ((','|'|') nextap+=AtomicParameter)* ')' 
 	card=Cardinality? 	
 ;
 
-atomicParameter: 
-	classifier=patternStereotype? 
-	rat=roleAndType
+AtomicParameter: 
+	classifier=PatternStereotype? 
+	rat=RoleAndType
 	card=Cardinality?
 ;
 
-roleAndType:
+RoleAndType:
     (name=STRING':')? role=ParameterRole ('<'btype=BasicDataType'>')? 
 ;
 
-defaultValue:
-	'default' 'is' default=STRING // TODO tbd: do we need something more concrete here? (experimental)
+DefaultValue:
+	'default' 'is' default=STRING // TODO tbd: do we need something more concrete here?
 ;
 
-patternStereotype:
+PatternStereotype:
     '<<' (pattern=MapPattern | eip=EipPattern | name=ID) '>>' 
 ;
 
 EipPattern:
-	// updated in version 3.1.1 (June 2020):
+	// added in version 3.1.1 (June 2020):
 	'Command_Message' | 'Document_Message' | 'Event_Message'
 ;
 
 MapPattern:
-	// updated in version 3.1.0 (May 2020):
 	'API_Key' | 'Context_Representation' | 'Error_Report' | 'Request_Bundle' | 'Request_Condition' | 'Wish_List' | 'Wish_Template' 
 	| 'Embedded_Entity' | 'Linked_Information_Holder' | 'Annotated_Parameter_Collection' | 'Pagination' 
 	| 'Data_Element' | 'Identifier_Element' | 'Link_Element' | 'Metadata_Element'  | 'Control_Metadata' | 'Aggregated_Metadata' | 'Provenance_Metadata' 
@@ -202,11 +156,56 @@ ParameterRole:
 ;
 
 BasicDataType:
- 	'bool' | 'int' | 'long' | 'double' | 'string' | 'raw' | 'void' // 'record' and 'map' and 'array' do not make sense here
+ 	'bool' | 'int' | 'long' | 'double' | 'string' | 'raw' | 'void' // 'record', 'map' and 'array' do not make sense here
 	;
 
 Cardinality:
 	zeroOrOne='?' | zeroOrMore='*' | atLeastOne='+' | exactlyOne='!'
+;
+
+
+// *** Part B: service endpoint contracts (with operations)
+
+EndpointContract:
+	('endpoint' | 'channel' ) 'type' name=ID
+	('version' svi=semanticVersioningIdentifier)? 
+	('serves' 'as' primaryRole=ResourceRole ('and' otherRoles+=ResourceRole)* 'role'?)?
+	sp=SecurityPolicy?
+	('exposes' ops+=Operation+)? // optional because early incomplete specifications do not have to expose any operations 
+;
+
+semanticVersioningIdentifier: STRING; // correct format to be checked by API linters 
+
+ResourceRole: 'PROCESSING_RESOURCE' | 'INFORMATION_HOLDER_RESOURCE' | 'OPERATIONAL_DATA_HOLDER' | 'MASTER_DATA_HOLDER' | 'REFERENCE_DATA_HOLDER' | 'TRANSFER_RESOURCE' | 'LOOKUP_RESOURCE' | 'DATA_TRANSFER_RESOURCE' | 'LINK_LOOKUP_RESOURCE'  | STRING;
+
+Operation:
+	('operation' | 'event' ) name=ID // 'event' is experimental still
+	('version' svi=semanticVersioningIdentifier)?
+	('with' 'responsibility' responsibility=OperationResponsibility)? 
+	('in'  mep=MessageExchangePattern 'conversation')? 
+	('expecting' requestMessage=DataTransferRepresentation)? // request message is optional
+	('delivering' responseMessage=DataTransferRepresentation 
+	  ('reporting' reportData=StatusReport)? // optional within 'delivering'
+	)? // response message is optional for 'operation'
+	sp=SecurityPolicy?
+;
+
+SecurityPolicy: 
+	'protected' 'by' 'policy' securityObject+=ElementStructure+
+;
+
+StatusReport:
+	(('error' | 'analytics') reportMessage+=ElementStructure)+ 
+;
+
+OperationResponsibility: cf='COMPUTATION_FUNCTION' | sco='STATE_CREATION_OPERATION' | ro='RETRIEVAL_OPERATION' | sto='STATE_TRANSITION_OPERATION' | ep='EVENT_PROCESSOR' | bap='BUSINESS_ACTIVITY_PROCESSOR' | other=STRING; // removed in v3.1.0: 'NOTIFICATION_OPERATION'
+
+MessageExchangePattern: 'ONE_WAY' | 'REQUEST_REPLY' | 'NOTIFICATION' | STRING;	
+	
+DataTransferRepresentation:
+	('headers' headers=ElementStructure)? 
+	'payload' payload=ElementStructure // this could be an embedded XSD or JSON Schema (or an external one referenced via URI)
+	('structured' 'as' ts=TypeSystem)? 
 ;
 
 TypeSystem: 
@@ -216,110 +215,145 @@ TypeSystem:
 
 // *** C.1: provider/endpoint part 
 
-// does not seem to be used (?)
-providerReferenceList:
-	first=[provider] (',' next+=[provider])* 
-;
-
-
-provider:
-	(ap= 'API' 'provider' | ms= 'Message' 'sender')
+Provider:
+	(ap= 'API' 'provider' | ms= 'Message' 'sender') // MOM support is experimental
 	name=ID
-	('contained' 'in' parent=[provider])? // subresource (OAS has this), still experimental
-	epl+=endpointList+
+	('contained' 'in' parent=[Provider])? // TODO document this "subresourcing" (OAS has it), still experimental
+	epl+=EndpointList+ // [Q] is list here (+) and in EndpointInstance needed (*)? 
 	('under' 'conditions' tsandcs=STRING | 'with' 'provider' sla=SLA)? // neither Ts&Cs nor SLA must be present
 	('provider' 'governance'  evolStrat=EvolutionStrategy)? 
 ;
 
-endpointList:	
-	( 'offers' | 'publishes' ) contract=[endpointContract] // one endpoint can only offer a single contract (but provider can have multiple endpoints)
-	endpoints+=endpointInstance* // optional; several endpoints per contract mean redundant deployment (or different SLAs for same functionality) 
+EndpointList: // MOM support is experimental
+	( 'offers' | 'publishes' ) contract=[EndpointContract] // one endpoint can only offer a single contract (but provider can have multiple endpoints)
+	endpoints+=EndpointInstance* // optional; several endpoints per contract mean redundant deployment (or different SLAs for same functionality) 
 ;
 
-endpointInstance: 
+EndpointInstance: 
 	('at' 'endpoint' 'location' | 'via' 'channel' ) name=STRING
-	pb+=ProtocolBinding*
+	techBindings+=TechnologyBinding*
 	('with' 'endpoint' sla=SLA)? // SLA is optional
 	('endpoint' 'governance'  evolStrat=EvolutionStrategy)?
 ;
 
 // ** technology binding (simple/advanced)
 
+TechnologyBinding:
+	'via' 'protocol' protBinding=ProtocolBinding 
+;
+
 ProtocolBinding:
-	'via' 'protocol' protocol=TransportProtocol ('binding' tB=TransportBinding)? ('mapping' ms+=V2ParameterBinding)* // TODO delete mapping part here
+	http=HTTPBinding | java=JavaBinding | grpc=GRPCBinding | other=OtherBinding
 ;
 
-TransportProtocol:
-	http='HTTP' | rest='RESTful_HTTP'| soap='SOAP_HTTP' | gRPC='gRPC' |  avro='Avro_RPC' | thrift='Thrift' | amqp='AMQP' | jms='JMS_ActiveMQ' | stomp='STOMP' | kafka='Kafka' | mqtt='MQTT' | local='Local_Java_Call' | other=STRING 
+// the binding concept is inspired by HTTP and Java in V3
+HTTPBinding:
+	http='HTTP' ('binding' opsB+=HTTPOperationBinding+)?
 ;
 
-// binding concept is inspired by HTTP and Java in V3; TODO split and support gRPC,, MOM, etc.
-TransportBinding:
-	opsB+=OperationBinding+
+HTTPOperationBinding:
+	// TODO would like to reference [Operation] here; Xtext runs through but editor does not show references (?)  
+	'operation' boundOperation=ID 'to' method=HTTPVerb ('at' subresource=STRING)? 
+	pB+=HTTPParameterBinding*
+	rB+=ReportBinding* // TODO Java?
+	sB+=SecurityBinding* // TODO Java?
+	('accepts' inContentTypes+=MIMEType)*
+	('replies' outCcontentTypes+=MIMEType)*
 ;
 
-OperationBinding:
-	'operation' boundOp=ID 'to' (method=HTTPVerb | other=STRING) ('at' subresource=STRING)?
-	pB+=ParameterBinding*
-	rB+=ReportBinding*	
-	sB+=SecurityBinding*
+// TODO would like to use [ElementStructure] here but it does not have name=ID (?)
+HTTPParameterBinding:
+	'element' boundParameter=ID 'realized' 'as' pm=HTTPParameterMapping 'parameter' ('with' details=ElementStructure)? // type vs. instance elementStructureInstance rule?
 ;
 
-// TODO use name references instead of IDs, add semantic checks to validators
-ParameterBinding:
-	'element' ID 'realized' 'as' (pm=ParameterMapping | other=STRING) 'parameter' ('with' details=elementStructure)? // type vs. instance elementStructureInstance rule?
-;
-
-ParameterMapping:
-	http=HTTPParameter | java=JavaParameter
+HTTPParameterMapping:
+	http=HTTPParameter
 ;
 
 enum HTTPVerb: GET | PUT | POST | PATCH | DELETE | HEAD | OPTIONS
 ;
 
-enum HTTPParameter: PATH | QUERY | FORM | COOKIE | BODY // BODY is default
+enum HTTPParameter: PATH | QUERY | FORM | COOKIE | BODY // semantic rule: BODY is default
+;
+
+MIMEType: json='application/json' | xml='application/xml' | custom=STRING // experimental, TODO support full RFC
+;
+
+
+ReportBinding:
+	// [StatusReport] reference?
+	'report' name=ID 'realized' 'as' httpStatusCode=INT ('with' details=ElementStructure)? // TODO test/document
+;
+
+SecurityBinding:
+	// [SecurityPolicy] reference?
+	'policy' name=ID 'realized' 'as' (http=OASSecurity | other=STRING) ('with' details=ElementStructure)?
+;
+
+// TODO support full OAuth Flow Object here, as expected by OAS (etc.)
+enum OASSecurity: BASIC_AUTHENTICATION | API_KEY | OAUTH_FLOW | OTHER_MEANS | TBC // BASIC is default (?)
+;
+
+
+JavaBinding:
+	java='Java' (binding='binding' opsBinding+=JavaOperationBinding+)?
+;
+
+JavaOperationBinding:
+	'operation' boundOperation=ID 'to' method=STRING // no subresource here
+	pB+=JavaParameterBinding*
+;
+
+JavaParameterBinding:
+	'element' boundParameter=ID 'realized' 'as' pm=JavaParameter 'type' // HTTP has more here
 ;
 
 enum JavaParameter: byte | short | int | long | float | double | boolean | char | String; // String needed? 
 
-SecurityBinding:
-	'policy' name=ID 'realized' 'as' (http=OASSecurity | other=STRING) ('with' details=elementStructure)?
+
+GRPCBinding:
+	gRPC='gRPC' (binding='binding' opsBinding+=GRPCOperationBinding+)?
 ;
 
-enum OASSecurity: BASIC_AUTHENTICATION | API_KEY | OAUTH_FLOW | OTHER_MEANS | TBC // BASIC is default (?)
-    // TODO allow to specify OAuth Flow Object for OAS (etc.)
+GRPCOperationBinding:
+	'operation' boundOperation=ID ('to' method=STRING)? ('as' so=StreamingOption 'stream')?
 ;
 
-ReportBinding:
-	'report' name=ID 'realized' 'as' httpStatusCode=INT ('with' details=elementStructure)?
+enum StreamingOption:
+	client | server | bidirectional // if not present, "unary" is assumed
 ;
 
 
-// experimental/deprecated (?):
-V2ParameterBinding:
-	('path' 'parameters' pp=identifierList)
-	| ('query' 'parameters' qp=identifierList)
-	| ('form' 'parameters' fp=identifierList)
-	| default='default' 'body'
+OtherBinding:
+    soap='SOAP_HTTP' | avro='Avro_RPC' | thrift='Thrift' | amqp='AMQP' | jms='JMS_ActiveMQ' | stomp='STOMP' | kafka='Kafka' | mqtt='MQTT' | other=STRING 
 ;
 
-identifierList:
-	'(' name1=ID (',' moreNames+=ID )* ')'
-;
+// removed v2 binding rules, were experimental, now deprecated (?):
+// V2ParameterBinding:
+//	('path' 'parameters' pp=identifierList)
+//	| ('query' 'parameters' qp=identifierList)
+//	| ('form' 'parameters' fp=identifierList)
+//	| default='default' 'body'
+// ;
+
+// identifierList:
+//	'(' name1=ID (',' moreNames+=ID )* ')'
+// ;
+
 
 // **** SLA
 
 SLA:
-	'SLA' (builtin=internalSLA | external=[SLATemplate])
+	'SLA' (builtin=InternalSLA | external=[SLATemplate])
 ;
 
 SLATemplate:
 	'SLA' 'template'
 	name=ID
-	slas+=internalSLA
+	slas+=InternalSLA
 ;
 
-internalSLA:
+InternalSLA:
 	('type' type=SLAType)? // note: not checked/used at present (semantic check?) 
 	slos+=SLO+
 	('penalty' penalties=STRING)?
@@ -333,7 +367,7 @@ RatePlan:
 ;
 
 RateLimit:
-	'rate' 'limit' (none='NONE' | "MAX_CALLS" callRate=simpleMeasurement | "DATA_QUOTA" dataRate=simpleMeasurement) "within" interval=simpleMeasurement// note: just a PoC/demo, can be modeled much better (see pattern/books)	
+	'rate' 'limit' (none='NONE' | "MAX_CALLS" callRate=SimpleMeasurement | "DATA_QUOTA" dataRate=SimpleMeasurement) "within" interval=SimpleMeasurement// note: just a PoC/demo, can be modeled much better (see pattern/books)	
 ;
 
 enum SLAType : NONE  | IMPLICIT | INFORMAL | QUALITATIVE | QUANTITATIVE
@@ -344,65 +378,82 @@ SLO:
     name=ID
 	qualityGoal=STRING
 	// ':'  
-	measurement=measurement
+	measurement=Measurement
 ;
 
-measurement:
-	sm=simpleMeasurement | lz=landingZone
+Measurement:
+	sm=SimpleMeasurement | lz=LandingZone
 ;
 
-simpleMeasurement:
+SimpleMeasurement:
 	value=INT
 	unitOfMeasure=('hours' | 'minutes' | 'seconds' | 'MB' | 'GB'| ID | STRING)? // not a full specification of units/measures, just a PoC/demo
 ;
 
-landingZone:
-	'minimal' s=simpleMeasurement
-	'target' t=simpleMeasurement
-	('optimal' o=simpleMeasurement)?
+LandingZone:
+	'minimal' s=SimpleMeasurement
+	'target' t=SimpleMeasurement
+	('optimal' o=SimpleMeasurement)?
 ;
 
 // **** evolution
 
 enum EvolutionStrategy: 
 	ETERNAL_LIFETIME | LIMITED_GUARANTEED_LIFETIME | TWO_IN_PRODUCTION | AGGRESSIVE_OBSOLESCENCE | EXPERIMENTAL_PREVIEW // MAPs
-	| OTHER_STRATEGY /* replaced OTHER (for antlr4) */ | UNDISCLOSED
+	| OTHER_STRATEGY | UNDISCLOSED // default: UNDISCLOSED
 ;
 
 
 // *** C.2: Client 
 
-client:
-	(ac='API' 'client' | mr='Message' 'receiver') 
+Client:
+	(ac='API' 'client' | mr='Message' 'receiver') // MOM support is experimental
 	name=ID
-     cons+=consumption+
+     cons+=Consumption+
 ;
 
-consumption: 
-	('consumes'|'subscribes') contract=[endpointContract]
+Consumption: 
+	('consumes'|'subscribes') contract=[EndpointContract] // MOM support is experimental
 	// if present, the provider reference creates a static binding between client and server:
-	('from' providerReference=[provider] | 'through' gatewayReference=[gateway])? // could also go down to endpoint level
-	('via' 'protocol'  binding+=TransportProtocol)? // must match provider-side information (linter!)
+	('from' providerReference=[Provider] | 'through' gatewayReference=[Gateway])? // could also go down to endpoint level
+	('via' 'protocol'  binding+=ProtocolBinding)? // must match provider-side information (linter!)
 ;
+
 
 // *** C.3: Gateway (experimental)
 
-gateway:
-	('API' 'gateway' | 'Message' 'broker') name=ID
-	gateList+=gate+
+Gateway:
+	('API' 'gateway' | 'Message' 'broker') name=ID // MOM support is experimental
+	gateList+=Gate+
 	('evolution' 'governance'  evolStrat=EvolutionStrategy)?
 ;
 
-gate:
-	( 'offers' | 'publishes' )  upstreamContract+=[endpointContract]+
-	endpoints+=endpointInstance+ 
+Gate:
+	( 'offers' | 'publishes' )  upstreamContract+=[EndpointContract]+ // MOM support is experimental
+	endpoints+=EndpointInstance+ 
 
-     cons+=consumption
-     ('mediates' dts+=dataTransformation)*
+     cons+=Consumption
+     ('mediates' dts+=DataTransformation)*
 ;
 
-dataTransformation:
-	'from' indc=[dataContract] 'to' outdc=[dataContract]
+DataTransformation:
+	'from' indc=[DataContract] 'to' outdc=[DataContract]
 ;
+
+
+// *** C.4: Provider Implementation (experimental)
+
+ProviderImplementation:
+	'API' 'provider' 'implementation'
+	name=ID
+	'realizes' upstreamBinding=[Provider]
+	'in' platform=ImplementationTechnology
+	('as' class=STRING ('extending' superclass=STRING)? // default assigned if not specified
+	| 'with' 'binding' downstreamBinding=[Provider])? // reference to Java protocol binding (optional)
+;
+
+enum ImplementationTechnology: PlainJava | SpringMVC | vlingo | STRING
+;	
+
 
 // ** End of MDSL grammar 

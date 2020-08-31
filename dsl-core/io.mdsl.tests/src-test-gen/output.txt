@@ -1,1 +1,4 @@
 TestAPI specified in simple-generation-input-1.mdsl
+
+endpoints:
+TestEndpoint

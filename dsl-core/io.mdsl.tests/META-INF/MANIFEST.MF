@@ -3,7 +3,7 @@ Automatic-Module-Name: io.mdsl.tests
 Bundle-ManifestVersion: 2
 Bundle-Name: io.mdsl.tests
 Bundle-Vendor: MDSL Project
-Bundle-Version: 3.3.2.qualifier
+Bundle-Version: 4.0.0.qualifier
 Bundle-SymbolicName: io.mdsl.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: io.mdsl,
@@ -11,6 +11,7 @@ Require-Bundle: io.mdsl,
  org.eclipse.xtext.testing,
  org.eclipse.xtext.xbase.testing,
  org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
- org.apache.commons.io;bundle-version="2.6.0"
+ org.apache.commons.io;bundle-version="2.6.0",
+ io.github.microservice-api-patterns.protobufgen;bundle-version="1.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: io.mdsl.tests;x-internal=true

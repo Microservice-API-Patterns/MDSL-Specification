@@ -45,6 +45,7 @@ Workflow {
 				composedCheck = "io.mdsl.validation.EndpointContractValidator"
 				composedCheck = "io.mdsl.validation.MessageExchangePatternValidator"
 				composedCheck = "io.mdsl.validation.MAPDecoratorValidator"
+				composedCheck = "io.mdsl.validation.BasicBindingValidator"
 			}
 			junitSupport = {
 				junitVersion = "5"

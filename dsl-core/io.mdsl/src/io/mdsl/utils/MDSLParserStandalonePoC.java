@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import io.mdsl.apiDescription.serviceSpecification;
+import io.mdsl.apiDescription.ServiceSpecification;
 
 public class MDSLParserStandalonePoC {
 
@@ -15,7 +15,7 @@ public class MDSLParserStandalonePoC {
 			r = new FileReader("HelloMDSLWorld.mdsl");
 			
 			MDSLXtextParserWrapper parser = new MDSLXtextParserWrapper();
-			serviceSpecification mdslTree = (serviceSpecification) parser.parse(r);
+			ServiceSpecification mdslTree = (ServiceSpecification) parser.parse(r);
 			System.out.println ("MDSL spec parsed, name is: " + mdslTree.getName());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

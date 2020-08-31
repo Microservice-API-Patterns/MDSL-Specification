@@ -1,0 +1,37 @@
+API description HelloWorldAndMEPDemoAPI version "v1.0.0"
+
+data type SampleDTO {ID, D} 
+data type InvalidIdentifier ID<bool>
+
+data type incomplete1 P
+data type incomplete2 "identifier"
+data type incomplete3 "identifier":P
+data type partial1 D
+data type partial2 D<int>
+data type partial3 "dataOfUnknownType":D
+
+endpoint type HelloWorldEndpoint
+exposes 
+  operation sayHello in REQUEST_REPLY conversation
+    expecting payload D<string>  
+    delivering payload SampleDTO
+    
+endpoint type MEPDemoAndTestEndpoint
+exposes 
+  operation testRequestReply in REQUEST_REPLY conversation
+    expecting payload D<string>  
+    delivering payload SampleDTO
+  operation testOneWay in ONE_WAY conversation
+    expecting payload D<string>  
+  operation testNotification in NOTIFICATION conversation
+    delivering payload SampleDTO
+  operation testNoOp in "ToBeContinued" conversation
+    // incomplete specification, does not make much sense at runtime
+        
+API provider HelloWorldAPIProvider
+  offers HelloWorldEndpoint
+
+API client HelloWorldAPIClient
+  consumes HelloWorldEndpoint
+  
+// MEPDemoAndTestEndpoint not offered, not consumed (linter could report that) 

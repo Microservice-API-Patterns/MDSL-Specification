@@ -1,0 +1,9 @@
+API description TestAPI
+
+data type RefType P
+data type TestType ["tree1":{"testAttribute1":D<string>};"tree2":{"testAttribute2":D<string>}]
+
+
+endpoint type TestEndpoint // MDSL compiles only with at least one endpoint
+
+IPA

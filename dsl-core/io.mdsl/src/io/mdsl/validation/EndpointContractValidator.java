@@ -7,8 +7,8 @@ import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
 
 import io.mdsl.apiDescription.ApiDescriptionPackage;
-import io.mdsl.apiDescription.endpointContract;
-import io.mdsl.apiDescription.serviceSpecification;
+import io.mdsl.apiDescription.EndpointContract;
+import io.mdsl.apiDescription.ServiceSpecification;
 
 /**
  * This class contains custom validation rules. 
@@ -23,15 +23,14 @@ public class EndpointContractValidator extends AbstractAPIDescriptionValidator {
 	}
 	
 	@Check
-	public void dataContractValidator(final serviceSpecification specRoot) {
-		info("MDSL API Linter: checking some but not all semantic rule in " + specRoot.getName(), specRoot, ApiDescriptionPackage.Literals.SERVICE_SPECIFICATION__NAME);
+	public void dataContractValidator(final ServiceSpecification specRoot) {
+		info("MDSL API Linter activated, checking semantic rules in " + specRoot.getName(), specRoot, ApiDescriptionPackage.Literals.SERVICE_SPECIFICATION__NAME);
 	}
 	
 	
 	@Check
-	public void reportContractSize(endpointContract epc) {
+	public void reportContractSize(EndpointContract epc) {
 		int opsInContract = epc.getOps().size();
-		// String code = "API Metric";
 		
 		if(opsInContract>7) {
 			warning(epc.getName() + " exposes " + opsInContract + " operation(s), more than a single HTTP resource can support in its unified method/verb interface", epc, ApiDescriptionPackage.Literals.ENDPOINT_CONTRACT__NAME);		

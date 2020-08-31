@@ -4,7 +4,8 @@
 package io.mdsl;
 
 /**
- * Initialization support for running Xtext languages without Equinox extension registry.
+ * Initialization support for running Xtext languages without Equinox extension
+ * registry.
  */
 public class APIDescriptionStandaloneSetup extends APIDescriptionStandaloneSetupGenerated {
 

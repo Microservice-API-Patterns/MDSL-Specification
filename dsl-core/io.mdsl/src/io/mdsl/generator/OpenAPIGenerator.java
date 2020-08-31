@@ -7,7 +7,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess2;
 
 import com.google.common.collect.Sets;
 
-import io.mdsl.apiDescription.serviceSpecification;
+import io.mdsl.apiDescription.ServiceSpecification;
 import io.mdsl.generator.openapi.converter.MDSL2OpenAPIConverter;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -25,7 +25,7 @@ public class OpenAPIGenerator extends AbstractMDSLGenerator {
 	private Set<String> validationMessages;
 
 	@Override
-	protected void generateFromServiceSpecification(serviceSpecification mdslSpecification, IFileSystemAccess2 fsa,
+	protected void generateFromServiceSpecification(ServiceSpecification mdslSpecification, IFileSystemAccess2 fsa,
 			URI inputFileURI) {
 		String fileName = inputFileURI.trimFileExtension().lastSegment() + ".yaml";
 		validationMessages = Sets.newHashSet();

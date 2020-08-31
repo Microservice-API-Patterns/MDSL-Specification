@@ -1,0 +1,100 @@
+dependencies {
+	compile project(':mdsl-core')
+	compile "org.eclipse.xtext:org.eclipse.xtext.ide:${xtextVersion}"
+	compile "org.eclipse.xtext:org.eclipse.xtext.xbase.ide:${xtextVersion}"
+}
+
+apply plugin: 'application'
+mainClassName = "org.eclipse.xtext.ide.server.ServerLauncher"
+
+//this is an eclipse plugin project
+eclipseClasspath.enabled=false
+cleanEclipseClasspath.enabled=false
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    archiveClassifier = 'javadoc'
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+        	customizePom(pom)
+        	
+            artifactId = "${project.name}"
+            groupId = "${project.group}"
+            version = "${project.version}"
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            artifact distZip
+            artifact distTar
+            
+            pom.withXml {
+                def pomFile = file("${project.buildDir}/generated-pom.xml")
+            }
+        }
+    }
+}
+
+def customizePom(pom) {
+    pom.withXml {
+        def root = asNode()
+
+        // eliminate test-scoped dependencies
+        root.dependencies.removeAll { dep ->
+            dep.scope == "test"
+        }
+
+        root.children().last() + {
+            resolveStrategy = Closure.DELEGATE_FIRST
+
+            description 'MDSL Language Server (LSP) to integrate the MDSL editor within your IDE.'
+            name 'Microservice Domain-Specific Language (MDSL) Language Server'
+            url 'https://github.com/Microservice-API-Patterns/MDSL-Specification'
+            organization {
+                name 'Microservice API Patterns'
+                url 'https://github.com/Microservice-API-Patterns'
+            }
+            issueManagement {
+                system 'GitHub'
+                url 'https://github.com/Microservice-API-Patterns/MDSL-Specification/issues'
+            }
+            licenses {
+                license {
+                    name 'Apache License 2.0'
+                    url 'https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                url 'https://github.com/Microservice-API-Patterns/MDSL-Specification'
+                connection 'scm:git:git://github.com/Microservice-API-Patterns/MDSL-Specification.git'
+                developerConnection 'scm:git:ssh://git@github.com:Microservice-API-Patterns/MDSL-Specification.git'
+            }
+        }
+    }
+}
+
+model {
+    tasks.generatePomFileForMavenJavaPublication {
+        destination = file("$buildDir/generated-pom.xml")
+    }
+}
+
+tasks.withType(CreateStartScripts).each { task ->
+    task.doLast {
+        String text = task.windowsScript.text
+        text = text.replaceFirst(/(set CLASSPATH=%APP_HOME%\\lib\\).*/, { "${it[1]}*" })
+        task.windowsScript.write text
+    }
+}

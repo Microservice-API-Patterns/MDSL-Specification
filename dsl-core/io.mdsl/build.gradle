@@ -1,0 +1,125 @@
+dependencies {
+	compile "org.eclipse.xtext:org.eclipse.xtext:${xtextVersion}"
+	compile "org.eclipse.xtext:org.eclipse.xtext.xbase:${xtextVersion}"
+		
+	implementation "org.freemarker:freemarker:${freemarkerVersion}"
+	implementation "io.swagger.core.v3:swagger-core:${swaggerCoreVersion}"
+	implementation "io.swagger.parser.v3:swagger-parser:${swaggerParserVersion}"
+	implementation "io.github.microservice-api-patterns:protobufgen:${protoBufGenVersion}"
+	implementation "commons-io:commons-io:${commonsIOVersion}"
+}
+configurations {
+	mwe2 {
+		extendsFrom compile
+	}
+}
+
+dependencies {
+	mwe2 "org.eclipse.emf:org.eclipse.emf.mwe2.launch:2.11.2"
+	mwe2 "org.eclipse.xtext:org.eclipse.xtext.common.types:${xtextVersion}"
+	mwe2 "org.eclipse.xtext:org.eclipse.xtext.xtext.generator:${xtextVersion}"
+	mwe2 "org.eclipse.xtext:xtext-antlr-generator:[2.1.1, 3)"
+}
+
+task generateXtextLanguage(type: JavaExec) {
+	main = 'org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher'
+	classpath = configurations.mwe2
+	inputs.file "src/io/mdsl/GenerateAPIDescription.mwe2"
+	inputs.file "src/io/mdsl/APIDescription.xtext"
+	outputs.dir "src-gen"
+	args += "src/io/mdsl/GenerateAPIDescription.mwe2"
+	args += "-p"
+	args += "rootPath=/${projectDir}/.."
+}
+
+generateXtext.dependsOn(generateXtextLanguage)
+clean.dependsOn(cleanGenerateXtextLanguage)
+eclipse.classpath.plusConfigurations += [configurations.mwe2]
+//this is an eclipse plugin project
+eclipseClasspath.enabled=false
+cleanEclipseClasspath.enabled=false
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier = 'sources'
+}
+
+javadoc {
+    options.tags = [ "model", "generated", "ordered", "Inject" ]
+    exclude 'io/mdsl/apiDescription/impl/**'
+    exclude 'io/mdsl/serializer/**'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    archiveClassifier = 'javadoc'
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+        	customizePom(pom)
+        	
+            artifactId = "${project.name}"
+            groupId = "${project.group}"
+            version = "${project.version}"
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            
+            pom.withXml {
+                def pomFile = file("${project.buildDir}/generated-pom.xml")
+                writeTo(pomFile)
+            }
+        }
+    }
+}
+
+def customizePom(pom) {
+    pom.withXml {
+        def root = asNode()
+
+        // eliminate test-scoped dependencies
+        root.dependencies.removeAll { dep ->
+            dep.scope == "test"
+        }
+
+        root.children().last() + {
+            resolveStrategy = Closure.DELEGATE_FIRST
+
+            description 'MDSL Library for Standalone Usage.'
+            name 'Microservice Domain-Specific Language (MDSL)'
+            url 'https://github.com/Microservice-API-Patterns/MDSL-Specification'
+            organization {
+                name 'Microservice API Patterns'
+                url 'https://github.com/Microservice-API-Patterns'
+            }
+            issueManagement {
+                system 'GitHub'
+                url 'https://github.com/Microservice-API-Patterns/MDSL-Specification/issues'
+            }
+            licenses {
+                license {
+                    name 'Apache License 2.0'
+                    url 'https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                url 'https://github.com/Microservice-API-Patterns/MDSL-Specification'
+                connection 'scm:git:git://github.com/Microservice-API-Patterns/MDSL-Specification.git'
+                developerConnection 'scm:git:ssh://git@github.com:Microservice-API-Patterns/MDSL-Specification.git'
+            }
+        }
+    }
+}
+
+model {
+    tasks.generatePomFileForMavenJavaPublication {
+        destination = file("$buildDir/generated-pom.xml")
+    }
+}

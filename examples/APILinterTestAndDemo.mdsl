@@ -1,0 +1,106 @@
+API description APILinterDemoAPI
+
+data type SampleDTO {"key":ID<int>, "value":D<bool>?} 
+data type NestedDTO {"counter":MD<int>, "links":L*, "values":SampleDTO+, IncompleteBaseTypeDesign, "baseTypeTest": AllBaseTypes, "pfTest":ParameterForest} 
+data type AllBaseTypes {D<int>, D<long>, D<double>, D<string>, "raw":D<raw>, "aVoid": D<void>}
+data type ParameterForest ["pt1":{D}; {{"pt2":D}}; {"apl":(ID, L, MD, D)}]
+
+data type IncompleteBaseTypeDesign {P, "idOnly", "id":P, D} 
+data type ImpreciseBaseTypeDesign {"aVoid":D<void>}
+data type InappropriateBaseTypeCombinations {ID<bool>, L<raw>, ID, MD<raw>}
+
+endpoint type APILinterDemoPort
+exposes 
+  operation sayHello 
+    expecting payload "in": D
+    delivering payload SampleDTO 
+  operation sayHelloMultipleTimes 
+    expecting payload "in": D+
+    delivering payload SampleDTO* 
+  operation sayHelloNested 
+    expecting payload "in":SampleDTO? 
+    delivering payload NestedDTO*  
+  operation sayHelloGenericParameters 
+    expecting payload D<string>
+    delivering payload "tbd":ID
+        
+endpoint type MessageExchangePatternDemoPort
+exposes 
+  operation testRequestReply in REQUEST_REPLY conversation
+    expecting payload D<string>  
+    delivering payload SampleDTO
+  operation testOneWay in ONE_WAY conversation
+    expecting payload D<string>  
+  operation testNotification in NOTIFICATION conversation
+    delivering payload SampleDTO
+  operation testNoOp in "ToBeContinued" conversation
+    // incomplete specification, does not make much sense at runtime
+  operation invalidOperationDesignForRequestReply in REQUEST_REPLY conversation
+    // expecting payload D<string>  
+    // delivering payload SampleDTO
+  operation invalidOperationDesignForOneWay in ONE_WAY conversation
+    // expecting payload D<string>  
+    delivering payload SampleDTO
+  operation invalidOperationDesignForNotification in NOTIFICATION conversation
+    expecting payload D<string>  
+    // delivering payload SampleDTO
+    
+endpoint type MAPDecoratorValidationDemoPort1 serves as PROCESSING_RESOURCE
+  exposes 
+    operation createSomething with responsibility STATE_CREATION_OPERATION
+      expecting payload SampleDTO   
+      delivering payload D<string>
+
+endpoint type MAPDecoratorValidationDemoPort2 serves as INFORMATION_HOLDER_RESOURCE
+  exposes 
+    operation computeSomething with responsibility COMPUTATION_FUNCTION
+      expecting payload {"p1", "p2"}   
+      delivering payload "p3": D<int>
+    operation createSomething with responsibility STATE_CREATION_OPERATION
+      expecting payload SampleDTO   
+      delivering payload D<string>
+    operation updateSomething with responsibility STATE_TRANSITION_OPERATION
+      expecting payload SampleDTO   
+      delivering payload D<string>
+    operation searchSomething with responsibility RETRIEVAL_OPERATION
+      expecting payload SampleDTO   
+      delivering payload D<string>
+      
+// endpoint type MAPDecoratorValidationDemoPort3 serves as MASTER_DATA_HOLDER
+endpoint type MAPDecoratorValidationDemoPort3 serves as REFERENCE_DATA_HOLDER
+// endpoint type MAPDecoratorValidationDemoPort3 serves as DATA_TRANSFER_RESOURCE
+// endpoint type MAPDecoratorValidationDemoPort3 serves as LINK_LOOKUP_RESOURCE
+  exposes 
+    operation computeSomethingMore with responsibility COMPUTATION_FUNCTION
+      expecting payload {"p1", "p2"}   
+      delivering payload "p3": D<int>
+    operation createSomething with responsibility STATE_CREATION_OPERATION
+      expecting payload SampleDTO   
+      delivering payload D<string>
+    operation updateSomething with responsibility STATE_TRANSITION_OPERATION
+      expecting payload SampleDTO   
+      delivering payload D<string>
+    operation searchSomething with responsibility RETRIEVAL_OPERATION
+      expecting payload SampleDTO   
+      delivering payload D<string>
+          
+API provider APILinterDemoAdapter1a
+offers APILinterDemoPort
+at endpoint location "http://tbc.tbc.tbc"
+via protocol HTTP 
+  binding operation op1 to GET
+
+API provider APILinterDemoAdapter2
+offers APILinterDemoPort
+at endpoint location "http://tbc.tbc.tbc2" via protocol Java
+
+API provider APILinterDemoAdapter3
+offers APILinterDemoPort
+at endpoint location "http://tbc.tbc.tbc3" via protocol gRPC
+
+API provider APILinterDemoAdapter4
+offers APILinterDemoPort
+at endpoint location "http://tbc.tbc.tbc4" via protocol "SomeOtherProtocol"
+
+API client HelloWorldAPIClient1
+consumes APILinterDemoPort

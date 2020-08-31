@@ -1,16 +1,29 @@
 ---
-title: Microservices Domain-Specific Language (MDSL) Homepage
+title: Microservice Domain-Specific Language (MDSL) Homepage
 author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ---
 
 
 ## TL;DR
-Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as Swagger, WSDL, and <!-- gRPC --> Protocol Buffers. Grammar, [editor (Eclipse plugin)](./updates/), [tutorial](./tutorial), [examples](./examples) and a [quick reference](./quickreference)<!-- providing skeletons--> are available already; <!-- validation and generation tools are under construction --> more to come.
+Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as Swagger, WSDL, and <!-- gRPC --> Protocol Buffers. The current version is 4.0.
+
+Quick links: 
+
+* Documentation pages (GitHub pages): [Tutorial](./tutorial), [examples](./examples), [quick reference](./quickreference)<!-- providing skeletons-->
+* Language and tools repository (GitHub): [Grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext), [examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/tree/master/examples)
+* Tools: [Overview](./tools), [CLI](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli), [update site for editor (Eclipse plugin)](./updates/)<!-- Update site: [https://socadk.github.io/MDSL/updates/](https://socadk.github.io/MDSL/updates/) -->
+
+<!--
+### Installation in Eclipse
+
+ * Update site: [https://socadk.github.io/MDSL/updates/](https://socadk.github.io/MDSL/updates/)
+ * The grammar can be found in the `dsl-core` project (more precisely, in the `io.mdsl./src/io.mdsl` folder of this project): [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) and [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) repository.
+-->
 
 ## Getting Started with MDSL
 
-MDSL supports the [API Description](https://microservice-api-patterns.org/patterns/foundation/APIDescription) pattern from [Microservice API Patterns (MAP)](https://ozimmer.ch/patterns/2020/05/07/MAPMetaPost.html). It picks up MAP concepts such as API endpoint, operation, client, and provider and features patterns as decorators (a.k.a. stereotypes) ``<<pagination>>``. 
+MDSL supports the [API Description](https://microservice-api-patterns.org/patterns/foundation/APIDescription) pattern from [Microservice API Patterns (MAP)](https://ozimmer.ch/patterns/2020/05/07/MAPMetaPost.html). It picks up MAP concepts such as API endpoint, operation, client and provider, and features patterns as decorators (a.k.a. stereotypes): ``<<pagination>>``. 
 
 ### A First Example
 
@@ -37,12 +50,12 @@ API client HelloWorldAPIClient
 `sayHello` accepts a single scalar string value `D<string>` as input. This operation returns a Data Transfer Object (DTO) called `SampleDTO` as output, which is modeled explicitly so that its specification can be reused. `SampleDTO` is specified incompletely as an identifier-data pair `{ID, D}`: the names of the two "parameters" and the type of the data value `D` have not been specified yet. In addition to the endpoint type (a.k.a. service contract) `HelloWorldEndpoint`, an API client and an API provider working with this contract are defined (on an abstract level). 
 
 Take a look at Hello World in [Swagger/Open API Specification](https://swagger.io/blog/api-development/getting-started-with-swagger-i-what-is-swagger/) in comparison. You can find such contract specification example [here](./HelloWorld.swagger.json) (admittedly, this Open API specification contains some more details about te HTTP binding of the abstract contract). 
-
 <!-- could also show WSDL/XML schema here -->
+
 
 ### Design Goals
 
-A contract language for (micro-)service API design should/must:
+A contract language for (micro-)service API design should:
 
 * Support [*agile modeling* practices](http://agilemodeling.com/), for instance in API design workshops:
     * Value and promote readability over parsing efficiency (in language design)
@@ -51,8 +64,9 @@ A contract language for (micro-)service API design should/must:
     * [Microservice API Patterns (MAP)](https://microservice-api-patterns.org/) as first-class language elements annotating/decorating endpoint types, operations, and representation elements 
     * Not bound to HTTP (unlike Swagger and its successor Open API Specification) or other protocols and message exchange formats
 * Support *meet-in-the-middle* service design:
-    * *Top-down* from requirements (for instance, user stories for integration scenarios)
+    * *Top-down* from requirements (for instance, user stories for integration scenarios), as for instance proposed as activity in the [Design Practice Repository (DPR)](https://github.com/socadk/design-practice-repository) 
     * *Bottom up* from existing systems (represented, for instance, as [DDD-style context maps](https://contextmapper.org/))
+
 
 ### Design Principles
 
@@ -63,14 +77,16 @@ To achieve the above design goals, we decided that:
 
 [^1]: The service and the data contract languages can be used independently of each other; for instance, data contracts for operations in contract types can also be specified in JSON Schema (but might not be supported by MDSL tools in that case).
 
-### Eclipse Plugin (MDSL Editor)
-The MDSL Eclipse plugin provides editing support (syntax highlighting, auto completion, etc.) for our DSL. You can install the plugin in your Eclipse from the following update site:
 
-[https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
+### MDSL Tools
 
-Once you have installed the plugin successfully, the MDSL editor should open for any file that ends with `.mdsl`. You can create one and copy-paste the above hello world example, or find additional examples [in this folder](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples).
+At present, the following tools are available:
 
-If you want to check whether the plugin has installed successfully, you can go to the Eclipse "Help" menu, select "About Eclipse IDE" and then "Installation Details". Two MDSL entries should be there.
+* An Eclipse-based editor and API Linter 
+* Command line tools to validate a specification, to generate platform-specific contracts and reports
+
+See [tools page](./tools) for more information.
+
 
 ## A Closer Look 
 
@@ -84,17 +100,20 @@ Let us visualize the usage context of MDSL specifications with two [hexagons](ht
 
 If you want to leverage and promote [microservices tenets](http://rdcu.be/mJPz) such as polyglot programming and use multiple integration protocols, e.g., an HTTP resource API and message queuing, then MDSL is for you. The request and response message representations in the diagram can be specified with MDSL data contracts; the provided interface supports an MDSL endpoint type.
 
-### Language elements 
+
+### Language specification elements 
 
 1. Service [endpoint contract types](./servicecontract) follow this template: 
    `endpoint type ... exposes operation ... expecting ... delivering ...`
 2. [Data contracts (schemas)](./datacontract): `data type SampleDTO {ID, V}` in the above example
-3. [Other concepts](./optionalparts): 
+3. [Instance-level concepts](./optionalparts): 
     * API Provider with [*Service Level Agreements*](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ServiceLevelAgreement) and evolution strategies such as [*Two in Production*](https://microservice-api-patterns.org/patterns/evolution/TwoInProduction)
+    * Protocol [bindings](./bindings).
     * API Client instances
     * API Gateways (a.k.a. intermediaries), not featured in the above example (see [here](./optionalparts)) 
 
 See these concepts in action in the [tutorial](./tutorial), the [quick reference](./quickreference) and on the [examples page](./examples).
+
 
 ### Usage of and support for Microservice API Patterns (MAP)
 
@@ -135,8 +154,10 @@ These validations are run every time a file is saved; their output appears in th
 
 If an HTTP verb appears more than once in a resource endpoint, nothing will be generated but an error message displayed.
 
+<!--
 ### Tutorial 
 Ready to start/learn more? Click [here](./tutorial).
+-->
 
 ## More Information
 
@@ -148,20 +169,19 @@ Ready to start/learn more? Click [here](./tutorial).
 * [Examples](./examples)
 * Optional/experimental [language elements on the instance level (provider, client, gateway)](./optionalparts)
 
-### Installation in Eclipse
- * Update site: [https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
 
-### Direct links into repository
+### Tools
 
-* [Full grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext)
-* [Examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples)
-
+* [Command-Line Interface (CLI)](./tools#command-line-interface-cli-tools)
+* [Eclipse editor and API Linter](./tools#eclipse-plugin)
 
 ### External links 
 
 * Public [Microservice API Patterns (MAP) website](https://microservice-api-patterns.org/), access to team-internal preview website available upon request (features more patterns than the public one, in intermediate draft form)
 * [Lakeside Mutual](https://github.com/Microservice-API-Patterns/LakesideMutual) repository, featuring [Domain-Driven Design (DDD)](https://www.ifs.hsr.ch/index.php?id=15666&L=4) and [microservices](https://www.ifs.hsr.ch/index.php?id=15266&L=4) in an insurance company scenario (JavaScript frontends and Spring Boot backends)
-* [Context Mapper](https://contextmapper.github.io/), a DSL for strategic DDD and rapid OOAD
+* [Context Mapper](https://contextmapper.org), a DSL for strategic DDD and rapid OOAD
+
+<!-- TODO point to presentations (JUG, VSS, Modelsward, GI-AK ICWE, point at VSS report https://www.computer.org/csdl/magazine/so/2020/01/08938118/1fUSO0QBDnW -->
 
 *Copyright: [Olaf Zimmermann](https://ozimmer.ch/index.html), 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 

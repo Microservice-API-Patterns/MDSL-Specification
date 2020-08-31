@@ -1,0 +1,9 @@
+API description TestAPI
+
+data type TestSingleParameterNodeType1 P // GenericParameter
+data type TestSingleParameterNodeType2 "name":D<string> // AtomicParameter
+data type TestSingleParameterNodeType3 "ref":TestSingleParameterNodeType1 // TypeReference
+
+endpoint type TestEndpoint // at least one entpoint is required in MDSL
+
+IPA

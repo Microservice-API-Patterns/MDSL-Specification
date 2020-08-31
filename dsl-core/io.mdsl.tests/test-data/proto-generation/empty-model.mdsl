@@ -1,0 +1,5 @@
+API description TestAPI
+
+endpoint type TestEndpoint // at least one entpoint is required in MDSL
+
+IPA

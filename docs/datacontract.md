@@ -1,5 +1,5 @@
 ---
-title: Microservices Domain Specific Language (MDSL) Data Contracts
+title: Microservice Domain Specific Language (MDSL) Data Contracts
 author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ---
@@ -9,9 +9,12 @@ Data Contracts and Schemas in MDSL
 
 ## Use Cases for MDSL Data Type Models
 
+MDSL aims at supporting agile modeling. Any service API exposes a published language of some kind This language contains data elements in several places:
+
 * Payload and headers of operations specified in an MDSL service [endpoint contract](./servicecontract)
 * Service Level Objectives (SLOs) and/or Service Level Indicators (SLIs) that are part of [Service Level Agreements (SLAs)](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ServiceLevelAgreement)
-* Agile data modeling, e.g. Data Transfer Objects (DTOs) or, more precisely, Data Transfer Representations (DTRs) 
+* Data Transfer Objects (DTOs) or, more precisely, Data Transfer Representations (DTRs) 
+
 
 ## Concepts
 

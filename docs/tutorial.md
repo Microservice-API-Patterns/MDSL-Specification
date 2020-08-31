@@ -1,5 +1,5 @@
 ---
-title: Microservices Domain Specific Language (MDSL) Tutorial
+title: Microservice Domain Specific Language (MDSL) Tutorial
 author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019. All rights reserved.
 ---

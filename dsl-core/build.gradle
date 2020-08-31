@@ -1,0 +1,39 @@
+buildscript {
+        repositories {
+                mavenCentral()
+                jcenter()
+        }
+        dependencies {
+                classpath 'org.xtext:xtext-gradle-plugin:2.0.8'
+        }
+}
+
+def pomXml = new XmlSlurper().parse('pom.xml')
+
+subprojects {
+        ext.xtextVersion = '2.21.0'
+        repositories {
+                jcenter()
+        }
+
+        apply plugin: 'java'
+        apply plugin: 'maven-publish'
+        apply plugin: 'org.xtext.xtend'
+        apply from: "${rootDir}/gradle/maven-deployment.gradle"
+        apply plugin: 'eclipse'
+        apply plugin: 'jacoco'
+
+        group = 'io.mdsl'
+        version = pomXml.version
+
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+
+        configurations.all {
+                exclude group: 'asm'
+        }
+}
+
+configure(subprojects.findAll {it.name != 'mdsl-cli'}) {
+        apply from: "${rootDir}/gradle/source-layout.gradle"
+}

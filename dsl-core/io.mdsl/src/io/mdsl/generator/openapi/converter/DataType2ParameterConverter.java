@@ -5,10 +5,10 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 
-import io.mdsl.apiDescription.atomicParameter;
-import io.mdsl.apiDescription.elementStructure;
-import io.mdsl.apiDescription.patternStereotype;
-import io.mdsl.apiDescription.roleAndType;
+import io.mdsl.apiDescription.AtomicParameter;
+import io.mdsl.apiDescription.ElementStructure;
+import io.mdsl.apiDescription.PatternStereotype;
+import io.mdsl.apiDescription.RoleAndType;
 import io.mdsl.exception.MDSLException;
 import io.swagger.v3.oas.models.parameters.Parameter;
 
@@ -22,7 +22,7 @@ public class DataType2ParameterConverter {
 
 	private int anonymousParameterCounter = 1;
 	private DataType2SchemaConverter schemaConverter;
-	private patternStereotype classifier;
+	private PatternStereotype classifier;
 
 	public DataType2ParameterConverter() {
 		this.schemaConverter = new DataType2SchemaConverter();
@@ -35,8 +35,8 @@ public class DataType2ParameterConverter {
 	 * - atomic parameter list 
 	 * - single atomic parameter
 	 */
-	public List<Parameter> convert(elementStructure structure) {
-		List<atomicParameter> atomicParameterList = Lists.newLinkedList();
+	public List<Parameter> convert(ElementStructure structure) {
+		List<AtomicParameter> atomicParameterList = Lists.newLinkedList();
 		if (structure.getApl() != null) {
 			atomicParameterList.add(structure.getApl().getFirst());
 			atomicParameterList.addAll(structure.getApl().getNextap());
@@ -49,12 +49,12 @@ public class DataType2ParameterConverter {
 		return convert(atomicParameterList);
 	}
 
-	private List<Parameter> convert(List<atomicParameter> atomicParameters) {
+	private List<Parameter> convert(List<AtomicParameter> atomicParameters) {
 		return atomicParameters.stream().map(p -> convert(p)).collect(Collectors.toList());
 	}
 
-	private Parameter convert(atomicParameter atomicParameter) {
-		roleAndType roleAndType = atomicParameter.getRat();
+	private Parameter convert(AtomicParameter atomicParameter) {
+		RoleAndType roleAndType = atomicParameter.getRat();
 		classifier = atomicParameter.getClassifier();
 		String descr = "unspecified";
 		

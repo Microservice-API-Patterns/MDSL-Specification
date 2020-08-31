@@ -1,0 +1,1115 @@
+[INFO] Scanning for projects...
+[INFO] Computing target platform for MavenProject: io.mdsl:io.mdsl:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl\pom.xml
+[INFO] Fetching p2.index from https://download.eclipse.org/releases/2020-03/
+[INFO] Adding repository https://download.eclipse.org/releases/2020-03
+[INFO] Fetching p2.index from https://download.eclipse.org/technology/epp/packages/2020-03/
+[INFO] Fetching p2.index from https://download.eclipse.org/releases/2020-03/202003181000/
+[INFO] Fetching p2.index from https://download.eclipse.org/modeling/emft/mwe/updates/releases/2.11.2/
+[INFO] Adding repository https://download.eclipse.org/modeling/emft/mwe/updates/releases/2.11.2
+[INFO] Fetching p2.index from https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.21.0/
+[INFO] Adding repository https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.21.0
+[INFO] Adding repository https://download.eclipse.org/tools/orbit/downloads/2020-03
+[INFO] Fetching p2.index from https://download.eclipse.org/tools/orbit/downloads/drops/R20200224183213/repository/
+[INFO] Fetching p2.index from https://download.eclipse.org/tools/orbit/downloads/drops2/R20200224183213/repository/
+[INFO] Adding repository https://dl.bintray.com/contextmapper/context-mapper-osgi-bundles/updatesites/1.3.0
+[INFO] Fetching p2.index from http://download.eclipse.org/tools/orbit/downloads/drops/R20200224183213/repository/
+[INFO] Adding repository http://download.eclipse.org/tools/orbit/downloads/drops/R20200224183213/repository
+[INFO] Fetching p2.index from http://download.eclipse.org/tools/orbit/downloads/drops2/R20200224183213/repository/
+[INFO] Resolving dependencies of MavenProject: io.mdsl:io.mdsl:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl\pom.xml
+[INFO] Resolving class path of MavenProject: io.mdsl:io.mdsl:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl\pom.xml
+[INFO] Computing target platform for MavenProject: io.mdsl:io.mdsl.ide:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.ide\pom.xml
+[INFO] Resolving dependencies of MavenProject: io.mdsl:io.mdsl.ide:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.ide\pom.xml
+[INFO] Resolving class path of MavenProject: io.mdsl:io.mdsl.ide:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.ide\pom.xml
+[INFO] Computing target platform for MavenProject: io.mdsl:io.mdsl.ui:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.ui\pom.xml
+[INFO] Resolving dependencies of MavenProject: io.mdsl:io.mdsl.ui:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.ui\pom.xml
+[INFO] Resolving class path of MavenProject: io.mdsl:io.mdsl.ui:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.ui\pom.xml
+[INFO] Computing target platform for MavenProject: io.mdsl:io.mdsl.feature:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.feature\pom.xml
+[INFO] Resolving dependencies of MavenProject: io.mdsl:io.mdsl.feature:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.feature\pom.xml
+[INFO] Resolving class path of MavenProject: io.mdsl:io.mdsl.feature:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.feature\pom.xml
+[INFO] Computing target platform for MavenProject: io.mdsl:io.mdsl.repository:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.repository\pom.xml
+[INFO] Resolving dependencies of MavenProject: io.mdsl:io.mdsl.repository:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.repository\pom.xml
+[INFO] Resolving class path of MavenProject: io.mdsl:io.mdsl.repository:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.repository\pom.xml
+[INFO] Computing target platform for MavenProject: io.mdsl:io.mdsl.tests:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.tests\pom.xml
+[INFO] Resolving dependencies of MavenProject: io.mdsl:io.mdsl.tests:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.tests\pom.xml
+[INFO] Resolving class path of MavenProject: io.mdsl:io.mdsl.tests:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.tests\pom.xml
+[INFO] Computing target platform for MavenProject: io.mdsl:io.mdsl.ui.tests:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.ui.tests\pom.xml
+[INFO] Resolving dependencies of MavenProject: io.mdsl:io.mdsl.ui.tests:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.ui.tests\pom.xml
+[INFO] Resolving class path of MavenProject: io.mdsl:io.mdsl.ui.tests:4.0.0-SNAPSHOT @ C:\olaf\MDSL\dsl-core\io.mdsl.ui.tests\pom.xml
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] io.mdsl.parent                                                     [pom]
+[INFO] io.mdsl                                                 [eclipse-plugin]
+[INFO] io.mdsl.ide                                             [eclipse-plugin]
+[INFO] io.mdsl.cli                                                        [jar]
+[INFO] io.mdsl.ui                                              [eclipse-plugin]
+[INFO] io.mdsl.target                               [eclipse-target-definition]
+[INFO] io.mdsl.feature                                        [eclipse-feature]
+[INFO] io.mdsl.repository                                  [eclipse-repository]
+[INFO] io.mdsl.tests                                      [eclipse-test-plugin]
+[INFO] io.mdsl.ui.tests                                   [eclipse-test-plugin]
+[INFO] 
+[INFO] -----------------------< io.mdsl:io.mdsl.parent >-----------------------
+[INFO] Building io.mdsl.parent 4.0.0-SNAPSHOT                            [1/10]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ io.mdsl.parent ---
+[INFO] 
+[INFO] --- tycho-source-plugin:1.7.0:plugin-source (plugin-source) @ io.mdsl.parent ---
+[INFO] 
+[INFO] --- tycho-source-feature-plugin:1.7.0:source-feature (source-feature) @ io.mdsl.parent ---
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:p2-metadata (attach-p2-metadata) @ io.mdsl.parent ---
+[INFO] 
+[INFO] --------------------------< io.mdsl:io.mdsl >---------------------------
+[INFO] Building io.mdsl 4.0.0-SNAPSHOT                                   [2/10]
+[INFO] ---------------------------[ eclipse-plugin ]---------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ io.mdsl ---
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl\target
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl\xtend-gen (includes = [**/*], excludes = [])
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl\..\io.mdsl\src-gen (includes = [**/*], excludes = [])
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl\..\io.mdsl.tests\src-gen (includes = [**/*], excludes = [])
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl\..\io.mdsl.ide\src-gen (includes = [**/*], excludes = [])
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl\..\io.mdsl.ui\src-gen (includes = [**/*], excludes = [])
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl\..\io.mdsl.ui.tests\src-gen (includes = [**/*], excludes = [])
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl\model\generated (includes = [], excludes = [])
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:build-qualifier (default-build-qualifier) @ io.mdsl ---
+[INFO] The project's OSGi version is 4.0.0.202008310906
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:validate-id (default-validate-id) @ io.mdsl ---
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:validate-version (default-validate-version) @ io.mdsl ---
+[INFO] 
+[INFO] --- exec-maven-plugin:1.6.0:java (mwe2Launcher) @ io.mdsl ---
+0    INFO  XtextGenerator     - Initializing Xtext generator
+1310 INFO  XtextGenerator     - Generating io.mdsl.APIDescription
+5671 INFO  EMFGeneratorFragment2 - Generating EMF model code
+12085 INFO  XtextGenerator     - Generating common infrastructure
+12113 INFO  Workflow           - Done.
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:compile (default) @ io.mdsl ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ io.mdsl ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\olaf\MDSL\dsl-core\io.mdsl\src\main\resources
+[INFO] 
+[INFO] --- tycho-compiler-plugin:1.7.0:compile (default-compile) @ io.mdsl ---
+[INFO] Compiling 197 source files to C:\olaf\MDSL\dsl-core\io.mdsl\target\classes
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:xtend-install-debug-info (default) @ io.mdsl ---
+[WARNING] Directory C:\olaf\MDSL\dsl-core\io.mdsl\src\main\java is empty. Can't process.
+[INFO] Installing Xtend files into 0 class files as secondary (via SMAP) debug sources in: C:\olaf\MDSL\dsl-core\io.mdsl\target\classes
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:testCompile (default) @ io.mdsl ---
+[INFO] skip compiling sources because the configured directory '[C:\olaf\MDSL\dsl-core\io.mdsl\src\test\java]' does not exist.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:testResources (default-testResources) @ io.mdsl ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\olaf\MDSL\dsl-core\io.mdsl\src\test\resources
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:xtend-test-install-debug-info (default) @ io.mdsl ---
+[WARNING] Directory C:\olaf\MDSL\dsl-core\io.mdsl\src\test\java is empty. Can't process.
+[INFO] Installing Xtend files into 0 class files as secondary (via SMAP) debug sources in: C:\olaf\MDSL\dsl-core\io.mdsl\target\test-classes
+[INFO] 
+[INFO] --- tycho-source-plugin:1.7.0:plugin-source (plugin-source) @ io.mdsl ---
+[INFO] Building jar: C:\olaf\MDSL\dsl-core\io.mdsl\target\io.mdsl-4.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- target-platform-configuration:1.7.0:target-platform (default-target-platform) @ io.mdsl ---
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:package-plugin (default-package-plugin) @ io.mdsl ---
+[INFO] Building jar: C:\olaf\MDSL\dsl-core\io.mdsl\target\io.mdsl-4.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:p2-metadata-default (default-p2-metadata-default) @ io.mdsl ---
+[INFO] 
+[INFO] --- tycho-source-feature-plugin:1.7.0:source-feature (source-feature) @ io.mdsl ---
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:p2-metadata (attach-p2-metadata) @ io.mdsl ---
+[INFO] 
+[INFO] ------------------------< io.mdsl:io.mdsl.ide >-------------------------
+[INFO] Building io.mdsl.ide 4.0.0-SNAPSHOT                               [3/10]
+[INFO] ---------------------------[ eclipse-plugin ]---------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ io.mdsl.ide ---
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl.ide\target
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl.ide\xtend-gen (includes = [**/*], excludes = [])
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:build-qualifier (default-build-qualifier) @ io.mdsl.ide ---
+[INFO] The project's OSGi version is 4.0.0.202008310906
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:validate-id (default-validate-id) @ io.mdsl.ide ---
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:validate-version (default-validate-version) @ io.mdsl.ide ---
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:compile (default) @ io.mdsl.ide ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ io.mdsl.ide ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\olaf\MDSL\dsl-core\io.mdsl.ide\src\main\resources
+[INFO] 
+[INFO] --- tycho-compiler-plugin:1.7.0:compile (default-compile) @ io.mdsl.ide ---
+[INFO] Compiling 7 source files to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\classes
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:xtend-install-debug-info (default) @ io.mdsl.ide ---
+[WARNING] Directory C:\olaf\MDSL\dsl-core\io.mdsl.ide\src\main\java is empty. Can't process.
+[INFO] Installing Xtend files into 0 class files as secondary (via SMAP) debug sources in: C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\classes
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:testCompile (default) @ io.mdsl.ide ---
+[INFO] skip compiling sources because the configured directory '[C:\olaf\MDSL\dsl-core\io.mdsl.ide\src\test\java]' does not exist.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:testResources (default-testResources) @ io.mdsl.ide ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\olaf\MDSL\dsl-core\io.mdsl.ide\src\test\resources
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:xtend-test-install-debug-info (default) @ io.mdsl.ide ---
+[WARNING] Directory C:\olaf\MDSL\dsl-core\io.mdsl.ide\src\test\java is empty. Can't process.
+[INFO] Installing Xtend files into 0 class files as secondary (via SMAP) debug sources in: C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\test-classes
+[INFO] 
+[INFO] --- tycho-source-plugin:1.7.0:plugin-source (plugin-source) @ io.mdsl.ide ---
+[INFO] Building jar: C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\io.mdsl.ide-4.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- target-platform-configuration:1.7.0:target-platform (default-target-platform) @ io.mdsl.ide ---
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:package-plugin (default-package-plugin) @ io.mdsl.ide ---
+[INFO] Building jar: C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\io.mdsl.ide-4.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:p2-metadata-default (default-p2-metadata-default) @ io.mdsl.ide ---
+[INFO] 
+[INFO] --- tycho-source-feature-plugin:1.7.0:source-feature (source-feature) @ io.mdsl.ide ---
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:p2-metadata (attach-p2-metadata) @ io.mdsl.ide ---
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:copy-dependencies (copy-dependencies) @ io.mdsl.ide ---
+[INFO] Copying org.apache.xmlgraphics-2.3.0.v20190515-0436.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.xmlgraphics-2.3.0.v20190515-0436.jar
+[INFO] Copying org.eclipse.e4.ui.workbench3-0.15.400.v20191216-0805.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.workbench3-0.15.400.v20191216-0805.jar
+[INFO] Copying org.eclipse.xtend.lib-2.21.0.v20200302-1127.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtend.lib-2.21.0.v20200302-1127.jar
+[INFO] Copying org.eclipse.osgi.services-3.8.0.v20190206-2147.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.osgi.services-3.8.0.v20190206-2147.jar
+[INFO] Copying io.github.classgraph-4.8.35.v20190528-1517.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.github.classgraph-4.8.35.v20190528-1517.jar
+[INFO] Copying org.slf4j.api-1.7.30.v20200204-2150.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.slf4j.api-1.7.30.v20200204-2150.jar
+[INFO] Copying org.eclipse.emf.common-2.18.0.v20191225-1014.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.emf.common-2.18.0.v20191225-1014.jar
+[INFO] Copying org.eclipse.equinox.launcher.gtk.linux.x86_64-1.1.1100.v20190907-0426.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.launcher.gtk.linux.x86_64-1.1.1100.v20190907-0426.jar
+[INFO] Copying org.apache.commons.io-2.6.0.v20190123-2029.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.commons.io-2.6.0.v20190123-2029.jar
+[INFO] Copying org.eclipse.swt.gtk.linux.x86_64-3.114.0.v20200304-0601.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.swt.gtk.linux.x86_64-3.114.0.v20200304-0601.jar
+[INFO] Copying org.eclipse.e4.ui.workbench.renderers.swt-0.14.1100.v20200217-1217.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.workbench.renderers.swt-0.14.1100.v20200217-1217.jar
+[INFO] Copying org.eclipse.equinox.console-1.4.0.v20190819-1430.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.console-1.4.0.v20190819-1430.jar
+[INFO] Copying org.apache.felix.gogo.runtime-1.1.0.v20180713-1646.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.felix.gogo.runtime-1.1.0.v20180713-1646.jar
+[INFO] Copying org.eclipse.e4.ui.di-1.2.800.v20200128-0855.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.di-1.2.800.v20200128-0855.jar
+[INFO] Copying com.fasterxml.jackson.core.jackson-core-2.10.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.fasterxml.jackson.core.jackson-core-2.10.2.jar
+[INFO] Copying io.swagger.parser.v3.swagger-parser-v3-2.0.20.20200817091242.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.swagger.parser.v3.swagger-parser-v3-2.0.20.20200817091242.jar
+[INFO] Copying org.eclipse.osgi-3.15.200.v20200214-1600.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.osgi-3.15.200.v20200214-1600.jar
+[INFO] Copying org.eclipse.equinox.launcher.cocoa.macosx.x86_64-1.1.1100.v20190907-0426.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.launcher.cocoa.macosx.x86_64-1.1.1100.v20190907-0426.jar
+[INFO] Copying org.eclipse.core.databinding.observable-1.9.0.v20200205-2119.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.core.databinding.observable-1.9.0.v20200205-2119.jar
+[INFO] Copying org.apache.log4j-1.2.15.v201012070815.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.log4j-1.2.15.v201012070815.jar
+[INFO] Copying org.apache.felix.gogo.command-1.0.2.v20170914-1324.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.felix.gogo.command-1.0.2.v20170914-1324.jar
+[INFO] Copying org.eclipse.emf.common-2.18.0.v20191225-1014.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.emf.common-2.18.0.v20191225-1014.jar
+[INFO] Copying org.eclipse.xtext-2.21.0.v20200302-1141.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext-2.21.0.v20200302-1141.jar
+[INFO] Copying org.w3c.dom.events-3.0.0.draft20060413_v201105210656.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.w3c.dom.events-3.0.0.draft20060413_v201105210656.jar
+[INFO] Copying org.eclipse.osgi.compatibility.state-1.1.700.v20200207-2156.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.osgi.compatibility.state-1.1.700.v20200207-2156.jar
+[INFO] Copying org.eclipse.xtext.xbase.lib-2.21.0.v20200302-1127.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext.xbase.lib-2.21.0.v20200302-1127.jar
+[INFO] Copying org.eclipse.equinox.launcher-1.5.700.v20200207-2156.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.launcher-1.5.700.v20200207-2156.jar
+[INFO] Copying com.fasterxml.jackson.core.jackson-databind-2.10.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.fasterxml.jackson.core.jackson-databind-2.10.2.jar
+[INFO] Copying org.eclipse.jface.databinding-1.11.0.v20200205-2119.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.jface.databinding-1.11.0.v20200205-2119.jar
+[INFO] Copying org.eclipse.xtext.logging-1.2.15.v20200302-1241.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext.logging-1.2.15.v20200302-1241.jar
+[INFO] Copying org.eclipse.e4.core.di.annotations-1.6.600.v20191216-2352.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.core.di.annotations-1.6.600.v20191216-2352.jar
+[INFO] Copying org.eclipse.e4.core.commands-0.12.900.v20200110-1732.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.core.commands-0.12.900.v20200110-1732.jar
+[INFO] Copying org.eclipse.e4.ui.workbench-1.11.200.v20200205-1503.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.workbench-1.11.200.v20200205-1503.jar
+[INFO] Copying org.eclipse.lsp4j-0.9.0.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.lsp4j-0.9.0.jar
+[INFO] Copying org.freemarker.freemarker-2.3.30.stable.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.freemarker.freemarker-2.3.30.stable.jar
+[INFO] Copying org.eclipse.e4.ui.model.workbench-2.1.700.v20200113-1422.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.model.workbench-2.1.700.v20200113-1422.jar
+[INFO] Copying org.eclipse.emf.ecore-2.21.0.v20200127-1342.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.emf.ecore-2.21.0.v20200127-1342.jar
+[INFO] Copying org.eclipse.osgi.util-3.5.300.v20190708-1141.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.osgi.util-3.5.300.v20190708-1141.jar
+[INFO] Copying org.eclipse.rcp-4.15.0.v20200305-0155.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.rcp-4.15.0.v20200305-0155.jar
+[INFO] Copying org.eclipse.e4.ui.workbench.renderers.swt.cocoa-0.12.500.v20200123-1115.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.workbench.renderers.swt.cocoa-0.12.500.v20200123-1115.jar
+[INFO] Copying org.eclipse.xtext.common.types-2.21.0.v20200302-1201.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext.common.types-2.21.0.v20200302-1201.jar
+[INFO] Copying javax.annotation-1.2.0.v201602091430.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\javax.annotation-1.2.0.v201602091430.jar
+[INFO] Copying org.eclipse.xtext.util-2.21.0.v20200302-1141.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext.util-2.21.0.v20200302-1141.jar
+[INFO] Copying com.sun.activation.jakarta.activation-1.2.1.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.sun.activation.jakarta.activation-1.2.1.jar
+[INFO] Copying org.apache.commons.jxpath-1.3.0.v200911051830.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.commons.jxpath-1.3.0.v200911051830.jar
+[INFO] Copying org.eclipse.e4.core.services-2.2.200.v20200127-0814.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.core.services-2.2.200.v20200127-0814.jar
+[INFO] Copying org.eclipse.jface-3.19.0.v20200218-1607.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.jface-3.19.0.v20200218-1607.jar
+[INFO] Copying org.eclipse.equinox.bidi-1.2.300.v20191213-1901.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.bidi-1.2.300.v20191213-1901.jar
+[INFO] Copying org.eclipse.e4.ui.css.swt-0.13.900.v20200203-0840.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.css.swt-0.13.900.v20200203-0840.jar
+[INFO] Copying io.swagger.core.v3.swagger-annotations-2.1.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.swagger.core.v3.swagger-annotations-2.1.2.jar
+[INFO] Copying org.eclipse.ui-3.116.0.v20200203-1308.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.ui-3.116.0.v20200203-1308.jar
+[INFO] Copying org.eclipse.e4.ui.workbench.addons.swt-1.3.800.v20191212-1231.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.workbench.addons.swt-1.3.800.v20191212-1231.jar
+[INFO] Copying org.eclipse.ui.workbench-3.118.0.v20200222-0719.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.ui.workbench-3.118.0.v20200222-0719.jar
+[INFO] Copying org.eclipse.update.configurator-3.4.500.v20200225-0827.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.update.configurator-3.4.500.v20200225-0827.jar
+[INFO] Copying com.google.guava-27.1.0.v20190517-1946.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.google.guava-27.1.0.v20190517-1946.jar
+[INFO] Copying jakarta.xml.bind-api-2.3.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\jakarta.xml.bind-api-2.3.2.jar
+[INFO] Copying org.eclipse.core.databinding.beans-1.6.100.v20191217-1850.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.core.databinding.beans-1.6.100.v20191217-1850.jar
+[INFO] Copying io.mdsl-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.mdsl-4.0.0-SNAPSHOT.jar
+[INFO] Copying org.eclipse.e4.ui.workbench.swt-0.14.900.v20200213-1442.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.workbench.swt-0.14.900.v20200213-1442.jar
+[INFO] Copying org.eclipse.equinox.simpleconfigurator-1.3.500.v20200211-1505.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.simpleconfigurator-1.3.500.v20200211-1505.jar
+[INFO] Copying org.eclipse.e4.core.di.extensions.supplier-0.15.500.v20200106-1259.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.core.di.extensions.supplier-0.15.500.v20200106-1259.jar
+[INFO] Copying org.eclipse.e4.rcp-4.15.0.v20200304-0601.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.rcp-4.15.0.v20200304-0601.jar
+[INFO] Copying log4j-1.2.17.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\log4j-1.2.17.jar
+[INFO] Copying org.eclipse.e4.ui.dialogs-1.1.700.v20200201-1719.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.dialogs-1.1.700.v20200201-1719.jar
+[INFO] Copying org.eclipse.swt.cocoa.macosx.x86_64-3.114.0.v20200304-0601.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.swt.cocoa.macosx.x86_64-3.114.0.v20200304-0601.jar
+[INFO] Copying com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.10.1.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.10.1.jar
+[INFO] Copying asm-7.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\asm-7.2.jar
+[INFO] Copying io.swagger.core.v3.swagger-core-2.1.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.swagger.core.v3.swagger-core-2.1.2.jar
+[INFO] Copying org.eclipse.e4.core.di-1.7.500.v20190916-2125.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.core.di-1.7.500.v20190916-2125.jar
+[INFO] Copying org.eclipse.xtext.xbase-2.21.0.v20200302-1201.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext.xbase-2.21.0.v20200302-1201.jar
+[INFO] Copying io.github.microservice-api-patterns.protobufgen-1.2.0.20200817091242.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.github.microservice-api-patterns.protobufgen-1.2.0.20200817091242.jar
+[INFO] Copying org.eclipse.xtext.ide-2.21.0.v20200302-1141.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext.ide-2.21.0.v20200302-1141.jar
+[INFO] Copying org.apache.felix.scr-2.1.16.v20200110-1820.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.felix.scr-2.1.16.v20200110-1820.jar
+[INFO] Copying org.eclipse.help-3.8.700.v20191212-1123.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.help-3.8.700.v20191212-1123.jar
+[INFO] Copying org.eclipse.ui.cocoa-1.2.400.v20191217-1850.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.ui.cocoa-1.2.400.v20191217-1850.jar
+[INFO] Copying org.eclipse.swt.win32.win32.x86_64-3.114.0.v20200304-0601.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.swt.win32.win32.x86_64-3.114.0.v20200304-0601.jar
+[INFO] Copying org.objectweb.asm-7.2.0.v20191010-1910.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.objectweb.asm-7.2.0.v20191010-1910.jar
+[INFO] Copying org.apache.batik.util-1.11.0.v20190515-0436.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.batik.util-1.11.0.v20190515-0436.jar
+[INFO] Copying org.apache.batik.constants-1.11.0.v20190515-0436.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.batik.constants-1.11.0.v20190515-0436.jar
+[INFO] Copying org.eclipse.equinox.common-3.11.0.v20200206-0817.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.common-3.11.0.v20200206-0817.jar
+[INFO] Copying org.eclipse.e4.core.contexts-1.8.400.v20191217-1710.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.core.contexts-1.8.400.v20191217-1710.jar
+[INFO] Copying asm-tree-7.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\asm-tree-7.2.jar
+[INFO] Copying org.apache.batik.css-1.11.0.v20190515-0436.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.batik.css-1.11.0.v20190515-0436.jar
+[INFO] Copying org.apache.commons.lang3-3.7.0.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.commons.lang3-3.7.0.jar
+[INFO] Copying com.fasterxml.jackson.dataformat.jackson-dataformat-yaml-2.10.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.fasterxml.jackson.dataformat.jackson-dataformat-yaml-2.10.2.jar
+[INFO] Copying org.eclipse.e4.ui.bindings-0.12.800.v20191216-0805.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.bindings-0.12.800.v20191216-0805.jar
+[INFO] Copying org.eclipse.e4.ui.css.swt.theme-0.12.600.v20200124-0005.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.css.swt.theme-0.12.600.v20200124-0005.jar
+[INFO] Copying io.swagger.core.v3.swagger-models-2.1.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.swagger.core.v3.swagger-models-2.1.2.jar
+[INFO] Copying asm-commons-7.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\asm-commons-7.2.jar
+[INFO] Copying io.swagger.parser.v3.swagger-parser-core-2.0.20.20200817091242.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.swagger.parser.v3.swagger-parser-core-2.0.20.20200817091242.jar
+[INFO] Copying org.w3c.dom.smil-1.0.1.v200903091627.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.w3c.dom.smil-1.0.1.v200903091627.jar
+[INFO] Copying org.eclipse.xtext.xbase.ide-2.21.0.v20200302-1201.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext.xbase.ide-2.21.0.v20200302-1201.jar
+[INFO] Copying org.eclipse.emf.ecore.change-2.14.0.v20190528-0725.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.emf.ecore.change-2.14.0.v20190528-0725.jar
+[INFO] Copying org.w3c.css.sac-1.3.1.v200903091627.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.w3c.css.sac-1.3.1.v200903091627.jar
+[INFO] Copying org.eclipse.core.databinding-1.8.0.v20200205-2008.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.core.databinding-1.8.0.v20200205-2008.jar
+[INFO] Copying com.fasterxml.jackson.core.jackson-annotations-2.10.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.fasterxml.jackson.core.jackson-annotations-2.10.2.jar
+[INFO] Copying org.eclipse.emf.ecore-2.21.0.v20200127-1342.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.emf.ecore-2.21.0.v20200127-1342.jar
+[INFO] Copying org.eclipse.equinox.launcher.win32.win32.x86_64-1.1.1100.v20190907-0426.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.launcher.win32.win32.x86_64-1.1.1100.v20190907-0426.jar
+[INFO] Copying jakarta.validation.jakarta.validation-api-2.0.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\jakarta.validation.jakarta.validation-api-2.0.2.jar
+[INFO] Copying org.yaml.snakeyaml-1.24.0.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.yaml.snakeyaml-1.24.0.jar
+[INFO] Copying org.eclipse.e4.ui.widgets-1.2.700.v20191222-1048.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.widgets-1.2.700.v20191222-1048.jar
+[INFO] Copying org.eclipse.core.databinding.property-1.8.0.v20200124-0715.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.core.databinding.property-1.8.0.v20200124-0715.jar
+[INFO] Copying org.eclipse.equinox.event-1.5.300.v20191001-1333.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.event-1.5.300.v20191001-1333.jar
+[INFO] Copying org.eclipse.e4.emf.xpath-0.2.600.v20191216-0805.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.emf.xpath-0.2.600.v20191216-0805.jar
+[INFO] Copying org.eclipse.swt-3.114.0.v20200304-0601.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.swt-3.114.0.v20200304-0601.jar
+[INFO] Copying org.eclipse.e4.ui.css.core-0.12.1000.v20200129-0903.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.css.core-0.12.1000.v20200129-0903.jar
+[INFO] Copying org.w3c.dom.svg-1.1.0.v201011041433.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.w3c.dom.svg-1.1.0.v201011041433.jar
+[INFO] Copying org.eclipse.rcp-4.15.0.v20200305-0155.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.rcp-4.15.0.v20200305-0155.jar
+[INFO] Copying org.eclipse.e4.ui.services-1.3.700.v20190930-1643.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.services-1.3.700.v20190930-1643.jar
+[INFO] Copying org.eclipse.emf.ecore.xmi-2.16.0.v20190528-0725.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.emf.ecore.xmi-2.16.0.v20190528-0725.jar
+[INFO] Copying org.antlr.runtime-3.2.0.v201101311130.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.antlr.runtime-3.2.0.v201101311130.jar
+[INFO] Copying org.apache.batik.i18n-1.11.0.v20190515-0436.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.batik.i18n-1.11.0.v20190515-0436.jar
+[INFO] Copying org.apache.felix.gogo.shell-1.1.0.v20180713-1646.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.felix.gogo.shell-1.1.0.v20180713-1646.jar
+[INFO] Copying com.google.inject-3.0.0.v201605172100.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.google.inject-3.0.0.v201605172100.jar
+[INFO] Copying org.eclipse.e4.ui.swt.gtk-1.0.600.v20190627-0755.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.swt.gtk-1.0.600.v20190627-0755.jar
+[INFO] Copying org.eclipse.xtend.lib.macro-2.21.0.v20200302-1127.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtend.lib.macro-2.21.0.v20200302-1127.jar
+[INFO] Copying org.eclipse.e4.core.di.extensions-0.15.500.v20200106-1259.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.core.di.extensions-0.15.500.v20200106-1259.jar
+[INFO] Copying javax.inject-1.0.0.v20091030.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\javax.inject-1.0.0.v20091030.jar
+[INFO] 
+[INFO] --- addjars-maven-plugin:1.0.5:add-jars (default) @ io.mdsl.ide ---
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\asm-7.2.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-asm-7.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-asm-7.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-asm-7.2.jar6373370183645999032.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-asm-7.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-asm-7.2.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\asm-commons-7.2.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-asm-commons-7.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-asm-commons-7.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-asm-commons-7.2.jar16504597907923349859.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-asm-commons-7.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-asm-commons-7.2.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\asm-tree-7.2.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-asm-tree-7.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-asm-tree-7.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-asm-tree-7.2.jar1352557156989708063.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-asm-tree-7.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-asm-tree-7.2.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.fasterxml.jackson.core.jackson-annotations-2.10.2.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.core.jackson-annotations-2.10.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.core.jackson-annotations-2.10.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-com.fasterxml.jackson.core.jackson-annotations-2.10.2.jar15547877874504853839.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.core.jackson-annotations-2.10.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.core.jackson-annotations-2.10.2.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.fasterxml.jackson.core.jackson-core-2.10.2.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.core.jackson-core-2.10.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.core.jackson-core-2.10.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-com.fasterxml.jackson.core.jackson-core-2.10.2.jar915244575751537989.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.core.jackson-core-2.10.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.core.jackson-core-2.10.2.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.fasterxml.jackson.core.jackson-databind-2.10.2.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.core.jackson-databind-2.10.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.core.jackson-databind-2.10.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-com.fasterxml.jackson.core.jackson-databind-2.10.2.jar14594490784157865172.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.core.jackson-databind-2.10.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.core.jackson-databind-2.10.2.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.fasterxml.jackson.dataformat.jackson-dataformat-yaml-2.10.2.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.dataformat.jackson-dataformat-yaml-2.10.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.dataformat.jackson-dataformat-yaml-2.10.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-com.fasterxml.jackson.dataformat.jackson-dataformat-yaml-2.10.2.jar2318852287001398165.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.dataformat.jackson-dataformat-yaml-2.10.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.dataformat.jackson-dataformat-yaml-2.10.2.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.10.1.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.10.1.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.10.1.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.10.1.jar635768042753784780.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.10.1.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.10.1.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.google.guava-27.1.0.v20190517-1946.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.google.guava-27.1.0.v20190517-1946.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.google.guava-27.1.0.v20190517-1946.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-com.google.guava-27.1.0.v20190517-1946.jar3685942829995293508.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.google.guava-27.1.0.v20190517-1946.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.google.guava-27.1.0.v20190517-1946.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.google.inject-3.0.0.v201605172100.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.google.inject-3.0.0.v201605172100.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.google.inject-3.0.0.v201605172100.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-com.google.inject-3.0.0.v201605172100.jar898902657424676787.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.google.inject-3.0.0.v201605172100.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.google.inject-3.0.0.v201605172100.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\com.sun.activation.jakarta.activation-1.2.1.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.sun.activation.jakarta.activation-1.2.1.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.sun.activation.jakarta.activation-1.2.1.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-com.sun.activation.jakarta.activation-1.2.1.jar13098712041072543168.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.sun.activation.jakarta.activation-1.2.1.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.sun.activation.jakarta.activation-1.2.1.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.github.classgraph-4.8.35.v20190528-1517.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.github.classgraph-4.8.35.v20190528-1517.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.github.classgraph-4.8.35.v20190528-1517.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-io.github.classgraph-4.8.35.v20190528-1517.jar535960135733544172.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.github.classgraph-4.8.35.v20190528-1517.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.github.classgraph-4.8.35.v20190528-1517.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.github.microservice-api-patterns.protobufgen-1.2.0.20200817091242.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.github.microservice-api-patterns.protobufgen-1.2.0.20200817091242.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.github.microservice-api-patterns.protobufgen-1.2.0.20200817091242.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-io.github.microservice-api-patterns.protobufgen-1.2.0.20200817091242.jar2568150730077684520.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.github.microservice-api-patterns.protobufgen-1.2.0.20200817091242.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.github.microservice-api-patterns.protobufgen-1.2.0.20200817091242.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.mdsl-4.0.0-SNAPSHOT.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.mdsl-4.0.0-SNAPSHOT.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.mdsl-4.0.0-SNAPSHOT.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-io.mdsl-4.0.0-SNAPSHOT.jar16163454569127886186.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.mdsl-4.0.0-SNAPSHOT.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.mdsl-4.0.0-SNAPSHOT.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.swagger.core.v3.swagger-annotations-2.1.2.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.core.v3.swagger-annotations-2.1.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.core.v3.swagger-annotations-2.1.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-io.swagger.core.v3.swagger-annotations-2.1.2.jar6164311865225190858.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.core.v3.swagger-annotations-2.1.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.core.v3.swagger-annotations-2.1.2.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.swagger.core.v3.swagger-core-2.1.2.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.core.v3.swagger-core-2.1.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.core.v3.swagger-core-2.1.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-io.swagger.core.v3.swagger-core-2.1.2.jar7366453148083378553.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.core.v3.swagger-core-2.1.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.core.v3.swagger-core-2.1.2.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.swagger.core.v3.swagger-models-2.1.2.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.core.v3.swagger-models-2.1.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.core.v3.swagger-models-2.1.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-io.swagger.core.v3.swagger-models-2.1.2.jar15746072277948849592.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.core.v3.swagger-models-2.1.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.core.v3.swagger-models-2.1.2.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.swagger.parser.v3.swagger-parser-core-2.0.20.20200817091242.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-core-2.0.20.20200817091242.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-core-2.0.20.20200817091242.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-core-2.0.20.20200817091242.jar4527809623154433612.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-core-2.0.20.20200817091242.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-core-2.0.20.20200817091242.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\io.swagger.parser.v3.swagger-parser-v3-2.0.20.20200817091242.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-v3-2.0.20.20200817091242.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-v3-2.0.20.20200817091242.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-v3-2.0.20.20200817091242.jar101436660102176797.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-v3-2.0.20.20200817091242.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-v3-2.0.20.20200817091242.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\jakarta.validation.jakarta.validation-api-2.0.2.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-jakarta.validation.jakarta.validation-api-2.0.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-jakarta.validation.jakarta.validation-api-2.0.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-jakarta.validation.jakarta.validation-api-2.0.2.jar17734602689555078695.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-jakarta.validation.jakarta.validation-api-2.0.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-jakarta.validation.jakarta.validation-api-2.0.2.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\jakarta.xml.bind-api-2.3.2.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-jakarta.xml.bind-api-2.3.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-jakarta.xml.bind-api-2.3.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-jakarta.xml.bind-api-2.3.2.jar10257611105737401013.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-jakarta.xml.bind-api-2.3.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-jakarta.xml.bind-api-2.3.2.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\javax.annotation-1.2.0.v201602091430.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-javax.annotation-1.2.0.v201602091430.jar\4.0.0-SNAPSHOT\io.mdsl.ide-javax.annotation-1.2.0.v201602091430.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-javax.annotation-1.2.0.v201602091430.jar158734337934490742.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-javax.annotation-1.2.0.v201602091430.jar\4.0.0-SNAPSHOT\io.mdsl.ide-javax.annotation-1.2.0.v201602091430.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\javax.inject-1.0.0.v20091030.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-javax.inject-1.0.0.v20091030.jar\4.0.0-SNAPSHOT\io.mdsl.ide-javax.inject-1.0.0.v20091030.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-javax.inject-1.0.0.v20091030.jar16259675784536429913.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-javax.inject-1.0.0.v20091030.jar\4.0.0-SNAPSHOT\io.mdsl.ide-javax.inject-1.0.0.v20091030.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\log4j-1.2.17.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-log4j-1.2.17.jar\4.0.0-SNAPSHOT\io.mdsl.ide-log4j-1.2.17.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-log4j-1.2.17.jar2149977892074903608.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-log4j-1.2.17.jar\4.0.0-SNAPSHOT\io.mdsl.ide-log4j-1.2.17.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.antlr.runtime-3.2.0.v201101311130.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.antlr.runtime-3.2.0.v201101311130.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.antlr.runtime-3.2.0.v201101311130.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.antlr.runtime-3.2.0.v201101311130.jar2283972016765784092.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.antlr.runtime-3.2.0.v201101311130.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.antlr.runtime-3.2.0.v201101311130.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.batik.constants-1.11.0.v20190515-0436.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.batik.constants-1.11.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.batik.constants-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.apache.batik.constants-1.11.0.v20190515-0436.jar11401035162109489346.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.batik.constants-1.11.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.batik.constants-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.batik.css-1.11.0.v20190515-0436.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.batik.css-1.11.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.batik.css-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.apache.batik.css-1.11.0.v20190515-0436.jar4251351753733831507.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.batik.css-1.11.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.batik.css-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.batik.i18n-1.11.0.v20190515-0436.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.batik.i18n-1.11.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.batik.i18n-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.apache.batik.i18n-1.11.0.v20190515-0436.jar9462246228044645601.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.batik.i18n-1.11.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.batik.i18n-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.batik.util-1.11.0.v20190515-0436.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.batik.util-1.11.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.batik.util-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.apache.batik.util-1.11.0.v20190515-0436.jar14886608039792551778.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.batik.util-1.11.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.batik.util-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.commons.io-2.6.0.v20190123-2029.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.commons.io-2.6.0.v20190123-2029.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.commons.io-2.6.0.v20190123-2029.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.apache.commons.io-2.6.0.v20190123-2029.jar9989277302642200410.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.commons.io-2.6.0.v20190123-2029.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.commons.io-2.6.0.v20190123-2029.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.commons.jxpath-1.3.0.v200911051830.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.commons.jxpath-1.3.0.v200911051830.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.commons.jxpath-1.3.0.v200911051830.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.apache.commons.jxpath-1.3.0.v200911051830.jar6299680495237652822.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.commons.jxpath-1.3.0.v200911051830.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.commons.jxpath-1.3.0.v200911051830.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.commons.lang3-3.7.0.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.commons.lang3-3.7.0.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.commons.lang3-3.7.0.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.apache.commons.lang3-3.7.0.jar6271223633205373885.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.commons.lang3-3.7.0.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.commons.lang3-3.7.0.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.felix.gogo.command-1.0.2.v20170914-1324.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.felix.gogo.command-1.0.2.v20170914-1324.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.felix.gogo.command-1.0.2.v20170914-1324.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.apache.felix.gogo.command-1.0.2.v20170914-1324.jar9728234762568334649.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.felix.gogo.command-1.0.2.v20170914-1324.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.felix.gogo.command-1.0.2.v20170914-1324.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.felix.gogo.runtime-1.1.0.v20180713-1646.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.felix.gogo.runtime-1.1.0.v20180713-1646.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.felix.gogo.runtime-1.1.0.v20180713-1646.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.apache.felix.gogo.runtime-1.1.0.v20180713-1646.jar5766843242422888639.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.felix.gogo.runtime-1.1.0.v20180713-1646.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.felix.gogo.runtime-1.1.0.v20180713-1646.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.felix.gogo.shell-1.1.0.v20180713-1646.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.felix.gogo.shell-1.1.0.v20180713-1646.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.felix.gogo.shell-1.1.0.v20180713-1646.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.apache.felix.gogo.shell-1.1.0.v20180713-1646.jar14646483296086861871.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.felix.gogo.shell-1.1.0.v20180713-1646.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.felix.gogo.shell-1.1.0.v20180713-1646.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.felix.scr-2.1.16.v20200110-1820.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.felix.scr-2.1.16.v20200110-1820.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.felix.scr-2.1.16.v20200110-1820.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.apache.felix.scr-2.1.16.v20200110-1820.jar4786269952856755221.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.felix.scr-2.1.16.v20200110-1820.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.felix.scr-2.1.16.v20200110-1820.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.log4j-1.2.15.v201012070815.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.log4j-1.2.15.v201012070815.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.log4j-1.2.15.v201012070815.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.apache.log4j-1.2.15.v201012070815.jar6604949816605079641.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.log4j-1.2.15.v201012070815.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.log4j-1.2.15.v201012070815.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.apache.xmlgraphics-2.3.0.v20190515-0436.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.xmlgraphics-2.3.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.xmlgraphics-2.3.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.apache.xmlgraphics-2.3.0.v20190515-0436.jar5900413794583046057.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.xmlgraphics-2.3.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.xmlgraphics-2.3.0.v20190515-0436.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.core.databinding-1.8.0.v20200205-2008.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.core.databinding-1.8.0.v20200205-2008.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.core.databinding-1.8.0.v20200205-2008.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.core.databinding-1.8.0.v20200205-2008.jar530248246835965916.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.core.databinding-1.8.0.v20200205-2008.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.core.databinding-1.8.0.v20200205-2008.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.core.databinding.beans-1.6.100.v20191217-1850.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.core.databinding.beans-1.6.100.v20191217-1850.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.core.databinding.beans-1.6.100.v20191217-1850.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.core.databinding.beans-1.6.100.v20191217-1850.jar5315535619339178223.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.core.databinding.beans-1.6.100.v20191217-1850.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.core.databinding.beans-1.6.100.v20191217-1850.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.core.databinding.observable-1.9.0.v20200205-2119.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.core.databinding.observable-1.9.0.v20200205-2119.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.core.databinding.observable-1.9.0.v20200205-2119.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.core.databinding.observable-1.9.0.v20200205-2119.jar10521763673921736953.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.core.databinding.observable-1.9.0.v20200205-2119.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.core.databinding.observable-1.9.0.v20200205-2119.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.core.databinding.property-1.8.0.v20200124-0715.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.core.databinding.property-1.8.0.v20200124-0715.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.core.databinding.property-1.8.0.v20200124-0715.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.core.databinding.property-1.8.0.v20200124-0715.jar9620953751569627094.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.core.databinding.property-1.8.0.v20200124-0715.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.core.databinding.property-1.8.0.v20200124-0715.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.core.commands-0.12.900.v20200110-1732.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.commands-0.12.900.v20200110-1732.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.commands-0.12.900.v20200110-1732.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.core.commands-0.12.900.v20200110-1732.jar161846119774392152.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.commands-0.12.900.v20200110-1732.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.commands-0.12.900.v20200110-1732.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.core.contexts-1.8.400.v20191217-1710.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.contexts-1.8.400.v20191217-1710.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.contexts-1.8.400.v20191217-1710.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.core.contexts-1.8.400.v20191217-1710.jar11780592537087883000.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.contexts-1.8.400.v20191217-1710.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.contexts-1.8.400.v20191217-1710.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.core.di-1.7.500.v20190916-2125.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.di-1.7.500.v20190916-2125.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.di-1.7.500.v20190916-2125.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.core.di-1.7.500.v20190916-2125.jar5627434576661532943.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.di-1.7.500.v20190916-2125.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.di-1.7.500.v20190916-2125.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.core.di.annotations-1.6.600.v20191216-2352.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.di.annotations-1.6.600.v20191216-2352.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.di.annotations-1.6.600.v20191216-2352.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.core.di.annotations-1.6.600.v20191216-2352.jar6313631361229764466.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.di.annotations-1.6.600.v20191216-2352.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.di.annotations-1.6.600.v20191216-2352.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.core.di.extensions-0.15.500.v20200106-1259.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.di.extensions-0.15.500.v20200106-1259.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.di.extensions-0.15.500.v20200106-1259.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.core.di.extensions-0.15.500.v20200106-1259.jar8716550220341929520.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.di.extensions-0.15.500.v20200106-1259.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.di.extensions-0.15.500.v20200106-1259.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.core.di.extensions.supplier-0.15.500.v20200106-1259.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.di.extensions.supplier-0.15.500.v20200106-1259.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.di.extensions.supplier-0.15.500.v20200106-1259.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.core.di.extensions.supplier-0.15.500.v20200106-1259.jar12704706549783028417.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.di.extensions.supplier-0.15.500.v20200106-1259.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.di.extensions.supplier-0.15.500.v20200106-1259.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.core.services-2.2.200.v20200127-0814.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.services-2.2.200.v20200127-0814.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.services-2.2.200.v20200127-0814.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.core.services-2.2.200.v20200127-0814.jar17372971065933519894.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.services-2.2.200.v20200127-0814.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.services-2.2.200.v20200127-0814.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.emf.xpath-0.2.600.v20191216-0805.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.emf.xpath-0.2.600.v20191216-0805.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.emf.xpath-0.2.600.v20191216-0805.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.emf.xpath-0.2.600.v20191216-0805.jar1519916872107861658.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.emf.xpath-0.2.600.v20191216-0805.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.emf.xpath-0.2.600.v20191216-0805.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.rcp-4.15.0.v20200304-0601.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.rcp-4.15.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.rcp-4.15.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.rcp-4.15.0.v20200304-0601.jar15995219786228425490.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.rcp-4.15.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.rcp-4.15.0.v20200304-0601.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.bindings-0.12.800.v20191216-0805.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.bindings-0.12.800.v20191216-0805.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.bindings-0.12.800.v20191216-0805.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.bindings-0.12.800.v20191216-0805.jar3204454588675281049.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.bindings-0.12.800.v20191216-0805.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.bindings-0.12.800.v20191216-0805.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.css.core-0.12.1000.v20200129-0903.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.css.core-0.12.1000.v20200129-0903.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.css.core-0.12.1000.v20200129-0903.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.css.core-0.12.1000.v20200129-0903.jar3764232477287455742.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.css.core-0.12.1000.v20200129-0903.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.css.core-0.12.1000.v20200129-0903.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.css.swt-0.13.900.v20200203-0840.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.css.swt-0.13.900.v20200203-0840.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.css.swt-0.13.900.v20200203-0840.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.css.swt-0.13.900.v20200203-0840.jar4355452472718181963.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.css.swt-0.13.900.v20200203-0840.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.css.swt-0.13.900.v20200203-0840.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.css.swt.theme-0.12.600.v20200124-0005.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.css.swt.theme-0.12.600.v20200124-0005.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.css.swt.theme-0.12.600.v20200124-0005.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.css.swt.theme-0.12.600.v20200124-0005.jar3749490300961952693.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.css.swt.theme-0.12.600.v20200124-0005.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.css.swt.theme-0.12.600.v20200124-0005.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.di-1.2.800.v20200128-0855.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.di-1.2.800.v20200128-0855.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.di-1.2.800.v20200128-0855.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.di-1.2.800.v20200128-0855.jar26673146860513069.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.di-1.2.800.v20200128-0855.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.di-1.2.800.v20200128-0855.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.dialogs-1.1.700.v20200201-1719.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.dialogs-1.1.700.v20200201-1719.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.dialogs-1.1.700.v20200201-1719.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.dialogs-1.1.700.v20200201-1719.jar9116859904350807208.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.dialogs-1.1.700.v20200201-1719.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.dialogs-1.1.700.v20200201-1719.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.model.workbench-2.1.700.v20200113-1422.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.model.workbench-2.1.700.v20200113-1422.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.model.workbench-2.1.700.v20200113-1422.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.model.workbench-2.1.700.v20200113-1422.jar8979875333035602890.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.model.workbench-2.1.700.v20200113-1422.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.model.workbench-2.1.700.v20200113-1422.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.services-1.3.700.v20190930-1643.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.services-1.3.700.v20190930-1643.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.services-1.3.700.v20190930-1643.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.services-1.3.700.v20190930-1643.jar15786690695269054156.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.services-1.3.700.v20190930-1643.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.services-1.3.700.v20190930-1643.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.swt.gtk-1.0.600.v20190627-0755.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.swt.gtk-1.0.600.v20190627-0755.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.swt.gtk-1.0.600.v20190627-0755.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.swt.gtk-1.0.600.v20190627-0755.jar15554939478166242339.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.swt.gtk-1.0.600.v20190627-0755.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.swt.gtk-1.0.600.v20190627-0755.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.widgets-1.2.700.v20191222-1048.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.widgets-1.2.700.v20191222-1048.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.widgets-1.2.700.v20191222-1048.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.widgets-1.2.700.v20191222-1048.jar5562250184061502066.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.widgets-1.2.700.v20191222-1048.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.widgets-1.2.700.v20191222-1048.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.workbench-1.11.200.v20200205-1503.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench-1.11.200.v20200205-1503.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench-1.11.200.v20200205-1503.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.workbench-1.11.200.v20200205-1503.jar9358399431294565652.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench-1.11.200.v20200205-1503.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench-1.11.200.v20200205-1503.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.workbench.addons.swt-1.3.800.v20191212-1231.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench.addons.swt-1.3.800.v20191212-1231.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench.addons.swt-1.3.800.v20191212-1231.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.workbench.addons.swt-1.3.800.v20191212-1231.jar16149360266564287864.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench.addons.swt-1.3.800.v20191212-1231.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench.addons.swt-1.3.800.v20191212-1231.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.workbench.renderers.swt-0.14.1100.v20200217-1217.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt-0.14.1100.v20200217-1217.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt-0.14.1100.v20200217-1217.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt-0.14.1100.v20200217-1217.jar2548367801506548268.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt-0.14.1100.v20200217-1217.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt-0.14.1100.v20200217-1217.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.workbench.renderers.swt.cocoa-0.12.500.v20200123-1115.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt.cocoa-0.12.500.v20200123-1115.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt.cocoa-0.12.500.v20200123-1115.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt.cocoa-0.12.500.v20200123-1115.jar3743879526113111293.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt.cocoa-0.12.500.v20200123-1115.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt.cocoa-0.12.500.v20200123-1115.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.workbench.swt-0.14.900.v20200213-1442.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench.swt-0.14.900.v20200213-1442.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench.swt-0.14.900.v20200213-1442.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.workbench.swt-0.14.900.v20200213-1442.jar12542914482787686736.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench.swt-0.14.900.v20200213-1442.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench.swt-0.14.900.v20200213-1442.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.e4.ui.workbench3-0.15.400.v20191216-0805.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench3-0.15.400.v20191216-0805.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench3-0.15.400.v20191216-0805.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.e4.ui.workbench3-0.15.400.v20191216-0805.jar14788702860709529116.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench3-0.15.400.v20191216-0805.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench3-0.15.400.v20191216-0805.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.emf.common-2.18.0.v20191225-1014.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.emf.common-2.18.0.v20191225-1014.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.emf.common-2.18.0.v20191225-1014.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.emf.common-2.18.0.v20191225-1014.jar16065933484319303664.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.emf.common-2.18.0.v20191225-1014.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.emf.common-2.18.0.v20191225-1014.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.emf.ecore-2.21.0.v20200127-1342.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.emf.ecore-2.21.0.v20200127-1342.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.emf.ecore-2.21.0.v20200127-1342.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.emf.ecore-2.21.0.v20200127-1342.jar5020819285606080533.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.emf.ecore-2.21.0.v20200127-1342.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.emf.ecore-2.21.0.v20200127-1342.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.emf.ecore.change-2.14.0.v20190528-0725.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.emf.ecore.change-2.14.0.v20190528-0725.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.emf.ecore.change-2.14.0.v20190528-0725.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.emf.ecore.change-2.14.0.v20190528-0725.jar14421692609990395822.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.emf.ecore.change-2.14.0.v20190528-0725.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.emf.ecore.change-2.14.0.v20190528-0725.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.emf.ecore.xmi-2.16.0.v20190528-0725.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.emf.ecore.xmi-2.16.0.v20190528-0725.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.emf.ecore.xmi-2.16.0.v20190528-0725.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.emf.ecore.xmi-2.16.0.v20190528-0725.jar2053021308840524879.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.emf.ecore.xmi-2.16.0.v20190528-0725.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.emf.ecore.xmi-2.16.0.v20190528-0725.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.bidi-1.2.300.v20191213-1901.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.bidi-1.2.300.v20191213-1901.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.bidi-1.2.300.v20191213-1901.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.equinox.bidi-1.2.300.v20191213-1901.jar9982799118134357901.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.bidi-1.2.300.v20191213-1901.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.bidi-1.2.300.v20191213-1901.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.common-3.11.0.v20200206-0817.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.common-3.11.0.v20200206-0817.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.common-3.11.0.v20200206-0817.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.equinox.common-3.11.0.v20200206-0817.jar19673393216816395.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.common-3.11.0.v20200206-0817.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.common-3.11.0.v20200206-0817.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.console-1.4.0.v20190819-1430.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.console-1.4.0.v20190819-1430.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.console-1.4.0.v20190819-1430.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.equinox.console-1.4.0.v20190819-1430.jar9782770453701036718.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.console-1.4.0.v20190819-1430.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.console-1.4.0.v20190819-1430.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.event-1.5.300.v20191001-1333.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.event-1.5.300.v20191001-1333.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.event-1.5.300.v20191001-1333.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.equinox.event-1.5.300.v20191001-1333.jar706145780336660036.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.event-1.5.300.v20191001-1333.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.event-1.5.300.v20191001-1333.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.launcher-1.5.700.v20200207-2156.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.launcher-1.5.700.v20200207-2156.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.launcher-1.5.700.v20200207-2156.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.equinox.launcher-1.5.700.v20200207-2156.jar14509394079354092256.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.launcher-1.5.700.v20200207-2156.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.launcher-1.5.700.v20200207-2156.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.launcher.cocoa.macosx.x86_64-1.1.1100.v20190907-0426.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.launcher.cocoa.macosx.x86_64-1.1.1100.v20190907-0426.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.launcher.cocoa.macosx.x86_64-1.1.1100.v20190907-0426.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.equinox.launcher.cocoa.macosx.x86_64-1.1.1100.v20190907-0426.jar2487390682115019967.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.launcher.cocoa.macosx.x86_64-1.1.1100.v20190907-0426.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.launcher.cocoa.macosx.x86_64-1.1.1100.v20190907-0426.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.launcher.gtk.linux.x86_64-1.1.1100.v20190907-0426.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.launcher.gtk.linux.x86_64-1.1.1100.v20190907-0426.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.launcher.gtk.linux.x86_64-1.1.1100.v20190907-0426.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.equinox.launcher.gtk.linux.x86_64-1.1.1100.v20190907-0426.jar9844602773612327394.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.launcher.gtk.linux.x86_64-1.1.1100.v20190907-0426.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.launcher.gtk.linux.x86_64-1.1.1100.v20190907-0426.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.launcher.win32.win32.x86_64-1.1.1100.v20190907-0426.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.launcher.win32.win32.x86_64-1.1.1100.v20190907-0426.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.launcher.win32.win32.x86_64-1.1.1100.v20190907-0426.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.equinox.launcher.win32.win32.x86_64-1.1.1100.v20190907-0426.jar14159233140479865515.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.launcher.win32.win32.x86_64-1.1.1100.v20190907-0426.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.launcher.win32.win32.x86_64-1.1.1100.v20190907-0426.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.equinox.simpleconfigurator-1.3.500.v20200211-1505.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.simpleconfigurator-1.3.500.v20200211-1505.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.simpleconfigurator-1.3.500.v20200211-1505.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.equinox.simpleconfigurator-1.3.500.v20200211-1505.jar6135261725775248756.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.simpleconfigurator-1.3.500.v20200211-1505.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.simpleconfigurator-1.3.500.v20200211-1505.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.help-3.8.700.v20191212-1123.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.help-3.8.700.v20191212-1123.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.help-3.8.700.v20191212-1123.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.help-3.8.700.v20191212-1123.jar10270488244420831822.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.help-3.8.700.v20191212-1123.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.help-3.8.700.v20191212-1123.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.jface-3.19.0.v20200218-1607.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.jface-3.19.0.v20200218-1607.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.jface-3.19.0.v20200218-1607.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.jface-3.19.0.v20200218-1607.jar3091780374013545626.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.jface-3.19.0.v20200218-1607.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.jface-3.19.0.v20200218-1607.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.jface.databinding-1.11.0.v20200205-2119.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.jface.databinding-1.11.0.v20200205-2119.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.jface.databinding-1.11.0.v20200205-2119.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.jface.databinding-1.11.0.v20200205-2119.jar13322858556545312961.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.jface.databinding-1.11.0.v20200205-2119.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.jface.databinding-1.11.0.v20200205-2119.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.lsp4j-0.9.0.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.lsp4j-0.9.0.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.lsp4j-0.9.0.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.lsp4j-0.9.0.jar4743020750365380735.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.lsp4j-0.9.0.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.lsp4j-0.9.0.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.osgi-3.15.200.v20200214-1600.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.osgi-3.15.200.v20200214-1600.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.osgi-3.15.200.v20200214-1600.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.osgi-3.15.200.v20200214-1600.jar7262201161195142641.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.osgi-3.15.200.v20200214-1600.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.osgi-3.15.200.v20200214-1600.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.osgi.compatibility.state-1.1.700.v20200207-2156.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.osgi.compatibility.state-1.1.700.v20200207-2156.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.osgi.compatibility.state-1.1.700.v20200207-2156.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.osgi.compatibility.state-1.1.700.v20200207-2156.jar9053562275013371103.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.osgi.compatibility.state-1.1.700.v20200207-2156.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.osgi.compatibility.state-1.1.700.v20200207-2156.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.osgi.services-3.8.0.v20190206-2147.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.osgi.services-3.8.0.v20190206-2147.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.osgi.services-3.8.0.v20190206-2147.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.osgi.services-3.8.0.v20190206-2147.jar6340837875655383818.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.osgi.services-3.8.0.v20190206-2147.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.osgi.services-3.8.0.v20190206-2147.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.osgi.util-3.5.300.v20190708-1141.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.osgi.util-3.5.300.v20190708-1141.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.osgi.util-3.5.300.v20190708-1141.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.osgi.util-3.5.300.v20190708-1141.jar15345049153934314169.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.osgi.util-3.5.300.v20190708-1141.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.osgi.util-3.5.300.v20190708-1141.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.rcp-4.15.0.v20200305-0155.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.rcp-4.15.0.v20200305-0155.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.rcp-4.15.0.v20200305-0155.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.rcp-4.15.0.v20200305-0155.jar705696816065207906.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.rcp-4.15.0.v20200305-0155.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.rcp-4.15.0.v20200305-0155.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.swt-3.114.0.v20200304-0601.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.swt-3.114.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.swt-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.swt-3.114.0.v20200304-0601.jar1425770448725032318.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.swt-3.114.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.swt-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.swt.cocoa.macosx.x86_64-3.114.0.v20200304-0601.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.swt.cocoa.macosx.x86_64-3.114.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.swt.cocoa.macosx.x86_64-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.swt.cocoa.macosx.x86_64-3.114.0.v20200304-0601.jar12993352568657812833.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.swt.cocoa.macosx.x86_64-3.114.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.swt.cocoa.macosx.x86_64-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.swt.gtk.linux.x86_64-3.114.0.v20200304-0601.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.swt.gtk.linux.x86_64-3.114.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.swt.gtk.linux.x86_64-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.swt.gtk.linux.x86_64-3.114.0.v20200304-0601.jar11099344809424052551.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.swt.gtk.linux.x86_64-3.114.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.swt.gtk.linux.x86_64-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.swt.win32.win32.x86_64-3.114.0.v20200304-0601.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.swt.win32.win32.x86_64-3.114.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.swt.win32.win32.x86_64-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.swt.win32.win32.x86_64-3.114.0.v20200304-0601.jar2164451244982169518.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.swt.win32.win32.x86_64-3.114.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.swt.win32.win32.x86_64-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.ui-3.116.0.v20200203-1308.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.ui-3.116.0.v20200203-1308.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.ui-3.116.0.v20200203-1308.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.ui-3.116.0.v20200203-1308.jar852592438396393130.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.ui-3.116.0.v20200203-1308.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.ui-3.116.0.v20200203-1308.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.ui.cocoa-1.2.400.v20191217-1850.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.ui.cocoa-1.2.400.v20191217-1850.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.ui.cocoa-1.2.400.v20191217-1850.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.ui.cocoa-1.2.400.v20191217-1850.jar3028831204975644099.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.ui.cocoa-1.2.400.v20191217-1850.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.ui.cocoa-1.2.400.v20191217-1850.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.ui.workbench-3.118.0.v20200222-0719.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.ui.workbench-3.118.0.v20200222-0719.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.ui.workbench-3.118.0.v20200222-0719.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.ui.workbench-3.118.0.v20200222-0719.jar6680707067994077285.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.ui.workbench-3.118.0.v20200222-0719.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.ui.workbench-3.118.0.v20200222-0719.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.update.configurator-3.4.500.v20200225-0827.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.update.configurator-3.4.500.v20200225-0827.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.update.configurator-3.4.500.v20200225-0827.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.update.configurator-3.4.500.v20200225-0827.jar5441629804220661060.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.update.configurator-3.4.500.v20200225-0827.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.update.configurator-3.4.500.v20200225-0827.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtend.lib-2.21.0.v20200302-1127.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtend.lib-2.21.0.v20200302-1127.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtend.lib-2.21.0.v20200302-1127.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.xtend.lib-2.21.0.v20200302-1127.jar12637743329689862174.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtend.lib-2.21.0.v20200302-1127.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtend.lib-2.21.0.v20200302-1127.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtend.lib.macro-2.21.0.v20200302-1127.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtend.lib.macro-2.21.0.v20200302-1127.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtend.lib.macro-2.21.0.v20200302-1127.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.xtend.lib.macro-2.21.0.v20200302-1127.jar13494356664384203337.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtend.lib.macro-2.21.0.v20200302-1127.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtend.lib.macro-2.21.0.v20200302-1127.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext-2.21.0.v20200302-1141.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext-2.21.0.v20200302-1141.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext-2.21.0.v20200302-1141.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.xtext-2.21.0.v20200302-1141.jar7272096047539209278.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext-2.21.0.v20200302-1141.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext-2.21.0.v20200302-1141.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext.common.types-2.21.0.v20200302-1201.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.common.types-2.21.0.v20200302-1201.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.common.types-2.21.0.v20200302-1201.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.xtext.common.types-2.21.0.v20200302-1201.jar8881888585028533112.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.common.types-2.21.0.v20200302-1201.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.common.types-2.21.0.v20200302-1201.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext.ide-2.21.0.v20200302-1141.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.ide-2.21.0.v20200302-1141.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.ide-2.21.0.v20200302-1141.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.xtext.ide-2.21.0.v20200302-1141.jar8697893053186696221.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.ide-2.21.0.v20200302-1141.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.ide-2.21.0.v20200302-1141.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext.logging-1.2.15.v20200302-1241.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.logging-1.2.15.v20200302-1241.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.logging-1.2.15.v20200302-1241.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.xtext.logging-1.2.15.v20200302-1241.jar6935033423304537721.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.logging-1.2.15.v20200302-1241.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.logging-1.2.15.v20200302-1241.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext.util-2.21.0.v20200302-1141.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.util-2.21.0.v20200302-1141.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.util-2.21.0.v20200302-1141.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.xtext.util-2.21.0.v20200302-1141.jar11510971841096035626.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.util-2.21.0.v20200302-1141.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.util-2.21.0.v20200302-1141.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext.xbase-2.21.0.v20200302-1201.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.xbase-2.21.0.v20200302-1201.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.xbase-2.21.0.v20200302-1201.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.xtext.xbase-2.21.0.v20200302-1201.jar14621901974097238400.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.xbase-2.21.0.v20200302-1201.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.xbase-2.21.0.v20200302-1201.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext.xbase.ide-2.21.0.v20200302-1201.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.xbase.ide-2.21.0.v20200302-1201.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.xbase.ide-2.21.0.v20200302-1201.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.xtext.xbase.ide-2.21.0.v20200302-1201.jar4564568198809860972.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.xbase.ide-2.21.0.v20200302-1201.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.xbase.ide-2.21.0.v20200302-1201.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.eclipse.xtext.xbase.lib-2.21.0.v20200302-1127.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.xbase.lib-2.21.0.v20200302-1127.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.xbase.lib-2.21.0.v20200302-1127.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.eclipse.xtext.xbase.lib-2.21.0.v20200302-1127.jar12993287981129270976.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.xbase.lib-2.21.0.v20200302-1127.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.xbase.lib-2.21.0.v20200302-1127.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.freemarker.freemarker-2.3.30.stable.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.freemarker.freemarker-2.3.30.stable.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.freemarker.freemarker-2.3.30.stable.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.freemarker.freemarker-2.3.30.stable.jar15051262353035630877.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.freemarker.freemarker-2.3.30.stable.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.freemarker.freemarker-2.3.30.stable.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.objectweb.asm-7.2.0.v20191010-1910.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.objectweb.asm-7.2.0.v20191010-1910.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.objectweb.asm-7.2.0.v20191010-1910.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.objectweb.asm-7.2.0.v20191010-1910.jar15648497673534870778.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.objectweb.asm-7.2.0.v20191010-1910.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.objectweb.asm-7.2.0.v20191010-1910.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.slf4j.api-1.7.30.v20200204-2150.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.slf4j.api-1.7.30.v20200204-2150.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.slf4j.api-1.7.30.v20200204-2150.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.slf4j.api-1.7.30.v20200204-2150.jar14177071915990556067.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.slf4j.api-1.7.30.v20200204-2150.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.slf4j.api-1.7.30.v20200204-2150.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.w3c.css.sac-1.3.1.v200903091627.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.w3c.css.sac-1.3.1.v200903091627.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.w3c.css.sac-1.3.1.v200903091627.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.w3c.css.sac-1.3.1.v200903091627.jar4724814057496235090.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.w3c.css.sac-1.3.1.v200903091627.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.w3c.css.sac-1.3.1.v200903091627.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.w3c.dom.events-3.0.0.draft20060413_v201105210656.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.w3c.dom.events-3.0.0.draft20060413_v201105210656.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.w3c.dom.events-3.0.0.draft20060413_v201105210656.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.w3c.dom.events-3.0.0.draft20060413_v201105210656.jar1557813166453365373.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.w3c.dom.events-3.0.0.draft20060413_v201105210656.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.w3c.dom.events-3.0.0.draft20060413_v201105210656.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.w3c.dom.smil-1.0.1.v200903091627.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.w3c.dom.smil-1.0.1.v200903091627.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.w3c.dom.smil-1.0.1.v200903091627.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.w3c.dom.smil-1.0.1.v200903091627.jar4609710035476659062.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.w3c.dom.smil-1.0.1.v200903091627.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.w3c.dom.smil-1.0.1.v200903091627.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.w3c.dom.svg-1.1.0.v201011041433.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.w3c.dom.svg-1.1.0.v201011041433.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.w3c.dom.svg-1.1.0.v201011041433.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.w3c.dom.svg-1.1.0.v201011041433.jar8086428558063212481.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.w3c.dom.svg-1.1.0.v201011041433.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.w3c.dom.svg-1.1.0.v201011041433.jar-4.0.0-SNAPSHOT.pom
+[INFO] Installing C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\libs\org.yaml.snakeyaml-1.24.0.jar to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.yaml.snakeyaml-1.24.0.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.yaml.snakeyaml-1.24.0.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\OLAF~1.ZIM\AppData\Local\Temp\io.mdsl.ide-org.yaml.snakeyaml-1.24.0.jar10867884290581778774.pom to C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.yaml.snakeyaml-1.24.0.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.yaml.snakeyaml-1.24.0.jar-4.0.0-SNAPSHOT.pom
+[INFO] 
+[INFO] --- appassembler-maven-plugin:2.1.0:assemble (default) @ io.mdsl.ide ---
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-jakarta.xml.bind-api-2.3.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-jakarta.xml.bind-api-2.3.2.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-jakarta.xml.bind-api-2.3.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.emf.xpath-0.2.600.v20191216-0805.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.emf.xpath-0.2.600.v20191216-0805.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.emf.xpath-0.2.600.v20191216-0805.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.emf.ecore-2.21.0.v20200127-1342.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.emf.ecore-2.21.0.v20200127-1342.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.emf.ecore-2.21.0.v20200127-1342.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.felix.gogo.shell-1.1.0.v20180713-1646.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.felix.gogo.shell-1.1.0.v20180713-1646.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.apache.felix.gogo.shell-1.1.0.v20180713-1646.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-asm-commons-7.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-asm-commons-7.2.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-asm-commons-7.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.help-3.8.700.v20191212-1123.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.help-3.8.700.v20191212-1123.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.help-3.8.700.v20191212-1123.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.batik.constants-1.11.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.batik.constants-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.apache.batik.constants-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.swt.win32.win32.x86_64-3.114.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.swt.win32.win32.x86_64-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.swt.win32.win32.x86_64-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.felix.gogo.runtime-1.1.0.v20180713-1646.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.felix.gogo.runtime-1.1.0.v20180713-1646.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.apache.felix.gogo.runtime-1.1.0.v20180713-1646.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.batik.i18n-1.11.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.batik.i18n-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.apache.batik.i18n-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.model.workbench-2.1.700.v20200113-1422.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.model.workbench-2.1.700.v20200113-1422.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.model.workbench-2.1.700.v20200113-1422.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.util-2.21.0.v20200302-1141.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.util-2.21.0.v20200302-1141.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.xtext.util-2.21.0.v20200302-1141.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.commons.jxpath-1.3.0.v200911051830.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.commons.jxpath-1.3.0.v200911051830.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.apache.commons.jxpath-1.3.0.v200911051830.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.w3c.css.sac-1.3.1.v200903091627.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.w3c.css.sac-1.3.1.v200903091627.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.w3c.css.sac-1.3.1.v200903091627.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtend.lib.macro-2.21.0.v20200302-1127.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtend.lib.macro-2.21.0.v20200302-1127.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.xtend.lib.macro-2.21.0.v20200302-1127.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt-0.14.1100.v20200217-1217.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt-0.14.1100.v20200217-1217.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt-0.14.1100.v20200217-1217.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\org\eclipse\lsp4j\org.eclipse.lsp4j\0.9.0\org.eclipse.lsp4j-0.9.0.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\org.eclipse.lsp4j-0.9.0.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\org\eclipse\lsp4j\org.eclipse.lsp4j.generator\0.9.0\org.eclipse.lsp4j.generator-0.9.0.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\org.eclipse.lsp4j.generator-0.9.0.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\org\eclipse\xtend\org.eclipse.xtend.lib\2.19.0\org.eclipse.xtend.lib-2.19.0.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\org.eclipse.xtend.lib-2.19.0.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\org\eclipse\xtext\org.eclipse.xtext.xbase.lib\2.19.0\org.eclipse.xtext.xbase.lib-2.19.0.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\org.eclipse.xtext.xbase.lib-2.19.0.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\com\google\guava\guava\27.1-jre\guava-27.1-jre.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\guava-27.1-jre.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\com\google\guava\failureaccess\1.0.1\failureaccess-1.0.1.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\failureaccess-1.0.1.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\jsr305-3.0.2.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\org\checkerframework\checker-qual\2.5.2\checker-qual-2.5.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\checker-qual-2.5.2.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\com\google\errorprone\error_prone_annotations\2.2.0\error_prone_annotations-2.2.0.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\error_prone_annotations-2.2.0.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\com\google\j2objc\j2objc-annotations\1.1\j2objc-annotations-1.1.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\j2objc-annotations-1.1.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\org\codehaus\mojo\animal-sniffer-annotations\1.17\animal-sniffer-annotations-1.17.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\animal-sniffer-annotations-1.17.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\org\eclipse\xtend\org.eclipse.xtend.lib.macro\2.19.0\org.eclipse.xtend.lib.macro-2.19.0.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\org.eclipse.xtend.lib.macro-2.19.0.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\org\eclipse\lsp4j\org.eclipse.lsp4j.jsonrpc\0.9.0\org.eclipse.lsp4j.jsonrpc-0.9.0.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\org.eclipse.lsp4j.jsonrpc-0.9.0.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\com\google\code\gson\gson\2.8.2\gson-2.8.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\gson-2.8.2.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench.addons.swt-1.3.800.v20191212-1231.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench.addons.swt-1.3.800.v20191212-1231.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.workbench.addons.swt-1.3.800.v20191212-1231.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.console-1.4.0.v20190819-1430.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.console-1.4.0.v20190819-1430.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.equinox.console-1.4.0.v20190819-1430.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.services-2.2.200.v20200127-0814.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.services-2.2.200.v20200127-0814.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.core.services-2.2.200.v20200127-0814.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.simpleconfigurator-1.3.500.v20200211-1505.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.simpleconfigurator-1.3.500.v20200211-1505.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.equinox.simpleconfigurator-1.3.500.v20200211-1505.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-log4j-1.2.17.jar\4.0.0-SNAPSHOT\io.mdsl.ide-log4j-1.2.17.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-log4j-1.2.17.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.launcher-1.5.700.v20200207-2156.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.launcher-1.5.700.v20200207-2156.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.equinox.launcher-1.5.700.v20200207-2156.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.core.v3.swagger-core-2.1.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.core.v3.swagger-core-2.1.2.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-io.swagger.core.v3.swagger-core-2.1.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.w3c.dom.smil-1.0.1.v200903091627.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.w3c.dom.smil-1.0.1.v200903091627.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.w3c.dom.smil-1.0.1.v200903091627.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.services-1.3.700.v20190930-1643.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.services-1.3.700.v20190930-1643.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.services-1.3.700.v20190930-1643.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\log4j\log4j\1.2.17\log4j-1.2.17.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\log4j-1.2.17.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.batik.util-1.11.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.batik.util-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.apache.batik.util-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.emf.ecore.change-2.14.0.v20190528-0725.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.emf.ecore.change-2.14.0.v20190528-0725.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.emf.ecore.change-2.14.0.v20190528-0725.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\org\ow2\asm\asm\7.2\asm-7.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\asm-7.2.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.batik.css-1.11.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.batik.css-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.apache.batik.css-1.11.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.rcp-4.15.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.rcp-4.15.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.rcp-4.15.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.osgi.util-3.5.300.v20190708-1141.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.osgi.util-3.5.300.v20190708-1141.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.osgi.util-3.5.300.v20190708-1141.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.bidi-1.2.300.v20191213-1901.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.bidi-1.2.300.v20191213-1901.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.equinox.bidi-1.2.300.v20191213-1901.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.launcher.gtk.linux.x86_64-1.1.1100.v20190907-0426.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.launcher.gtk.linux.x86_64-1.1.1100.v20190907-0426.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.equinox.launcher.gtk.linux.x86_64-1.1.1100.v20190907-0426.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.w3c.dom.events-3.0.0.draft20060413_v201105210656.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.w3c.dom.events-3.0.0.draft20060413_v201105210656.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.w3c.dom.events-3.0.0.draft20060413_v201105210656.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.antlr.runtime-3.2.0.v201101311130.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.antlr.runtime-3.2.0.v201101311130.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.antlr.runtime-3.2.0.v201101311130.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.core.jackson-databind-2.10.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.core.jackson-databind-2.10.2.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-com.fasterxml.jackson.core.jackson-databind-2.10.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.css.swt.theme-0.12.600.v20200124-0005.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.css.swt.theme-0.12.600.v20200124-0005.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.css.swt.theme-0.12.600.v20200124-0005.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.objectweb.asm-7.2.0.v20191010-1910.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.objectweb.asm-7.2.0.v20191010-1910.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.objectweb.asm-7.2.0.v20191010-1910.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.slf4j.api-1.7.30.v20200204-2150.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.slf4j.api-1.7.30.v20200204-2150.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.slf4j.api-1.7.30.v20200204-2150.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\org\ow2\asm\asm-tree\7.2\asm-tree-7.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\asm-tree-7.2.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench3-0.15.400.v20191216-0805.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench3-0.15.400.v20191216-0805.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.workbench3-0.15.400.v20191216-0805.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext-2.21.0.v20200302-1141.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext-2.21.0.v20200302-1141.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.xtext-2.21.0.v20200302-1141.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.xbase.ide-2.21.0.v20200302-1201.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.xbase.ide-2.21.0.v20200302-1201.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.xtext.xbase.ide-2.21.0.v20200302-1201.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.common-3.11.0.v20200206-0817.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.common-3.11.0.v20200206-0817.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.equinox.common-3.11.0.v20200206-0817.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.swt.gtk-1.0.600.v20190627-0755.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.swt.gtk-1.0.600.v20190627-0755.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.swt.gtk-1.0.600.v20190627-0755.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.osgi.compatibility.state-1.1.700.v20200207-2156.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.osgi.compatibility.state-1.1.700.v20200207-2156.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.osgi.compatibility.state-1.1.700.v20200207-2156.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-javax.inject-1.0.0.v20091030.jar\4.0.0-SNAPSHOT\io.mdsl.ide-javax.inject-1.0.0.v20091030.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-javax.inject-1.0.0.v20091030.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.ide-2.21.0.v20200302-1141.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.ide-2.21.0.v20200302-1141.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.xtext.ide-2.21.0.v20200302-1141.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.widgets-1.2.700.v20191222-1048.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.widgets-1.2.700.v20191222-1048.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.widgets-1.2.700.v20191222-1048.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.swt-3.114.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.swt-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.swt-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.log4j-1.2.15.v201012070815.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.log4j-1.2.15.v201012070815.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.apache.log4j-1.2.15.v201012070815.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-jakarta.validation.jakarta.validation-api-2.0.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-jakarta.validation.jakarta.validation-api-2.0.2.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-jakarta.validation.jakarta.validation-api-2.0.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-javax.annotation-1.2.0.v201602091430.jar\4.0.0-SNAPSHOT\io.mdsl.ide-javax.annotation-1.2.0.v201602091430.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-javax.annotation-1.2.0.v201602091430.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.felix.scr-2.1.16.v20200110-1820.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.felix.scr-2.1.16.v20200110-1820.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.apache.felix.scr-2.1.16.v20200110-1820.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.di-1.2.800.v20200128-0855.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.di-1.2.800.v20200128-0855.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.di-1.2.800.v20200128-0855.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.bindings-0.12.800.v20191216-0805.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.bindings-0.12.800.v20191216-0805.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.bindings-0.12.800.v20191216-0805.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.yaml.snakeyaml-1.24.0.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.yaml.snakeyaml-1.24.0.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.yaml.snakeyaml-1.24.0.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt.cocoa-0.12.500.v20200123-1115.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt.cocoa-0.12.500.v20200123-1115.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.workbench.renderers.swt.cocoa-0.12.500.v20200123-1115.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.google.inject-3.0.0.v201605172100.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.google.inject-3.0.0.v201605172100.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-com.google.inject-3.0.0.v201605172100.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.jface-3.19.0.v20200218-1607.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.jface-3.19.0.v20200218-1607.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.jface-3.19.0.v20200218-1607.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.10.1.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.10.1.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.10.1.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.osgi.services-3.8.0.v20190206-2147.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.osgi.services-3.8.0.v20190206-2147.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.osgi.services-3.8.0.v20190206-2147.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.css.core-0.12.1000.v20200129-0903.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.css.core-0.12.1000.v20200129-0903.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.css.core-0.12.1000.v20200129-0903.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.commons.io-2.6.0.v20190123-2029.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.commons.io-2.6.0.v20190123-2029.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.apache.commons.io-2.6.0.v20190123-2029.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.rcp-4.15.0.v20200305-0155.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.rcp-4.15.0.v20200305-0155.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.rcp-4.15.0.v20200305-0155.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.freemarker.freemarker-2.3.30.stable.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.freemarker.freemarker-2.3.30.stable.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.freemarker.freemarker-2.3.30.stable.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.swt.gtk.linux.x86_64-3.114.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.swt.gtk.linux.x86_64-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.swt.gtk.linux.x86_64-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.xbase.lib-2.21.0.v20200302-1127.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.xbase.lib-2.21.0.v20200302-1127.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.xtext.xbase.lib-2.21.0.v20200302-1127.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.core.databinding.property-1.8.0.v20200124-0715.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.core.databinding.property-1.8.0.v20200124-0715.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.core.databinding.property-1.8.0.v20200124-0715.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.event-1.5.300.v20191001-1333.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.event-1.5.300.v20191001-1333.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.equinox.event-1.5.300.v20191001-1333.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.xmlgraphics-2.3.0.v20190515-0436.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.xmlgraphics-2.3.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.apache.xmlgraphics-2.3.0.v20190515-0436.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.logging-1.2.15.v20200302-1241.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.logging-1.2.15.v20200302-1241.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.xtext.logging-1.2.15.v20200302-1241.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.felix.gogo.command-1.0.2.v20170914-1324.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.felix.gogo.command-1.0.2.v20170914-1324.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.apache.felix.gogo.command-1.0.2.v20170914-1324.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.jface.databinding-1.11.0.v20200205-2119.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.jface.databinding-1.11.0.v20200205-2119.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.jface.databinding-1.11.0.v20200205-2119.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.update.configurator-3.4.500.v20200225-0827.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.update.configurator-3.4.500.v20200225-0827.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.update.configurator-3.4.500.v20200225-0827.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.core.databinding-1.8.0.v20200205-2008.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.core.databinding-1.8.0.v20200205-2008.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.core.databinding-1.8.0.v20200205-2008.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.osgi-3.15.200.v20200214-1600.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.osgi-3.15.200.v20200214-1600.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.osgi-3.15.200.v20200214-1600.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.ui.workbench-3.118.0.v20200222-0719.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.ui.workbench-3.118.0.v20200222-0719.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.ui.workbench-3.118.0.v20200222-0719.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.launcher.win32.win32.x86_64-1.1.1100.v20190907-0426.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.launcher.win32.win32.x86_64-1.1.1100.v20190907-0426.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.equinox.launcher.win32.win32.x86_64-1.1.1100.v20190907-0426.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.core.jackson-annotations-2.10.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.core.jackson-annotations-2.10.2.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-com.fasterxml.jackson.core.jackson-annotations-2.10.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.github.classgraph-4.8.35.v20190528-1517.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.github.classgraph-4.8.35.v20190528-1517.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-io.github.classgraph-4.8.35.v20190528-1517.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.dataformat.jackson-dataformat-yaml-2.10.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.dataformat.jackson-dataformat-yaml-2.10.2.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-com.fasterxml.jackson.dataformat.jackson-dataformat-yaml-2.10.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.core.v3.swagger-annotations-2.1.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.core.v3.swagger-annotations-2.1.2.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-io.swagger.core.v3.swagger-annotations-2.1.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.google.guava-27.1.0.v20190517-1946.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.google.guava-27.1.0.v20190517-1946.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-com.google.guava-27.1.0.v20190517-1946.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.mdsl-4.0.0-SNAPSHOT.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.mdsl-4.0.0-SNAPSHOT.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-io.mdsl-4.0.0-SNAPSHOT.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.w3c.dom.svg-1.1.0.v201011041433.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.w3c.dom.svg-1.1.0.v201011041433.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.w3c.dom.svg-1.1.0.v201011041433.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.di.annotations-1.6.600.v20191216-2352.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.di.annotations-1.6.600.v20191216-2352.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.core.di.annotations-1.6.600.v20191216-2352.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.core.databinding.beans-1.6.100.v20191217-1850.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.core.databinding.beans-1.6.100.v20191217-1850.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.core.databinding.beans-1.6.100.v20191217-1850.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtend.lib-2.21.0.v20200302-1127.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtend.lib-2.21.0.v20200302-1127.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.xtend.lib-2.21.0.v20200302-1127.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.sun.activation.jakarta.activation-1.2.1.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.sun.activation.jakarta.activation-1.2.1.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-com.sun.activation.jakarta.activation-1.2.1.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.emf.ecore.xmi-2.16.0.v20190528-0725.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.emf.ecore.xmi-2.16.0.v20190528-0725.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.emf.ecore.xmi-2.16.0.v20190528-0725.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.di.extensions-0.15.500.v20200106-1259.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.di.extensions-0.15.500.v20200106-1259.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.core.di.extensions-0.15.500.v20200106-1259.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.apache.commons.lang3-3.7.0.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.apache.commons.lang3-3.7.0.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.apache.commons.lang3-3.7.0.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-v3-2.0.20.20200817091242.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-v3-2.0.20.20200817091242.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-v3-2.0.20.20200817091242.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.ui-3.116.0.v20200203-1308.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.ui-3.116.0.v20200203-1308.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.ui-3.116.0.v20200203-1308.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.ui.cocoa-1.2.400.v20191217-1850.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.ui.cocoa-1.2.400.v20191217-1850.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.ui.cocoa-1.2.400.v20191217-1850.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench.swt-0.14.900.v20200213-1442.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench.swt-0.14.900.v20200213-1442.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.workbench.swt-0.14.900.v20200213-1442.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\org\ow2\asm\asm-commons\7.2\asm-commons-7.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\asm-commons-7.2.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\org\ow2\asm\asm-analysis\7.2\asm-analysis-7.2.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\asm-analysis-7.2.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.workbench-1.11.200.v20200205-1503.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.workbench-1.11.200.v20200205-1503.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.workbench-1.11.200.v20200205-1503.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.contexts-1.8.400.v20191217-1710.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.contexts-1.8.400.v20191217-1710.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.core.contexts-1.8.400.v20191217-1710.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-core-2.0.20.20200817091242.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-core-2.0.20.20200817091242.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-io.swagger.parser.v3.swagger-parser-core-2.0.20.20200817091242.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.common.types-2.21.0.v20200302-1201.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.common.types-2.21.0.v20200302-1201.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.xtext.common.types-2.21.0.v20200302-1201.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.xtext.xbase-2.21.0.v20200302-1201.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.xtext.xbase-2.21.0.v20200302-1201.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.xtext.xbase-2.21.0.v20200302-1201.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-asm-tree-7.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-asm-tree-7.2.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-asm-tree-7.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.commands-0.12.900.v20200110-1732.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.commands-0.12.900.v20200110-1732.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.core.commands-0.12.900.v20200110-1732.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-asm-7.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-asm-7.2.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-asm-7.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.di.extensions.supplier-0.15.500.v20200106-1259.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.di.extensions.supplier-0.15.500.v20200106-1259.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.core.di.extensions.supplier-0.15.500.v20200106-1259.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-com.fasterxml.jackson.core.jackson-core-2.10.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-com.fasterxml.jackson.core.jackson-core-2.10.2.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-com.fasterxml.jackson.core.jackson-core-2.10.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.equinox.launcher.cocoa.macosx.x86_64-1.1.1100.v20190907-0426.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.equinox.launcher.cocoa.macosx.x86_64-1.1.1100.v20190907-0426.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.equinox.launcher.cocoa.macosx.x86_64-1.1.1100.v20190907-0426.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.github.microservice-api-patterns.protobufgen-1.2.0.20200817091242.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.github.microservice-api-patterns.protobufgen-1.2.0.20200817091242.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-io.github.microservice-api-patterns.protobufgen-1.2.0.20200817091242.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.emf.common-2.18.0.v20191225-1014.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.emf.common-2.18.0.v20191225-1014.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.emf.common-2.18.0.v20191225-1014.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.css.swt-0.13.900.v20200203-0840.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.css.swt-0.13.900.v20200203-0840.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.css.swt-0.13.900.v20200203-0840.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.lsp4j-0.9.0.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.lsp4j-0.9.0.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.lsp4j-0.9.0.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.swt.cocoa.macosx.x86_64-3.114.0.v20200304-0601.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.swt.cocoa.macosx.x86_64-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.swt.cocoa.macosx.x86_64-3.114.0.v20200304-0601.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-io.swagger.core.v3.swagger-models-2.1.2.jar\4.0.0-SNAPSHOT\io.mdsl.ide-io.swagger.core.v3.swagger-models-2.1.2.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-io.swagger.core.v3.swagger-models-2.1.2.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.core.databinding.observable-1.9.0.v20200205-2119.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.core.databinding.observable-1.9.0.v20200205-2119.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.core.databinding.observable-1.9.0.v20200205-2119.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.ui.dialogs-1.1.700.v20200201-1719.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.ui.dialogs-1.1.700.v20200201-1719.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.ui.dialogs-1.1.700.v20200201-1719.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\Users\olaf.zimmermann\.m2\repository\io\mdsl\io.mdsl.ide-org.eclipse.e4.core.di-1.7.500.v20190916-2125.jar\4.0.0-SNAPSHOT\io.mdsl.ide-org.eclipse.e4.core.di-1.7.500.v20190916-2125.jar-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-org.eclipse.e4.core.di-1.7.500.v20190916-2125.jar-4.0.0-SNAPSHOT.jar
+[INFO] Installing artifact C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\io.mdsl.ide-4.0.0-SNAPSHOT.jar to C:\olaf\MDSL\dsl-core\io.mdsl.ide\target\languageserver\repo\io.mdsl.ide-4.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] ------------------------< io.mdsl:io.mdsl.cli >-------------------------
+[INFO] Building io.mdsl.cli 4.0.0-SNAPSHOT                               [4/10]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ io.mdsl.cli ---
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl.cli\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ io.mdsl.cli ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\olaf\MDSL\dsl-core\io.mdsl.cli\src\main\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ io.mdsl.cli ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 2 source files to C:\olaf\MDSL\dsl-core\io.mdsl.cli\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ io.mdsl.cli ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\olaf\MDSL\dsl-core\io.mdsl.cli\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ io.mdsl.cli ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ io.mdsl.cli ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- tycho-source-plugin:1.7.0:plugin-source (plugin-source) @ io.mdsl.cli ---
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ io.mdsl.cli ---
+[INFO] Building jar: C:\olaf\MDSL\dsl-core\io.mdsl.cli\target\io.mdsl.cli-4.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- tycho-source-feature-plugin:1.7.0:source-feature (source-feature) @ io.mdsl.cli ---
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:p2-metadata (attach-p2-metadata) @ io.mdsl.cli ---
+[INFO] 
+[INFO] -------------------------< io.mdsl:io.mdsl.ui >-------------------------
+[INFO] Building io.mdsl.ui 4.0.0-SNAPSHOT                                [5/10]
+[INFO] ---------------------------[ eclipse-plugin ]---------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ io.mdsl.ui ---
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl.ui\target
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl.ui\xtend-gen (includes = [**/*], excludes = [])
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:build-qualifier (default-build-qualifier) @ io.mdsl.ui ---
+[INFO] The project's OSGi version is 4.0.0.202008310906
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:validate-id (default-validate-id) @ io.mdsl.ui ---
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:validate-version (default-validate-version) @ io.mdsl.ui ---
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:compile (default) @ io.mdsl.ui ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ io.mdsl.ui ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\olaf\MDSL\dsl-core\io.mdsl.ui\src\main\resources
+[INFO] 
+[INFO] --- tycho-compiler-plugin:1.7.0:compile (default-compile) @ io.mdsl.ui ---
+[INFO] Compiling 26 source files to C:\olaf\MDSL\dsl-core\io.mdsl.ui\target\classes
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:xtend-install-debug-info (default) @ io.mdsl.ui ---
+[WARNING] Directory C:\olaf\MDSL\dsl-core\io.mdsl.ui\src\main\java is empty. Can't process.
+[INFO] Installing Xtend files into 0 class files as secondary (via SMAP) debug sources in: C:\olaf\MDSL\dsl-core\io.mdsl.ui\target\classes
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:testCompile (default) @ io.mdsl.ui ---
+[INFO] skip compiling sources because the configured directory '[C:\olaf\MDSL\dsl-core\io.mdsl.ui\src\test\java]' does not exist.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:testResources (default-testResources) @ io.mdsl.ui ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\olaf\MDSL\dsl-core\io.mdsl.ui\src\test\resources
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:xtend-test-install-debug-info (default) @ io.mdsl.ui ---
+[WARNING] Directory C:\olaf\MDSL\dsl-core\io.mdsl.ui\src\test\java is empty. Can't process.
+[INFO] Installing Xtend files into 0 class files as secondary (via SMAP) debug sources in: C:\olaf\MDSL\dsl-core\io.mdsl.ui\target\test-classes
+[INFO] 
+[INFO] --- tycho-source-plugin:1.7.0:plugin-source (plugin-source) @ io.mdsl.ui ---
+[INFO] Building jar: C:\olaf\MDSL\dsl-core\io.mdsl.ui\target\io.mdsl.ui-4.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- target-platform-configuration:1.7.0:target-platform (default-target-platform) @ io.mdsl.ui ---
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:package-plugin (default-package-plugin) @ io.mdsl.ui ---
+[INFO] Building jar: C:\olaf\MDSL\dsl-core\io.mdsl.ui\target\io.mdsl.ui-4.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:p2-metadata-default (default-p2-metadata-default) @ io.mdsl.ui ---
+[INFO] 
+[INFO] --- tycho-source-feature-plugin:1.7.0:source-feature (source-feature) @ io.mdsl.ui ---
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:p2-metadata (attach-p2-metadata) @ io.mdsl.ui ---
+[INFO] 
+[INFO] -----------------------< io.mdsl:io.mdsl.target >-----------------------
+[INFO] Building io.mdsl.target 4.0.0-SNAPSHOT                            [6/10]
+[INFO] ---------------------[ eclipse-target-definition ]----------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ io.mdsl.target ---
+[INFO] 
+[INFO] --- tycho-source-plugin:1.7.0:plugin-source (plugin-source) @ io.mdsl.target ---
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:package-target-definition (default-package-target-definition) @ io.mdsl.target ---
+[INFO] 
+[INFO] --- tycho-source-feature-plugin:1.7.0:source-feature (source-feature) @ io.mdsl.target ---
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:p2-metadata (attach-p2-metadata) @ io.mdsl.target ---
+[INFO] 
+[INFO] ----------------------< io.mdsl:io.mdsl.feature >-----------------------
+[INFO] Building io.mdsl.feature 4.0.0-SNAPSHOT                           [7/10]
+[INFO] --------------------------[ eclipse-feature ]---------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ io.mdsl.feature ---
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl.feature\target
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:build-qualifier-aggregator (default-build-qualifier-aggregator) @ io.mdsl.feature ---
+[INFO] The project's OSGi version is 4.0.0.202008310906
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:validate-id (default-validate-id) @ io.mdsl.feature ---
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:validate-version (default-validate-version) @ io.mdsl.feature ---
+[INFO] 
+[INFO] --- tycho-source-plugin:1.7.0:plugin-source (plugin-source) @ io.mdsl.feature ---
+[INFO] 
+[INFO] --- target-platform-configuration:1.7.0:target-platform (default-target-platform) @ io.mdsl.feature ---
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:package-feature (default-package-feature) @ io.mdsl.feature ---
+[INFO] Building jar: C:\olaf\MDSL\dsl-core\io.mdsl.feature\target\io.mdsl.feature-4.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:p2-metadata-default (default-p2-metadata-default) @ io.mdsl.feature ---
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:feature-p2-metadata (default-feature-p2-metadata) @ io.mdsl.feature ---
+[INFO] 
+[INFO] --- tycho-source-feature-plugin:1.7.0:source-feature (source-feature) @ io.mdsl.feature ---
+[INFO] Building jar: C:\olaf\MDSL\dsl-core\io.mdsl.feature\target\io.mdsl.feature-4.0.0-SNAPSHOT-sources-feature.jar
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:p2-metadata (attach-p2-metadata) @ io.mdsl.feature ---
+[INFO] 
+[INFO] ---------------------< io.mdsl:io.mdsl.repository >---------------------
+[INFO] Building io.mdsl.repository 4.0.0-SNAPSHOT                        [8/10]
+[INFO] -------------------------[ eclipse-repository ]-------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ io.mdsl.repository ---
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl.repository\target
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:build-qualifier-aggregator (default-build-qualifier-aggregator) @ io.mdsl.repository ---
+[INFO] The project's OSGi version is 4.0.0.202008310906
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean-1) @ io.mdsl.repository ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ io.mdsl.repository ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\olaf\MDSL\dsl-core\io.mdsl.repository\src\main\resources
+[INFO] 
+[INFO] --- tycho-source-plugin:1.7.0:plugin-source (plugin-source) @ io.mdsl.repository ---
+[INFO] 
+[INFO] --- target-platform-configuration:1.7.0:target-platform (default-target-platform) @ io.mdsl.repository ---
+[INFO] 
+[INFO] --- tycho-p2-publisher-plugin:1.7.0:publish-osgi-ee (default-publish-osgi-ee) @ io.mdsl.repository ---
+[INFO] Published profile IUs: [a.jre.javase 11.0.0, config.a.jre.javase 11.0.0]
+[INFO] Published profile IUs: [a.jre.javase 14.0.0, config.a.jre.javase 14.0.0]
+[INFO] 
+[INFO] --- tycho-p2-publisher-plugin:1.7.0:publish-products (default-publish-products) @ io.mdsl.repository ---
+[INFO] 
+[INFO] --- tycho-p2-publisher-plugin:1.7.0:publish-categories (default-publish-categories) @ io.mdsl.repository ---
+[INFO] 
+[INFO] --- tycho-p2-publisher-plugin:1.7.0:attach-artifacts (default-attach-artifacts) @ io.mdsl.repository ---
+[INFO] 
+[INFO] --- tycho-p2-repository-plugin:1.7.0:assemble-repository (default-assemble-repository) @ io.mdsl.repository ---
+[INFO] 
+[INFO] --- tycho-p2-repository-plugin:1.7.0:archive-repository (default-archive-repository) @ io.mdsl.repository ---
+[INFO] Building zip: C:\olaf\MDSL\dsl-core\io.mdsl.repository\target\io.mdsl.repository-4.0.0-SNAPSHOT.zip
+[INFO] 
+[INFO] --- tycho-source-feature-plugin:1.7.0:source-feature (source-feature) @ io.mdsl.repository ---
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:p2-metadata (attach-p2-metadata) @ io.mdsl.repository ---
+[INFO] 
+[INFO] -----------------------< io.mdsl:io.mdsl.tests >------------------------
+[INFO] Building io.mdsl.tests 4.0.0-SNAPSHOT                             [9/10]
+[INFO] ------------------------[ eclipse-test-plugin ]-------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ io.mdsl.tests ---
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl.tests\target
+[INFO] Deleting C:\olaf\MDSL\dsl-core\io.mdsl.tests\xtend-gen (includes = [**/*], excludes = [])
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:build-qualifier (default-build-qualifier) @ io.mdsl.tests ---
+[INFO] The project's OSGi version is 4.0.0.202008310906
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:validate-id (default-validate-id) @ io.mdsl.tests ---
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:validate-version (default-validate-version) @ io.mdsl.tests ---
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:compile (default) @ io.mdsl.tests ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ io.mdsl.tests ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\olaf\MDSL\dsl-core\io.mdsl.tests\src\main\resources
+[INFO] 
+[INFO] --- tycho-compiler-plugin:1.7.0:compile (default-compile) @ io.mdsl.tests ---
+[INFO] Compiling 20 source files to C:\olaf\MDSL\dsl-core\io.mdsl.tests\target\classes
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:xtend-install-debug-info (default) @ io.mdsl.tests ---
+[WARNING] Directory C:\olaf\MDSL\dsl-core\io.mdsl.tests\src\main\java is empty. Can't process.
+[INFO] Installing Xtend files into 0 class files as secondary (via SMAP) debug sources in: C:\olaf\MDSL\dsl-core\io.mdsl.tests\target\classes
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:testCompile (default) @ io.mdsl.tests ---
+[INFO] skip compiling sources because the configured directory '[C:\olaf\MDSL\dsl-core\io.mdsl.tests\src\test\java]' does not exist.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:testResources (default-testResources) @ io.mdsl.tests ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\olaf\MDSL\dsl-core\io.mdsl.tests\src\test\resources
+[INFO] 
+[INFO] --- xtend-maven-plugin:2.21.0:xtend-test-install-debug-info (default) @ io.mdsl.tests ---
+[WARNING] Directory C:\olaf\MDSL\dsl-core\io.mdsl.tests\src\test\java is empty. Can't process.
+[INFO] Installing Xtend files into 0 class files as secondary (via SMAP) debug sources in: C:\olaf\MDSL\dsl-core\io.mdsl.tests\target\test-classes
+[INFO] 
+[INFO] --- tycho-source-plugin:1.7.0:plugin-source (plugin-source) @ io.mdsl.tests ---
+[INFO] Building jar: C:\olaf\MDSL\dsl-core\io.mdsl.tests\target\io.mdsl.tests-4.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- target-platform-configuration:1.7.0:target-platform (default-target-platform) @ io.mdsl.tests ---
+[INFO] 
+[INFO] --- tycho-packaging-plugin:1.7.0:package-plugin (default-package-plugin) @ io.mdsl.tests ---
+[INFO] Building jar: C:\olaf\MDSL\dsl-core\io.mdsl.tests\target\io.mdsl.tests-4.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:p2-metadata-default (default-p2-metadata-default) @ io.mdsl.tests ---
+[INFO] 
+[INFO] --- tycho-source-feature-plugin:1.7.0:source-feature (source-feature) @ io.mdsl.tests ---
+[INFO] 
+[INFO] --- tycho-p2-plugin:1.7.0:p2-metadata (attach-p2-metadata) @ io.mdsl.tests ---
+[INFO] 
+[INFO] --- tycho-surefire-plugin:1.7.0:test (default-test) @ io.mdsl.tests ---
+[INFO] Executing Test Runtime with timeout 0, logs (if any) will be placed at: C:\olaf\MDSL\dsl-core\io.mdsl.tests\target\work\data\.metadata\.log
+[INFO] Command line:
+	[C:\Program Files\AdoptOpenJDK\jdk-12.0.2.10-hotspot\bin\java.exe, -Dosgi.noShutdown=false, -Dosgi.os=win32, -Dosgi.ws=win32, -Dosgi.arch=x86_64, --add-modules=ALL-SYSTEM, -Dosgi.clean=true, -jar, C:\Users\olaf.zimmermann\.m2\repository\p2\osgi\bundle\org.eclipse.equinox.launcher\1.5.700.v20200207-2156\org.eclipse.equinox.launcher-1.5.700.v20200207-2156.jar, -data, C:\olaf\MDSL\dsl-core\io.mdsl.tests\target\work\data, -install, C:\olaf\MDSL\dsl-core\io.mdsl.tests\target\work, -configuration, C:\olaf\MDSL\dsl-core\io.mdsl.tests\target\work\configuration, -application, org.eclipse.tycho.surefire.osgibooter.headlesstest, -testproperties, C:\olaf\MDSL\dsl-core\io.mdsl.tests\target\surefire.properties]
+Running io.mdsl.generator.GenModelJSONExporterTest
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.144 s <<< FAILURE! - in io.mdsl.generator.GenModelJSONExporterTest
+canExportGenModelAsJSON  Time elapsed: 1.132 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+expected: <{
+  "apiName" : "TestAPI",
+  "dataTypes" : [ ],
+  "endpoints" : [ {
+    "name" : "TestEndpoint",
+    "operations" : [ ]
+  } ],
+  "providers" : [ ],
+  "clients" : [ ],
+  "providerImplementations" : [ ]
+}> but was: <{
+  "apiName" : "TestAPI",
+  "dataTypes" : [ ],
+  "endpoints" : [ {
+    "name" : "TestEndpoint",
+    "operations" : [ ]
+  } ],
+  "providers" : [ ],
+  "clients" : [ ],
+  "providerImplementations" : [ ]
+}>
+	at io.mdsl.generator.GenModelJSONExporterTest.canExportGenModelAsJSON(GenModelJSONExporterTest.java:30)
+
+Running io.mdsl.generator.GenModelYAMLExporterTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.113 s - in io.mdsl.generator.GenModelYAMLExporterTest
+canExportGenModelAsYAML  Time elapsed: 0.113 s
+Running io.mdsl.generator.model.BasicTypeTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in io.mdsl.generator.model.BasicTypeTest
+canGetName  Time elapsed: 0.001 s
+canReturnVoid4NonExistingType  Time elapsed: 0.001 s
+canGetBasicTypeByName  Time elapsed: 0.001 s
+ensureToStringIsName  Time elapsed: 0 s
+ensureVoidIsDefaultType  Time elapsed: 0 s
+Running io.mdsl.generator.model.ClientTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in io.mdsl.generator.model.ClientTest
+canCreateClientWithName  Time elapsed: 0.001 s
+canAddConsumedEndpoint  Time elapsed: 0.001 s
+Running io.mdsl.generator.model.converter.MDSL2GeneratorModelConverterTest
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.406 s - in io.mdsl.generator.model.converter.MDSL2GeneratorModelConverterTest
+canConvertProviderImplementation  Time elapsed: 0.091 s
+canConvertParameterForest  Time elapsed: 0.073 s
+canConvertProviders  Time elapsed: 0.045 s
+canConvertSingleParameterNodes  Time elapsed: 0.053 s
+canConvertParameterLists  Time elapsed: 0.043 s
+canConvertParameterTrees  Time elapsed: 0.055 s
+canConvertEndpoint  Time elapsed: 0.043 s
+Running io.mdsl.generator.model.DataTypeFieldTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in io.mdsl.generator.model.DataTypeFieldTest
+canCreateADataTypeField  Time elapsed: 0.001 s
+Running io.mdsl.generator.model.DataTypeTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in io.mdsl.generator.model.DataTypeTest
+canAddField  Time elapsed: 0.001 s
+canCalculateHashCode  Time elapsed: 0 s
+canCreateDataTypeWithName  Time elapsed: 0 s
+canDetermineEquality  Time elapsed: 0.001 s
+Running io.mdsl.generator.model.EndpointContractTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in io.mdsl.generator.model.EndpointContractTest
+canCreateEndpointWithName  Time elapsed: 0 s
+canAddOperation  Time elapsed: 0 s
+Running io.mdsl.generator.model.ImplementationTechnologyTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in io.mdsl.generator.model.ImplementationTechnologyTest
+canCreateCustomTechnology  Time elapsed: 0 s
+canCreateStandardTechnology  Time elapsed: 0.001 s
+canHandleNullInFactoryMethod  Time elapsed: 0 s
+canCreateStandardTechnologyByString  Time elapsed: 0 s
+Running io.mdsl.generator.model.MDSLGeneratorModelTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in io.mdsl.generator.model.MDSLGeneratorModelTest
+canAddEndpoint  Time elapsed: 0.001 s
+canAddDataType  Time elapsed: 0 s
+canAddClient  Time elapsed: 0.001 s
+canCreateMDSLGeneratorModelWithName  Time elapsed: 0 s
+canAddProviderImplementation  Time elapsed: 0 s
+canAddProvider  Time elapsed: 0.001 s
+Running io.mdsl.generator.model.OperationParameterTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in io.mdsl.generator.model.OperationParameterTest
+canCreateOperationParameter  Time elapsed: 0 s
+Running io.mdsl.generator.model.OperationTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in io.mdsl.generator.model.OperationTest
+canAddParameters  Time elapsed: 0 s
+canDefineReturnType  Time elapsed: 0.001 s
+canReturnVoidAsDefaultReturnType  Time elapsed: 0 s
+canCreateOperationWithName  Time elapsed: 0.001 s
+Running io.mdsl.generator.model.ProviderImplementationTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in io.mdsl.generator.model.ProviderImplementationTest
+canSetDownstreamBinding  Time elapsed: 0 s
+canCreateProviderImplementation  Time elapsed: 0.001 s
+canSetImplClass  Time elapsed: 0 s
+Running io.mdsl.generator.model.ProviderTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in io.mdsl.generator.model.ProviderTest
+canAddOfferedEndpoint  Time elapsed: 0 s
+canCreateNewProviderWithName  Time elapsed: 0.001 s
+Running io.mdsl.generator.OpenAPIGeneratorTest
+Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.079 s - in io.mdsl.generator.OpenAPIGeneratorTest
+canGenerateSchemaForParameterList  Time elapsed: 0.215 s
+canGenerateSchemaForParameterTree  Time elapsed: 0.062 s
+canGenerateHelloWorldContract  Time elapsed: 0.039 s
+canCreateParameters4GetOperationAndAtomicParameterList  Time elapsed: 0.073 s
+canGenerateOperationWithPayload  Time elapsed: 0.062 s
+canGenerateSchemaForParameterForrest  Time elapsed: 0.058 s
+canHandleCardinality4ParameterList  Time elapsed: 0.07 s
+canHandleCardinality4ParameterTree  Time elapsed: 0.043 s
+canGenerateOperationWithInlinePayload  Time elapsed: 0.051 s
+canCreateParameters4GetOperationAndSingleAtomicParameter  Time elapsed: 0.043 s
+canGenerateSchemaForSingleParameter  Time elapsed: 0.038 s
+canGenerateSchemaForPType  Time elapsed: 0.044 s
+canGenerateOperationWithInlineReturnValue  Time elapsed: 0.039 s
+canGenerateMultipleOperationsAccordingToVerbMapping  Time elapsed: 0.048 s
+canHandleCardinality4AtomicParameter  Time elapsed: 0.05 s
+cannotHaveDuplicateMappings  Time elapsed: 0.042 s
+canGenerateOperationWithReturnValue  Time elapsed: 0.048 s
+canHandleCardinality4ParameterListInsideTree  Time elapsed: 0.044 s
+Running io.mdsl.generator.protobuf.converter.MDSL2ProtobufConverterTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.245 s - in io.mdsl.generator.protobuf.converter.MDSL2ProtobufConverterTest
+canConvertEmptyModel  Time elapsed: 0.043 s
+canConvertParameterForest  Time elapsed: 0.045 s
+canConvertParameterTree  Time elapsed: 0.042 s
+canConvertSingleParameterNodes  Time elapsed: 0.036 s
+canConvertAtomicParameterList  Time elapsed: 0.037 s
+canConvertRPCWithSingleReferenceParameter  Time elapsed: 0.041 s
+Running io.mdsl.generator.TextFileGeneratorTest
+Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.404 s <<< FAILURE! - in io.mdsl.generator.TextFileGeneratorTest
+canGenerateTextFile  Time elapsed: 0.339 s
+canGenerateUsingSimpleGeneratorModel  Time elapsed: 0.064 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+expected: <TestAPI specified in simple-generation-input-1.mdsl
+
+endpoints:
+TestEndpoint
+> but was: <TestAPI specified in simple-generation-input-1.mdsl
+
+endpoints:
+TestEndpoint
+>
+	at io.mdsl.generator.TextFileGeneratorTest.canGenerateUsingSimpleGeneratorModel(TextFileGeneratorTest.java:50)
+
+Running io.mdsl.standalone.StandaloneAPITest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.441 s - in io.mdsl.standalone.StandaloneAPITest
+canLoadMDSLResourceViaFile  Time elapsed: 0.035 s
+canGenerateIntoCustomDir  Time elapsed: 0.037 s
+canCallGenerator  Time elapsed: 0.037 s
+canCreateNewMDSLModel  Time elapsed: 0.21 s
+canCreateNewMDSLModelViaFile  Time elapsed: 0.087 s
+canLoadMDSLResource  Time elapsed: 0.033 s
+
+Results:
+
+Failures: 
+  GenModelJSONExporterTest.canExportGenModelAsJSON:30 expected: <{
+  "apiName" : "TestAPI",
+  "dataTypes" : [ ],
+  "endpoints" : [ {
+    "name" : "TestEndpoint",
+    "operations" : [ ]
+  } ],
+  "providers" : [ ],
+  "clients" : [ ],
+  "providerImplementations" : [ ]
+}> but was: <{
+  "apiName" : "TestAPI",
+  "dataTypes" : [ ],
+  "endpoints" : [ {
+    "name" : "TestEndpoint",
+    "operations" : [ ]
+  } ],
+  "providers" : [ ],
+  "clients" : [ ],
+  "providerImplementations" : [ ]
+}>
+  TextFileGeneratorTest.canGenerateUsingSimpleGeneratorModel:50 expected: <TestAPI specified in simple-generation-input-1.mdsl
+
+endpoints:
+TestEndpoint
+> but was: <TestAPI specified in simple-generation-input-1.mdsl
+
+endpoints:
+TestEndpoint
+>
+
+Tests run: 75, Failures: 2, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for io.mdsl.parent 4.0.0-SNAPSHOT:
+[INFO] 
+[INFO] io.mdsl.parent ..................................... SUCCESS [  0.073 s]
+[INFO] io.mdsl ............................................ SUCCESS [ 28.621 s]
+[INFO] io.mdsl.ide ........................................ SUCCESS [  6.743 s]
+[INFO] io.mdsl.cli ........................................ SUCCESS [  2.309 s]
+[INFO] io.mdsl.ui ......................................... SUCCESS [  2.094 s]
+[INFO] io.mdsl.target ..................................... SUCCESS [  0.007 s]
+[INFO] io.mdsl.feature .................................... SUCCESS [  0.226 s]
+[INFO] io.mdsl.repository ................................. SUCCESS [ 15.584 s]
+[INFO] io.mdsl.tests ...................................... FAILURE [  9.380 s]
+[INFO] io.mdsl.ui.tests ................................... SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:24 min
+[INFO] Finished at: 2020-08-31T11:07:49+02:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.eclipse.tycho:tycho-surefire-plugin:1.7.0:test (default-test) on project io.mdsl.tests: There are test failures.
+[ERROR] 
+[ERROR] Please refer to C:\olaf\MDSL\dsl-core\io.mdsl.tests\target\surefire-reports for the individual test results.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :io.mdsl.tests

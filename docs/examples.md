@@ -1,5 +1,5 @@
 ---
-title: Microservices Domain Specific Language (MDSL) Examples
+title: Microservice Domain Specific Language (MDSL) Examples
 author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019. All rights reserved.
 ---
@@ -85,6 +85,8 @@ More on service [endpoint contract types](./servicecontract) and [data contracts
 Optional [Instance-level language constructs](./optionalparts).
 
 Back to [MDSL homepage](./index). 
+
+More examples in [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) and in [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) repository.
 
 *Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 

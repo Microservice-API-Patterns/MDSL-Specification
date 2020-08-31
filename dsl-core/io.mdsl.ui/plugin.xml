@@ -381,12 +381,36 @@
 		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.OpenAPIGenerationHandler"
 			commandId="io.mdsl.ui.handler.OpenAPIGenerationCommand">
 		</handler>
+		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.ProtocolBuffersGenerationHandler"
+			commandId="io.mdsl.ui.handler.ProtocolBuffersGenerationCommand">
+		</handler>
+		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.JolieGenerationHandler"
+			commandId="io.mdsl.ui.handler.JolieGenerationCommand">
+		</handler>
+		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.GenModelJSONExporterHandler"
+			commandId="io.mdsl.ui.handler.GenModelJSONExporterCommand">
+		</handler>
+		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.GenModelYAMLExporterHandler"
+			commandId="io.mdsl.ui.handler.GenModelYAMLExporterCommand">
+		</handler>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<command name="Generate Text File with Freemarker Template" id="io.mdsl.ui.handler.TextFileGenerationCommand"></command>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<command name="Generate OpenAPI Specification" id="io.mdsl.ui.handler.OpenAPIGenerationCommand"></command>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
+		<command name="Generate Protocol Buffers Specification" id="io.mdsl.ui.handler.ProtocolBuffersGenerationCommand"></command>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
+		<command name="Generate Jolie Lang Specification" id="io.mdsl.ui.handler.JolieGenerationCommand"></command>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
+		<command name="Export Generator Model as JSON" id="io.mdsl.ui.handler.GenModelJSONExporterCommand"></command>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
+		<command name="Export Generator Model as YAML" id="io.mdsl.ui.handler.GenModelYAMLExporterCommand"></command>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution
@@ -412,6 +436,42 @@
 					</visibleWhen>
 				</command>
 				<command defaultHandler="io.mdsl.ui.handler.OpenAPIGenerationHandler" commandId="io.mdsl.ui.handler.OpenAPIGenerationCommand" style="push">
+					<visibleWhen checkEnabled="false">
+						<iterate>
+							<adapt type="org.eclipse.core.resources.IResource">
+								<test property="org.eclipse.core.resources.name" value="*.mdsl"/>
+							</adapt>
+						</iterate>
+					</visibleWhen>
+				</command>
+				<command defaultHandler="io.mdsl.ui.handler.ProtocolBuffersGenerationHandler" commandId="io.mdsl.ui.handler.ProtocolBuffersGenerationCommand" style="push">
+					<visibleWhen checkEnabled="false">
+						<iterate>
+							<adapt type="org.eclipse.core.resources.IResource">
+								<test property="org.eclipse.core.resources.name" value="*.mdsl"/>
+							</adapt>
+						</iterate>
+					</visibleWhen>
+				</command>
+				<command defaultHandler="io.mdsl.ui.handler.JolieGenerationHandler" commandId="io.mdsl.ui.handler.JolieGenerationCommand" style="push">
+					<visibleWhen checkEnabled="false">
+						<iterate>
+							<adapt type="org.eclipse.core.resources.IResource">
+								<test property="org.eclipse.core.resources.name" value="*.mdsl"/>
+							</adapt>
+						</iterate>
+					</visibleWhen>
+				</command>
+				<command defaultHandler="io.mdsl.ui.handler.GenModelJSONExporterHandler" commandId="io.mdsl.ui.handler.GenModelJSONExporterCommand" style="push">
+					<visibleWhen checkEnabled="false">
+						<iterate>
+							<adapt type="org.eclipse.core.resources.IResource">
+								<test property="org.eclipse.core.resources.name" value="*.mdsl"/>
+							</adapt>
+						</iterate>
+					</visibleWhen>
+				</command>
+				<command defaultHandler="io.mdsl.ui.handler.GenModelYAMLExporterHandler" commandId="io.mdsl.ui.handler.GenModelYAMLExporterCommand" style="push">
 					<visibleWhen checkEnabled="false">
 						<iterate>
 							<adapt type="org.eclipse.core.resources.IResource">

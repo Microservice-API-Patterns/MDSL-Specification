@@ -20,7 +20,7 @@ import com.google.common.collect.Iterators;
 import com.google.inject.Guice;
 
 import io.mdsl.APIDescriptionStandaloneSetup;
-import io.mdsl.apiDescription.serviceSpecification;
+import io.mdsl.apiDescription.ServiceSpecification;
 
 public abstract class AbstractMDSLInputIntegrationTest {
 
@@ -29,13 +29,13 @@ public abstract class AbstractMDSLInputIntegrationTest {
 		FileUtils.deleteDirectory(getGenerationDirectory());
 	}
 
-	protected serviceSpecification getTestSpecification(Resource resource) throws IOException {
-		List<serviceSpecification> serviceSpecifications = IteratorExtensions.<serviceSpecification>toList(
-				Iterators.<serviceSpecification>filter(resource.getAllContents(), serviceSpecification.class));
+	protected ServiceSpecification getTestSpecification(Resource resource) throws IOException {
+		List<ServiceSpecification> ServiceSpecifications = IteratorExtensions.<ServiceSpecification>toList(
+				Iterators.<ServiceSpecification>filter(resource.getAllContents(), ServiceSpecification.class));
 
-		if (serviceSpecifications.isEmpty())
+		if (ServiceSpecifications.isEmpty())
 			throw new RuntimeException("Cannot find MDSL spec in input resource.");
-		return serviceSpecifications.get(0);
+		return ServiceSpecifications.get(0);
 	}
 
 	protected Resource getTestResource(String testMDSLName) throws IOException {

@@ -7,16 +7,17 @@ import java.util.Map;
 
 import com.google.common.collect.Lists;
 
+import io.mdsl.apiDescription.AtomicParameter;
+import io.mdsl.apiDescription.AtomicParameterList;
 import io.mdsl.apiDescription.Cardinality;
-import io.mdsl.apiDescription.atomicParameter;
-import io.mdsl.apiDescription.atomicParameterList;
-import io.mdsl.apiDescription.dataContract;
-import io.mdsl.apiDescription.elementStructure;
-import io.mdsl.apiDescription.parameterForest;
-import io.mdsl.apiDescription.parameterTree;
-import io.mdsl.apiDescription.roleAndType;
-import io.mdsl.apiDescription.singleParameterNode;
-import io.mdsl.apiDescription.treeNode;
+import io.mdsl.apiDescription.DataContract;
+import io.mdsl.apiDescription.ElementStructure;
+import io.mdsl.apiDescription.ParameterForest;
+import io.mdsl.apiDescription.ParameterTree;
+import io.mdsl.apiDescription.RoleAndType;
+import io.mdsl.apiDescription.SingleParameterNode;
+import io.mdsl.apiDescription.TreeNode;
+import io.mdsl.generator.AnonymousFieldNameGenerator;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
@@ -38,13 +39,17 @@ public class DataType2SchemaConverter {
 
 	public final static String REF_PREFIX = "#/components/schemas/";
 
-	private int anonymousNameCounter = 1;
+	private AnonymousFieldNameGenerator fieldNameGenerator;
 
-	public Schema convert(dataContract dataType) {
+	public DataType2SchemaConverter() {
+		this.fieldNameGenerator = new AnonymousFieldNameGenerator();
+	}
+
+	public Schema convert(DataContract dataType) {
 		return convert(dataType.getStructure()).name(dataType.getName());
 	}
 
-	public Schema convert(elementStructure structure) {
+	public Schema convert(ElementStructure structure) {
 		ObjectSchema object = new ObjectSchema();
 		Map<String, Schema> propertySchemas = convertProperties(structure);
 		if (propertySchemas != null && !propertySchemas.isEmpty())
@@ -58,11 +63,11 @@ public class DataType2SchemaConverter {
 			return object;
 		}
 	}
-	
-	public Schema convert(atomicParameter atomicParameter) {
-		roleAndType rat = atomicParameter.getRat();
+
+	public Schema convert(AtomicParameter atomicParameter) {
+		RoleAndType rat = atomicParameter.getRat();
 		Schema schema = getSchema4ParameterType(atomicParameter);
-		schema.setName(getUniqueName(rat.getName()));
+		schema.setName(fieldNameGenerator.getUniqueName(rat.getName()));
 		if (atomicParameter.getCard() != null)
 			schema = mapCardinalities(atomicParameter.getCard(), schema);
 		return schema;
@@ -87,7 +92,7 @@ public class DataType2SchemaConverter {
 		return schema;
 	}
 
-	private Map<String, Schema> convertProperties(elementStructure dataTypeStructure) {
+	private Map<String, Schema> convertProperties(ElementStructure dataTypeStructure) {
 		if (dataTypeStructure.getApl() != null) {
 			return convertProperties(dataTypeStructure.getApl());
 		} else if (dataTypeStructure.getNp() != null) {
@@ -100,18 +105,18 @@ public class DataType2SchemaConverter {
 		return null;
 	}
 
-	private Map<String, Schema> convertProperties(atomicParameterList parameterList) {
+	private Map<String, Schema> convertProperties(AtomicParameterList parameterList) {
 		Map<String, Schema> map = new LinkedHashMap<>();
 		Schema firstParameterSchema = convert(parameterList.getFirst());
 		map.put(firstParameterSchema.getName(), firstParameterSchema);
-		for (atomicParameter nextParameter : parameterList.getNextap()) {
+		for (AtomicParameter nextParameter : parameterList.getNextap()) {
 			Schema nextParameterSchema = convert(nextParameter);
 			map.put(nextParameterSchema.getName(), nextParameterSchema);
 		}
 		return map;
 	}
 
-	private Map<String, Schema> convertProperties(singleParameterNode parameterNode) {
+	private Map<String, Schema> convertProperties(SingleParameterNode parameterNode) {
 		// do not create attribute node in case it is a P type (on root level)
 		// TODO (low prio) how about mapping P to "unknown" in OAS? or at least warn?
 		if (parameterNode.getGenP() != null)
@@ -124,15 +129,15 @@ public class DataType2SchemaConverter {
 		return map;
 	}
 
-	private Map<String, Schema> convertProperties(parameterForest parameterForest) {
+	private Map<String, Schema> convertProperties(ParameterForest parameterForest) {
 		Map<String, Schema> map = new LinkedHashMap<>();
 		if (parameterForest.getPtl() == null)
 			return map;
 		int treeCounter = 1;
-		List<parameterTree> trees = Lists.newLinkedList();
+		List<ParameterTree> trees = Lists.newLinkedList();
 		trees.add(parameterForest.getPtl().getFirst());
 		trees.addAll(parameterForest.getPtl().getNext());
-		for (parameterTree tree : trees) {
+		for (ParameterTree tree : trees) {
 			Schema treeWrapperSchema = new ObjectSchema().name("tree" + treeCounter);
 			treeWrapperSchema.setProperties(convertProperties(tree));
 			map.put(treeWrapperSchema.getName(), treeWrapperSchema);
@@ -141,12 +146,12 @@ public class DataType2SchemaConverter {
 		return map;
 	}
 
-	private Map<String, Schema> convertProperties(parameterTree parameterTree) {
+	private Map<String, Schema> convertProperties(ParameterTree parameterTree) {
 		Map<String, Schema> map = new LinkedHashMap<>();
 		Schema firstTreeNodeSchema = createSchema4TreeNode(parameterTree.getFirst());
 		if (firstTreeNodeSchema != null)
 			map.put(firstTreeNodeSchema.getName(), firstTreeNodeSchema);
-		for (treeNode nextNode : parameterTree.getNexttn()) {
+		for (TreeNode nextNode : parameterTree.getNexttn()) {
 			Schema nextSchema = createSchema4TreeNode(nextNode);
 			if (nextSchema != null)
 				map.put(nextSchema.getName(), nextSchema);
@@ -154,36 +159,36 @@ public class DataType2SchemaConverter {
 		return map;
 	}
 
-	private Schema createSchema4SingleParameterNode(singleParameterNode singleNode) {
+	private Schema createSchema4SingleParameterNode(SingleParameterNode singleNode) {
 		// only consider 'atomP'; nothing to generate for 'genP'
-		// TODO (low prio) actually we could map genP to a string 
+		// TODO (low prio) actually we could map genP to a string
 		if (singleNode.getAtomP() != null) {
 			Schema atomPSchema = convert(singleNode.getAtomP());
 			if (atomPSchema != null)
 				return atomPSchema;
 		} else if (singleNode.getTr() != null) {
 			return mapCardinalities(singleNode.getTr().getCard(),
-					new Schema<>().name(getUniqueName(singleNode.getTr().getName()))
+					new Schema<>().name(fieldNameGenerator.getUniqueName(singleNode.getTr().getName()))
 							.$ref(REF_PREFIX + singleNode.getTr().getDcref().getName()));
 		} else if (singleNode.getGenP() != null) {
-			return new ObjectSchema().name(getUniqueName(singleNode.getGenP().getName()));
+			return new ObjectSchema().name(fieldNameGenerator.getUniqueName(singleNode.getGenP().getName()));
 		}
 		return null;
 	}
 
-	private Schema createSchema4TreeNode(treeNode node) {
+	private Schema createSchema4TreeNode(TreeNode node) {
 		if (node.getApl() != null) {
-			atomicParameterList list = node.getApl();
+			AtomicParameterList list = node.getApl();
 			Schema listWrapperSchema = new ObjectSchema();
-			listWrapperSchema.setName(getUniqueName(list.getName()));
+			listWrapperSchema.setName(fieldNameGenerator.getUniqueName(list.getName()));
 			listWrapperSchema.setProperties(convertProperties(list));
 			return mapCardinalities(node.getApl().getCard(), listWrapperSchema);
 		} else if (node.getPn() != null) {
 			return createSchema4SingleParameterNode(node.getPn());
 		} else if (node.getChildren() != null) {
-			parameterTree subTree = node.getChildren();
+			ParameterTree subTree = node.getChildren();
 			Schema treeWrapperSchema = new ObjectSchema();
-			treeWrapperSchema.setName(getUniqueName(subTree.getName()));
+			treeWrapperSchema.setName(fieldNameGenerator.getUniqueName(subTree.getName()));
 			treeWrapperSchema.setProperties(convertProperties(subTree));
 			return mapCardinalities(subTree.getCard(), treeWrapperSchema);
 		}
@@ -194,8 +199,8 @@ public class DataType2SchemaConverter {
 		return new ArraySchema().items(schema).name(schema.getName());
 	}
 
-	private Schema getSchema4ParameterType(atomicParameter parameter) {
-		if (isStringDefined(parameter.getRat().getBtype()))
+	private Schema getSchema4ParameterType(AtomicParameter parameter) {
+		if (parameter.getRat().getBtype() != null && !"".equals(parameter.getRat().getBtype()))
 			return getSchema4BasicType(parameter.getRat().getBtype());
 
 		if (parameter.getRat().getRole() != null
@@ -224,28 +229,13 @@ public class DataType2SchemaConverter {
 		case "raw":
 			return new BinarySchema();
 		default:
-			// TODO warn about this? 
+			// TODO warn about this?
 			return new VoidSchema();
 		}
 	}
-	
+
 	// TODO (high prio) map D<void> (and other voids) properly:
 	// [x] ignore? [-] map to string?
-
-	private boolean isStringDefined(String name) {
-		return name != null && !"".equals(name);
-	}
-
-	private String getUniqueName(String inputName) {
-		// in case there is a name, just take it
-		if (isStringDefined(inputName))
-			return inputName;
-
-		// in case there is no name, generate a unique "anonymous" name
-		String genName = "anonymous" + anonymousNameCounter;
-		anonymousNameCounter++;
-		return genName;
-	}
 
 	private class VoidSchema extends Schema<Void> {
 		public VoidSchema() {

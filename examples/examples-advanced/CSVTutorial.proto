@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package SpreadSheetExchangeAPI;
+
+message CSVSpreadsheet {
+  CSVSheetTab anonymous1 = 1;
+}
+
+message CSVSheetTab {
+}
+
+message Rows {
+}
+
+message Column {
+}
+
+message Cell {
+}
+
+message uploadSpreadsheetResponseMessage {
+}
+
+message downloadSpreadsheetRequestMessage {
+  string anonymous1 = 1;
+}
+
+service SpreadSheetExchangeEndpoint {
+  rpc downloadSpreadsheet(downloadSpreadsheetRequestMessage) returns (CSVSpreadsheet);
+  rpc uploadSpreadsheet(CSVSpreadsheet) returns (uploadSpreadsheetResponseMessage);
+}
+

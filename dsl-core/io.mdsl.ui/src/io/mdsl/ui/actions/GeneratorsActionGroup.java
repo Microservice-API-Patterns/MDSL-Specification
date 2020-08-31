@@ -56,6 +56,10 @@ public class GeneratorsActionGroup extends ActionGroup {
 		int added = 0;
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.TextFileGenerationCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.OpenAPIGenerationCommand"));
+		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.ProtocolBuffersGenerationCommand"));
+		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.JolieGenerationCommand"));
+		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.GenModelJSONExporterCommand"));
+		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.GenModelYAMLExporterCommand"));
 		// generatorSubmenu.add(new Separator());
 		// added += addAction(generatorSubmenu, createAction("some other generator"));
 		return added;

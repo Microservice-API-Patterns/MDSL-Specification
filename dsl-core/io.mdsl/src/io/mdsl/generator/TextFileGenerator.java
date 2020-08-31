@@ -9,7 +9,7 @@ import java.util.Map;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 
-import io.mdsl.apiDescription.serviceSpecification;
+import io.mdsl.apiDescription.ServiceSpecification;
 import io.mdsl.exception.MDSLException;
 import io.mdsl.generator.freemarker.FreemarkerEngineWrapper;
 
@@ -47,7 +47,7 @@ public class TextFileGenerator extends AbstractMDSLGenerator {
 	}
 
 	@Override
-	protected void generateFromServiceSpecification(serviceSpecification mdslSpecification, IFileSystemAccess2 fsa, URI inputFileURI) {
+	protected void generateFromServiceSpecification(ServiceSpecification mdslSpecification, IFileSystemAccess2 fsa, URI inputFileURI) {
 		// check that preconditions are fulfilled:
 		if (freemarkerTemplateFile == null)
 			throw new MDSLException("The freemarker template has not been set!");

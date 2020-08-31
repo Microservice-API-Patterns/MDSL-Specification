@@ -19,14 +19,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.validation.AbstractDeclarativeValidator;
 
-import io.mdsl.apiDescription.serviceSpecification;
+import io.mdsl.apiDescription.ServiceSpecification;
 
 public class AbstractMDSLValidator extends AbstractDeclarativeValidator {
 
 	public static final String ID_VALIDATION_PATTERN = "^[a-zA-Z_][a-zA-Z0-9_]*";
 
-	protected serviceSpecification getRootMDSLModel(EObject modelElement) {
-		return (serviceSpecification) EcoreUtil.getRootContainer(modelElement);
+	protected ServiceSpecification getRootMDSLModel(EObject modelElement) {
+		return (ServiceSpecification) EcoreUtil.getRootContainer(modelElement);
 	}
 
 }

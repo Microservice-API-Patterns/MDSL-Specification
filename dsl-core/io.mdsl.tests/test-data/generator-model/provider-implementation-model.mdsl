@@ -1,0 +1,14 @@
+API description TestMDSLSpec 
+
+endpoint type TestEndpoint
+
+API provider TestProvider
+	offers TestEndpoint
+	
+API client TestClient
+	consumes TestEndpoint
+	
+	
+API provider implementation TestImpl
+	realizes TestProvider in PlainJava
+	as "TestImplClass"

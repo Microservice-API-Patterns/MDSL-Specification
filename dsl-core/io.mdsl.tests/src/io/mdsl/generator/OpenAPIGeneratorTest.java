@@ -105,6 +105,11 @@ public class OpenAPIGeneratorTest extends AbstractMDSLInputIntegrationTest {
 	}
 	
 	@Test
+	public void canRespectHttpBindingIfSingleProviderExists() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("endpoint-http-mapping-test-1");
+	}
+	
+	@Test
 	public void cannotHaveDuplicateMappings() throws IOException {
 		// given
 		Resource inputModel = getTestResource("endpoint-test-duplicate-operations-error.mdsl");

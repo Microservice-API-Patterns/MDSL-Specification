@@ -1,5 +1,5 @@
 ---
-title: Microservices Domain Specific Language (MDSL) Other Concepts (Provider, Client, Gateway)
+title: Microservice Domain Specific Language (MDSL) Other Concepts (Provider, Client, Gateway)
 author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ---
@@ -7,9 +7,9 @@ copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 Runtime Language Concepts: API Provider, API Client, API Gateway
 ================================================================
 
-*Note:* Work in progress still (the protocol bindings in particular); subject to change! 
+*Note:* Work in progress still (the protocol bindings in particular)! 
 
-The language concepts described there can be used for context mapping, deployment modeling, and code generation (e.g., walking provider skeletons, test clients). Unlike endpoint types and data contracts, they play on the "instance" rather than the "class" level (just like ports in WSDL are instances of port types).
+The language concepts described here can be used for context mapping, deployment modeling, and code generation (e.g., walking provider skeletons, test clients). Unlike endpoint types and data contracts, they play on the "instance" rather than the "class" level (just like ports in WSDL are instances of port types).
 
 ## API Provider
 
@@ -19,14 +19,14 @@ An API provider exposes one or more endpoint contracts at an address that unders
 API provider sampleProvider
 offers SomeDemoContract
 at endpoint location "http://www.tbc.io:80/path/subpath"
-via protocol RESTful_HTTP // or other supported protocol
+via protocol HTTP // or other supported protocol
 under conditions "See http://www.tbc.io/terms-and-conditions.html"
 provider governance AGGRESSIVE_OBSOLESCENCE
 ~~~
 
 At present, the following protocols are predefined:
 
-> RESTful_HTTP | SOAP_HTTP | gRPC | Avro_RPC | Thrift | AMQP
+> REST | SOAP_HTTP | gRPC | Avro_RPC | Thrift | AMQP <!-- TODO 4.0 update -->
 
 It is also possible to define a custom protocol by including its name in double quotes: `"Some other protocol"`.[^1]
 
@@ -40,7 +40,7 @@ A more complete example, also featuring an SLA and evolution governance informat
 API provider SampleAPIProvider1 
   offers SomeDemoContract 
     at endpoint location "http://www.testdomain.io:80/path/subpath"
-    via protocol RESTful_HTTP   
+    via protocol HTTP   
   	with endpoint SLA // provider1Endpoint1SLA
       type QUANTITATIVE // optional now
     	objective performanceSLO1 "responseTimeUnder" 5 seconds
@@ -58,23 +58,10 @@ API provider SampleAPIProvider1
 
 The language elements in the endpoint and provider SLA sections model the elements an SLA is supposed to contain according to the [SLA pattern page on the MAP website](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ServiceLevelAgreement.html).
 
-### Protocol bindings
+### Protocol Bindings
 
-To generate server-side stubs and client-side proxies, more information will be required. 
+See [bindings](./bindings) page.
 
-At present, only a basic parameter binding construct for HTTP is available: 
-
-~~~
-API provider HelloWorldAPIProvider
-  offers HelloWorldPlusEndpoint
-  at endpoint location "https://localhost:80/HelloWorldPlusEndpoint"
-  via protocol RESTful_HTTP // linter must check that protocol and parameter form match
-    mapping path parameters (p1)
-    mapping query parameters (p2, p3)
-    mapping form parameters (p4, p5, p6)
-~~~
-
-*Note*: This binding is work in progress and yet has to be completed and validated.
 
 ## API Client
 
@@ -84,7 +71,7 @@ The consumers of endpoint contracts (API clients) are modeled according to the f
 API client SampleAPIClient
     consumes SomeDemoContract
     from sampleProvider
-    via protocol RESTful_HTTP
+    via protocol HTTP
 ~~~
 
 Clients merely have to decide which APIs to consume and which protocol to use to do so.
@@ -103,6 +90,32 @@ API gateway SampleAPIGatweway
   consumes SomeDemoContract 
   from SampleAPIProvider1
   via protocol gRPC
+~~~
+
+## API Provider Implementation 
+
+~~~
+ProviderImplementation:
+	'API' 'provider' 'implementation'
+	name=ID
+	'realizes' upstreamBinding=[Provider]
+	'in' platform=ImplementationTechnology
+	('as' class=STRING ('extending' superclass=STRING)? // default assigned if not specified
+;
+
+enum ImplementationTechnology: PlainJava | SpringMVC | STRING // more to be added
+;	
+~~~
+
+<!-- removed 	| 'with' 'binding' downstreamBinding=[Provider])? // reference to Java protocol binding (optional) as well as vlingo enum TODO 4.0 adopt example  -->
+
+~~~
+
+API provider implementation ProductManagementJavaServiceProviderImpl 
+  realizes ProductManagementWebServiceProvider
+  in PlainJava
+  as "co.something.model.ProductActor" extending "Entity"
+  // or: with binding ProductManagementJavaServiceProvider
 ~~~
 
 

@@ -1,5 +1,5 @@
 ---
-title: Microservices Domain Specific Language (MDSL) Quick Reference
+title: Microservice Domain Specific Language (MDSL) Quick Reference
 author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ---

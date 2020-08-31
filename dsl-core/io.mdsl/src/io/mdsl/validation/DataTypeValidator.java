@@ -7,9 +7,8 @@ import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
 
 import io.mdsl.apiDescription.ApiDescriptionPackage;
-import io.mdsl.apiDescription.genericParameter;
-import io.mdsl.apiDescription.roleAndType;
-import io.mdsl.apiDescription.serviceSpecification;
+import io.mdsl.apiDescription.GenericParameter;
+import io.mdsl.apiDescription.RoleAndType;
 
 /**
  * This class contains custom validation rules. 
@@ -24,23 +23,34 @@ public class DataTypeValidator extends AbstractAPIDescriptionValidator {
 	}
 	
 	@Check
-	public void checkRoleAndType(final roleAndType rat) {
+	public void checkRoleAndType(final RoleAndType rat) {
 		String role = rat.getRole();
 		String basicType = rat.getBtype();
-		if(role.equals("ID") && basicType.equals("bool")) {
-			warning("The role-type combination ID<bool> does not make much sense. Try ID<String> or ID<int>.", rat, ApiDescriptionPackage.Literals.ROLE_AND_TYPE__BTYPE);
+		
+		if(basicType==null || basicType.equals("")) {
+			info("Incomplete specification: No type such as <String> or <int> specified yet.", rat, ApiDescriptionPackage.Literals.ROLE_AND_TYPE__BTYPE);
 	    }
-	// TODO should also warn about incomplete APs such as  D (?), quick fix: turn into D<string>
+		else if(basicType.equals("void")) {
+			info("Imprecise specification: <void> only makes sense as sole element of a response message; you might want to remove the empty message from the specification.", rat, ApiDescriptionPackage.Literals.ROLE_AND_TYPE__BTYPE);
+	    }
+		else if(role.equals("ID") && !(basicType.equals("int")|| basicType.equals("string"))) {
+			warning("The role-type combination ID<" + basicType + "> is somewhat unusual. Use ID<string> or ID<int> instead?", rat, ApiDescriptionPackage.Literals.ROLE_AND_TYPE__BTYPE);
+	    }
+		else if(role.equals("L") && !(basicType.equals("int") || basicType.equals("string"))) {
+			warning("The role-type combination L<" + basicType + "> is somewhat unusual. Use L<string> or L<int> instead?", rat, ApiDescriptionPackage.Literals.ROLE_AND_TYPE__BTYPE);
+	    }
+		else if(role.equals("MD") && basicType.equals("raw")) {
+			warning("The role-type combination MD<raw> is somewhat unusual. Use MD<string> instead?", rat, ApiDescriptionPackage.Literals.ROLE_AND_TYPE__BTYPE);
+	    }
 	}
 	
 	@Check
-	public void checkIncompleteTypeInformation(final genericParameter gp) {
+	public void checkIncompleteTypeInformation(final GenericParameter gp) {
 		if(gp.getName() != null) {
-			// is 'P' covered? should it?
-			warning(gp.getName() + " is a generic parameter. You might want to provide a full identfier-role-type triple.", gp, ApiDescriptionPackage.Literals.GENERIC_PARAMETER__P);
+			warning("\"" + gp.getName() + "\" is a generic parameter. You might want to provide a full identfier-role-type triple before invoking any generator.", gp, ApiDescriptionPackage.Literals.GENERIC_PARAMETER__P);
 		}
 		else {
-			warning("This is a generic parameter. You might want to provide a full identfier-role-type triple. See <a href=\"https://microservice-api-patterns.github.io/MDSL-Specification/datacontract\">MDSL documentation</a>.", gp, ApiDescriptionPackage.Literals.GENERIC_PARAMETER__P);
+			warning("This is a generic parameter. You might want to provide a full identfier-role-type triple. See MDSL documentation at https://microservice-api-patterns.github.io/MDSL-Specification/datacontract.", gp, ApiDescriptionPackage.Literals.GENERIC_PARAMETER__P);
 		}
 	}
 }

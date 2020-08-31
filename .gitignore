@@ -2,6 +2,8 @@
 *.class
 **/target
 **/bin
+**/build
+**/out
 
 # Package Files #
 *.jar
@@ -18,11 +20,18 @@
 **/.settings
 plugin.xml_gen
 
+# IntelliJ
+**/.idea
+
+# Gradle
+**/.gradle
+
 # Xtext generated sources
 **/src-gen
+**/src-test-gen
 **/xtend-gen
 **/model/generated/
 
 # Misc
 **/SABA-VisualisierungenFinal
-.DS_Store
+

@@ -91,11 +91,15 @@ public abstract class AbstractGenerationHandler extends AbstractHandler implemen
 		} catch (MDSLException e) {
 			MessageDialog.openInformation(HandlerUtil.getActiveShell(event), "Model Input", e.getMessage());
 		} catch (Exception e) {
-			String message = e.getMessage() != null && !"".equals(e.getMessage()) ? e.getMessage() : e.getClass().getName() + " occurred in " + this.getClass().getName();
-			Status status = new Status(IStatus.ERROR, MdslActivator.PLUGIN_ID, message, e);
-			StatusManager.getManager().handle(status);
-			ErrorDialog.openError(HandlerUtil.getActiveShell(event), "Error", "Exception occured during execution of command!", createMultiStatus(e.getLocalizedMessage(), e));
+			handleUnexpectedException(event, e);
 		}
+	}
+
+	protected void handleUnexpectedException(ExecutionEvent event, Exception e) {
+		String message = e.getMessage() != null && !"".equals(e.getMessage()) ? e.getMessage() : e.getClass().getName() + " occurred in " + this.getClass().getName();
+		Status status = new Status(IStatus.ERROR, MdslActivator.PLUGIN_ID, message, e);
+		StatusManager.getManager().handle(status);
+		ErrorDialog.openError(HandlerUtil.getActiveShell(event), "Error", "Exception occured during execution of command!", createMultiStatus(e.getLocalizedMessage(), e));
 	}
 	
 	protected void postGeneration(ExecutionEvent event) {

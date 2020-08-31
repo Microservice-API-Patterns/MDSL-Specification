@@ -1,0 +1,13 @@
+API description TestAPI
+
+data type TestInput ("attr1":D<string>, "attr2":D<int>)
+data type TestOutput ("attr1":D<string>, "attr2":D<int>)
+
+endpoint type TestEndpoint
+	exposes
+		operation TestOperation
+		  expecting
+		    payload TestInput
+		  delivering
+		    payload TestOutput
+IPA

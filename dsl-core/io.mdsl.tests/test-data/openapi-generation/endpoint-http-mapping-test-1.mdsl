@@ -1,0 +1,19 @@
+API description TestAPI
+
+data type Test P
+
+endpoint type TestEndpoint
+  serves as INFORMATION_HOLDER_RESOURCE
+  exposes
+    operation doSomethingJust4Test
+      expecting
+        payload ("attr1":D<string>, "attr2":D<string>)
+      delivering
+        payload Test
+
+API provider TestEndpointProvider
+	offers TestEndpoint
+	at endpoint location "/endpoint"
+	via protocol HTTP binding operation doSomethingJust4Test to GET
+
+IPA

@@ -1,0 +1,10 @@
+API description TestMDSLSpec 
+
+endpoint type TestEndpoint
+
+API provider TestProvider
+	offers TestEndpoint
+	
+API client TestClient
+	consumes TestEndpoint
+	

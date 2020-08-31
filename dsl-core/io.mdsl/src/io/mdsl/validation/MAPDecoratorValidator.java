@@ -6,9 +6,9 @@ import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
 
 import io.mdsl.apiDescription.ApiDescriptionPackage;
-import io.mdsl.apiDescription.endpointContract;
-import io.mdsl.apiDescription.operation;
-import io.mdsl.apiDescription.operationResponsibility;
+import io.mdsl.apiDescription.EndpointContract;
+import io.mdsl.apiDescription.Operation;
+import io.mdsl.apiDescription.OperationResponsibility;
 
 public class MAPDecoratorValidator extends AbstractDeclarativeValidator {
 
@@ -18,11 +18,11 @@ public class MAPDecoratorValidator extends AbstractDeclarativeValidator {
 	}
 
 	@Check
-	public void checkRoleResponsibilityPatternCombination(endpointContract nextEndpoint) {
+	public void checkRoleResponsibilityPatternCombination(EndpointContract nextEndpoint) {
 
-		EList<operation> opList = nextEndpoint.getOps();
+		EList<Operation> opList = nextEndpoint.getOps();
 		String role1 = nextEndpoint.getPrimaryRole(); 
-		// TODO should also look at "other roles"
+		// TODO could also look at "other roles"
 
 		if(role1==null || role1.equals("")) {
 			info(nextEndpoint.getName() + " has no responsibility ", nextEndpoint, ApiDescriptionPackage.Literals.ENDPOINT_CONTRACT__NAME);
@@ -30,38 +30,75 @@ public class MAPDecoratorValidator extends AbstractDeclarativeValidator {
 		}
 		
 		for(int i=0; i<opList.size(); i++) {
-			operation nextOp = opList.get(i);
+			Operation nextOp = opList.get(i);
 			
 			String responsibility = getResponsibilityPattern(nextOp);
 			
 			if(responsibility==null || responsibility.equals(""))
 				return; // nothing to report, really (could suggest to add)
 
-			// check that endpoint and operation level semantics match/make sense
-			// TODO test more; decide what is ok/not ok
-			
+			// check that endpoint and operation level semantics match/make sense			
 			
 			if(role1.equals("PROCESSING_RESOURCE")) {
-				info(nextOp.getName() + " has responsibility " + responsibility + " (ok in PROCESSING_RESOURCE such as " + nextEndpoint.getName() + ")", nextOp, ApiDescriptionPackage.Literals.OPERATION__NAME);
+				// no need to report positive case: 
+				// info(nextOp.getName() + " has responsibility " + responsibility + " (ok in a processing resource such as " + nextEndpoint.getName() + ")", nextOp, ApiDescriptionPackage.Literals.OPERATION__NAME);
 			}
-			// TODO add/test ODH, MDH, DTR, LLR
-			else if(role1.equals("INFORMATION_HOLDER_RESOURCE")){
-				if(responsibility.equals("COMPUTATION_FUNCTION")) {
-					warning(nextOp.getName() + " is a COMPUTATION_FUNCTION, somewhat unexpected in an INFORMATION_HOLDER_RESOURCE such as " + nextEndpoint.getName(), nextOp, ApiDescriptionPackage.Literals.OPERATION__NAME);					
+			else if(role1.equals("INFORMATION_HOLDER_RESOURCE")) {
+				checkCommonDataEndpointConstraint(nextEndpoint, nextOp, responsibility);
+			}
+			else if(role1.equals("MASTER_DATA_HOLDER")
+					|| role1.equals("OPERATIONAL_DATA_HOLDER")
+					|| role1.equals("DATA_TRANSFER_RESOURCE")) {
+			}
+			else if(role1.equals("REFERENCE_DATA_HOLDER")) {
+				checkCommonDataEndpointConstraint(nextEndpoint, nextOp, responsibility);
+				if(responsibility.equals("STATE_CREATION_OPERATION") || responsibility.equals("STATE_TRANSITION_OPERATION")) {
+					warning(nextOp.getName() + " creates or updates state, somewhat unexpected in a reference data holder such as " + nextEndpoint.getName(), nextOp, ApiDescriptionPackage.Literals.OPERATION__NAME);					
 				}
 				else {
-					info(nextOp.getName() + " has responsibility " + responsibility + " (ok in INFORMATION_HOLDER_RESOURCE such as " + nextEndpoint.getName() + ")", nextOp, ApiDescriptionPackage.Literals.OPERATION__NAME);
+					// no need to report positive case: 
+					// info(nextOp.getName() + " has responsibility " + responsibility + " (ok in a reference data holder such as " + nextEndpoint.getName() + ")", nextOp, ApiDescriptionPackage.Literals.OPERATION__NAME);
+				}
+				if(responsibility.equals("STATE_TRANSITION_OPERATION")) {
+					warning(nextOp.getName() + " is a STATE_TRANSITION_OPERATION, somewhat unexpected in a reference data holder such as " + nextEndpoint.getName(), nextOp, ApiDescriptionPackage.Literals.OPERATION__NAME);					
+				}
+				else {
+					// no need to report positive case: 
+					// info(nextOp.getName() + " has responsibility " + responsibility + " (ok in a reference data holder such as " + nextEndpoint.getName() + ")", nextOp, ApiDescriptionPackage.Literals.OPERATION__NAME);
+				}
+			}
+			else if(role1.equals("LINK_LOOKUP_RESOURCE")) {
+				checkCommonDataEndpointConstraint(nextEndpoint, nextOp, responsibility);
+				if(responsibility.equals("STATE_TRANSITION_OPERATION")) {
+					warning(nextOp.getName() + " updates state, somewhat unexpected in a link lookup resource such as " + nextEndpoint.getName(), nextOp, ApiDescriptionPackage.Literals.OPERATION__NAME);					
+				}
+				else {
+					// no need to report positive case: 
+					// info(nextOp.getName() + " has responsibility " + responsibility + " (ok in a link lookup resource such as " + nextEndpoint.getName() + ")", nextOp, ApiDescriptionPackage.Literals.OPERATION__NAME);
 				}
 			}
 			else {
 				info(nextEndpoint.getName() + " unknown role " + role1, nextEndpoint, ApiDescriptionPackage.Literals.ENDPOINT_CONTRACT__NAME);
 			}
+			
+			// could validate message types and MAP responsibility pattern in a future version
+			// (for instance, an SCO should not return much data); not clear yet how to generalize
+		}
+	}
+
+	private void checkCommonDataEndpointConstraint(EndpointContract ep, Operation op, String responsibility) {
+		if(responsibility.equals("COMPUTATION_FUNCTION")) {
+			warning(op.getName() + " is a COMPUTATION_FUNCTION, somewhat unexpected in a data-oriented endpoint such as " + ep.getName(), op, ApiDescriptionPackage.Literals.OPERATION__NAME);					
+		}
+		else {
+			// no need to report positive case: 
+			// info(op.getName() + " has responsibility " + responsibility + " (ok in a data-oriented endpoint such as " + ep.getName() + ")", op, ApiDescriptionPackage.Literals.OPERATION__NAME);
 		}
 	}
 	
-	// TODO refactor, mostly copied from generator/converter:
-	private String getResponsibilityPattern(operation mdslOperation) {
-		operationResponsibility responsibility = mdslOperation.getResponsibility();
+	// TODO refactor, adapted from generator/converter:
+	private String getResponsibilityPattern(Operation mdslOperation) {
+		OperationResponsibility responsibility = mdslOperation.getResponsibility();
 		if (responsibility.getCf()!=null)
 			return responsibility.getCf();
 		if (responsibility.getSco()!=null)

@@ -1,0 +1,7 @@
+API description TestAPI
+
+data type TestParameterList ("attr1":D<string>, "attr2":D<int>)
+
+endpoint type TestEndpoint // at least one entpoint is required in MDSL
+
+IPA

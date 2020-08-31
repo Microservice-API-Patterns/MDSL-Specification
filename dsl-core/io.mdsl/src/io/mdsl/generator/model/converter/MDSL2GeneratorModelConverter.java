@@ -1,0 +1,127 @@
+/*
+ * Copyright 2020 The MDSL Project Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.mdsl.generator.model.converter;
+
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
+import io.mdsl.apiDescription.DataContract;
+import io.mdsl.apiDescription.ServiceSpecification;
+import io.mdsl.generator.model.Client;
+import io.mdsl.generator.model.DataType;
+import io.mdsl.generator.model.EndpointContract;
+import io.mdsl.generator.model.MDSLGeneratorModel;
+import io.mdsl.generator.model.Provider;
+import io.mdsl.generator.model.ProviderImplementation;
+
+/**
+ * Converts MDSL (AST model) into our simpler generator model.
+ *
+ */
+public class MDSL2GeneratorModelConverter {
+
+	private ServiceSpecification serviceSpecification;
+	private DataTypeConverter dataTypeConverter;
+	private EndpointConverter endpointConverter;
+	private ProviderConverter providerConverter;
+	private ClientConverter clientConverter;
+	private ProviderImplementationConverter providerImplementationConverter;
+	private MDSLGeneratorModel genModel;
+
+	public MDSL2GeneratorModelConverter(ServiceSpecification serviceSpecification) {
+		this.serviceSpecification = serviceSpecification;
+		this.genModel = new MDSLGeneratorModel(serviceSpecification.getName());
+		this.dataTypeConverter = new DataTypeConverter(genModel);
+		this.endpointConverter = new EndpointConverter(genModel, dataTypeConverter);
+		this.providerConverter = new ProviderConverter(genModel);
+		this.providerImplementationConverter = new ProviderImplementationConverter(genModel);
+		this.clientConverter = new ClientConverter(genModel);
+	}
+
+	/**
+	 * Converts the service specification passed to the constructor into the
+	 * generator model.
+	 * 
+	 * @return the generator model of the corresponding MDSL model
+	 */
+	public MDSLGeneratorModel convert() {
+		// convert data types
+		for (DataType dataType : convertDataTypes(serviceSpecification.getTypes()))
+			genModel.addDataType(dataType);
+
+		// convert endpoints
+		for (EndpointContract endpoint : convertEndpoints(serviceSpecification.getContracts()))
+			genModel.addEndpoint(endpoint);
+
+		// convert providers
+		for (Provider provider : convertProviders(serviceSpecification.getProviders()))
+			genModel.addProvider(provider);
+
+		// convert clients
+		for (Client client : convertClients(serviceSpecification.getClients()))
+			genModel.addClient(client);
+
+		// convert provider implementations
+		for (ProviderImplementation providerImpl : convertProviderImplementations(
+				serviceSpecification.getRealizations()))
+			genModel.addProviderImplementation(providerImpl);
+
+		return genModel;
+	}
+
+	private List<DataType> convertDataTypes(List<DataContract> contracts) {
+		List<DataType> dataTypes = Lists.newLinkedList();
+		for (DataContract contract : contracts) {
+			dataTypes.add(dataTypeConverter.convert(contract));
+		}
+		return dataTypes;
+	}
+
+	private List<EndpointContract> convertEndpoints(List<io.mdsl.apiDescription.EndpointContract> mdslEndpoints) {
+		List<EndpointContract> endpoints = Lists.newLinkedList();
+		for (io.mdsl.apiDescription.EndpointContract endpoint : mdslEndpoints) {
+			endpoints.add(endpointConverter.convert(endpoint));
+		}
+		return endpoints;
+	}
+
+	private List<Provider> convertProviders(List<io.mdsl.apiDescription.Provider> mdslProviders) {
+		List<Provider> providers = Lists.newLinkedList();
+		for (io.mdsl.apiDescription.Provider provider : mdslProviders) {
+			providers.add(providerConverter.convert(provider));
+		}
+		return providers;
+	}
+
+	private List<Client> convertClients(List<io.mdsl.apiDescription.Client> mdslClients) {
+		List<Client> clients = Lists.newLinkedList();
+		for (io.mdsl.apiDescription.Client client : mdslClients) {
+			clients.add(clientConverter.convert(client));
+		}
+		return clients;
+	}
+
+	private List<ProviderImplementation> convertProviderImplementations(
+			List<io.mdsl.apiDescription.ProviderImplementation> mdslProviderImplemenations) {
+		List<ProviderImplementation> providerImplementations = Lists.newLinkedList();
+		for (io.mdsl.apiDescription.ProviderImplementation providerImpl : mdslProviderImplemenations) {
+			providerImplementations.add(providerImplementationConverter.convert(providerImpl));
+		}
+		return providerImplementations;
+	}
+
+}

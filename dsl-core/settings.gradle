@@ -1,0 +1,10 @@
+include 'mdsl-core'
+include 'mdsl-core-tests'
+include 'mdsl-lsp'
+include 'mdsl-cli'
+
+project(":mdsl-core").projectDir = file("io.mdsl")
+project(":mdsl-core-tests").projectDir = file("io.mdsl.tests")
+project(":mdsl-lsp").projectDir = file("io.mdsl.ide")
+project(":mdsl-cli").projectDir = file("io.mdsl.cli")
+
