@@ -113,7 +113,7 @@ data type CustomerWithAddressAndMoveHistory {
 } 
 ~~~
 
-Alternatively, one can start with [element stereotypes](https://microservice-api-patterns.org/patterns/structure/elementStereotypes) and pure structure instead of element names: 
+Alternatively, one can start with [element stereotypes](https://microservice-api-patterns.org/patterns/structure/) and pure structure instead of element names: 
 
 ~~~
 data type MoveHistory {D, D, D}  // record, modeled as Parameter Tree
