@@ -21,7 +21,7 @@ grammar io.mdsl.APIDescription with org.eclipse.xtext.common.Terminals
 title: Microservices Domain Specific Language (MDSL) Grammar
 author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2018-2020. All rights reserved.
-version: "3.5 (last update: August 25, 2020)"
+version: "4.0 (last update: August 25, 2020)"
 ---
 */ 
 

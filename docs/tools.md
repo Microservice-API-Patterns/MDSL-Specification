@@ -10,7 +10,7 @@ MDSL Tools: Users Guide
 <!-- from top-level index page/readme:
 ### Installation in Eclipse
 
- * Update site: [https://socadk.github.io/MDSL/updates/](https://socadk.github.io/MDSL/updates/)
+ * Update site: [https://microservice-api-patterns.github.io//MDSL-Specification/updates/](https://microservice-api-patterns.github.io//MDSL-Specification/updates/)
  * The grammar can be found in the `dsl-core` project (more precisely, in the `io.mdsl./src/io.mdsl` folder of this project): [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) and [private](https://github.com/socadk/MDSL/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) repository.
 
 ### Direct links into repository
@@ -58,7 +58,7 @@ Please refer to the [readme of the DSL core project](https://github.com/Microser
 ### MDSL Editor
 The MDSL Eclipse plugin provides editing support (syntax highlighting, auto completion, etc.) for our DSL. You can install the plugin in your Eclipse from the following update site:
 
-[https://socadk.github.io/MDSL/updates/](https://socadk.github.io/MDSL/updates/)
+[https://microservice-api-patterns.github.io//MDSL-Specification/updates/](https://microservice-api-patterns.github.io//MDSL-Specification/updates/)
 
 Once you have installed the plugin successfully, the MDSL editor should open for any file that ends with `.mdsl`. You can create one and copy-paste the above hello world example, or find additional examples [in this folder](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples).
 

@@ -12,12 +12,12 @@ Quick links:
 
 * Documentation pages (GitHub pages): [Tutorial](./tutorial), [examples](./examples), [quick reference](./quickreference)<!-- providing skeletons-->
 * Language and tools repository (GitHub): [Grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext), [examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/tree/master/examples)
-* Tools: [Overview](./tools), [CLI](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli), [update site for editor (Eclipse plugin)](./updates/)<!-- Update site: [https://socadk.github.io/MDSL/updates/](https://socadk.github.io/MDSL/updates/) -->
+* Tools: [Overview](./tools), [CLI](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli), [update site for editor (Eclipse plugin)](./updates/)<!-- Update site: [https://microservice-api-patterns.github.io//MDSL-Specification/updates/](https://microservice-api-patterns.github.io//MDSL-Specification/updates/) -->
 
 <!--
 ### Installation in Eclipse
 
- * Update site: [https://socadk.github.io/MDSL/updates/](https://socadk.github.io/MDSL/updates/)
+ * Update site: [https://microservice-api-patterns.github.io//MDSL-Specification/updates/](https://microservice-api-patterns.github.io//MDSL-Specification/updates/)
  * The grammar can be found in the `dsl-core` project (more precisely, in the `io.mdsl./src/io.mdsl` folder of this project): [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) and [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) repository.
 -->
 
