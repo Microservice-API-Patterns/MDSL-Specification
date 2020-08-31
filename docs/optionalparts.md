@@ -26,7 +26,9 @@ provider governance AGGRESSIVE_OBSOLESCENCE
 
 At present, the following protocols are predefined:
 
-> REST | SOAP_HTTP | gRPC | Avro_RPC | Thrift | AMQP <!-- TODO 4.0 update -->
+> HTTP | SOAP_HTTP | gRPC | Java 
+
+<!-- | Avro_RPC | Thrift | AMQP | JMS_ActiveMQ | 'STOMP' | 'Kafka'  'MQTT' -->
 
 It is also possible to define a custom protocol by including its name in double quotes: `"Some other protocol"`.[^1]
 
@@ -119,13 +121,13 @@ API provider implementation ProductManagementJavaServiceProviderImpl
 ~~~
 
 
-## Links
+# Site Navigation
 
-Service [endpoint contract types](./servicecontract) and [data contracts (schemas)](./datacontract).
-
-[Quick reference](./quickreference).
-
-Back to [MDSL homepage](./index).
+* Language specification:
+    * Service [endpoint contract types](./servicecontract) and [data contracts (schemas)](./datacontract).
+    * [Bindings](./bindings) and [instance-level concepts](./optionalparts) (this page).
+* [Quick reference](./quickreference), [tutorial](./tutorial) and [tools](./tools)
+* Back to [MDSL homepage](./index).
 
 *Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 

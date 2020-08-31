@@ -6,18 +6,18 @@ copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 
 
 ## TL;DR
-Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as Swagger, WSDL, and <!-- gRPC --> Protocol Buffers. The current version is 4.0.
+Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as Swagger, WSDL and <!-- gRPC --> Protocol Buffers. Its current version is 4.0.
 
 Quick links: 
 
-* Documentation pages (GitHub pages): [Tutorial](./tutorial), [examples](./examples), [quick reference](./quickreference)<!-- providing skeletons-->
-* Language and tools repository (GitHub): [Grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext), [examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/tree/master/examples)
-* Tools: [Overview](./tools), [CLI](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli), [update site for editor (Eclipse plugin)](./updates/)<!-- Update site: [https://microservice-api-patterns.github.io//MDSL-Specification/updates/](https://microservice-api-patterns.github.io//MDSL-Specification/updates/) -->
+* Documentation pages (GitHub pages): [Tutorial](./tutorial), [quick reference](./quickreference)<!-- providing skeletons-->, [example](./examples) 
+* Language and tools repository (GitHub): [Grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext), [examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples)
+* Tools: [Overview](./tools), [CLI](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli), [update site for editor (Eclipse plugin)](./updates/)<!-- Update site: [https://microservice-api-patterns.github.io/updates/](https://microservice-api-patterns.github.io/updates/) -->
 
 <!--
 ### Installation in Eclipse
 
- * Update site: [https://microservice-api-patterns.github.io//MDSL-Specification/updates/](https://microservice-api-patterns.github.io//MDSL-Specification/updates/)
+ * Update site: [https://microservice-api-patterns.github.io/updates/](https://microservice-api-patterns.github.io/updates/)
  * The grammar can be found in the `dsl-core` project (more precisely, in the `io.mdsl./src/io.mdsl` folder of this project): [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) and [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) repository.
 -->
 
@@ -67,6 +67,8 @@ A contract language for (micro-)service API design should:
     * *Top-down* from requirements (for instance, user stories for integration scenarios), as for instance proposed as activity in the [Design Practice Repository (DPR)](https://github.com/socadk/design-practice-repository) 
     * *Bottom up* from existing systems (represented, for instance, as [DDD-style context maps](https://contextmapper.org/))
 
+<!-- TODO: retrofit paper page (Appendix A from https://www.overleaf.com/project/5e384b88f46297000133080d)? -->
+
 
 ### Design Principles
 
@@ -80,12 +82,10 @@ To achieve the above design goals, we decided that:
 
 ### MDSL Tools
 
-At present, the following tools are available:
+At present, the following tools are available (see [tools page](./tools) for more information):
 
-* An Eclipse-based editor and API Linter 
-* Command line tools to validate a specification, to generate platform-specific contracts and reports
-
-See [tools page](./tools) for more information.
+* An Eclipse-based [*Eclipse editor and API Linter*](./tools#eclipse-plugin) 
+* [*Command-Line Interface (CLI)*](./tools#command-line-interface-cli-tools) tools to validate a specification, to generate platform-specific contracts (OpenAPI, gRPC, Jolie) and reports
 
 
 ## A Closer Look 
@@ -106,13 +106,12 @@ If you want to leverage and promote [microservices tenets](http://rdcu.be/mJPz) 
 1. Service [endpoint contract types](./servicecontract) follow this template: 
    `endpoint type ... exposes operation ... expecting ... delivering ...`
 2. [Data contracts (schemas)](./datacontract): `data type SampleDTO {ID, V}` in the above example
-3. [Instance-level concepts](./optionalparts): 
-    * API Provider with [*Service Level Agreements*](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ServiceLevelAgreement) and evolution strategies such as [*Two in Production*](https://microservice-api-patterns.org/patterns/evolution/TwoInProduction)
-    * Protocol [bindings](./bindings).
-    * API Client instances
-    * API Gateways (a.k.a. intermediaries), not featured in the above example (see [here](./optionalparts)) 
+3. Optional [instance-level concepts](./optionalparts): 
+    * API Provider with protocol [bindings](./bindings) and, optionally, [*Service Level Agreements*](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ServiceLevelAgreement) and evolution strategies such as [*Two in Production*](https://microservice-api-patterns.org/patterns/evolution/TwoInProduction)
+    * API Client instances consuming the contracts exposed by providers
+    * API Gateways (or intermediaries) acting both in client and in provider role; note that gateways are not featured in the simple example above
 
-See these concepts in action in the [tutorial](./tutorial), the [quick reference](./quickreference) and on the [examples page](./examples).
+See these concepts in action in the [tutorial](./tutorial), the [quick reference](./quickreference) and on the [example](./examples) page.
 
 
 ### Usage of and support for Microservice API Patterns (MAP)
@@ -127,36 +126,12 @@ MDSL supports all [Microservice API Patterns](https://microservice-api-patterns.
 
 The four types of decorators/annotations and stereotypes are optional; if present, they make the API description more expressive and can be processed by tools such as API linters/contract validators, code/configuration generators, MDSL to Open API or WSDL converters (work in progress).
 
-### Tools
-At present, the DSL editor generated from the grammar comes as an Eclipse plugin. In addition to the usual editor features such as syntax highlighting, completion and syntax checking, it implements a few simple semantic validators (as a basic *API linter* demonstrator):
-
-* The modeler is warned about incomplete and unsuited data types such as `P` and `ID<bool>`.
-* The constraints of the message exchange pattern REQUEST_REPLY are validated (if specified).
-* One MAP pattern decorator combination is checked (COMPUTATION_FUNCTION in INFORMATION_HOLDER_RESOURCE).
-* The number of operations per endpoint is reported; it is likely that the endpoint cannot be mapped to OpenAPI due to a large amount of operations, the user is warned.
-
-These validations are run every time a file is saved; their output appears in the Problems view.
-
-*Update in plugin version 3.3.1:* There now is an early version of an OpenAPI specification generator. It maps endpoint types to HTTP resource paths, and operations to HTTP methods/verbs like this:
-
-* If a MAP decorator is used, it is mapped as this:
-    * `STATE_CREATION_OPERATION` is transformed to `PUT` (yes, `POST` also would make sense)
-    * `RETRIEVAL_OPERATION` is transformed to `GET` 
-    * `STATE_TRANSITION_OPERATION` is transformed to `PATCH`
-    * `COMPUTATION_FUNCTION` is transformed to `POST`
-* If an HTTP verb is used instead of a MAP decorator (`"GET"`, `"POST"` etc.), it is passed through 
-* If the operation name suggests CRUDish semantics or starts with HTTP verb names, it is mapped as this: 
-    * createX is transformed into `POST` 
-    * readX and updateX are transformed into `GET`
-    * updateX and patchX are transformed into `PATCH`
-    * putX is transformed into `PUT` 
-    * deleteX is transformed into `DELETE`
-
-If an HTTP verb appears more than once in a resource endpoint, nothing will be generated but an error message displayed.
-
 <!--
-### Tutorial 
-Ready to start/learn more? Click [here](./tutorial).
+### Tools
+ At present, the DSL editor generated from the grammar comes as an Eclipse plugin.
+
+* [Command-Line Interface (CLI)](./tools#command-line-interface-cli-tools)
+* [Eclipse editor and API Linter](./tools#eclipse-plugin)
 -->
 
 ## More Information
@@ -165,21 +140,17 @@ Ready to start/learn more? Click [here](./tutorial).
 
 * Service [endpoint contract types](./servicecontract)
 * [Data contracts (schemas)](./datacontract)
+* [Bindings](./bindings)
+* Optional [language elements on the instance level (provider, client, gateway)](./optionalparts)
 * [Quick reference](./quickreference)
-* [Examples](./examples)
-* Optional/experimental [language elements on the instance level (provider, client, gateway)](./optionalparts)
-
-
-### Tools
-
-* [Command-Line Interface (CLI)](./tools#command-line-interface-cli-tools)
-* [Eclipse editor and API Linter](./tools#eclipse-plugin)
+* [Tutorial](./tutorial), another [example](./examples)
+* [Tool information (CLI, editor/linter)](./tools)
 
 ### External links 
 
 * Public [Microservice API Patterns (MAP) website](https://microservice-api-patterns.org/), access to team-internal preview website available upon request (features more patterns than the public one, in intermediate draft form)
 * [Lakeside Mutual](https://github.com/Microservice-API-Patterns/LakesideMutual) repository, featuring [Domain-Driven Design (DDD)](https://www.ifs.hsr.ch/index.php?id=15666&L=4) and [microservices](https://www.ifs.hsr.ch/index.php?id=15266&L=4) in an insurance company scenario (JavaScript frontends and Spring Boot backends)
-* [Context Mapper](https://contextmapper.org), a DSL for strategic DDD and rapid OOAD
+* [Context Mapper](https://contextmapper.org/), a DSL for strategic DDD and rapid OOAD
 
 <!-- TODO point to presentations (JUG, VSS, Modelsward, GI-AK ICWE, point at VSS report https://www.computer.org/csdl/magazine/so/2020/01/08938118/1fUSO0QBDnW -->
 

@@ -67,7 +67,7 @@ dataTransferRepresentation:
 
 Endpoint types correspond to ports in the Hexagonal Architecture terminology.
 
-The notation used above is the [grammar language of Xtext](https://www.eclipse.org/Xtext/documentation/301_grammarlanguage.html) (which close to that of antlr4). The full MSDL grammar can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext).
+The notation used above is the [grammar language of Xtext](https://www.eclipse.org/Xtext/documentation/301_grammarlanguage.html) (which is close to that of antlr4). The full MSDL grammar can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext).
 
 
 ## Example
@@ -111,13 +111,13 @@ endpoint type CustomerManagementContract
 		}* // zero or more
 ~~~
 
-<!-- TODO convert this to Swagger etc. -->
+<!-- TODO convert this to OAS/Swagger etc. -->
 
 The described API `SampleCustomerManagementAPI`supports one endpoint type `CustomerManagementContract` that exposes two operations `lookupSingleCustomer`, `lookupCustomerDirectory` to retrieve some customer data in a Customer Relationship Management (CRM) scenario. While request messages (`expecting`) are mandatory, response messages (`delivering`) are optional.
 
-The specificaiton of the message exchange pattern is optional; permitted values are `REQUEST_REPLY`, `ONE_WAY` and `NOTIFICATION`. Request-reply operations must have a request and a response message; one way operations only have a requests message.
+The specification of the message exchange pattern is optional; permitted values are `REQUEST_REPLY`, `ONE_WAY` and `NOTIFICATION`. Request-reply operations must have a request and a response message; one way operations only have a requests message.
 
-Several [Microservice API Patterns (MAPs)](https://microservice-api-patterns.org/) are used to annotate endpoint, operation, and one representation element (`INFORMATION_HOLDER_RESOURCE`, `RETRIEVAL_OPERATION`).[^2] Moreover, foundation patterns from MAP may comment on the usage scenario for the described API; this is optional (here: `PUBLIC_API` for `FRONTEND_INTEGRATION`). <!-- TODO MAP decorators are available as enum but you can also use any "STRING" (rationale: CML2MDSL) -->
+Several [Microservice API Patterns (MAPs)](https://microservice-api-patterns.org/) are used to annotate endpoint, operation, and one representation element (`INFORMATION_HOLDER_RESOURCE`, `RETRIEVAL_OPERATION`).[^2] Moreover, foundation patterns from MAP may comment on the usage scenario for the described API; this is optional (here: `PUBLIC_API` for `FRONTEND_INTEGRATION`). The MAP decorators are supported as explicit enum values in the grammar; you can also use any "STRING". <!-- (rationale: CML2MDSL).-->
 
 [^2]: The notion of API roles and responsibilities as well as the term *Information Holder* have their roots in [Responsibility-Driven Design (RDD)](http://www.wirfs-brock.com/Design.html).
 
@@ -127,7 +127,7 @@ The second operation `lookupCustomerDirectory` expects at least one customer id 
 
 The data contract of the `lookupSingleCustomer` operation is fully specified, whereas part of the message elements in the response of  `lookupCustomerDirectory` are still incomplete (for instance, `"zipCode":D`).[^3]
 
-[^3]: If an operation does not expect or deliver any payload, this can be expressed with the help of the empty/null type `D<void>`. This type should only be used for this purpose. <!-- it can also be used to model enums (tbd) -->
+[^3]: If an operation does not expect or deliver any payload, this can be expressed with the help of the empty/null type `D<void>`. This type should only be used for this purpose. <!-- TODO tbd: it can also be used to model enums -->
 
 For more explanations of the message structures, see [data contracts (schemas)](./datacontract).
 
@@ -142,19 +142,19 @@ exposes
   operation sayHello in REQUEST_REPLY conversation
     expecting payload D<string>  
     delivering payload SampleDTO
-      // message level status report:
+      // message-level status report:
       reporting error "400": D<int> // bad request (HTTP error code) 
-    // operation level:
-	protected by policy "HTTPBasicAuthentication":MD
+  // operation-level security policy:
+  protected by policy "HTTPBasicAuthentication":MD
 ~~~
 
-<!-- protected by policy {"userId":D<string>, "password":D<raw>} -->
+In this example, the error report is a simple numeric code (`400`); elaborate [error reports](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ErrorReport) can be modeled as well, as any MDSL [data type](./datacontract) can be used. 
 
-In this example, the error report is a simple numeric code (`400`); elaborate [error reports](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ErrorReport) can be modeled as well, as any MDSL [data type](./datacontract) can be used. *Important note*: This MDSL feature is still under design and construction and therefore incomplete (tech. preview); future versions of the MDSL documentation pages will provide more examples.
+<!-- TODO 2020 'analysis' keyword reporting not featured yet (only 'error') -->
+
+*Important note*: This MDSL feature is still under design and construction (view it as a technology preview); future versions of the MDSL documentation pages will provide more examples.
 
 The security `policy` also is modelled as an MDSL data contract; it can be used to define the various security assertions and protocol headers that exist (for instance, basic authentication in HTTP, as explained in the [OpenAPI specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securitySchemeObject)). *Important note*: This MDSL feature is still under design and construction and therefore incomplete (tech. preview); future versions of the MDSL documentation pages will provide more examples.
-
-<!-- TODO 2020 analysis report not featured yet -->
 
 
 ## Technology Mappings
@@ -162,7 +162,7 @@ The security `policy` also is modelled as an MDSL data contract; it can be used 
 ### RESTful HTTP (a.k.a. HTTP resource APIs)
 Endpoints correspond to resources (with the mapping not being straightforward due to concepts such as URI templates and path parameters in HTTP). Operations correspond to HTTP verbs or methods (with additional constraints being imposed by the architectural style and nest practices for REST).
 
-<!-- link to [FM's paper](https://www.fabriziomontesi.com/files/m16.pdf), to Subbu A.'s Cookbook? -->
+<!-- link to [FM's paper](https://www.fabriziomontesi.com/files/m16.pdf), to Subbu Allamaraju's Cookbook? -->
 
 ### Web Services Description Language (WSDL)
 MDSL endpoints map to port types in [WSDL](https://www.w3.org/TR/2001/NOTE-wsdl-20010315); operations (not surprisingly) to operations. API providers are pendants to ports in WSDL, API clients are service consumers. 
@@ -171,7 +171,6 @@ MDSL endpoints map to port types in [WSDL](https://www.w3.org/TR/2001/NOTE-wsdl-
 
 ### Jolie
 The service contract grammar can easily be mapped to the [glossary of Jolie terms](https://github.com/jolie/docs/blob/master/glossary.md). For instance, endpoint types in MDSL correspond to interfaces in Jolie: 
-
 
 | Jolie | MDSL/MAP | Comments |
 |-------|-----|----------|
@@ -188,17 +187,22 @@ The service contract grammar can easily be mapped to the [glossary of Jolie term
 
 <!-- not mapped (yet): Connection, Behavior, Process, Service Dependency, Network boundary, Cell boundary, Cell overlay -->
 
+
+### gRPC and Protocol Buffers
+An endpoint type in MDSL corresponds to a gRPC service; MDSL operations correspond to gRPC messages.
+
+
 ### Other integration technologies 
+MSDL service contracts can also be mapped to GraphQL, and Avro in a straightforward manner. Stay tuned! 
 
-MSDL service contracts can also be mapped to gRPC, GraphQL, and Avro in a straightforward manner. Stay tuned! 
 
-## Links
+# Site Navigation
 
-[Data contracts (schemas)](./datacontract) and optional [runtime language concepts](./optionalparts).
-
-[Quick reference](./quickreference).
-
-Back to [MDSL homepage](./index).
+* Language specification: 
+    * Service [endpoint contract types](./servicecontract) (this page) and [data contracts (schemas)](./datacontract). 
+    * [Bindings](./bindings) and [instance-level concepts](./optionalparts).
+* [Quick reference](./quickreference), [tutorial](./tutorial) and [tools](./tools)
+* Back to [MDSL homepage](./index).
 
 *Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 

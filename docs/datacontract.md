@@ -29,8 +29,7 @@ Simple, yet powerful nesting is supported (as known from data representation lan
 * The nesting is expressed in an object- or block-like syntax: `{...{...}}`.
 * This nesting realizes the Microservice API Pattern (MAP) [Parameter Tree](https://microservice-api-patterns.org/patterns/structure/representationElements/ParameterTree).
 
-Already existing metamodels and schema languages can be used alternatively to `MAP_TYPES`. Examples are: `JSON_SCHEMA`, `XML_SCHEMA`, and `PROTOCOL_BUFFER`. 
-<!-- TODO grammar also has `AVRO_SCHEMA` | `THRIFT_TYPE` | 'GRAPHQL_SDL' (and 'OTHER') -->
+Already existing metamodels and schema languages can be used alternatively to `MAP_TYPES`. Examples are: `JSON_SCHEMA`, `XML_SCHEMA`, and `PROTOCOL_BUFFER`. <!-- TODO (L) grammar also has `AVRO_SCHEMA` | `THRIFT_TYPE` | 'GRAPHQL_SDL' | 'OTHER' -->
 
 MDSL specifications do not have to be complete to be useful (e.g., in early stages of service design); tools are expected to check completeness, use defaults for missing parts, etc.
 
@@ -60,7 +59,9 @@ The role stereotypes can be combined with the following base types to yield prec
 
 #### Complex Types
 
-See explanations above ("Simple, yet powerful nesting is supported:"). <!-- TODO 2020: find the "quick reference" that uses to be in grammar? -->
+See explanations above (under "simple, yet powerful nesting is supported"). 
+
+<!-- TODO (M): the "quick reference" cheat sheet that used to be in grammar/examples in V2 would fit here -->
 
 ### Collections and optionality 
 
@@ -142,18 +143,13 @@ data type CustomerWithAddressAndMoveHistory {
 } 
 ~~~
 
-Note that a parameter tree that only contains atomic parameters `{D<int>, D<string>}` can also be modeled as an Atomic Parameter List `(D<int>, D<string>)`. It is recommended to prefer the Parameter Tree syntax over that of the Atomic Parameter List (to promote information hiding and defer detailed modeling decisions until the last/most responsible moment).
+Note that a parameter tree that only contains atomic parameters `{D<int>, D<string>}` can also be modeled as an Atomic Parameter List `(D<int>, D<string>)`. It is recommended to prefer the Parameter Tree syntax over that of the Atomic Parameter List (to promote information hiding and defer detailed modeling decisions until the last/most responsible moment). `<<Entity>>` is a patttern stereotype (see section "Outlook: MAP Decorators" of the [CSV tutorial](./tutorial) for explanations).
 
-<!-- TODOs: 
-
-* feature <<pattern>> stereotypes
-* feature choice
-* show instances, not just types 
--->
+<!-- TODO (H): * feature choice '|' -->
 
 <!-- TODO feature CSV in new Tutorial "sheets": ["rows":{"columnCells":{Data|Formula}*}*] // title row is different? -->
 
-<!-- TODO model this in JSON Schema and XML Schema (and/or Avro?): use Mappy to generate -->
+<!-- TODO model this in JSON Schema and XML Schema (and/or Avro?) -->
 
 
 ## Technology Mappings
@@ -167,8 +163,6 @@ Note that a parameter tree that only contains atomic parameters `{D<int>, D<stri
 | Object (structured) | Parameter Tree (nested) | Straightforward |
 | Array | Cardinality of `*` or `+` | Is homogeneous in MDSL/MAP |
 
-<!-- feature Swagger/JSON for HelloWorld here  -->
-
 ### XML Schema
 
 | XML Schema | MDSL/MAP | Comments |
@@ -178,14 +172,28 @@ Note that a parameter tree that only contains atomic parameters `{D<int>, D<stri
 | Complex type | Parameter Tree | MDSL syntax more compact  |
 | Sequence with `maxoccurs` > 1 | Cardinality of `*` or `+` | n/a | 
 
-<!-- feature WSDL/XML schema for HelloWorld here  -->
+### gRPC and Protocol Buffers
+The MAP base types can be mapped in a straightforward manner. `AnyType` is used as default.
 
 <!--
-### gRPC and Protocol Buffers
-An example can be downloaded [here](./Test0APIGrpcPb.proto).
+The base types in MDSL map to gRPC and Protocol Buffers like this: 
 
-To be continued (tbc).
+| Protocol Buffers | MDSL | 
+|-------|------|
+| int32 | int |
+| int64 | long |
+| double | double |
+| bool | bool |
+| bytes | raw |
 
+TODO tbc (complete mapping?)
+-->
+
+Parameter forests and parameter trees translate into nested *messages*.
+
+<!-- An example can be downloaded [here](./Test0APIGrpcPb.proto). -->
+
+<!--
 ### GraphQL 
 
 To be continued (tbc).
@@ -224,7 +232,6 @@ type sayhelloAgainResponseType {stringList: [String]}
 | tbc | Cardinality of `*` or `+` | n/a  | 
 -->
 
-<!-- TODO also feature Thrift and Avro (later) -->
 
 ### Jolie 
 The MAP base types map to [simple data in Jolie](https://jolielang.gitbook.io/docs/basics/handling_simple_data) in a straightforward manner. 
@@ -238,20 +245,20 @@ An example can be downloaded [here](./HelloWorldAPIJolieInterfaceAndPort.ol).
 
 Note that some combinations are syntactically possible at present (to simplify the grammar), but do not make much sense (or create ambiguity):
 
-* External data types can also define an identifier, but do not have to: In `data type X "X":D<int>`, the second `X` is somewhat redundant and can be removed; `data type X D<int>` will do.
-<!-- * External data types can be used as Atomic Parameters, which hides the nesting and turns tree leaves into inner nodes. -->
-* Parameter trees may contain undesired cycles.
 * Types such as `ID<bool>` can be modeled, but do not make much sense.
+* Parameter trees may contain undesired cycles.
+* External data types can also define an identifier, but do not have to: In `data type X "X":D<int>`, the second `X` is somewhat redundant and can be removed; `data type X D<int>` will do.
 
-We expect tools (linters, model validators) to warn about inappropriate specifications. 
+[Tools](./tools) such as API linters and model validators can report inappropriate specifications. 
+
 
 ## Links
 
-Back to service [endpoint contract types](./servicecontract) and on to optional [runtime language concepts](./optionalparts).
-
-[Quick reference](./quickreference).
-
-Back to [MDSL homepage](./index).
+* Language specification:
+    * Service [endpoint contract types](./servicecontract) and [data contracts (schemas)](./datacontract) (this page).
+    * [Bindings](./bindings) and [instance-level concepts](./optionalparts).
+* [Quick reference](./quickreference), [tutorial](./tutorial) and [tools](./tools)
+* Back to [MDSL homepage](./index).
 
 *Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 

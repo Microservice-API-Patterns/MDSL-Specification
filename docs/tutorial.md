@@ -7,7 +7,7 @@ copyright: Olaf Zimmermann, 2019. All rights reserved.
 MDSL Tutorial
 =============
 
-<!-- TODO 2020 feature VSS19 (EW) extensions and changes (if they turn out to be stable) -->
+<!-- TODO (H) feature HTTP binding, error reporting, security policy, default value (V3/V4 enhancements) in this tutorial -->
 
 ## Getting Started
 
@@ -48,7 +48,7 @@ This atomic parameter is not characterized as a plain value `D` as the name in `
 
 Columns are often identified by characters `position` and, optionally, a more expressive text `header` (optionality is indicated by the `?` modifier in MDSL):
 
-<!-- TODO position and header now appearing in all rows (at runtime), and I cannot guarantee that all rows use same column structure (just an example, no need to match CSV 100%) -->
+<!-- TODO position and header now appearing in all rows (at runtime); this modeling cannot guarantee that all rows use same column structure (just an example, no need to match CSV 100%) -->
 
 ~~~
 data type Column {"position": ID<string>, 
@@ -140,9 +140,10 @@ API client SpreadSheetExchangeAPIClient
 consumes SpreadSheetExchangeEndpoint
 ~~~
 
-We are done modeling and would be ready to implement the contract and deploy a provider supporting it. An intermediate step would be to create a platform- and technology-specific contract such as a Swagger/Open API Specification. 
+We are done modeling and now would be ready to implement the contract and deploy a provider supporting it. An intermediate step probably would be to create a platform- and technology-specific contract such as a OpenAPI/Swagger specification; see [MDSL tools](./tools).
+A protocol [binding](./bindings) might be needed for that step. <!-- TODO show it here -->
 
-## Bonus/Outlook: MAP Decorators
+## Outlook: MAP Decorators
 MDSL is aware of the [Microservice API Patterns](https://microservice-api-patterns.org/); these patterns can be used to annotate endpoints, operations, and representation elements. This makes the machine-readable specification more expressive (in comparison to formated comments or free-form texts accompanying the formal specification):
 
 ~~~
@@ -186,8 +187,8 @@ In addition to MAP patterns, any string can decorate endpoints and operations; i
 
 ## Links
 
-* [Quick reference skeleton](./quickreference). 
-* Service [endpoint contract types](./servicecontract), [data contracts (schemas)](./datacontract) and [runtime language concepts](./optionalparts).
+* [Quick reference skeleton](./quickreference) and [tools](./tools)
+* Service [endpoint contract types](./servicecontract), [data contracts (schemas)](./datacontract), [bindings](./bindings) and other [runtime language concepts](./optionalparts).
 * Back to [MDSL homepage](./index). 
 * [Microservice API Patterns](https://microservice-api-patterns.org/).
 

@@ -7,12 +7,11 @@ copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 MDSL Grammar Quick Reference (Skeletons)
 ========================================
 
-<!-- TODO: retrofit paper page (Appendix A from https://www.overleaf.com/project/5e384b88f46297000133080d) -->
 
 ## Service Contract Skeleton
 One can start from this, e.g., by copy-pasting into a text editor or [the Eclipse editor](./updates) that Xtext generates from the MDSL grammar. `[...]` are placeholders to be replaced with correct MDSL:
 
-<!-- TODO feature new role keyword? -->
+<!-- could feature "role" keyword introduced in V3 (optional) -->
 
 ~~~
 API description [name]
@@ -32,8 +31,9 @@ endpoint type [name]
 	  delivering  
 	    headers [...] // optional
 		payload [...] // mandatory in request-response exchanges
-	  reporting 
+	    reporting 
 	  	[...] // see bottom of page for explanation (optional)
+	protected by [...] // see bottom of page for explanation (optional)
 ~~~
 
 ### Usage Context 
@@ -45,11 +45,11 @@ The API type or *direction* can be:
 
 ### Roles and Responsibilities 
 MAP defines the following *roles* (of endpoint types): 
-> PROCESSING_RESOURCE | INFORMATION_HOLDER_RESOURCE | TRANSFER_RESOURCE | LOOKUP_RESOURCE 
+> PROCESSING_RESOURCE | INFORMATION_HOLDER_RESOURCE | DATA_TRANSFER_RESOURCE | LINK_LOOKUP_RESOURCE 
 > OPERATIONAL_DATA_HOLDER | MASTER_DATA_HOLDER | REFERENCE_DATA_HOLDER
 
 And the *responsibilities* (of operations) are: 
-> COMPUTATION_FUNCTION | RETRIEVAL_OPERATION | STATE_CREATION_OPERATION | STATE_TRANSFER_OPERATION
+> COMPUTATION_FUNCTION | STATE_CREATION_OPERATION | RETRIEVAL_OPERATION |  STATE_TRANSITION_OPERATION
 
 All these enum values correspond to Microservice API Patterns (MAP); go to the [pattern index](https://microservice-api-patterns.org/patterns/index) for quick access.
 
@@ -97,9 +97,9 @@ An identifier can, but does not have to be defined (if the role information is p
 ### `Role` Element role stereotypes
 The roles match the four [element stereotype patterns in MAP](https://microservice-api-patterns.org/patterns/structure/):
 
-> D(ata) | ID(entifier) | L(ink) | MD (Metadata)
+> D(ata) | MD (Metadata) | ID(entifier) | L(ink) 
 
-Data corresponds to [Data Element](https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement); the other mappings are straightforward.  
+Data corresponds to the [Data Element](https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement) pattern; the other mappings are straightforward as well.  
 
 ### `<Type>` Base types 
 Finally, the base types are:
@@ -135,14 +135,6 @@ An example is `data type AnIntegerOrAString {D<int> | D<string>}`.
 ## Reporting 
 MDSL has an specific construct for error handling such as fault elements or response codes (still *experimental*):
 
-<!--
-Older option, no longer in grammar v3.x (?):
-~~~
-	reporting
-		headers {"Internal Server Error", "400 Bad Request"}
-		payload	<<Error_Report>> { {"402", "notAuthorized"} | {"403", "anotherErrorMessage"} } // experimental  (June 04)
-~~~
--->
 
 Add the following snippet to the specification of response messages (behind `delivering`):
 
@@ -157,20 +149,26 @@ The placeholder `[...]` resolves to a data contract (see above). The simplest on
 * `error <<Error_Report>>"resourceNotFound": {"errorCode":D<int>, "errorMessage":D<string>}+`, and 
 * `error <<Error_Report>>{("code402":D<int>, "notAuthorized":D<string>) | ("code403":D<int>, "anotherMessage":D<string>)}`.
 
-<!-- TODO feature `analytics`? move examples to service contract page? -->
+<!-- TODO tbd: feature `analytics`? move examples to service contract page? -->
 
-The report elements can be modeled as data types as described under [data contracts (schemas)](./datacontract). Example: 
+The report elements can be modeled as data types as described under [data contracts (schemas)](./datacontract). Examples are: 
 
 * `error "soapFault": SOAPFaultElement`, with a previous definition:
 * `data type SOAPFaultElement {"code":D<int>, "string": D<string>, "actor":D<string>, "detail":D<string>}`
 
-<!-- TODO feature security policy once this feature has become stable (service contract page provides basic information already -->
+
+## Security Policy
+Finally, a security policy can be specified for each operation: 
+
+* `protected by policy "UserIdPassword":{"userId":ID<string>, "password":MD<string>}`
+
+The report elements can be modeled as data types as described under [data contracts (schemas)](./datacontract) as well.
+
 
 ## Links
 
-More on service [endpoint contract types](./servicecontract), [data contracts (schemas)](./datacontract), and [instance-level constructs](./optionalparts).
-
-Back to [MDSL homepage](./index). 
+More on service [endpoint contract types](./servicecontract), [data contracts (schemas)](./datacontract), [bindings](./bindings) and [instance-level constructs](./optionalparts).
+[Tutorial](./tutorial) and [tools](./tools). Back to [MDSL homepage](./index). 
 
 *Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 

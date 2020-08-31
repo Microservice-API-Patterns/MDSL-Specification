@@ -4,8 +4,8 @@ author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ---
 
-Protocol Bindings for HTTP, gRPC, Jolie
-=======================================
+Protocol Bindings for HTTP, gRPC, Jolie, Java
+=============================================
 
 *Note:* The protocol bindings ("adapter") specifications are work in progress still, and therefore subject to change in future versions (grammar, linter, generator support).
 
@@ -16,7 +16,7 @@ The language concepts described here can be used for context mapping, deployment
 
 ## Overview 
 
-An example that features all bindings is:
+Let us start with the following endpoint type (and then show all available bindings in this example):
 
 ~~~
 API description ProductManagement version "v0.0.1"
@@ -65,7 +65,7 @@ API provider ProductManagementWebServiceProvider
         element money realized as BODY parameter
 ~~~
 
-*Note*: This binding is work in progress and yet has to be completed and validated. For instance, the parameter mappings to path, query, form/body and cookie parameters is not fully implemented in the current MDSL tools yet. 
+*Important note*: This binding is work in progress and yet has to be completed and fully validated. For instance, the parameter mappings to path, query, form/body and cookie parameters is not fully implemented in the current MDSL tools yet. 
 
 
 ## gRPC Protocol Buffers Binding
@@ -96,6 +96,8 @@ API provider ProductManagementGRPCServiceProvider
 
 There is no such binding at present; in the future we might support concepts such as namespace (and pass this information on to the `jolie2wsdl` tool that comes with Jolie).
 
+<!-- TODO also tak about non-HTTP transports in Jolie? -->
+
 
 ## Local Java Binding
 
@@ -104,7 +106,7 @@ A binding is defined that maps operations to methods and representation elements
 ~~~
 API provider ProductManagementJavaServiceProvider
   offers ProductManagementService
-  at endpoint location "co.something.model.ProductActor" /* [Q]: "extends"? */
+  at endpoint location "co.something.model.ProductActor" 
   via protocol Java
     // no need for bindings here, but still demoing it: 
     binding
@@ -114,10 +116,12 @@ API provider ProductManagementJavaServiceProvider
         element money realized as boolean type
 ~~~
 
-In the current release, there is no tool yet that would work with this information. <!-- here is an unfinished Freemarker template -->
+In the current release, there is no tool yet that would work with this information. 
+<!-- there is an unfinished Freemarker template; /* [Q]: "extends"? */ -->
 
 
 ## Other Bindings
+An enum in the grammar defines some more commonly used protocols (no detailed bindings for these technologies have been defined yet):
 
 ~~~
 OtherBinding:
@@ -125,12 +129,14 @@ OtherBinding:
 ;
 ~~~
 
+The "other" part of this grammar rule makes it possible to define `"AnyOtherProtocol"` (without expecting the existing tools to be able to do anything specific with this information).
 
-## Site Navigation
+
+# Site Navigation
 
 Language specification pages:
 
-* Service [endpoint contract types](./servicecontract) 
+* Service [endpoint contract types](./servicecontract)
 * [Data contracts (schemas)](./datacontract)
 * Other [runtime concepts](./optionalparts)
 

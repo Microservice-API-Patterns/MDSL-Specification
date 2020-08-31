@@ -4,15 +4,14 @@ author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019. All rights reserved.
 ---
 
-MDSL Grammar Examples
-=====================
+MDSL Grammar Example
+====================
 
 
 ## Service Contract
 The following exemplary API specification compiles against the [MDSL grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext): 
 
-<!-- TODO feature error reporting and versioning of data types (see change log in readme, v0.98, v0.99)-->
-<!-- TODO convert this to Swagger etc. (needs support for choice) -->
+<!-- TODO feature error reporting and versioning of data types -->
 
 ~~~
 API description SampleCustomerManagementAPI
@@ -74,7 +73,6 @@ data type SomeFlatRecord (D<string>, D<int>, D<bool>)
 data type ChoiceDemo {"optionA":D | "optionB":D}
 ~~~
 
-<!-- could try {% raw %} ... {% endraw %} above /MDSL wrapper in WT pattern) (?) -->
 
 ## Links
 
