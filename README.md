@@ -99,14 +99,14 @@ Feedback and contributions welcome!
 
 ##  Acknowledgements 
 
-The creation and release of MDSL 3 was supported by the [Hasler Foundation](https://haslerstiftung.ch/en/welcome-to-the-hasler-foundation/).
+The creation and release of MDSL 4.0 was supported by the [Hasler Foundation](https://haslerstiftung.ch/en/welcome-to-the-hasler-foundation/).
 
 Contributors (input, DevOps support, feedback): 
 
 * [Olaf Zimmermann (ZIO)](https://ozimmer.ch)
 * Stefan Kapferer (also the author of the [MDSL generator in Context Mapper](https://contextmapper.org/docs/mdsl/))
 * MAP co-authors: Mirko Stocker, Daniel Lübke, Cesare Pautasso, Uwe Zdun
-* Bachelor ans master students
+* Bachelor and master students
 * MS 2019 and VSS 2019 participants 
 
 
