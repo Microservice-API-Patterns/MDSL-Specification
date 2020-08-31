@@ -1,6 +1,8 @@
 Microservice Domain-Specific Language (MDSL) 4.0
 ================================================
 
+[![Build Status](https://travis-ci.com/Microservice-API-Patterns/MDSL-Specification.svg?branch=master)](https://travis-ci.com/Microservice-API-Patterns/MDSL-Specification) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 Author: Olaf Zimmermann, (c) 2018-2020. All rights reserved.
 
 ## What is MDSL?
