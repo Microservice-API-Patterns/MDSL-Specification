@@ -29,7 +29,9 @@ Simple, yet powerful nesting is supported (as known from data representation lan
 * The nesting is expressed in an object- or block-like syntax: `{...{...}}`.
 * This nesting realizes the Microservice API Pattern (MAP) [Parameter Tree](https://microservice-api-patterns.org/patterns/structure/representationElements/ParameterTree).
 
-Already existing metamodels and schema languages can be used alternatively to `MAP_TYPES`. Examples are: `JSON_SCHEMA`, `XML_SCHEMA`, and `PROTOCOL_BUFFER`. <!-- TODO (L) grammar also has `AVRO_SCHEMA` | `THRIFT_TYPE` | 'GRAPHQL_SDL' | 'OTHER' -->
+Already existing metamodels and schema languages can be used alternatively to `MAP_TYPES`. Examples are: `JSON_SCHEMA`, `XML_SCHEMA`, and `PROTOCOL_BUFFER`. 
+
+<!-- TODO (L) grammar also has `AVRO_SCHEMA` | `THRIFT_TYPE` | 'GRAPHQL_SDL' | 'OTHER' -->
 
 MDSL specifications do not have to be complete to be useful (e.g., in early stages of service design); tools are expected to check completeness, use defaults for missing parts, etc.
 

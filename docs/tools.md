@@ -118,7 +118,7 @@ See [this demo](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html)
 
 The entire grammar is available as a data model to the Freemarker templating feature.  
 
-Examples of such reports can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/generator-templates)
+Examples of such reports can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/generator-templates).
 
 #### Generator Model
 <!-- TODO document new generator model here -->
