@@ -40,19 +40,19 @@ These two languages can be used independently of each other; for instance, data 
 ## Getting Started
 
 * Presentations featuring Context Mapper, MAP and MDSL can be found [here](https://ozimmer.ch/papers/).
-* The [GitHub Pages for MDSL](https://microservice-api-patterns.github.io//MDSL-Specification) provide a tutorial and language reference information.
-* There is an [Eclipse update site](https://microservice-api-patterns.github.io//MDSL-Specification/updates/) for the MDSL editor. 
+* The [GitHub Pages for MDSL](https://microservice-api-patterns.github.io/MDSL-Specification) provide a tutorial and language reference information.
+* There is an [Eclipse update site](https://microservice-api-patterns.github.io/MDSL-Specification/updates/) for the MDSL editor. 
 * Since Version 4.0, all generators are available via a Command Line Interface (CLI); see [this readme](./dsl-core/io.mdsl.cli/README.md) and [these examples](./examples/mdsl-standalone-example).
 * As a contributor, please consult the [readme file of the dsl-core](./dsl-core/README.md) project for getting started information and prerequisites.
 
 
 ## Language Specification 
 
-* [Overview](https://microservice-api-patterns.github.io//MDSL-Specification)
-* [Endpoint types](https://microservice-api-patterns.github.io//MDSL-Specification/servicecontract) (a.k.a. ports)
-* [Bindings](https://microservice-api-patterns.github.io//MDSL-Specification/bindings) (a.k.a. adapters)
-* [Data types](https://microservice-api-patterns.github.io//MDSL-Specification/datacontract) (a.k.a. published language)
-* [Instance-level concepts](https://microservice-api-patterns.github.io//MDSL-Specification/optionalparts) (provider, client, gateway)
+* [Overview](https://microservice-api-patterns.github.io/MDSL-Specification)
+* [Endpoint types](https://microservice-api-patterns.github.io/MDSL-Specification/servicecontract) (a.k.a. ports)
+* [Bindings](https://microservice-api-patterns.github.io/MDSL-Specification/bindings) (a.k.a. adapters)
+* [Data types](https://microservice-api-patterns.github.io/MDSL-Specification/datacontract) (a.k.a. published language)
+* [Instance-level concepts](https://microservice-api-patterns.github.io/MDSL-Specification/optionalparts) (provider, client, gateway)
 
 An implemented proposal of a language extension supporting queue-based messaging endpoints is [AsyncMDSL](https://github.com/giacomodeliberali/MDSL/tree/master/examples/asyncMDSL). 
 
@@ -90,7 +90,7 @@ All [Microservice API Patterns (MAP)](https://microservice-api-patterns.org/) ar
 * As enums for roles and responsibilities
 * As stereotypes annotating representation elements
 
-See ["MAP Decorators" section of the MDSL tutorial](https://microservice-api-patterns.github.io//MDSL-Specification/tutorial) for more information. <!-- TODO copy one-pager in SummerSoC paper to GitHub pages or elsewhere in repo -->
+See ["MAP Decorators" section of the MDSL tutorial](https://microservice-api-patterns.github.io/MDSL-Specification/tutorial) for more information. <!-- TODO copy one-pager in SummerSoC paper to GitHub pages or elsewhere in repo -->
 
 The MDSL grammar, to be found in src folder of the `dsl-core/io.mdsl` project, was originally developed with Eclipse Photon (4.8.0) and Xtext (2.14) as provided by the Eclipse Modeling Platform. MDSL makes use of the referencing feature in Xtext ('name' attribute). Future work is required to also support  this technology in other IDEs (such as Visual Studio Code).
 
