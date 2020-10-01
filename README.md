@@ -40,7 +40,7 @@ These two languages can be used independently of each other; for instance, data 
 ## Getting Started
 
 * Presentations featuring Context Mapper, MAP and MDSL can be found [here](https://ozimmer.ch/papers/).
-* The [GitHub Pages for MDSL](https://socadk.github.io/MDSL) provide a tutorial and language reference information.
+* The [GitHub Pages for MDSL](https://microservice-api-patterns.github.io/MDSL-Specification) provide a tutorial and language reference information.
 * There is an [Eclipse update site](https://microservice-api-patterns.github.io/MDSL-Specification/updates/) for the MDSL editor. 
 * All generators are available via a Command Line Interface (CLI) now; see [this readme](./dsl-core/io.mdsl.cli/README.md) and [these examples](./examples/mdsl-standalone-example).
 * As a contributor, please consult the [readme file of the dsl-core](./dsl-core/README.md) project for getting started information and prerequisites.
@@ -48,7 +48,7 @@ These two languages can be used independently of each other; for instance, data 
 
 ## Language Specification 
 
-* [Overview](https://socadk.github.io/MDSL)
+* [Overview](https://microservice-api-patterns.github.io/MDSL-Specification)
 * [Endpoint types](https://microservice-api-patterns.github.io/MDSL-Specification/servicecontract) (a.k.a. ports)
 * [Bindings](https://microservice-api-patterns.github.io/MDSL-Specification/bindings) (a.k.a. adapters)
 * [Data types](https://microservice-api-patterns.github.io/MDSL-Specification/datacontract) (a.k.a. published language)
