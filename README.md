@@ -54,8 +54,6 @@ These two languages can be used independently of each other; for instance, data 
 * [Data types](https://microservice-api-patterns.github.io/MDSL-Specification/datacontract) (a.k.a. published language)
 * [Instance-level concepts](https://microservice-api-patterns.github.io/MDSL-Specification/optionalparts) (provider, client, gateway)
 
-<!-- An implemented proposal of a language extension supporting queue-based messaging endpoints is [AsyncMDSL](https://github.com/giacomodeliberali/MDSL/tree/master/examples/asyncMDSL).-->
-
 
 ## Repository Structure 
 
@@ -75,7 +73,7 @@ If you want to contribute to MDSL, you have to clone this repo and generate the 
 
 The current version of MDSL is 4.1. See [change log](changelog.md) for an evolution history; see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases) for additional update information.
 
-<!-->
+<!--
 A possible roadmap for language and tools is (subject to change at any time): 
 
 * Java binding validation and tool support
