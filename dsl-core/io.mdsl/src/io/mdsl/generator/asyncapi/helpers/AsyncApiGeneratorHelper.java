@@ -57,7 +57,7 @@ public class AsyncApiGeneratorHelper {
 	/**
 	 * Return the first non-null protocol as a string
 	 * 
-	 * @param protocol The protocol container
+	 * @param pb The protocol container
 	 * @return The first non-null protocol as a string
 	 */
 	public static String getProtocolAsString(ProtocolBinding pb) {
