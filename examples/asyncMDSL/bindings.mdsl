@@ -1,0 +1,33 @@
+API description ProtocolBindingExample
+description "
+	An example on how to use Message Channel and Message Broker
+	protocol bindings.
+"
+
+channel MyAwsomeChannel
+of type POINT_TO_POINT, DATA_TYPE, GUARANTEED_DELIVERY 
+on path "channel-logical-path"
+produces message MyAwsomeMessage
+   delivering payload {
+     "myAwsomeProperty": D<string>
+ 	}
+	where
+		MESSAGE_EXPIRES in 60s
+bindings for AMQP {
+ 	"queue": {
+		"name": "my-queue-name" 
+	}
+}
+
+
+message broker MyMessageBroker
+exposes
+   ProtocolBindingExample
+at location "tcp://mqtt.myapp.com:1883" 
+via protocol MQTT
+bindings {
+	"lastWill": {
+	"qos": 2,
+		"retain": false
+	}
+}

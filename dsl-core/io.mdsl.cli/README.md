@@ -7,8 +7,8 @@ Once you built the project with Gradle (call `./gradlew clean build` in the `dsl
 
 You can also download the CLI binaries here:
 
- * [mdsl-cli-4.0.0.tar](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases/download/v4.0.0/mdsl-cli-4.0.0.tar)
- * [mdsl-cli-4.0.0.zip](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases/download/v4.0.0/mdsl-cli-4.0.0.zip)
+ * [mdsl-cli-4.1.0.tar](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases/download/v4.1.0/mdsl-cli-4.1.0.tar)
+ * [mdsl-cli-4.1.0.zip](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases/download/v4.1.0/mdsl-cli-4.1.0.zip)
 
 1. Uncompress the ZIP or TAR file into the directory you want.
 2. Run the CLI by using the executable in the `bin` folder.
@@ -30,9 +30,10 @@ usage: mdsl
                          following values: oas (Open API Specification),
                          jolie (Jolie), text (arbitraty text file by using
                          a Freemarker template), proto (Protocol Buffers),
-                         gen-model-json (Generator model as JSON
-                         (exporter)), gen-model-yaml (Generator model as
-                         YAML (exporter))
+                         graphql (GraphQL Schemas), gen-model-json
+                         (Generator model as JSON (exporter)),
+                         gen-model-yaml (Generator model as YAML
+                         (exporter))
  -h,--help               Prints this message.
  -i,--input <arg>        Path to the MDSL file for which you want to
                          generate output.
@@ -51,6 +52,7 @@ In case you want to generate output, you have to pass `-g` and one of the genera
  * jolie (Jolie)
  * text (any textual file by using a Freemarker template)
  * proto (Protocol Buffers)
+ * graphql (GraphQL schemas)
  * gen-model-json (export generator model as JSON)
  * gen-model-yaml (export generator model as YAML)
  

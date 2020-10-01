@@ -1,0 +1,72 @@
+# GraphQL generated for endpoint PaperArchiveFacade of ReferenceManagementServiceAPI
+
+input PaperItemDTOInput {
+	title: String!
+	authors: String!
+	venue: String!
+	paperItemId: PaperItemKeyInput!
+}
+input PaperItemKeyInput {
+	doi: String!
+}
+input CreatePaperInput {
+	who: String!
+	what: String!
+	where: String!
+}
+input lookupPapersFromAuthorRequestDataTypeInput {
+	anonymous1: String!
+}
+input PaperItemDTOListInput {
+	entries: [PaperItemDTOInput!]!
+}
+input ConvertToMarkdownForWebsiteResponseDataTypeInput {
+	anonymous2: String!
+}
+type PaperItemDTOOutput {
+	title: String!
+	authors: String!
+	venue: String!
+	paperItemId: PaperItemKeyOutput!
+}
+type PaperItemKeyOutput {
+	doi: String!
+}
+type CreatePaperOutput {
+	who: String!
+	what: String!
+	where: String!
+}
+type lookupPapersFromAuthorRequestDataTypeOutput {
+	anonymous1: String!
+}
+type PaperItemDTOListOutput {
+	entries: [PaperItemDTOOutput!]!
+}
+type ConvertToMarkdownForWebsiteResponseDataTypeOutput {
+	anonymous2: String!
+}
+
+type Query {
+	lookupPapersFromAuthor(
+		anonymousInput: lookupPapersFromAuthorRequestDataTypeInput
+	): PaperItemDTOListOutput
+}
+
+type Mutation {
+	createPaperItem(
+		anonymousInput: CreatePaperInput
+	): PaperItemDTOOutput
+	convertToMarkdownForWebsite(
+		anonymousInput: PaperItemKeyInput
+	): ConvertToMarkdownForWebsiteResponseDataTypeOutput
+}
+
+schema {
+	query: Query
+	mutation: Mutation
+}
+
+# additional scalars for types in MDSL
+scalar Raw
+scalar VoidResponse

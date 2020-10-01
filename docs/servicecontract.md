@@ -154,7 +154,7 @@ In this example, the error report is a simple numeric code (`400`); elaborate [e
 
 *Important note*: This MDSL feature is still under design and construction (view it as a technology preview); future versions of the MDSL documentation pages will provide more examples.
 
-The security `policy` also is modelled as an MDSL data contract; it can be used to define the various security assertions and protocol headers that exist (for instance, basic authentication in HTTP, as explained in the [OpenAPI specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securitySchemeObject)). *Important note*: This MDSL feature is still under design and construction and therefore incomplete (tech. preview); future versions of the MDSL documentation pages will provide more examples.
+The security `policy` also is modelled as an MDSL data contract; it can be used to define the various security assertions and protocol headers that exist (for instance, basic authentication in HTTP, as explained in the [OpenAPI specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securitySchemeObject)). *Important note*: This MDSL feature also still is under design and construction (view it as an incomplete technology preview); future versions of the MDSL documentation pages will provide more examples.
 
 
 ## Technology Mappings

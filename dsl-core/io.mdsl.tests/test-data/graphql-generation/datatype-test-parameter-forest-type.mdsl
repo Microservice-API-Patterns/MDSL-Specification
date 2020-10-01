@@ -1,0 +1,9 @@
+API description TestAPI
+
+data type TestType { "attribute1":D<string>, "attribute2":D<string> }
+data type RefType { "attribute1":D<int>, "ref":TestType, "subObject":{ "attr1":D<string> } }
+data type ForestType [{ "attribute1":D<int>, "ref":TestType, "subObject":{ "attr1":D<string> } }; { "yetAnotherTreeObject":D<raw> }]
+
+endpoint type TestEndpoint // MDSL compiles only with at least one endpoint
+
+IPA

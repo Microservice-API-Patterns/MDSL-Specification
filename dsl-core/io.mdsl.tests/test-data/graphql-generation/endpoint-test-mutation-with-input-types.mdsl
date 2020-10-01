@@ -1,0 +1,12 @@
+API description TestAPI
+
+data type TestType P
+
+endpoint type TestEndpoint
+	exposes 
+		operation getTestType
+			with responsibility RETRIEVAL_OPERATION
+			delivering payload TestType
+	 	operation createTestType
+			expecting payload TestType
+IPA

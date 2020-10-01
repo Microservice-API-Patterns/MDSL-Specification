@@ -1,0 +1,22 @@
+# GraphQL generated for endpoint TestEndpoint of TestAPI
+
+
+input TestTypeInput {
+	attribute1: String
+	attribute2: [String]
+	attribute3: [String!]!
+	attribute4: String!
+}
+type TestTypeOutput {
+	attribute1: String
+	attribute2: [String]
+	attribute3: [String!]!
+	attribute4: String!
+}
+
+
+
+
+# additional scalars for types in MDSL
+scalar Raw
+scalar VoidResponse

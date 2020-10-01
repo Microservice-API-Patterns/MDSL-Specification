@@ -65,8 +65,7 @@ public class Endpoint2PathConverter {
 
 			// TODO (medium prio) add operation name(s) to error message
 			if (alreadyUsedVerbs.contains(verb))
-				throw new MDSLException("Mapping conflict (" + operation.getName()
-						+ "): another operation that maps to " + verb.toString()
+				throw new MDSLException("Mapping conflict (" + operation.getName() + "): another operation that maps to " + verb.toString()
 						+ " already exists. Define distinct responsibilities via MAP decorators or HTTP verbs, or use create, read, update, delete as prefix.");
 			else
 				alreadyUsedVerbs.add(verb);
@@ -116,17 +115,17 @@ public class Endpoint2PathConverter {
 		 */
 
 		// handle 'expecting': uses requestBody, but creates parameters for GET and
-		// DELETE case for now (only in case its an atomicParameterList)
+		// DELETE case for now (only in case it is an atomicParameterList)
 		if (operationHasPayload(mdslOperation) && verbIsAllowedToHaveRequestBody(verb)) {
 			operation.requestBody(createRequestBody(mdslOperation.getRequestMessage().getPayload()));
 		} else if (operationHasPayload(mdslOperation)) {
-			operation.parameters(createParameterList(mdslOperation.getRequestMessage().getPayload()));
+			operation.parameters(createParameterList(mdslOperation.getRequestMessage().getPayload(), mdslOperation.getName()));
 		}
 
 		// handle 'delivering'
 		if (operationHasReturnValue(mdslOperation)) {
-			ApiResponses responseList = new ApiResponses().addApiResponse(DEFAULT_RESPONSE_NAME, createAPIResponse(
-					mdslOperation.getResponseMessage().getPayload(), "response message payload (success case)"));
+			ApiResponses responseList = new ApiResponses().addApiResponse(DEFAULT_RESPONSE_NAME,
+					createAPIResponse(mdslOperation.getResponseMessage().getPayload(), "response message payload (success case)"));
 			// TODO (medium prio) add pattern stereotype to description (if present)?
 
 			// handle 'reporting`
@@ -151,25 +150,21 @@ public class Endpoint2PathConverter {
 					Integer.parseInt(code);
 					// could catch and re-throw Exception
 				} else {
-					throw new MDSLException(
-							"The reports should have a name, which should be a numeric status code (in this version).");
+					throw new MDSLException("The reports should have a name, which should be a numeric status code (in this version).");
 				}
-				responseList.addApiResponse(unquoteString(code),
-						createAPIResponse(rm1, "response message payload (error case)"));
+				responseList.addApiResponse(unquoteString(code), createAPIResponse(rm1, "response message payload (error case)"));
 			}
 
 			operation.responses(responseList);
 		} else {
-			operation.responses(new ApiResponses().addApiResponse(DEFAULT_RESPONSE_NAME,
-					new ApiResponse().description("no return value").content(new Content())));
+			operation.responses(new ApiResponses().addApiResponse(DEFAULT_RESPONSE_NAME, new ApiResponse().description("no return value").content(new Content())));
 		}
 		return operation;
 	}
 
 	private boolean operationHasReturnValueWithReports(Operation mdslOperation) {
 		// TODO are really all three checks needed here? check grammar (low prio)
-		return mdslOperation.getResponseMessage() != null && mdslOperation.getResponseMessage().getPayload() != null
-				&& mdslOperation.getReportData() != null;
+		return mdslOperation.getResponseMessage() != null && mdslOperation.getResponseMessage().getPayload() != null && mdslOperation.getReportData() != null;
 	}
 
 	private String provideLinktoMAPWebsite(Operation mdslOperation) {
@@ -251,25 +246,23 @@ public class Endpoint2PathConverter {
 	}
 
 	private RequestBody createRequestBody(ElementStructure requestPayload) {
-		return new RequestBody().content(new Content().addMediaType(MEDIA_TYPE,
-				new MediaType().schema(getSchema4RequestOrResponseStructure(requestPayload))));
+		return new RequestBody().content(new Content().addMediaType(MEDIA_TYPE, new MediaType().schema(getSchema4RequestOrResponseStructure(requestPayload))));
 	}
 
-	private List<Parameter> createParameterList(ElementStructure requestPayload) {
-		return new DataType2ParameterConverter().convert(requestPayload);
+	private List<Parameter> createParameterList(ElementStructure requestPayload, String operationName) {
+		return new DataType2ParameterConverter().convert(requestPayload, operationName);
 	}
 
 	private ApiResponse createAPIResponse(ElementStructure responsePayload, String description) {
-		return new ApiResponse().description(description).content(new Content().addMediaType(MEDIA_TYPE,
-				new MediaType().schema(getSchema4RequestOrResponseStructure(responsePayload))));
+		return new ApiResponse().description(description)
+				.content(new Content().addMediaType(MEDIA_TYPE, new MediaType().schema(getSchema4RequestOrResponseStructure(responsePayload))));
 	}
 
 	private Schema getSchema4RequestOrResponseStructure(ElementStructure payload) {
 		if (payload.getNp() != null && payload.getNp().getTr() != null) {
 			// case: reference to 'data type' declaration
 			TypeReference tr = payload.getNp().getTr();
-			return this.dataType2SchemaConverter.mapCardinalities(tr.getCard(),
-					new Schema<>().$ref(DataType2SchemaConverter.REF_PREFIX + tr.getDcref().getName()));
+			return this.dataType2SchemaConverter.mapCardinalities(tr.getCard(), new Schema<>().$ref(DataType2SchemaConverter.REF_PREFIX + tr.getDcref().getName()));
 		} else {
 			// case: data structure defined inline in MDSL
 			return this.dataType2SchemaConverter.convert(payload);
@@ -295,8 +288,7 @@ public class Endpoint2PathConverter {
 		if (endpoint.getPrimaryRole() != null && !"".equals(endpoint.getPrimaryRole())) // TODO (high prio) lower case
 																						// pattern name, MAP URI (see
 																						// operation decorator)
-			summary = "MAP link: " + endpoint.getPrimaryRole()
-					+ " available at [the MAP website](https://microservice-api-patterns.org/)";
+			summary = "MAP link: " + endpoint.getPrimaryRole() + " available at [the MAP website](https://microservice-api-patterns.org/)";
 
 		// TODO provide exact links, also map other endpoint pattern roles
 		// if (!endpoint.getOtherRoles().isEmpty())
@@ -385,8 +377,8 @@ public class Endpoint2PathConverter {
 	private HTTPVerb findHTTPVerbBinding(Operation operation) {
 		if (operation == null || "".equals(operation.getName()))
 			return null;
-		List<HTTPOperationBinding> bindings = EcoreUtil2.eAllOfType(mdslSpecification, HTTPOperationBinding.class)
-				.stream().filter(b -> b.getBoundOperation().equals(operation.getName())).collect(Collectors.toList());
+		List<HTTPOperationBinding> bindings = EcoreUtil2.eAllOfType(mdslSpecification, HTTPOperationBinding.class).stream()
+				.filter(b -> b.getBoundOperation().equals(operation.getName())).collect(Collectors.toList());
 
 		if (bindings.size() == 1) { // use HTTP binding of there is exactly one (otherwise I don't know how to
 									// match)

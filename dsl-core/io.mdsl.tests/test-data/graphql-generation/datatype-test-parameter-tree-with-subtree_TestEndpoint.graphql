@@ -1,0 +1,34 @@
+# GraphQL generated for endpoint TestEndpoint of TestAPI
+
+
+input SubObjectInput {
+	attr1: String!
+}
+input TestTypeInput {
+	attribute1: String!
+	attribute2: String!
+}
+input RefTypeInput {
+	attribute1: Int!
+	ref: TestTypeInput!
+	subObject: SubObjectInput!
+}
+type SubObjectOutput {
+	attr1: String!
+}
+type TestTypeOutput {
+	attribute1: String!
+	attribute2: String!
+}
+type RefTypeOutput {
+	attribute1: Int!
+	ref: TestTypeOutput!
+	subObject: SubObjectOutput!
+}
+
+
+
+
+# additional scalars for types in MDSL
+scalar Raw
+scalar VoidResponse

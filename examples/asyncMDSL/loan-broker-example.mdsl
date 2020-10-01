@@ -1,0 +1,125 @@
+API description LoanBrokerExample 
+version "1.0.0"
+description "This example models parts of an EIP scenario. See [here](https://www.enterpriseintegrationpatterns.com/patterns/messaging/SystemManagementExample.html) for more info"
+
+data type LoanRequestDto {
+	"customerId": ID<int>,
+	"requestId": ID<int>,
+	"amount": D<double>
+}
+
+data type LoanReplyDto {
+	"customerId": ID<int>,
+	"loanProposalId": ID<int>,
+	"bestLoan": D<double>,
+	"correlationId": D<int>
+}
+
+data type LoanProposalRequestDto {
+	"customer": CreditScoreDto 
+}
+
+data type LoanProposalReplyDto {
+	"proposals": { P }*
+}
+
+data type CreditScoreDto {
+	"requestId": ID<int>,
+	"customerId": ID<int>,
+	"loanQuotes": { P }+,
+	"correlationId": D<int>
+}
+
+data type CommonHeaders {
+	"brokerId": ID<int>
+}
+
+channel LoanBrokerChannel 
+	of type POINT_TO_POINT
+	request message LoanRequest 
+		description "This channel is used by a customer to make a request"
+		on path "loanBrokerPreProcessingChannel/request"
+		expecting 
+			headers CommonHeaders
+			payload LoanRequestDto as DOCUMENT_MESSAGE
+	reply message LoanReply	
+		description "The loan broker will reply to the customer after having contacted all the banks and found the best quote."
+ 		on path "loanBrokerPreProcessingChannel/reply"
+		delivering
+			headers CommonHeaders 
+			payload LoanReplyDto
+		where 
+			CORRELATION_ID is "$message.payload#/requestId",
+			MESSAGE_EXPIRES in 60m
+	
+
+channel CreditBureauChannel
+	of type POINT_TO_POINT
+	request message CreditScoreRequest
+		description "Request the credit score and customer history"
+		on path "credit-bureau/request"
+		expecting payload {
+			"requestId": ID<int>,
+			"customerId": ID<int>
+		}
+	reply message CreditScoreReply
+		description "Return the credit score and customer history"
+		on path "credit-bureau/reply"
+		delivering payload CreditScoreDto
+		where
+			CORRELATION_ID is "$message.payload#/requestId"
+	
+channel BanksChannel
+	of type GUARANTEED_DELIVERY, POINT_TO_POINT
+	request message LoanProposalRequest
+		description "Request a loan proposal"
+		on path "banks/${bankId}/loans/request"
+			with bankId: int, "The identifier of the bank to contact"
+		expecting payload LoanProposalRequestDto as DOCUMENT_MESSAGE
+	reply message LoanProposalReply
+		description "The loan proposal for the given customer"
+		on path "banks/${bankId}/loans/reply"
+			with bankId: int, "The identifier of the bank that replied"
+		delivering payload LoanProposalReplyDto
+	
+channel BanksLoansInsightsChannel
+	of type PUBLISH_SUBSCRIBE, GUARANTEED_DELIVERY
+	on path "banks/${bankId}/loans"
+		with bankId: int, "The bank from which the loan has been requested"
+	description "Subscribe to be notified of new customers requesting loans"
+	accepts and produces message NewLoanRequested 
+	delivering payload {
+		"timeStamp": D<string>?,
+		"success": D<bool>
+	}
+
+	
+message broker LoanBrokerAmqpProvider
+	exposes LoanBrokerExample
+	at location "amqp.loanbroker.com"
+	via protocol AMQP
+
+message endpoint Customer
+	uses channels:
+		LoanBrokerChannel
+		
+message endpoint LoanBroker
+	uses from LoanBrokerAmqpProvider:
+		LoanBrokerChannel,
+		LoanRequest,
+		LoanReply
+	
+message endpoint Bank1
+	uses channels:
+		BanksChannel 
+			where 
+				consumed if "$message.payload#/correlationId" == 42
+	
+message endpoint Bank2
+	of type DURABLE_SUBSCRIBER
+	uses channels:
+		BanksChannel
+	
+message endpoint Bank3
+	uses channels:
+		BanksChannel

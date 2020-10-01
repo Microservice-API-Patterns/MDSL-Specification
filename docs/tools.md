@@ -7,12 +7,26 @@ copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 MDSL Tools: Users Guide
 =======================
 
-At present, two types of MDSL tools are available (more to come): 
+<!-- from top-level index page/readme:
+### Installation in Eclipse
 
-* Command Line Interface (CLI) tools: validation, technology-specific contract generation 
-* Eclipse Plugin: editor, API Linter (validation) , technology-specific contract generation
+ * Update site: [https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
+ * The grammar can be found in the `dsl-core` project (more precisely, in the `io.mdsl./src/io.mdsl` folder of this project): [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) and [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) repository.
+
+### Direct links into repository
+
+* [Full grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext)
+* [Examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/tree/master/examples)
+-->
+
+At present, two types of MDSL tools are available: 
+
+* Command Line Interface (CLI) tools: API Linter (validation), technology-specific contract generation 
+* Eclipse Plugin: editor, API Linter (validation), technology-specific contract generation
+
 
 ## Command Line Interface (CLI) Tools
+
 The CLI tools can  validate MDSL files and call our generators from the command line. When calling `./mdsl` (or `mdsl.bat` in Windows), the CLI shows you the available parameters:
 
 ```text
@@ -24,9 +38,10 @@ usage: mdsl
                          following values: oas (Open API Specification),
                          jolie (Jolie), text (arbitraty text file by using
                          a Freemarker template), proto (Protocol Buffers),
-                         gen-model-json (Generator model as JSON
-                         (exporter)), gen-model-yaml (Generator model as
-                         YAML (exporter))
+                         graphql (GraphQL Schemas), gen-model-json
+                         (Generator model as JSON (exporter)),
+                         gen-model-yaml (Generator model as YAML
+                         (exporter))
  -h,--help               Prints this message.
  -i,--input <arg>        Path to the MDSL file for which you want to
                          generate output.
@@ -46,7 +61,7 @@ Please refer to the [readme of the DSL core project](https://github.com/Microser
 ### MDSL Editor
 The MDSL Eclipse plugin provides editing support (syntax highlighting, auto completion, etc.) for our DSL. You can install the plugin in your Eclipse from the following update site:
 
-[https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
+[https://socadk.github.io/MDSL/updates/](https://socadk.github.io/MDSL/updates/)
 
 Once you have installed the plugin successfully, the MDSL editor should open for any file that ends with `.mdsl`. You can create one and copy-paste the above hello world example, or find additional examples [in this folder](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples).
 
@@ -56,31 +71,34 @@ If you want to check whether the plugin has installed successfully, you can go t
 ### API Linter 
 The API Linter comes with the MDSL Editor as well as the CLI (see above); every time a file is saved or parsed, a number of validation rules and some simple metrics are evaluated and the results displayed in the Problems view of Eclipse.
 
-<!-- TODO 4.0 add screen shot -->
-In addition to the usual editor features such as syntax highlighting, completion and syntax checking, it implements a few simple semantic validators (as a basic *API linter* demonstrator):
+In addition to the usual editor features such as syntax highlighting, completion and syntax checking, it implements a few simple semantic validators (as a basic *API Linter* demonstrator):
 
 * The modeler is warned about incomplete and unsuited data types such as `P` and `ID<bool>`.
-* The constraints of the message exchange patterns such as REQUEST_REPLY, ONE_WAY and NOTIFICATION are validated (if specified).
-* Some MAP pattern decorator combination are checked and warned about (for instance, a COMPUTATION_FUNCTION in an INFORMATION_HOLDER_RESOURCE is a modeling smell).
+* The constraints of the message exchange patterns such as REQUEST_REPLY, ONE_WAY and NOTIFICATION are validated (if specified). For instance, a REQUEST_REPLY must define a request and a response message by definition.
+* Some MAP pattern decorator combinations are checked and warned about (for instance, a COMPUTATION_FUNCTION in an INFORMATION_HOLDER_RESOURCE is a modeling smell).
 * The number of operations per endpoint is reported; if is likely that the endpoint cannot be mapped to OpenAPI due to a large amount of operations, the user is warned.
+<!-- TODO (v4.2) check whether there are more now -->
 
-An example that features all validators in action can be found in the examples folder of the repository [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/examples/APILinterTestAndDemo.mdsl).
+An example that features all validators in action can be found in the examples folder of the repository: [`APILinterTestAndDemo.mdsl`](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/examples/APILinterTestAndDemo.mdsl).
+The validation of this MDSL file yields the following errors, warnings and information messages (among others):
+<a target="_blank" href="/media/api-linter-example.png">![API Linter example](/media/api-linter-example.png)</a>
 
 
 ### Generators
 
 In the MDSL Editor, you can invoke four generators from the "MDSL" entry in the context menu:
 
-* Generate Text File with Freemarker Template 
 * Generate OpenAPI Specification 
 * Generate Protocol Buffers Specification
-* Generate Jolie Lan Specification 
+* Generate GraphQL Schema, see [this page](./graphql) for instructions
+* Generate Jolie Lan(guage) Specification 
+* Generate Text File with Freemarker Template 
 
-<!-- TODO show result of HelloWorl generation (links) -->
+<!-- TODO (v4.2) show result of HelloWorld generation (links) -->
 
 These generator features are also available in the CLI (see above).
 
-#### IDL Generators: OpenAPI, Proticol Buffers, Jolie 
+#### IDL Generators: OpenAPI, Protocol Buffers, GraphQL, Jolie 
 
 The OpenAPI specification generator maps endpoint types to HTTP resource paths, and operations to HTTP methods/verbs like this:
 
@@ -97,28 +115,42 @@ The OpenAPI specification generator maps endpoint types to HTTP resource paths, 
     * updateX and patchX are transformed into `PATCH`
     * deleteX is transformed into `DELETE`
 
-If an HTTP verb appears more than once in a resource endpoint, nothing will be generated on the endpoint type level. An HTTP [binding](./bindings#http-protocol-binding) has to be defined then; at present one and only one such binding should be present; the generator will use the first one it finds.
+If an HTTP verb appears more than once in a resource endpoint, nothing will be generated on the endpoint type level. An HTTP [binding](./bindings#http-protocol-binding) has to be defined then; at present one and only one such binding should be present; the generator will use the first one it finds. Note that not all abstract contracts can be mapped to all HTTP verbs; `GET`, in particular expects the in parameters to be simple enough so that they can be mapped to path and query parameters (this holds for atomic parameters and flat, unnested parameter trees).
 
-See [this demo](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html) for the time being (only Open API featured so far). 
+See [this demo](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html) for the time being (note: only OpenAPI is featured in the demo so far; we now also support gRPC, GraphQL and Jolie). 
 
 
 #### Freemarker Templating
 
-The entire grammar is available as a data model to the Freemarker templating feature.  
+The entire MDSL grammar is available as a data model to the Freemarker templating feature.  
 
-Examples of such reports can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/generator-templates).
+Examples of generated reports can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/generator-templates).
 
-#### Generator Model
-<!-- TODO document new generator model here -->
 
-The intermediate model that is available to the template-based generator can be exported: 
+#### Generator Model (technology preview) for Freemarker Templating and Model Exports
+To ease code generation with the template-based generator (Freemarker Templating, explained above), we provide an intermediate model. The following class diagram illustrates it:
+
+<a href="/media/mdsl-generator-model.png" target="_blank">![MDSL Generator Model](/media/mdsl-generator-model.png)</a>
+
+The _MDSLGeneratorModel_ object is the root object of the model and available in Freemarker templates in the variable `genModel`.
+
+This model can also be exported for offline processing (for instance, to feed other tools): 
 
 * Export Generator Model as JSON 
 * Export Generator Model as YAML
 
+*Note*: This feature is not yet complete, and the model API subject to change at any time. We do use it internally in the [GraphQL schema](./graphql) generator, so it has reached a certain level of maturity and test coverage. That said, it also has some known limitations; for instance, the output can be rather verbose and partially redundant (input depending, of course). 
+
+
+#### AsyncAPI (technology preview)
+
+This generator uses a different model management technology internally, and is run every time an MDSL file is saved. It is not available via a context menu.
+
+See [readme in this examples folder](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/asyncMDSL) for further instructions.
+
 
 # Site Navigation
-<!-- TODO update for V4.0 consistently; does this Jekyll template support a menu on the right? -->
+<!-- TODO update for V4.1 consistently -->
 
 * [Quick reference](./quickreference) and [tutorial](./tutorial). 
 * Language specification: 

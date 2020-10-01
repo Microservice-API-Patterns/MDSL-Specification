@@ -1,0 +1,51 @@
+syntax = "proto3";
+package Test0API;
+
+// TODO implement error management/reporting (is there a "throws" in gRPC?)
+// TODO also generate client and server test programs working with the data and generated code
+
+// services (from endpoints)
+
+// This endpoint service has the following MAP roles: undisclosed
+service endpoint0 {
+
+  // responsibility unknown
+  rpc sayhello(sayhelloRequest) returns (sayhelloResponse) {}
+
+  // responsibility RETRIEVAL_OPERATION
+  rpc sayhelloAgain(sayhelloAgainRequest) returns (sayhelloAgainResponse) {}
+
+}
+
+
+// TODO make test case 4 work (again), produces incorrect/incomplete results after refactoring (last response "44")
+// TODO need to avoid "repeated repeated:" either remove one or outsource one to new message definition (done elsewhere)
+
+// messages
+// TODO generated names will not be unique if two endpoints use the same operation names (?)
+
+
+message sayhelloRequest {
+  
+string  aString = 1;
+  
+}
+
+message sayhelloResponse {
+  
+string  identifier1 = 2;
+  
+}
+
+message sayhelloAgainRequest {
+  
+int32  anInt = 3;
+  
+}
+
+message sayhelloAgainResponse {
+  
+repeated string stringList = 5;
+  
+}
+

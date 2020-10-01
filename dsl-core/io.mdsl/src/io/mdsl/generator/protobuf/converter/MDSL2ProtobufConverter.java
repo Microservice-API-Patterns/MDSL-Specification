@@ -10,6 +10,7 @@ import io.github.microserviceapipatterns.protobufgen.model.Service;
 import io.mdsl.apiDescription.DataContract;
 import io.mdsl.apiDescription.EndpointContract;
 import io.mdsl.apiDescription.ServiceSpecification;
+import io.mdsl.dsl.ServiceSpecificationAdapter;
 
 /**
  * Converts MDSL ServiceSpecification to Protocol Buffers (*.proto)
@@ -17,14 +18,14 @@ import io.mdsl.apiDescription.ServiceSpecification;
  */
 public class MDSL2ProtobufConverter {
 
-	private ServiceSpecification mdslSpecification;
+	private ServiceSpecificationAdapter mdslSpecification;
 	private ProtoSpec.Builder proto;
 
 	private DataType2MessageConverter dataContractConverter;
 	private Endpoint2ServiceConverter endpointConverter;
 
 	public MDSL2ProtobufConverter(ServiceSpecification mdslSpecification) {
-		this.mdslSpecification = mdslSpecification;
+		this.mdslSpecification = new ServiceSpecificationAdapter(mdslSpecification);
 		this.proto = new ProtoSpec.Builder();
 		this.dataContractConverter = new DataType2MessageConverter(proto);
 		this.endpointConverter = new Endpoint2ServiceConverter(proto, dataContractConverter);
@@ -62,9 +63,8 @@ public class MDSL2ProtobufConverter {
 	 */
 	public List<Service> convertEndpointsToServices(ProtoSpec.Builder protoSpec) {
 		List<Service> services = Lists.newLinkedList();
-		for (EndpointContract endpoint : mdslSpecification.getContracts()) {
+		for (EndpointContract endpoint : mdslSpecification.getEndpointContracts())
 			services.add(endpointConverter.convert(endpoint));
-		}
 		return services;
 	}
 

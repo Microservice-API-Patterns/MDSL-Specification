@@ -1,0 +1,7 @@
+API description TestAPI
+
+data type TestType ( "attribute1":D<string>?, "attribute2":D<string>*, "attribute3":D<string>+, "attribute4":D<string>! )
+
+endpoint type TestEndpoint // MDSL compiles only with at least one endpoint
+
+IPA

@@ -15,7 +15,7 @@ import io.mdsl.apiDescription.ServiceSpecification;
  *
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
-public class EndpointContractValidator extends AbstractAPIDescriptionValidator {
+public class EndpointContractValidator extends AbstractMDSLValidator {
 
 	@Override
 	public void register(EValidatorRegistrar registrar) {

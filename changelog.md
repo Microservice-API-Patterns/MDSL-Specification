@@ -2,6 +2,11 @@
 
 Also see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases).
 
+V4.1, September/October 2020
+
+* GraphQL schema generator
+* *Technology preview:* language extension AsyncMDSL, with [AsyncAPI](https://www.asyncapi.com/) generator (Xtend-based)
+
 V4.0, August 2020
 
 * Improved HTTP and Java bindings

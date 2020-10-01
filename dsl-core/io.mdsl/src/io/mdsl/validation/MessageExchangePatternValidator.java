@@ -1,6 +1,5 @@
 package io.mdsl.validation;
 
-import org.eclipse.xtext.validation.AbstractDeclarativeValidator;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
 
@@ -8,7 +7,7 @@ import io.mdsl.apiDescription.ApiDescriptionPackage;
 import io.mdsl.apiDescription.DataTransferRepresentation;
 import io.mdsl.apiDescription.Operation;
 
-public class MessageExchangePatternValidator extends AbstractDeclarativeValidator {
+public class MessageExchangePatternValidator extends AbstractMDSLValidator {
 
 	@Override
 	public void register(EValidatorRegistrar registrar) {

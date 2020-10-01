@@ -3,6 +3,9 @@
  */
 package io.mdsl.validation;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
@@ -22,7 +25,7 @@ import io.mdsl.apiDescription.TechnologyBinding;
  *
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
-public class BasicBindingValidator extends AbstractAPIDescriptionValidator {
+public class BasicBindingValidator extends AbstractMDSLValidator {
 
 	@Override
 	public void register(EValidatorRegistrar registrar) {
@@ -42,14 +45,20 @@ public class BasicBindingValidator extends AbstractAPIDescriptionValidator {
 		// * listed elements actually exist in top-level APL/PT
 		// * tbc
 		
-		EList<Provider> providers = specRoot.getProviders();
+		List<Provider> providers = specRoot
+				.getProviders()
+				.stream()
+				.filter(p -> p instanceof Provider)
+				.map(p -> (Provider)p)
+				.collect(Collectors.toList());
+		
 		for (Provider provider : providers) {
 			EList<EndpointList> endpointListInProvider = provider.getEpl();
 			// TODO check grammar: 2x list?
 			for(EndpointList endpointList: endpointListInProvider) {
 				EList<EndpointInstance> endpoints = endpointList.getEndpoints();
 				for(EndpointInstance endpoint: endpoints) {
-					EList<TechnologyBinding> techBindings = endpoint.getTechBindings();
+					EList<TechnologyBinding> techBindings = endpoint.getPb();
 					for(int i=0;i<techBindings.size();i++) {
 						TechnologyBinding techBinding = techBindings.get(i);
 						ProtocolBinding protBinding = techBinding.getProtBinding();

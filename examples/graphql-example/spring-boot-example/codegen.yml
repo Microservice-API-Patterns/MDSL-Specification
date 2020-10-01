@@ -1,0 +1,8 @@
+schema: src/main/resources/schema.graphql
+generates:
+  src/main/java/io/mdsl/graphql/javaexampleapp/generated/Types.java:
+    plugins:
+      - java
+  src/main/java/io/mdsl/graphql/javaexampleapp/generated/Resolvers.java:
+    plugins:
+      - java-resolvers

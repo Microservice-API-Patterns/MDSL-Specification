@@ -1,0 +1,8 @@
+API description TestAPI
+
+data type TestType P
+
+endpoint type TestEndpoint1
+endpoint type TestEndpoint2
+
+IPA

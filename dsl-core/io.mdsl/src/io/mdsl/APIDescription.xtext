@@ -21,7 +21,7 @@ grammar io.mdsl.APIDescription with org.eclipse.xtext.common.Terminals
 title: Microservices Domain Specific Language (MDSL) Grammar
 author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2018-2020. All rights reserved.
-version: "4.0 (last update: August 25, 2020)"
+version: "4.1"
 ---
 */ 
 
@@ -29,13 +29,14 @@ generate apiDescription "http://www.mdsl.io/APIDescription"
 
 ServiceSpecification hidden(WS, ML_COMMENT, SL_COMMENT): 
 	'API' 'description' name=ID
-	('version' svi=semanticVersioningIdentifier)?  
-	('usage' 'context' reach=Visibility 'for' direction+=DirectionList)?
-	types+=DataContract*
-	contracts+=EndpointContract+
+    ('version' svi=semanticVersioningIdentifier)?  
+    ('usage' 'context' reach=Visibility 'for' direction+=DirectionList)?
+	('description' description=STRING)?
+    types+=DataContract*
+	contracts+=(EndpointContract | ChannelContract)+	
 	slas+=SLATemplate*
-	providers+=Provider*
-	clients+=Client*
+	providers+=(Provider | MessageBroker)*
+	clients+=(Client | MessageEndpoint)*
 	gateways+=Gateway*
 	realizations+=ProviderImplementation*
 	('IPA')? // IPA is the inversion of API; optional
@@ -65,6 +66,9 @@ DataContract:
 	default=DefaultValue? // moved here in v3; still experimental
 ;
 
+
+// *** Part B: service endpoint contracts (with operations)
+
 ElementStructure: 
 	pf=ParameterForest | pt=ParameterTree | apl=AtomicParameterList  | np=SingleParameterNode
 ;
@@ -72,8 +76,110 @@ ElementStructure:
 ParameterForest:
 	classifier=PatternStereotype?
 	'[' ptl=ParameterTreeList ']' 
+	;
+
+ChannelContract:
+	'channel' name=ID
+	('of' 'type' types+=ChannelType (',' types+=ChannelType)*)?
+	conversationType=(RequestReplyChannel|OneWayChannel)
+;
+
+BindingValue:
+	{BindingValue} str=STRING | {BindingValue} number=INT | bool=('true' | 'false')
+;
+
+BindingParameter:
+	name=STRING ':' value=(BindingValue|BindingParams)
+;
+
+BindingParams:
+	'{'
+		params+=BindingParameter
+		(',' params+=BindingParameter)*
+	'}'
+;
+
+BasicParameterWithDescription:
+	paramName=ID ':' type=BasicDataType (',' description=STRING)?
+;
+
+ChannelPathWithParams:
+	'path' path=STRING
+	('with' 
+		params+=BasicParameterWithDescription
+		(',' params+=BasicParameterWithDescription)?
+	)?
+;
+
+RequestReplyChannel:
+	request=RequestChannel
+	reply=ReplyChannel
+
+;
+
+RequestChannel:
+	'request' 'message' name=ID 
+		(('description' description=STRING)? &
+		'on' path=ChannelPathWithParams)
+		'expecting' payload=Payload
+		('where' whereClauses+=WhereClauses (',' whereClauses+=WhereClauses)*)?
+		('bindings' 'for' protocol=ProtocolBinding bindings=BindingParams)? 
+;
+
+ReplyChannel:
+	'reply' 'message' name=ID 
+		(('description' description=STRING)? &
+		'on' path=ChannelPathWithParams)
+		'delivering' payload=Payload
+		('where' whereClauses+=WhereClauses (',' whereClauses+=WhereClauses)*)?
+		('bindings' 'for' protocol=ProtocolBinding bindings=BindingParams)?
+;
+
+Payload:
+	schema=DataTransferRepresentation	
+	('as' messageType=MessageType)?
+;
+
+OneWayChannel:
+	(('description' description=STRING)? &
+	'on' path=ChannelPathWithParams)
+	(subscribe?='accepts' | publish?='produces' | acceptsAndProduces='accepts' 'and' 'produces') message=Message
+	('where' whereClauses+=WhereClauses (',' whereClauses+=WhereClauses)*)?
+	('bindings' 'for' protocol=ProtocolBinding bindings=BindingParams)?
+;
+
+Message:
+	'message' name=ID 
+	('description' description=STRING)?
+	(deliveringPayload?='delivering' | expectingPayload?='expecting') payload=Payload
+;
+WhereClauses:
+	MessageExpireWhereClause
+	|	SequenceIdWhereClause
+    |	CorrelationIdWhereClause
+;
+MessageExpireWhereClause:
+	'MESSAGE_EXPIRES' 'in' messageExpire=INT messageExpireUnit=MessageExpireUnit
+;
+SequenceIdWhereClause:
+	'SEQUENCE_ID' 'is' expression=STRING
+;
+CorrelationIdWhereClause:
+	'CORRELATION_ID' 'is' source=STRING
+;
+
+enum MessageExpireUnit:
+	s | m // seconds or minutes
+;
+enum MessageType:
+	COMMAND_MESSAGE | EVENT_MESSAGE | DOCUMENT_MESSAGE
+;
+enum ChannelType:
+	POINT_TO_POINT | PUBLISH_SUBSCRIBE | DATA_TYPE | INVALID_MESSAGE | DEAD_LETTER | GUARANTEED_DELIVERY
 ;
  
+
+
 ParameterTreeList:
 	first=ParameterTree (';' next+=ParameterTree)*
 ;
@@ -224,17 +330,32 @@ Provider:
 	('provider' 'governance'  evolStrat=EvolutionStrategy)? 
 ;
 
-EndpointList: // MOM support is experimental
-	( 'offers' | 'publishes' ) contract=[EndpointContract] // one endpoint can only offer a single contract (but provider can have multiple endpoints)
+EndpointList:	
+	'offers' contract=[EndpointContract] // one endpoint can only offer a single contract (but provider can have multiple endpoints)
 	endpoints+=EndpointInstance* // optional; several endpoints per contract mean redundant deployment (or different SLAs for same functionality) 
 ;
 
 EndpointInstance: 
-	('at' 'endpoint' 'location' | 'via' 'channel' ) name=STRING
-	techBindings+=TechnologyBinding*
+	'at' 'endpoint' 'location' name=STRING
+	pb+=TechnologyBinding*
 	('with' 'endpoint' sla=SLA)? // SLA is optional
 	('endpoint' 'governance'  evolStrat=EvolutionStrategy)?
 ;
+
+MessageBroker:
+	'message' 'broker' name=ID
+	('description' description=STRING)?
+	'exposes' epl+=AsyncEndpoint (',' epl+=AsyncEndpoint)?
+	
+;
+AsyncEndpoint:
+	contract=[ServiceSpecification]
+	'at' 'location' location=STRING
+	pb=TechnologyBinding
+	('bindings' bindings=BindingParams)?
+	('policy' name=ID 'realized' 'using' (securityPolicy=OASSecurity | other=STRING) ('in' securityPolicyExpression=STRING)?)? 
+;
+
 
 // ** technology binding (simple/advanced)
 
@@ -407,18 +528,72 @@ enum EvolutionStrategy:
 // *** C.2: Client 
 
 Client:
-	(ac='API' 'client' | mr='Message' 'receiver') // MOM support is experimental
-	name=ID
+	'API' 'client' name=ID
      cons+=Consumption+
 ;
 
 Consumption: 
-	('consumes'|'subscribes') contract=[EndpointContract] // MOM support is experimental
+	'consumes' contract=[EndpointContract]
 	// if present, the provider reference creates a static binding between client and server:
 	('from' providerReference=[Provider] | 'through' gatewayReference=[Gateway])? // could also go down to endpoint level
 	('via' 'protocol'  binding+=ProtocolBinding)? // must match provider-side information (linter!)
 ;
 
+MessageEndpoint:
+	'message' 'endpoint' name=ID
+	('of' 'type' types+=MessageEndpointType (',' types+=MessageEndpointType)*)?
+	('serves' 'as' primaryRole=ResourceRole (',' otherRoles+=ResourceRole)* 'role'?)?
+	('description' description=STRING)?
+	'uses' 
+		('channels' ':'
+			channelsNoBroker+=AsyncConsumptionWithProtocolBinding (',' channelsNoBroker+=AsyncConsumptionWithProtocolBinding)*
+		)?
+	(channels+=AsyncConsumptionFromBroker (',' channels+=AsyncConsumptionFromBroker)*)?
+;
+
+enum MessageEndpointType:
+	TRANSACTIONAL_CLIENT | POLLING_CONSUMER | EVENT_DRIVEN_CONSUMER | IDEMPOTENT_RECEIVER | MESSAGING_GATEWAY | MESSAGING_MAPPER | COMPETEING_CONSUMER | MESSAGE_DISPATCHER | SELECTIVE_CONSUMER | DURABLE_SUBSCRIBER | SERRVICE_ACTIVATOR
+;
+
+AsyncConsumptionFromBroker:
+	'from' broker=[MessageBroker] ':'
+	channels+=AsyncConsumptionNoProtocolBinding (',' channels+=AsyncConsumptionNoProtocolBinding)*
+	(binding+=ProtocolBinding)?
+;
+
+Channel:
+	ChannelContract | RequestChannel | ReplyChannel
+;
+
+AsyncConsumptionNoProtocolBinding:
+	(channel=[Channel])
+	(where=WhereConstruct)?
+;
+
+AsyncConsumptionWithProtocolBinding:
+	(channel=[Channel])
+	(where=WhereConstruct)?
+	(binding+=ProtocolBinding)?
+;
+
+
+WhereConstruct:
+	{WhereConstruct} 'where' 
+	(whereClauses+=ConsumptionWhereClauses (',' whereClauses+=ConsumptionWhereClauses)*)?
+		((',')? 'all' 'subscriptions' 'are' 'durable')?
+;
+
+
+ConsumptionWhereClauses:
+		'consumed' 'if' leftExp=STRING op=BinaryOperator rightExpr=IfExpr
+;
+
+IfExpr:
+	STRING | INT
+;
+BinaryOperator:
+	'==' | '!=' | '>' | '<' | '<=' | '>='
+;
 
 // *** C.3: Gateway (experimental)
 

@@ -1,0 +1,33 @@
+API description MessageEndpointExample
+
+data type SampleDTO { "id": ID<int>, "message": D<string> }
+
+channel Channel1
+on path "/channels/one" 
+produces message MessageOne
+	delivering payload SampleDTO
+	
+channel Channel2
+on path "/channels/Channel2" 
+produces message Message2
+	delivering payload SampleDTO
+	
+channel Channel3
+on path "/channels/Channel3" 
+produces message Message3
+	delivering payload SampleDTO
+
+message broker HelloWorldAmqpProvider 
+exposes HelloWorldAsyncAPI
+at location "amqp.example.com"
+via protocol AMQP
+
+message endpoint DemoMessageEndpoint
+uses 
+	channels: // channels without a Message Broker
+		Channel1
+			where consumed if "$message.payload#/id" == 42,
+		Channel2
+		
+	from HelloWorldAmqpProvider:
+		Channel3

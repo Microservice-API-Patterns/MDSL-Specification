@@ -1,7 +1,6 @@
 package io.mdsl.validation;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.xtext.validation.AbstractDeclarativeValidator;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
 
@@ -10,7 +9,7 @@ import io.mdsl.apiDescription.EndpointContract;
 import io.mdsl.apiDescription.Operation;
 import io.mdsl.apiDescription.OperationResponsibility;
 
-public class MAPDecoratorValidator extends AbstractDeclarativeValidator {
+public class MAPDecoratorValidator extends AbstractMDSLValidator {
 
 	@Override
 	public void register(EValidatorRegistrar registrar) {

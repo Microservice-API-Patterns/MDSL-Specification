@@ -1,4 +1,4 @@
-Microservice Domain-Specific Language (MDSL) 4.0
+Microservice Domain-Specific Language (MDSL) 4.1
 ================================================
 
 [![Build Status](https://travis-ci.com/Microservice-API-Patterns/MDSL-Specification.svg?branch=master)](https://travis-ci.com/Microservice-API-Patterns/MDSL-Specification) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -40,21 +40,21 @@ These two languages can be used independently of each other; for instance, data 
 ## Getting Started
 
 * Presentations featuring Context Mapper, MAP and MDSL can be found [here](https://ozimmer.ch/papers/).
-* The [GitHub Pages for MDSL](https://microservice-api-patterns.github.io/MDSL-Specification) provide a tutorial and language reference information.
+* The [GitHub Pages for MDSL](https://socadk.github.io/MDSL) provide a tutorial and language reference information.
 * There is an [Eclipse update site](https://microservice-api-patterns.github.io/MDSL-Specification/updates/) for the MDSL editor. 
-* Since Version 4.0, all generators are available via a Command Line Interface (CLI); see [this readme](./dsl-core/io.mdsl.cli/README.md) and [these examples](./examples/mdsl-standalone-example).
+* All generators are available via a Command Line Interface (CLI) now; see [this readme](./dsl-core/io.mdsl.cli/README.md) and [these examples](./examples/mdsl-standalone-example).
 * As a contributor, please consult the [readme file of the dsl-core](./dsl-core/README.md) project for getting started information and prerequisites.
 
 
 ## Language Specification 
 
-* [Overview](https://microservice-api-patterns.github.io/MDSL-Specification)
+* [Overview](https://socadk.github.io/MDSL)
 * [Endpoint types](https://microservice-api-patterns.github.io/MDSL-Specification/servicecontract) (a.k.a. ports)
 * [Bindings](https://microservice-api-patterns.github.io/MDSL-Specification/bindings) (a.k.a. adapters)
 * [Data types](https://microservice-api-patterns.github.io/MDSL-Specification/datacontract) (a.k.a. published language)
 * [Instance-level concepts](https://microservice-api-patterns.github.io/MDSL-Specification/optionalparts) (provider, client, gateway)
 
-An implemented proposal of a language extension supporting queue-based messaging endpoints is [AsyncMDSL](https://github.com/giacomodeliberali/MDSL/tree/master/examples/asyncMDSL). 
+<!-- An implemented proposal of a language extension supporting queue-based messaging endpoints is [AsyncMDSL](https://github.com/giacomodeliberali/MDSL/tree/master/examples/asyncMDSL).-->
 
 
 ## Repository Structure 
@@ -73,14 +73,14 @@ If you want to contribute to MDSL, you have to clone this repo and generate the 
 
 ## Change Log
 
-The current version of MDSL is 4.0. See [change log](changelog.md) for an evolution history; see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases) for additional update information.
+The current version of MDSL is 4.1. See [change log](changelog.md) for an evolution history; see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases) for additional update information.
 
-A possible roadmap for langiage and tools is (subject to change at any time): 
+<!-->
+A possible roadmap for language and tools is (subject to change at any time): 
 
-* Integrate AsyncMDSL into this repository (and MDSL 4.0); it extends MDSL 3 at present.
 * Java binding validation and tool support
-* GraphQL Schema Language support
-
+* to be continued
+-->
 
 ## Context Information: MAP and Xtext
 
@@ -101,15 +101,15 @@ Feedback and contributions welcome!
 
 ##  Acknowledgements 
 
-The creation and release of MDSL 4.0 was supported by the [Hasler Foundation](https://haslerstiftung.ch/en/welcome-to-the-hasler-foundation/).
+The creation and release of MDSL 4 was supported by the [Hasler Foundation](https://haslerstiftung.ch/en/welcome-to-the-hasler-foundation/).
 
 Contributors (input, DevOps support, feedback): 
 
 * [Olaf Zimmermann (ZIO)](https://ozimmer.ch)
 * Stefan Kapferer (also the author of the [MDSL generator in Context Mapper](https://contextmapper.org/docs/mdsl/))
 * MAP co-authors: Mirko Stocker, Daniel Lübke, Cesare Pautasso, Uwe Zdun
-* Bachelor and master students
-* MS 2019 and VSS 2019 participants 
+* Giacomo De Liberali and bachelor/master students at HSR/OST  
+* Microservices 2019 and VSS 2019 conference participants 
 
 
 ## Getting involved 

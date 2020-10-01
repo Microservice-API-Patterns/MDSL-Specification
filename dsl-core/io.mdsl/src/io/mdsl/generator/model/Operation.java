@@ -27,6 +27,7 @@ public class Operation {
 	private String name;
 	private MDSLType response;
 	private List<OperationParameter> parameters;
+	private String responsibility;
 
 	/**
 	 * Creates a new operation.
@@ -36,6 +37,7 @@ public class Operation {
 	public Operation(String name) {
 		this.name = name;
 		this.parameters = Lists.newLinkedList();
+		this.responsibility = "";
 	}
 
 	/**
@@ -83,6 +85,24 @@ public class Operation {
 	 */
 	public void addParameter(OperationParameter parameter) {
 		this.parameters.add(parameter);
+	}
+
+	/**
+	 * Returns the responsibility of the represented operation.
+	 * 
+	 * @return the responsibility of the operation as a String.
+	 */
+	public String getResponsibility() {
+		return responsibility;
+	}
+
+	/**
+	 * Sets the responsibility of the represented operation.
+	 * 
+	 * @param responsibility the responsibility of the operation as a String
+	 */
+	public void setResponsibility(String responsibility) {
+		this.responsibility = responsibility;
 	}
 
 }

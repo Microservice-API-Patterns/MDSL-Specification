@@ -6,18 +6,18 @@ copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 
 
 ## TL;DR
-Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as Swagger, WSDL and <!-- gRPC --> Protocol Buffers. Its current version is 4.0.
+Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as Swagger, WSDL and <!-- gRPC --> Protocol Buffers. 
 
 Quick links: 
 
-* Documentation pages (GitHub pages): [Tutorial](./tutorial), [quick reference](./quickreference)<!-- providing skeletons-->, [example](./examples) 
+* Documentation pages (GitHub pages): [Tutorial](./tutorial), [quick reference](./quickreference)<!-- providing skeletons-->, [example](./examples)
 * Language and tools repository (GitHub): [Grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext), [examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples)
-* Tools: [Overview](./tools), [CLI](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli), [update site for editor (Eclipse plugin)](./updates/)<!-- Update site: [https://microservice-api-patterns.github.io/updates/](https://microservice-api-patterns.github.io/updates/) -->
+* Tools: [Overview](./tools), [CLI](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli), [update site for editor (Eclipse plugin)](./updates/)
 
 <!--
 ### Installation in Eclipse
 
- * Update site: [https://microservice-api-patterns.github.io/updates/](https://microservice-api-patterns.github.io/updates/)
+ * Update site: [https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
  * The grammar can be found in the `dsl-core` project (more precisely, in the `io.mdsl./src/io.mdsl` folder of this project): [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) and [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) repository.
 -->
 

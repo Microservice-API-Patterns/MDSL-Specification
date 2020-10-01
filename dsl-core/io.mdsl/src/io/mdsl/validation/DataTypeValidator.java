@@ -3,25 +3,30 @@
  */
 package io.mdsl.validation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
 
 import io.mdsl.apiDescription.ApiDescriptionPackage;
 import io.mdsl.apiDescription.GenericParameter;
+import io.mdsl.apiDescription.ParameterForest;
+import io.mdsl.apiDescription.ParameterTree;
 import io.mdsl.apiDescription.RoleAndType;
-
 /**
- * This class contains custom validation rules. 
+ * This class contains custom validation rules.
  *
- * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
+ * See
+ * https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
-public class DataTypeValidator extends AbstractAPIDescriptionValidator {
-	
+public class DataTypeValidator extends AbstractMDSLValidator {
+
 	@Override
 	public void register(EValidatorRegistrar registrar) {
 		// not needed for classes used as ComposedCheck
 	}
-	
+
 	@Check
 	public void checkRoleAndType(final RoleAndType rat) {
 		String role = rat.getRole();
@@ -43,7 +48,7 @@ public class DataTypeValidator extends AbstractAPIDescriptionValidator {
 			warning("The role-type combination MD<raw> is somewhat unusual. Use MD<string> instead?", rat, ApiDescriptionPackage.Literals.ROLE_AND_TYPE__BTYPE);
 	    }
 	}
-	
+
 	@Check
 	public void checkIncompleteTypeInformation(final GenericParameter gp) {
 		if(gp.getName() != null) {
@@ -52,5 +57,21 @@ public class DataTypeValidator extends AbstractAPIDescriptionValidator {
 		else {
 			warning("This is a generic parameter. You might want to provide a full identfier-role-type triple. See MDSL documentation at https://microservice-api-patterns.github.io/MDSL-Specification/datacontract.", gp, ApiDescriptionPackage.Literals.GENERIC_PARAMETER__P);
 		}
+	}
+
+	@Check
+	public void checkParameterForestAsTuple(final ParameterForest pf) {
+		List<ParameterTree> trees = new ArrayList<ParameterTree>();
+		trees.add(pf.getPtl().getFirst());
+		trees.addAll(pf.getPtl().getNext());
+
+		for (ParameterTree pt : trees) {
+			if (pt.getName() != null) {
+				// parameterForest is considered like a tuple
+				info("ParameterForest are like tuples. Tuple items names are ignored.",
+						pt, ApiDescriptionPackage.Literals.PARAMETER_TREE__NAME);
+			}
+		}
+
 	}
 }

@@ -95,7 +95,6 @@ API gateway SampleAPIGatweway
 ~~~
 
 ## API Provider Implementation 
-
 An API provider has an upstream interface (see [bindings](./bindings)), but also a downstream implementation (which is not visible to its external client, but still worth specifying internally): 
 
 ~~~
@@ -111,7 +110,7 @@ enum ImplementationTechnology: PlainJava | SpringMVC | STRING // more to be adde
 ;	
 ~~~
 
-<!-- removed 	| 'with' 'binding' downstreamBinding=[Provider])? // reference to Java protocol binding (optional) as well as vlingo enum TODO 4.0 adopt example  -->
+<!-- removed | 'with' 'binding' downstreamBinding=[Provider])? // reference to Java protocol binding (optional) TODO 4.1 adopt example -->
 
 An example of an instance of such provider binding is:
 

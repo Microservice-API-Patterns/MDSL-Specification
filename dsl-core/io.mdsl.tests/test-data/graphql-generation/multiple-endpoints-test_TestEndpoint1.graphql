@@ -1,0 +1,12 @@
+# GraphQL generated for endpoint TestEndpoint1 of TestAPI
+
+scalar TestTypeInput # abstract, unspecified data type
+scalar TestTypeOutput # abstract, unspecified data type
+
+
+
+
+
+# additional scalars for types in MDSL
+scalar Raw
+scalar VoidResponse

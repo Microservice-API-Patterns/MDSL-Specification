@@ -1,0 +1,12 @@
+{
+  "name": "java-app",
+  "scripts": {
+    "postinstall": "graphql-codegen"
+  },
+  "dependencies": {
+    "graphql": "^15.3.0",
+    "@graphql-codegen/cli": "1.17.10",
+    "@graphql-codegen/java": "1.17.8",
+    "@graphql-codegen/java-resolvers": "1.17.8"
+  }
+}

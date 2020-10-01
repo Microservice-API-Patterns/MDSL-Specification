@@ -40,12 +40,15 @@ Workflow {
 			
 			validator = {
 				composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
-				composedCheck = "io.mdsl.validation.APIDescriptionValidator"
 				composedCheck = "io.mdsl.validation.DataTypeValidator"
 				composedCheck = "io.mdsl.validation.EndpointContractValidator"
 				composedCheck = "io.mdsl.validation.MessageExchangePatternValidator"
 				composedCheck = "io.mdsl.validation.MAPDecoratorValidator"
 				composedCheck = "io.mdsl.validation.BasicBindingValidator"
+				composedCheck = "io.mdsl.validation.OneWayChannelValidator"
+				composedCheck = "io.mdsl.validation.ChannelContractValidator"
+				composedCheck = "io.mdsl.validation.MessageEndpointValidator"
+				composedCheck = "io.mdsl.validation.RuntimeExpressionValidator"
 			}
 			junitSupport = {
 				junitVersion = "5"
@@ -54,8 +57,7 @@ Workflow {
 			
 			// not successful yet:
 			generator = {
-				generateXtendStub = false
-				generateStub = false
+				generateXtendStub = true
 			}
 		}
 	}

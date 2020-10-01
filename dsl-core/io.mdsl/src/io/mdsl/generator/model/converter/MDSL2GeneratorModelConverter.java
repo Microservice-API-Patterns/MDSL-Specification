@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 
 import io.mdsl.apiDescription.DataContract;
 import io.mdsl.apiDescription.ServiceSpecification;
+import io.mdsl.dsl.ServiceSpecificationAdapter;
 import io.mdsl.generator.model.Client;
 import io.mdsl.generator.model.DataType;
 import io.mdsl.generator.model.EndpointContract;
@@ -34,7 +35,7 @@ import io.mdsl.generator.model.ProviderImplementation;
  */
 public class MDSL2GeneratorModelConverter {
 
-	private ServiceSpecification serviceSpecification;
+	private ServiceSpecificationAdapter serviceSpecification;
 	private DataTypeConverter dataTypeConverter;
 	private EndpointConverter endpointConverter;
 	private ProviderConverter providerConverter;
@@ -43,7 +44,7 @@ public class MDSL2GeneratorModelConverter {
 	private MDSLGeneratorModel genModel;
 
 	public MDSL2GeneratorModelConverter(ServiceSpecification serviceSpecification) {
-		this.serviceSpecification = serviceSpecification;
+		this.serviceSpecification = new ServiceSpecificationAdapter(serviceSpecification);
 		this.genModel = new MDSLGeneratorModel(serviceSpecification.getName());
 		this.dataTypeConverter = new DataTypeConverter(genModel);
 		this.endpointConverter = new EndpointConverter(genModel, dataTypeConverter);
@@ -64,20 +65,19 @@ public class MDSL2GeneratorModelConverter {
 			genModel.addDataType(dataType);
 
 		// convert endpoints
-		for (EndpointContract endpoint : convertEndpoints(serviceSpecification.getContracts()))
+		for (EndpointContract endpoint : convertEndpoints(serviceSpecification.getEndpointContracts()))
 			genModel.addEndpoint(endpoint);
 
 		// convert providers
-		for (Provider provider : convertProviders(serviceSpecification.getProviders()))
+		for (Provider provider : convertProviders(serviceSpecification.getProviderProviders()))
 			genModel.addProvider(provider);
 
 		// convert clients
-		for (Client client : convertClients(serviceSpecification.getClients()))
+		for (Client client : convertClients(serviceSpecification.getClientClients()))
 			genModel.addClient(client);
 
 		// convert provider implementations
-		for (ProviderImplementation providerImpl : convertProviderImplementations(
-				serviceSpecification.getRealizations()))
+		for (ProviderImplementation providerImpl : convertProviderImplementations(serviceSpecification.getRealizations()))
 			genModel.addProviderImplementation(providerImpl);
 
 		return genModel;
@@ -115,8 +115,7 @@ public class MDSL2GeneratorModelConverter {
 		return clients;
 	}
 
-	private List<ProviderImplementation> convertProviderImplementations(
-			List<io.mdsl.apiDescription.ProviderImplementation> mdslProviderImplemenations) {
+	private List<ProviderImplementation> convertProviderImplementations(List<io.mdsl.apiDescription.ProviderImplementation> mdslProviderImplemenations) {
 		List<ProviderImplementation> providerImplementations = Lists.newLinkedList();
 		for (io.mdsl.apiDescription.ProviderImplementation providerImpl : mdslProviderImplemenations) {
 			providerImplementations.add(providerImplementationConverter.convert(providerImpl));

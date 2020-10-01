@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.mdsl</groupId>
 		<artifactId>io.mdsl.parent</artifactId>
-		<version>4.0.0-SNAPSHOT</version>
+		<version>4.1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>io.mdsl.target</artifactId>
 	<packaging>eclipse-target-definition</packaging>

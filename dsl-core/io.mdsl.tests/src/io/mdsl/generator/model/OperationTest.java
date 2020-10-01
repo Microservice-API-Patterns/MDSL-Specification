@@ -71,4 +71,16 @@ public class OperationTest {
 		assertEquals("testParam", operation.getParameters().get(0).getName());
 	}
 
+	@Test
+	public void canDefineResponsibility() {
+		// given
+		Operation operation = new Operation("callTest");
+
+		// when
+		operation.setResponsibility("COMPUTATION_FUNCTION");
+
+		// then
+		assertEquals("COMPUTATION_FUNCTION", operation.getResponsibility());
+	}
+
 }

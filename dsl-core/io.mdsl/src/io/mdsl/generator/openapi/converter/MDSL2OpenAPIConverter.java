@@ -14,6 +14,7 @@ import io.mdsl.apiDescription.EndpointInstance;
 import io.mdsl.apiDescription.HTTPBinding;
 import io.mdsl.apiDescription.ServiceSpecification;
 import io.mdsl.apiDescription.TechnologyBinding;
+import io.mdsl.dsl.ServiceSpecificationAdapter;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -32,10 +33,10 @@ public class MDSL2OpenAPIConverter {
 
 	private static final String DEFAULT_VERSION = "1.0";
 
-	private ServiceSpecification mdslSpecification;
+	private ServiceSpecificationAdapter mdslSpecification;
 
 	public MDSL2OpenAPIConverter(ServiceSpecification mdslSpecification) {
-		this.mdslSpecification = mdslSpecification;
+		this.mdslSpecification = new ServiceSpecificationAdapter(mdslSpecification);
 	}
 
 	/**
@@ -57,7 +58,7 @@ public class MDSL2OpenAPIConverter {
 
 	private List<Tag> createTags() {
 		List<Tag> tags = new ArrayList<Tag>();
-		for (EndpointContract endpoint : this.mdslSpecification.getContracts()) {
+		for (EndpointContract endpoint : mdslSpecification.getEndpointContracts()) {
 			Tag tag = new Tag();
 			tag.setName(endpoint.getName());
 			tag.setDescription(Endpoint2PathConverter.mapRolePattern(endpoint));
@@ -92,10 +93,9 @@ public class MDSL2OpenAPIConverter {
 	private Paths convertEndpoints2Paths() {
 		Paths paths = new Paths();
 		Endpoint2PathConverter pathsConverter = new Endpoint2PathConverter(mdslSpecification);
-		for (EndpointContract endpoint : this.mdslSpecification.getContracts()) {
+		for (EndpointContract endpoint : mdslSpecification.getEndpointContracts()) {
 			EndpointInstance endpointInstance = findHttpBindingIfExisting(endpoint);
-			if (endpointInstance != null && endpointInstance.getName() != null
-					&& endpointInstance.getName().startsWith("/"))
+			if (endpointInstance != null && endpointInstance.getName() != null && endpointInstance.getName().startsWith("/"))
 				paths.addPathItem(endpointInstance.getName(), pathsConverter.convert(endpoint));
 			else
 				paths.addPathItem("/" + endpoint.getName(), pathsConverter.convert(endpoint));
@@ -121,14 +121,13 @@ public class MDSL2OpenAPIConverter {
 	}
 
 	private String getAPIVersion() {
-		return mdslSpecification.getSvi() != null && !"".equals(mdslSpecification.getSvi()) ? mdslSpecification.getSvi()
-				: DEFAULT_VERSION;
+		return mdslSpecification.getSvi() != null && !"".equals(mdslSpecification.getSvi()) ? mdslSpecification.getSvi() : DEFAULT_VERSION;
 	}
 
 	private EndpointInstance findHttpBindingIfExisting(EndpointContract endpoint) {
 		List<TechnologyBinding> bindings = EcoreUtil2.eAllOfType(mdslSpecification, TechnologyBinding.class);
-		List<TechnologyBinding> httpBindings = bindings.stream().filter(b -> b.getProtBinding() != null
-				&& b.getProtBinding().getHttp() != null && b.getProtBinding().getHttp() instanceof HTTPBinding)
+		List<TechnologyBinding> httpBindings = bindings.stream()
+				.filter(b -> b.getProtBinding() != null && b.getProtBinding().getHttp() != null && b.getProtBinding().getHttp() instanceof HTTPBinding)
 				.collect(Collectors.toList());
 
 		if (httpBindings.size() == 1) // use HTTP binding, if there is only one

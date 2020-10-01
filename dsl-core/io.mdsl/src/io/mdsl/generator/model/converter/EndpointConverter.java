@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import io.mdsl.apiDescription.Cardinality;
 import io.mdsl.apiDescription.ElementStructure;
+import io.mdsl.apiDescription.OperationResponsibility;
 import io.mdsl.apiDescription.TypeReference;
 import io.mdsl.generator.CardinalityHelper;
 import io.mdsl.generator.model.DataType;
@@ -56,53 +57,45 @@ public class EndpointConverter {
 		if (operation.getRequestMessage() != null) {
 			// handle references specially: in this case we can assume the message as
 			// already been created
-			if (operation.getRequestMessage().getPayload().getNp() != null
-					&& operation.getRequestMessage().getPayload().getNp().getTr() != null) {
+			if (operation.getRequestMessage().getPayload().getNp() != null && operation.getRequestMessage().getPayload().getNp().getTr() != null) {
 				TypeReference ref = operation.getRequestMessage().getPayload().getNp().getTr();
-				input = wrapDataTypeIntoListTypeIfNecessary(getExistingDataTypeOrCreateEmpty(ref.getDcref().getName()),
-						ref.getCard());
+				input = wrapDataTypeIntoListTypeIfNecessary(getExistingDataTypeOrCreateEmpty(ref.getDcref().getName()), ref.getCard());
 			} else {
 				ElementStructure payload = operation.getRequestMessage().getPayload();
-				input = wrapDataTypeIntoListTypeIfNecessary(
-						createNewDataType(operation.getName() + "RequestDataType", payload),
-						getCardinality4ElementStructure(payload));
+				input = wrapDataTypeIntoListTypeIfNecessary(createNewDataType(operation.getName() + "RequestDataType", payload), getCardinality4ElementStructure(payload));
 			}
 		}
 		if (operation.getResponseMessage() != null) {
 			// handle references specially: in this case we can assume the message as
 			// already been created
-			if (operation.getResponseMessage().getPayload().getNp() != null
-					&& operation.getResponseMessage().getPayload().getNp().getTr() != null) {
+			if (operation.getResponseMessage().getPayload().getNp() != null && operation.getResponseMessage().getPayload().getNp().getTr() != null) {
 				TypeReference ref = operation.getResponseMessage().getPayload().getNp().getTr();
-				output = wrapDataTypeIntoListTypeIfNecessary(getExistingDataTypeOrCreateEmpty(ref.getDcref().getName()),
-						ref.getCard());
+				output = wrapDataTypeIntoListTypeIfNecessary(getExistingDataTypeOrCreateEmpty(ref.getDcref().getName()), ref.getCard());
 			} else {
 				ElementStructure payload = operation.getResponseMessage().getPayload();
 				output = wrapDataTypeIntoListTypeIfNecessary(
-						createNewDataType(operation.getName().substring(0, 1).toUpperCase()
-								+ operation.getName().substring(1) + "ResponseDataType", payload),
+						createNewDataType(operation.getName().substring(0, 1).toUpperCase() + operation.getName().substring(1) + "ResponseDataType", payload),
 						getCardinality4ElementStructure(payload));
 			}
 		}
 
-		if (input == null)
-			input = getExistingDataTypeOrCreateEmpty(operation.getName().substring(0, 1).toUpperCase()
-					+ operation.getName().substring(1) + "RequestMessage");
 		if (output == null) {
 			output = getExistingDataTypeOrCreateEmpty("VoidResponse");
 		}
 
 		Operation genModelOperation = new Operation(operation.getName());
 		genModelOperation.setResponse(output);
-		OperationParameter parameter = new OperationParameter("input", input);
-		genModelOperation.addParameter(parameter);
+		if (input != null) {
+			OperationParameter parameter = new OperationParameter("anonymousInput", input);
+			genModelOperation.addParameter(parameter);
+		}
+		genModelOperation.setResponsibility(getOperationResponsibility(operation.getResponsibility()));
 
 		return genModelOperation;
 	}
 
 	private DataType getExistingDataTypeOrCreateEmpty(String name) {
-		Optional<DataType> optDataType = this.model.getDataTypes().stream().filter(d -> d.getName().equals(name))
-				.findFirst();
+		Optional<DataType> optDataType = this.model.getDataTypes().stream().filter(d -> d.getName().equals(name)).findFirst();
 		if (optDataType.isPresent()) {
 			return optDataType.get();
 		} else {
@@ -134,8 +127,7 @@ public class EndpointConverter {
 			model.addDataType(wrapper);
 			return wrapper;
 		} else if (CardinalityHelper.isOptional(card)) {
-			Optional<DataType> alreadyExistingOptionalType = getDataTypeIfAlreadyExists(
-					dataType.getName() + "Optional");
+			Optional<DataType> alreadyExistingOptionalType = getDataTypeIfAlreadyExists(dataType.getName() + "Optional");
 			if (alreadyExistingOptionalType.isPresent())
 				return alreadyExistingOptionalType.get();
 
@@ -170,6 +162,26 @@ public class EndpointConverter {
 			}
 		}
 		return null;
+	}
+
+	private String getOperationResponsibility(OperationResponsibility operationResponsibility) {
+		if (operationResponsibility == null)
+			return "";
+		if (operationResponsibility.getCf() != null && !"".equals(operationResponsibility.getCf()))
+			return operationResponsibility.getCf();
+		if (operationResponsibility.getBap() != null && !"".equals(operationResponsibility.getBap()))
+			return operationResponsibility.getBap();
+		if (operationResponsibility.getEp() != null && !"".equals(operationResponsibility.getEp()))
+			return operationResponsibility.getEp();
+		if (operationResponsibility.getRo() != null && !"".equals(operationResponsibility.getRo()))
+			return operationResponsibility.getRo();
+		if (operationResponsibility.getSco() != null && !"".equals(operationResponsibility.getSco()))
+			return operationResponsibility.getSco();
+		if (operationResponsibility.getSto() != null && !"".equals(operationResponsibility.getSto()))
+			return operationResponsibility.getSto();
+		if (operationResponsibility.getOther() != null && !"".equals(operationResponsibility.getOther()))
+			return operationResponsibility.getOther();
+		return "";
 	}
 
 }

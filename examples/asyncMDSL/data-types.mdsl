@@ -1,0 +1,85 @@
+API description DatatypesExampleAPI
+version "1.0.0"
+description "
+	A example of the available data types available in MDSL and AsyncMDSL.
+
+	More information at:
+	- [https://github.com/socadk/MDSL](https://github.com/socadk/MDSL)
+"
+
+// data type definitions
+data type RefType P  	  
+	 
+data type SingleNodeParameter "testAtomP":D<string>
+data type SingleNodeParameterGenP "testGenP":P
+data type SingleNodeParameterGenP2 "testgenP": RefType
+data type SingleNodeParameterRef2 ParameterForest
+
+data type AtomicParameterList ("prop1": D<string>, "prop2": D<int>, "prop3": D<double> )
+data type AtomicParameterListArray ("prop1": D<int>*, "prop2": D<double>* )
+
+data type ParameterTree {
+	"level1_pt" : {
+		"level2": {
+			"level3": D<int>,
+			"level3_array": D<int>*,
+			"level3_ref": RefType,
+			"level3_array_ref": RefType*,
+			"level3_obj": {
+				"level4": D<int>
+			}
+		}+
+	}*,
+	"level1_sib": ID<int>
+}
+
+data type ParameterForest [
+	{
+		"level1" : {
+			"level2": {
+				"level3": D<int>,
+				"level3_array": D<int>*,
+				"level3_ref": RefType,
+				"level3_array_ref": RefType*,
+				"level3_obj": {
+					"level4": D<int>
+				}
+			}+
+		}*,
+		"level1_sib": ID<int>
+	};
+	{
+		"tree2": ID<int>		
+	}
+]
+ 
+// channels definitions
+channel DatatypesTestChannel
+description "
+	A channel that delivers a huge payload and also some headers. 
+	Note that some payload paramaters are marked as optional (with a trailing ?) 
+"
+on path "datatypes/test"
+produces message TestAvailableDatatypesMessage
+delivering 
+	headers AtomicParameterList
+	payload {
+		"RefType": RefType?,
+		"SingleNodeParameter": SingleNodeParameter?,
+		"SingleNodeParameterGenP": SingleNodeParameterGenP,
+		"SingleNodeParameterGenP2": SingleNodeParameterGenP2,
+		"SingleNodeParameterRef2": SingleNodeParameterRef2,
+		"AtomicParameterListArray": AtomicParameterListArray+,
+		"ParameterTree": ParameterTree,
+		"ParameterForest": ParameterForest
+	}
+
+message broker AmqpBroker
+description "
+	An example broker that offers the DatatypesExampleAPI.
+	
+	Note that the server URL does not actually exist.
+"
+exposes DatatypesExampleAPI
+at location "amqp.mdsl-datatypesexample.org"
+via protocol AMQP
