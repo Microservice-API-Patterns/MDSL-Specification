@@ -4,7 +4,7 @@ data type SampleDTO {ID, D}
 
 endpoint type HelloWorldEndpoint
 exposes 
-  operation s 
+  operation sayHello
     expecting payload D<string>  
     delivering payload SampleDTO 
 

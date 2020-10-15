@@ -1,23 +1,14 @@
 /* Grammar "cheat sheet" aka abstract examples (payload structure only): 
  * 
- * NEW (V2): 
- * 
  * payload [ {ptree1}; {ptree2} ] // Parameter Forest
  * payload {{subtree1},{subtree2}, apl} // Parameter Tree (can also appear in pforest)
  * payload (apl) // Atomic Parameter List (can also appear in ptree) 
  * payload ap // Atomic Parameter (can also appear in ptree and apl) 
  * 
- * OLD (V1):
- * 
- *  payload [ {ptree1}, {ptree2} ] // Parameter Forest
- * payload {{subtree1},{subtree2}, {apl},{ap}} // Parameter Tree (can also appear in pforest)
- * payload (apl) // Atomic Parameter List (can also appear in ptree) 
- * payload ap // Atomic Parameter (can also appear in ptree and apl) 
- * 
- * AP syntax (V1, V2):
+ * AP syntax:
  * <<pattern>>"name":Role<Type> // pattern stereotype, name and type are optional; stereotype can also be assigned to other tree nodes (apls and ptrees)
  * 
- *  Concrete AP types: ID, E, V, L, MD; abstract type: P  
+ *  Concrete AP types: ID, D, V, L, MD; abstract type: P  
  * */
  
 API description SampleCRMScenario
@@ -126,7 +117,7 @@ SLA template externalPerformanceSLAExampleLandingZone
 API provider SampleAPIProvider1 
   offers CustomerManagementContract 
   at endpoint location "http://www.testdomain.io:80/path/subpath" 
-  via protocol RESTful_HTTP
+  via protocol HTTP
   with endpoint SLA externalPerformanceSLAExample
  
   at endpoint location "http://www.testdomain.io:81/path/subpath" 
@@ -135,7 +126,7 @@ API provider SampleAPIProvider1
 
   offers CustomerManagementContract2
   at endpoint location "http://www.testdomain.io:80/path2/subpath2" // full URI: https://a.b.c:9090/d/e.map?p1=v1&p2=v2;
-  via protocol RESTful_HTTP
+  via protocol HTTP
   with endpoint SLA // inlined/embedded SLA
   	type QUANTITATIVE
     objective performanceSLO1 "responseTimeUnder" 5 seconds
@@ -169,7 +160,7 @@ API gateway SampleAPIGatweway
   // Gate 1
   offers CustomerManagementContract
   at endpoint location "ExternalURI"
-  via protocol RESTful_HTTP
+  via protocol HTTP
 
   consumes CustomerManagementContract2 
   from SampleAPIProvider1
@@ -178,7 +169,7 @@ API gateway SampleAPIGatweway
   // Gate 2:
   offers CustomerManagementContract
   at endpoint location "ExternalURI2" 
-  via protocol RESTful_HTTP
+  via protocol HTTP
 
   consumes CustomerManagementContract2 
   from SampleAPIProvider1
