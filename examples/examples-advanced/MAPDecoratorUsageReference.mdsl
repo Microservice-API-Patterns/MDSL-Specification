@@ -15,6 +15,8 @@ usage context SOLUTION_INTERNAL_API for BACKEND_INTEGRATION
 
 // data type Entity1 (ID,D) // how about ", ..." as a placeholder for iteration/recursion, tbd TODO
 
+// TODO (v4.1) AsyncAPI generator has problems with some APLs (partially specified ones, with certain cardinalities), can use PTs instead
+
 // feature struct patterns as data types so that newbies do not get overwhelmed by big picture operations
 data type SampleAtomicParameter "sap":D<string>
 data type SampleAtomicParameterList ("ap1":D<int>,"ap2":D<string>)
@@ -22,14 +24,14 @@ data type SampleParameterTree {{P},{"ap1":D<int>,"ap2"}}
 data type SampleParameterForest [{P};{P}]
 
 data type SampleAtomicParameter1 "sap":D<string>
-data type SampleAtomicParameterList1 (ID,D)
+data type SampleAtomicParameterList1 ("someID":ID*,"someData":D)
 data type SampleParameterTree1 {{P}, {SampleAtomicParameterList1}}
 data type SampleParameterForest1 [{P}; {SampleParameterTree1}]
 
 data type BooleanExpression version "1" D<bool>
 data type UUID version "0.1" D<int>
 data type SharedContext version "0.1.1" {"api Key":UUID?, "session Id":D<int>?, "otherQoSPropertiesThatShouldNotGoToProtocolHeader":D<string>*}
-data type Page (D*|L*) // a page either is a set of value parameters or a set of links
+data type Page ("data":D*|"link":L*) // a page either is a set of value parameters or a set of links
 data type PersonalData <<Entity>>D
 data type Address <<Entity>>D
 data type CustomerEntity {{PersonalData}, {Address}}
@@ -169,7 +171,7 @@ endpoint type CustomerInformationHolderService serves as INFORMATION_HOLDER_RESO
 API provider SampleAPIProvider1 
   offers PatternStereotypesDemoContract 
     at endpoint location "http://www.testdomain.io:80/path/subpath?p1=v1&p2=v2"
-    via protocol RESTful_HTTP   
+    via protocol HTTP   
   	with endpoint SLA // provider1Endpoint1SLA
       type QUANTITATIVE // optional now
     	objective performanceSLO1 "responseTimeUnder" 5 seconds // "in 80% of calls)"

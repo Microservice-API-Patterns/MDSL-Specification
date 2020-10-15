@@ -4,14 +4,14 @@ data type SampleDTO {ID, D} // partial, incomplete specification
 
 endpoint type SomeDemoContract
 exposes 
-  operation s 
+  operation sayHello 
     expecting payload D<string>  
     delivering payload SampleDTO
 
 API provider SampleAPIProvider1 
   offers SomeDemoContract 
     at endpoint location "http://www.testdomain.io:80/path/subpath"
-    via protocol RESTful_HTTP   
+    via protocol HTTP   
   	with endpoint SLA // provider1Endpoint1SLA
       type QUANTITATIVE // optional now
     	objective performanceSLO1 "responseTimeUnder" 5 seconds
@@ -29,14 +29,14 @@ API provider SampleAPIProvider1
 API provider sampleProvider
 offers SomeDemoContract
 at endpoint location "http://www.tbc.io:80/path/subpath"
-via protocol RESTful_HTTP // or other supported protocol
+via protocol HTTP // or other supported protocol
 under conditions "See http://www.tbc.io/terms-and-conditions.html"
 provider governance AGGRESSIVE_OBSOLESCENCE
 
 API client SampleAPIClient
 consumes SomeDemoContract
 from sampleProvider
-via protocol RESTful_HTTP
+via protocol HTTP
 
 API gateway SampleAPIGatweway
   offers SomeDemoContract
