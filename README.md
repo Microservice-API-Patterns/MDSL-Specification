@@ -75,12 +75,6 @@ If you want to contribute to MDSL, you have to clone this repo and generate the 
 
 The current version of MDSL is 4.2. See [change log](changelog.md) for an evolution history; see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases) for additional update information.
 
-<!-->
-A possible roadmap for language and tools is (subject to change at any time): 
-
-* Java binding validation and tool support
-* to be continued
--->
 
 ## Context Information: MAP and Xtext
 

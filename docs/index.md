@@ -8,7 +8,9 @@ copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ## TL;DR
 Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as Swagger, WSDL and <!-- gRPC --> Protocol Buffers. 
 
+<!-- 
 > If the URI of this page is `https://microservice-api-patterns.github.io/MDSL-Specification/index`, you are looking at the GitHub pages of the next version (technology preview)! Please refer to [https://microservice-api-patterns.github.io/MDSL-Specification/index](https://microservice-api-patterns.github.io/MDSL-Specification/index) for the current, publicly released open source version.
+-->
 
 Quick links: 
 
