@@ -1,6 +1,12 @@
 ## MDSL change log (and release notes)
 
-Also see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases).
+Also see GitHub [release notes](https://github.com/socadk/MDSL/releases).
+
+V4.2, October 2020
+
+* Java interface ("modulith") generator 
+* Examples and documentation for all generators
+* HTTP and Java bindings featured in examples and CSV tutorial 
 
 V4.1, September/October 2020
 
@@ -52,7 +58,7 @@ V2.0, May 5, 2020
 V1.2.0, March 17, 2020
 
 * Extended proposal for asynch. messaging support on binding level (provider, client, gateway -> sender, receiver, broker)
-* March 25: project [wiki](https://github.com/Microservice-API-Patterns/MDSL-Specification/wiki) updated (presentations, getting started page)
+* March 25: project [wiki](https://github.com/socadk/MDSL/wiki) updated (presentations, getting started page)
 
 V1.1.0, February 8, 2020
 
