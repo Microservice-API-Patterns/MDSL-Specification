@@ -7,8 +7,8 @@ Once you built the project with Gradle (call `./gradlew clean build` in the `dsl
 
 You can also download the CLI binaries here:
 
- * [mdsl-cli-4.1.0.tar](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases/download/v4.1.0/mdsl-cli-4.1.0.tar)
- * [mdsl-cli-4.1.0.zip](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases/download/v4.1.0/mdsl-cli-4.1.0.zip)
+ * [mdsl-cli-4.1.0.tar](https://github.com/socadk/MDSL/releases/download/v4.1.0/mdsl-cli-4.1.0.tar)
+ * [mdsl-cli-4.1.0.zip](https://github.com/socadk/MDSL/releases/download/v4.1.0/mdsl-cli-4.1.0.zip)
 
 1. Uncompress the ZIP or TAR file into the directory you want.
 2. Run the CLI by using the executable in the `bin` folder.

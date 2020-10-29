@@ -1,0 +1,27 @@
+API description ReferenceManagementServiceAPI
+
+data type PaperItemDTO { "title":D<string>, "authors":D<string>, "venue":D<string>, "paperItemId":PaperItemKey }
+data type PaperItemKey { "doi":D<string> }
+data type createPaperItemParameter { "who":D<string>, "what":D<string>, "where":D<string> }
+
+endpoint type PaperArchiveFacade
+  serves as INFORMATION_HOLDER_RESOURCE
+  exposes
+    operation createPaperItem
+      with responsibility STATE_CREATION_OPERATION
+      expecting
+        payload createPaperItemParameter
+      delivering
+        payload PaperItemDTO
+    operation lookupPapersFromAuthor
+      with responsibility RETRIEVAL_OPERATION
+      expecting
+        payload D<string>
+      delivering
+        payload PaperItemDTO*
+    operation convertToMarkdownForWebsite
+      expecting
+        payload PaperItemKey
+      delivering
+        payload D<string>
+      
