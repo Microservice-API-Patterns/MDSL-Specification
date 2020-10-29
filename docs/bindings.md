@@ -106,17 +106,18 @@ A binding is defined that maps operations to methods and representation elements
 ~~~
 API provider ProductManagementJavaServiceProvider
   offers ProductManagementService
-  at endpoint location "co.something.model.ProductActor" 
+  at endpoint location "n/a" 
   via protocol Java
-    // no need for bindings here, but still demoing it: 
-    binding
+    // no need for operation bindings here, but still demoing them: 
+    binding 
+     package "co.something.model.ProductActor"
      operation define to "define"
         element productDescription realized as int type
      operation updatePrice to "updatePrice"
         element money realized as boolean type
 ~~~
 
-In the current release, there is no tool yet that would work with this information. 
+In the current release, only the package name is used. 
 <!-- there is an unfinished Freemarker template; /* [Q]: "extends"? */ -->
 
 

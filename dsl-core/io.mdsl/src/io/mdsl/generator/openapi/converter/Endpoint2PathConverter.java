@@ -143,12 +143,16 @@ public class Endpoint2PathConverter {
 				}
 				AtomicParameter apn = spn.getAtomP();
 				if (apn == null) {
-					throw new MDSLException("Only atomic parameters can be used in reports.");
+					throw new MDSLException("Only atomic parameters can be used in error reports.");
 				}
 				String code = apn.getRat().getName();
 				if (code != null) {
-					Integer.parseInt(code);
-					// could catch and re-throw Exception
+					try {
+						Integer.parseInt(code);
+					} catch (NumberFormatException e) {
+						throw new MDSLException("The value '" + code + "' in the 'reporting error' part of the operation '" + mdslOperation.getName()
+								+ "' cannot be used as an HTTP error code. Please provide a number, such as '204'.");
+					}
 				} else {
 					throw new MDSLException("The reports should have a name, which should be a numeric status code (in this version).");
 				}

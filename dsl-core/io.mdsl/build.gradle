@@ -7,6 +7,7 @@ dependencies {
 	implementation "io.swagger.parser.v3:swagger-parser:${swaggerParserVersion}"
 	implementation "io.github.microservice-api-patterns:protobufgen:${protoBufGenVersion}"
 	implementation "commons-io:commons-io:${commonsIOVersion}"
+	implementation "commons-lang:commons-lang:${commonsLangVersion}"
 }
 configurations {
 	mwe2 {

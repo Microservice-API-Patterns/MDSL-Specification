@@ -151,7 +151,10 @@ public class MDSL2JolieConverter {
 	private void convertTreeNode(TreeNode treeNode, StringBuffer result) {
 		if (treeNode.getPn() != null && treeNode.getPn().getGenP() != null) {
 			// add unspecified message/type/parameter (see protogen)
-			result.append("unspecifiedType: void");
+			if (treeNode.getPn().getGenP().getName() != null && !"".equals(treeNode.getPn().getGenP().getName()))
+				result.append(new AnonymousFieldNameGenerator().getUniqueName(treeNode.getPn().getGenP().getName()) + ": void ");
+			else
+				result.append("unspecifiedType: void ");
 		} else if (treeNode.getPn() != null) {
 			StringBuffer nestedResult = new StringBuffer();
 			convertSingleParameterNode(treeNode.getPn(), nestedResult);

@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package ReferenceManagementServiceAPI;
+
+message PaperItemDTO {
+  string title = 1;
+  string authors = 2;
+  string venue = 3;
+  PaperItemKey paperItemId = 4;
+}
+
+message PaperItemKey {
+  string doi = 1;
+}
+
+message createPaperItemParameter {
+  string who = 1;
+  string what = 2;
+  string where = 3;
+}
+
+message lookupPapersFromAuthorRequestMessage {
+  string anonymous1 = 1;
+}
+
+message PaperItemDTOList {
+  repeated PaperItemDTO entries = 1;
+}
+
+message ConvertToMarkdownForWebsiteResponseMessage {
+  string anonymous2 = 1;
+}
+
+service PaperArchiveFacade {
+  rpc lookupPapersFromAuthor(lookupPapersFromAuthorRequestMessage) returns (PaperItemDTOList);
+  rpc createPaperItem(createPaperItemParameter) returns (PaperItemDTO);
+  rpc convertToMarkdownForWebsite(PaperItemKey) returns (ConvertToMarkdownForWebsiteResponseMessage);
+}
+

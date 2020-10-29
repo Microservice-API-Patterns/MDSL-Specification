@@ -27,6 +27,7 @@ public class EndpointContract {
 
 	private String name;
 	private List<Operation> operations;
+	private ProtocolBinding protocolBinding;
 
 	/**
 	 * Creates a new endpoint contract.
@@ -36,6 +37,7 @@ public class EndpointContract {
 	public EndpointContract(String name) {
 		this.name = name;
 		this.operations = Lists.newLinkedList();
+		this.protocolBinding = new UndefinedProtocol();
 	}
 
 	/**
@@ -63,6 +65,26 @@ public class EndpointContract {
 	 */
 	public void addOperation(Operation operation) {
 		this.operations.add(operation);
+	}
+
+	/**
+	 * Sets the protocol the represented endpoint is bound to.
+	 * 
+	 * @param protocolBinding the protocol binding for the represented endpoint
+	 */
+	public void setProtocolBinding(ProtocolBinding protocolBinding) {
+		if (protocolBinding != null)
+			this.protocolBinding = protocolBinding;
+	}
+
+	/**
+	 * Returns the protocol the represented endpoint is bound to, in case such a
+	 * binding exits. Null otherwise.
+	 * 
+	 * @return the protocol binding, if existing, null otherwise
+	 */
+	public ProtocolBinding getProtocolBinding() {
+		return protocolBinding;
 	}
 
 }

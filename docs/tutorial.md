@@ -1,13 +1,13 @@
 ---
 title: Microservice Domain Specific Language (MDSL) Tutorial
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2019. All rights reserved.
+copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ---
 
 MDSL Tutorial
 =============
 
-<!-- TODO (H) feature HTTP binding, error reporting, security policy, default value (V3/V4 enhancements) in this tutorial -->
+<!-- TODO (H) feature HTTP binding, security policy, default value (V3/V4 enhancements) in this tutorial -->
 
 ## Getting Started
 
@@ -18,8 +18,9 @@ Let us assume we want to create an [HTTP resource API](https://restful-api-desig
 Unlike Swagger/Open API Specification, Microservice Domain-Specific Language (MDSL) is a technology-neutral notation; see [MDSL home page](./index) for more positioning information. 
 
 ## Modeling Representation Elements 
+
 Let's start with data modeling. A spreadsheet may contain several sheet tabs (sometime also called worksheets). This multiplicity can be indicated by an asterisk `*`:
-<!-- say that we simplify on purpose here? -->
+<!-- we simplify on purpose here -->
 
 ~~~
 data type CSVSpreadsheet CSVSheetTab*
@@ -33,7 +34,7 @@ data type CSVSheetTab {"name": D<string>, "content": Rows*}
 
 `"name": D<string>`is a fully specified [*Atomic Parameter*](https://microservice-api-patterns.org/patterns/structure/representationElements/AtomicParameter) (scalar). `"content": Rows*` is the second parameter, referencing yet another data type definition. Each sheet may have an arbitrary number of rows (indicated by an asterisk `*`). 
 
-<!-- TODO talk about incomplete param spec., as "fully specified" is mentioned above? -->
+<!-- could talk about incomplete param specification, as "fully specified" is mentioned above -->
 
 Each row is identified by a `line` number and features data in at least one `column` (which is indicated by a plus `+`):
  
@@ -48,7 +49,7 @@ This atomic parameter is not characterized as a plain value `D` as the name in `
 
 Columns are often identified by characters `position` and, optionally, a more expressive text `header` (optionality is indicated by the `?` modifier in MDSL):
 
-<!-- TODO position and header now appearing in all rows (at runtime); this modeling cannot guarantee that all rows use same column structure (just an example, no need to match CSV 100%) -->
+<!-- note: position and header now appear in all rows (at runtime); this modeling cannot guarantee that all rows use same column structure (just an example, no need to match CSV 100%) -->
 
 ~~~
 data type Column {"position": ID<string>, 
@@ -70,6 +71,7 @@ data type Cell { "text":D<string>
 
 
 ## Modeling Operations and Endpoints <!-- Service Contract -->
+
 We are now ready to send instances of the complex (nested, repetitive) `CSVSpreadsheet` over the wire; it can serve as a [Data Transfer Object (DTO)](https://martinfowler.com/eaaCatalog/dataTransferObject.html).[^3] We need a service contract to do that.
 
 [^3]: In our integration context, Data Transfer Representation (DTR) is a better name, actually.
@@ -80,7 +82,7 @@ Operation specifications in MDSL are quite talkative (unlike the rather compact 
   operation downloadSpreadsheet
     expecting payload ID
     delivering payload CSVSpreadsheet
-      reporting error "SheetNotFound" 
+      reporting error "204":D<int> // numeric error code only (OpenAPI generator limitation)
 ~~~
 
 The request and response messages of `downloadSpreadsheet` are defined via their data type structures. Here, the expected request message contains a simple `ID`(entifier) that is not specified any further at this point; the delivered response is the `CSVSpreadsheet` DTO from above. 
@@ -131,7 +133,7 @@ exposes
   operation downloadSpreadsheet
     expecting payload ID
     delivering payload CSVSpreadsheet
-      reporting error "SheetNotFound" 
+      reporting error "204" // No Content, aka "SheetNotFound" 
 
 API provider SpreadSheetExchangeAPIProvider
 offers SpreadSheetExchangeEndpoint
@@ -140,11 +142,34 @@ API client SpreadSheetExchangeAPIClient
 consumes SpreadSheetExchangeEndpoint
 ~~~
 
-We are done modeling and now would be ready to implement the contract and deploy a provider supporting it. An intermediate step probably would be to create a platform- and technology-specific contract such as a OpenAPI/Swagger specification; see [MDSL tools](./tools).
-A protocol [binding](./bindings) might be needed for that step. <!-- TODO show it here -->
+<!-- You find the complete sources (incl. generated files) of this tutorial [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/TODO) -->
+
+We are done modeling and now would be ready to implement the contract and deploy a provider supporting it. 
+
+## Outlook: Protocol Bindings
+
+An intermediate step probably would be to create a platform- and technology-specific contract such as a OpenAPI/Swagger specification, gRPC Protocol Buffers, GraphQL schema language, Jolie ports and interfaces or plain Java interfaces; see [MDSL tools](./tools).
+
+A protocol [binding](./bindings) might be needed for that step. Here is an example of an HTTP binding (*note:* technology preview, still work in progress):
+
+~~~
+API provider SpreadSheetExchangeAPIProvider
+offers SpreadSheetExchangeEndpoint
+at endpoint location "https://some.domain.name/relativePath"
+via protocol HTTP
+  binding 
+    operation uploadSpreadsheet to PUT
+    operation downloadSpreadsheet to GET  
+
+API client SpreadSheetExchangeAPIClient
+consumes SpreadSheetExchangeEndpoint
+~~~
+
+The binding concepts are explained on [this page](./bindings).
+
 
 ## Outlook: MAP Decorators
-MDSL is aware of the [Microservice API Patterns](https://microservice-api-patterns.org/); these patterns can be used to annotate endpoints, operations, and representation elements. This makes the machine-readable specification more expressive (in comparison to formated comments or free-form texts accompanying the formal specification):
+MDSL is aware of the [Microservice API Patterns](https://microservice-api-patterns.org/); these patterns can be used to annotate endpoints, operations, and representation elements. This makes the machine-readable specification more expressive (in comparison to formatted comments or free-form texts accompanying the formal specification):
 
 ~~~
 API description SpreadSheetExchangeAPI
@@ -162,9 +187,9 @@ data type Cell {"formula":D<string>
                | "longValue": D<long> 
                | "text": D<string>}
 
-endpoint type SpreadSheetExchangeEndpoint serves as TRANSFER_RESOURCE
+endpoint type SpreadSheetExchangeEndpoint serves as DATA_TRANSFER_RESOURCE
 exposes 
-  operation uploadSpreadheet with responsibility NOTIFICATION_OPERATION
+  operation uploadSpreadsheet with responsibility STATE_CREATION_OPERATION
     expecting payload CSVSpreadsheet
     delivering payload {"successFlag":D<bool>, ID}
     

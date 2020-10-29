@@ -33,7 +33,10 @@ public class GenModelJSONExporterTest extends AbstractMDSLInputIntegrationTest {
 				"  \"dataTypes\" : [ ]," + System.lineSeparator() + 
 				"  \"endpoints\" : [ {" + System.lineSeparator() + 
 				"    \"name\" : \"TestEndpoint\"," + System.lineSeparator() + 
-				"    \"operations\" : [ ]" + System.lineSeparator() + 
+				"    \"operations\" : [ ]," + System.lineSeparator() +
+				"    \"protocolBinding\" : {" + System.lineSeparator() +
+				"      \"protocolName\" : \"Undefined\"" + System.lineSeparator() +
+				"    }" + System.lineSeparator() +
 				"  } ]," + System.lineSeparator() + 
 				"  \"providers\" : [ ]," + System.lineSeparator() + 
 				"  \"clients\" : [ ]," + System.lineSeparator() + 

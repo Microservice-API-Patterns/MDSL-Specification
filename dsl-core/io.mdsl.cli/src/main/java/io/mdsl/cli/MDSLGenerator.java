@@ -20,6 +20,7 @@ import org.eclipse.xtext.generator.IGenerator2;
 import io.mdsl.generator.GenModelJSONExporter;
 import io.mdsl.generator.GenModelYAMLExporter;
 import io.mdsl.generator.GraphQLGenerator;
+import io.mdsl.generator.JavaGenerator;
 import io.mdsl.generator.JolieGenerator;
 import io.mdsl.generator.OpenAPIGenerator;
 import io.mdsl.generator.ProtocolBuffersGenerator;
@@ -33,8 +34,8 @@ import io.mdsl.generator.TextFileGenerator;
 public enum MDSLGenerator {
 
 	OPEN_API_SPEC("oas", "Open API Specification"), JOLIE("jolie", "Jolie"), ARBITRATY_TEXT_BY_TEMPLATE("text", "arbitraty text file by using a Freemarker template"),
-	PROTOCOL_BUFFERS("proto", "Protocol Buffers"), GRAPHQL("graphql", "GraphQL Schemas"), GEN_MODEL_JSON_EXPORT("gen-model-json", "Generator model as JSON (exporter)"),
-	GEN_MODEL_YAML_EXPORT("gen-model-yaml", "Generator model as YAML (exporter)");
+	PROTOCOL_BUFFERS("proto", "Protocol Buffers"), GRAPHQL("graphql", "GraphQL Schemas"), JAVA("java", "Java Modulith"),
+	GEN_MODEL_JSON_EXPORT("gen-model-json", "Generator model as JSON (exporter)"), GEN_MODEL_YAML_EXPORT("gen-model-yaml", "Generator model as YAML (exporter)");
 
 	private String name;
 	private String description;
@@ -81,6 +82,8 @@ public enum MDSLGenerator {
 			return new ProtocolBuffersGenerator();
 		if (this == GRAPHQL)
 			return new GraphQLGenerator();
+		if (this == JAVA)
+			return new JavaGenerator();
 		if (this == GEN_MODEL_JSON_EXPORT)
 			return new GenModelJSONExporter();
 		if (this == GEN_MODEL_YAML_EXPORT)

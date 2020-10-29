@@ -21,61 +21,57 @@ import io.mdsl.apiDescription.ServiceSpecification;
 import io.mdsl.apiDescription.TechnologyBinding;
 
 /**
- * This class contains custom validation rules. 
+ * This class contains custom validation rules.
  *
- * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
+ * See
+ * https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 public class BasicBindingValidator extends AbstractMDSLValidator {
+
+	private static final String JAVA_BINDING_PACKAGE_REGEX = "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)*";
 
 	@Override
 	public void register(EValidatorRegistrar registrar) {
 		// not needed for classes used as ComposedCheck
 	}
-	
+
 	@Check
 	public void bindingExistenceValidator(final ServiceSpecification specRoot) {
-		info("MDSL API Linter: only checking very few binding-related rules in " + specRoot.getName() + " in current version", specRoot, ApiDescriptionPackage.Literals.SERVICE_SPECIFICATION__NAME);
-		
+		info("MDSL API Linter: only checking very few binding-related rules in " + specRoot.getName() + " in current version", specRoot,
+				ApiDescriptionPackage.Literals.SERVICE_SPECIFICATION__NAME);
+
 		// could/should check:
 		//
 		// * HTTP verbs unique in one binding; location/(sub-)resource URIs make sense
-		// * Java location meets package/class name conventions 
+		// * Java location meets package/class name conventions
 		// * GRPC: tbd
-		// * listed operations actually exist 
+		// * listed operations actually exist
 		// * listed elements actually exist in top-level APL/PT
 		// * tbc
-		
-		List<Provider> providers = specRoot
-				.getProviders()
-				.stream()
-				.filter(p -> p instanceof Provider)
-				.map(p -> (Provider)p)
-				.collect(Collectors.toList());
-		
+
+		List<Provider> providers = specRoot.getProviders().stream().filter(p -> p instanceof Provider).map(p -> (Provider) p).collect(Collectors.toList());
+
 		for (Provider provider : providers) {
 			EList<EndpointList> endpointListInProvider = provider.getEpl();
 			// TODO check grammar: 2x list?
-			for(EndpointList endpointList: endpointListInProvider) {
+			for (EndpointList endpointList : endpointListInProvider) {
 				EList<EndpointInstance> endpoints = endpointList.getEndpoints();
-				for(EndpointInstance endpoint: endpoints) {
+				for (EndpointInstance endpoint : endpoints) {
 					EList<TechnologyBinding> techBindings = endpoint.getPb();
-					for(int i=0;i<techBindings.size();i++) {
+					for (int i = 0; i < techBindings.size(); i++) {
 						TechnologyBinding techBinding = techBindings.get(i);
 						ProtocolBinding protBinding = techBinding.getProtBinding();
-						if(protBinding.getHttp()!=null) {
+						if (protBinding.getHttp() != null) {
 							checkHTTPBinding(specRoot, provider.getName(), endpoint.getName(), protBinding.getHttp());
-						}
-						else if (protBinding.getJava()!=null) {
+						} else if (protBinding.getJava() != null) {
 							checkJavaBinding(specRoot, provider.getName(), endpoint.getName(), protBinding.getJava());
-						}
-						else if (protBinding.getGrpc()!=null) {
+						} else if (protBinding.getGrpc() != null) {
 							info("Specification includes a provider endpoint binding of type GRPC", protBinding, ApiDescriptionPackage.Literals.PROTOCOL_BINDING__GRPC);
-						}
-						else if (protBinding.getOther()!=null) {
+						} else if (protBinding.getOther() != null) {
 							// TODO get value of "other" (utility method)
-							info("Specification includes a provider endpoint binding of other type " /* + protBinding.getOther().toString() */, protBinding, ApiDescriptionPackage.Literals.PROTOCOL_BINDING__OTHER);
-						}
-						else 
+							info("Specification includes a provider endpoint binding of other type " /* + protBinding.getOther().toString() */, protBinding,
+									ApiDescriptionPackage.Literals.PROTOCOL_BINDING__OTHER);
+						} else
 							throw new IllegalArgumentException("Unknown binding type."); // can't get here
 					}
 				}
@@ -84,13 +80,21 @@ public class BasicBindingValidator extends AbstractMDSLValidator {
 	}
 
 	private void checkJavaBinding(ServiceSpecification specRoot, String pName, String address, JavaBinding java) {
-		info("Specification " + specRoot.getName() + " includes a provider " + pName + " with endpoint binding of type Java, location is " + address, java, ApiDescriptionPackage.Literals.JAVA_BINDING__JAVA);
-		// TODO check that operations and elements are actually defined in referenced endpoint type 
+		info("Specification " + specRoot.getName() + " includes a provider " + pName + " with endpoint binding of type Java, location is " + address, java,
+				ApiDescriptionPackage.Literals.JAVA_BINDING__JAVA);
+		if (java.getPackage() != null && !java.getPackage().matches(JAVA_BINDING_PACKAGE_REGEX))
+			error("The string '" + java.getPackage()
+					+ "' does not represent a proper Java package name. Please provide a correctly formatted Java package name (like 'io.mdsl.validator').", java,
+					ApiDescriptionPackage.Literals.JAVA_BINDING__PACKAGE);
+		// TODO check that operations and elements are actually defined in referenced
+		// endpoint type
 	}
 
 	private void checkHTTPBinding(ServiceSpecification specRoot, String pName, String address, HTTPBinding http) {
-		info("Specification " + specRoot.getName() + " includes a provider " + pName + " with endpoint binding of type HTTP, location is " + address, http, ApiDescriptionPackage.Literals.HTTP_BINDING__HTTP);
-		// TODO check that operations and elements are actually defined in referenced endpoint type 
-		// TODO check HTTP verbs; could also check MIME types etc. 
+		info("Specification " + specRoot.getName() + " includes a provider " + pName + " with endpoint binding of type HTTP, location is " + address, http,
+				ApiDescriptionPackage.Literals.HTTP_BINDING__HTTP);
+		// TODO check that operations and elements are actually defined in referenced
+		// endpoint type
+		// TODO check HTTP verbs; could also check MIME types etc.
 	}
 }

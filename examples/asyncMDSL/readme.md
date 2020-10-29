@@ -33,8 +33,8 @@ This command will run the `async-api-generator` inside a Docker container and pu
 ## Known limitations
 
 * AsyncMDSL provides a syntax to handle multiple brokers with different Channels to declare. At present, the resulting AsyncAPI specification is not written to multiple files. The generated AsyncAPI specification therefore acts as if all brokers support all interfaces.
-* At present, the AsyncMDSL generator cannot handle all Atomic Parameter Lists that contain partially specified parameters with certain cardinalities such as `(ID*,D*)` (a null pointer exception is raised and displayed in the Error Log view of Eclipse); as a workaround, you can either use flat Parameter Trees instead `{ID*,D*}`, or try to provide names for all list elements: `("identifier":ID*,"data":D*)`. <!-- ("id":ID,"d":D*) does not work either, same for data type SharedContext ("apiKey":ID<int>?, "sessionId":D<int>? "otherQoSPropertiesThatShouldNotGoToProtocolHeader":D<string>*) -->
-* See thesis report for further information.
+* Using the name `Null` for data types will result in an invalid AsyncAPI document.
+* See [thesis report](https://giacomodeliberali.com/thesis/UNIPI-AsyncMDSL-MasterThesis-2020-GiacomoDeLiberali.pdf) for further information.
 
 
 ## Generation demo

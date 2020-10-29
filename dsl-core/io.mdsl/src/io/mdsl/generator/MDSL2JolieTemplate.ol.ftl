@@ -1,5 +1,5 @@
 // API name: ${serviceSpecification.name}
-// API description (visibility, direction) TODO
+<#-- API description (visibility, direction) TODO -->
 
 <#list jolieModel.types as typeName, typeDef>
 type ${typeName} {
@@ -8,7 +8,7 @@ type ${typeName} {
 
 </#list>
 
-// TODO make sure that operation names are unique (across endpoints?)
+<#-- TODO make sure that operation names are unique (across endpoints?) -->
 <#list jolieModel.operations as operationName, operationModel>
 // operation responsibility: ${operationModel.reponsibilityPattern}
 type ${operationModel.name}RequestDTO {
@@ -22,32 +22,33 @@ type ${operationModel.name}ResponseDTO {
 </#list>
 
 type SOAPFaultMessage {
-    code: int
-    text: string
-    actor: string
-    details: string
+	code: int
+	text: string
+	actor: string
+	details: string
 }
 
-// TODO add REST annotations for Jester, see https://github.com/jolie/jester (URI template might need other MDSL input!)
+<#-- TODO add REST annotations for Jester, see https://github.com/jolie/jester (URI template might need other MDSL input!) -->
 
 <#list serviceSpecification.contracts as endpoint>
 // interface/endpoint role: ${endpoint.primaryRole!"undefined"}
 interface ${endpoint.name} {
-// TODO also support OneWay (and other MEPs?):
+<#--  TODO also support OneWay (and other MEPs?): -->
 RequestResponse:
 <#list endpoint.ops as operation>
-    // operation responsibility: ${operation.responsibility!"undefined"} TODO FM function needed
-    ${operation.name}( ${operation.name}RequestDTO )( ${operation.name}ResponseDTO ), // TODO no comma for last op
-    // TODO port error reporting from Python to Java: {% if operation["errors"] %} throws {{ operation["errors"][0] }}( SOAPFaultMessage ) {% endif %} 
+    <#-- operation responsibility: ${operation.responsibility!"undefined"} TODO FM function needed -->
+	${operation.name}( ${operation.name}RequestDTO )( ${operation.name}ResponseDTO ),
+    <#-- TODO no comma for last op -->
+    <#-- TODO port error reporting from Python to Java: {% if operation["errors"] %} throws {{ operation["errors"][0] }}( SOAPFaultMessage ) {% endif %} --> 
 </#list>
 }
 </#list>
 
 <#list serviceSpecification.contracts as endpoint>
 inputPort ${endpoint.name}Port {
-location: "socket://localhost:8080" // this should come from API Provider Info in MDSL; "socket" or "http"?
-protocol: soap
-interfaces: ${endpoint.name}
+	location: "socket://localhost:8080" <#-- this should come from API Provider Info in MDSL; "socket" or "http"? -->
+	protocol: soap
+	interfaces: ${endpoint.name}
 }
 
 // sample conversion to WSDL/SOAP:
@@ -58,5 +59,5 @@ interfaces: ${endpoint.name}
 
 main
 {
-  nullProcess
+	nullProcess
 }

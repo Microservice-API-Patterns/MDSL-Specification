@@ -2,30 +2,30 @@ package io.mdsl.generator.asyncapi
 
 import com.google.common.base.CaseFormat
 import com.google.inject.Inject
+import io.mdsl.apiDescription.BindingParameter
+import io.mdsl.apiDescription.BindingParams
+import io.mdsl.apiDescription.BindingValue
 import io.mdsl.apiDescription.ChannelContract
 import io.mdsl.apiDescription.ChannelPathWithParams
+import io.mdsl.apiDescription.DataContract
+import io.mdsl.apiDescription.ElementStructure
 import io.mdsl.apiDescription.Message
 import io.mdsl.apiDescription.MessageBroker
 import io.mdsl.apiDescription.OneWayChannel
+import io.mdsl.apiDescription.ProtocolBinding
 import io.mdsl.apiDescription.RequestReplyChannel
+import io.mdsl.apiDescription.ServiceSpecification
+import io.mdsl.apiDescription.WhereClauses
 import io.mdsl.generator.AbstractMDSLGenerator
+import io.mdsl.generator.asyncapi.helpers.AsyncApiGeneratorHelper
 import java.util.ArrayList
+import java.util.List
+import java.util.stream.Collectors
 import org.apache.commons.lang3.StringUtils
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
-import java.util.List
-import io.mdsl.apiDescription.WhereClauses
-import io.mdsl.apiDescription.BindingParameter
-import io.mdsl.apiDescription.BindingValue
-import io.mdsl.apiDescription.BindingParams
-import io.mdsl.generator.asyncapi.helpers.AsyncApiGeneratorHelper
-import io.mdsl.apiDescription.ServiceSpecification
-import io.mdsl.apiDescription.ElementStructure
-import io.mdsl.apiDescription.TechnologyBinding
-import io.mdsl.apiDescription.DataContract
-import io.mdsl.apiDescription.ProtocolBinding
 
 /*
 	Test generation using Docker running the following command
@@ -50,8 +50,16 @@ class AsyncApiGenerator extends AbstractMDSLGenerator {
 	@Inject AsyncApiDataTypeGenerator dataTypeGenerator;
 
 	override protected generateFromServiceSpecification(ServiceSpecification mdslSpecification, IFileSystemAccess2 fsa, URI inputFileURI) {
-		val yamlWithNoTabs = mdslSpecification.compile.toString().replaceAll("\t", "  ");
 		val fileName = inputFileURI.trimFileExtension().lastSegment() + "-asyncapi.yaml";
+	
+		if(mdslSpecification.contracts.filter(ChannelContract).length == 0){
+			// no messaging contracts found
+			val fileContent = inputFileURI.lastSegment() + " does not contain any ChannelContract. AsyncAPI generation is not possible."
+			fsa.generateFile(fileName, fileContent);
+			return;
+		}
+		
+		val yamlWithNoTabs = mdslSpecification.compile.toString().replaceAll("\t", "  ");
 		fsa.generateFile(fileName, yamlWithNoTabs);
 	}
 

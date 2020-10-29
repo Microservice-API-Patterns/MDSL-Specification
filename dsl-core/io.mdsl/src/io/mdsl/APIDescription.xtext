@@ -21,7 +21,7 @@ grammar io.mdsl.APIDescription with org.eclipse.xtext.common.Terminals
 title: Microservices Domain Specific Language (MDSL) Grammar
 author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2018-2020. All rights reserved.
-version: "4.1"
+version: "4.2"
 ---
 */ 
 
@@ -417,7 +417,7 @@ enum OASSecurity: BASIC_AUTHENTICATION | API_KEY | OAUTH_FLOW | OTHER_MEANS | TB
 
 
 JavaBinding:
-	java='Java' (binding='binding' opsBinding+=JavaOperationBinding+)?
+	java='Java' (binding='binding' ('package' package=STRING)? opsBinding+=JavaOperationBinding+)?
 ;
 
 JavaOperationBinding:

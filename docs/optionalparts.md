@@ -110,7 +110,7 @@ enum ImplementationTechnology: PlainJava | SpringMVC | STRING // more to be adde
 ;	
 ~~~
 
-<!-- removed | 'with' 'binding' downstreamBinding=[Provider])? // reference to Java protocol binding (optional) TODO 4.1 adopt example -->
+<!-- removed | 'with' 'binding' downstreamBinding=[Provider])? // reference to Java protocol binding (optional) TODO 4.1, 4.2 adopt example -->
 
 An example of an instance of such provider binding is:
 

@@ -17,6 +17,7 @@ package io.mdsl.generator.model.converter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
@@ -28,6 +29,7 @@ import io.mdsl.generator.model.Client;
 import io.mdsl.generator.model.DataType;
 import io.mdsl.generator.model.DataTypeField;
 import io.mdsl.generator.model.EndpointContract;
+import io.mdsl.generator.model.JavaBinding;
 import io.mdsl.generator.model.MDSLGeneratorModel;
 import io.mdsl.generator.model.Operation;
 import io.mdsl.generator.model.OperationParameter;
@@ -40,8 +42,7 @@ public class MDSL2GeneratorModelConverterTest extends AbstractMDSLInputIntegrati
 	@Test
 	public void canConvertSingleParameterNodes() throws IOException {
 		// given
-		ServiceSpecification mdsl = new MDSLResource(getTestResource("single-parameter-nodes-model.mdsl"))
-				.getServiceSpecification();
+		ServiceSpecification mdsl = new MDSLResource(getTestResource("single-parameter-nodes-model.mdsl")).getServiceSpecification();
 		MDSL2GeneratorModelConverter converter = new MDSL2GeneratorModelConverter(mdsl);
 
 		// when
@@ -50,12 +51,9 @@ public class MDSL2GeneratorModelConverterTest extends AbstractMDSLInputIntegrati
 		// then
 		assertEquals("TestAPI", genModel.getApiName());
 		assertEquals(3, genModel.getDataTypes().size());
-		DataType type1 = genModel.getDataTypes().stream()
-				.filter(d -> d.getName().equals("TestSingleParameterNodeType1")).findFirst().get();
-		DataType type2 = genModel.getDataTypes().stream()
-				.filter(d -> d.getName().equals("TestSingleParameterNodeType2")).findFirst().get();
-		DataType type3 = genModel.getDataTypes().stream()
-				.filter(d -> d.getName().equals("TestSingleParameterNodeType3")).findFirst().get();
+		DataType type1 = genModel.getDataTypes().stream().filter(d -> d.getName().equals("TestSingleParameterNodeType1")).findFirst().get();
+		DataType type2 = genModel.getDataTypes().stream().filter(d -> d.getName().equals("TestSingleParameterNodeType2")).findFirst().get();
+		DataType type3 = genModel.getDataTypes().stream().filter(d -> d.getName().equals("TestSingleParameterNodeType3")).findFirst().get();
 		assertNotNull(type1);
 		assertNotNull(type2);
 		assertNotNull(type3);
@@ -74,8 +72,7 @@ public class MDSL2GeneratorModelConverterTest extends AbstractMDSLInputIntegrati
 	@Test
 	public void canConvertParameterLists() throws IOException {
 		// given
-		ServiceSpecification mdsl = new MDSLResource(getTestResource("parameter-list-model.mdsl"))
-				.getServiceSpecification();
+		ServiceSpecification mdsl = new MDSLResource(getTestResource("parameter-list-model.mdsl")).getServiceSpecification();
 		MDSL2GeneratorModelConverter converter = new MDSL2GeneratorModelConverter(mdsl);
 
 		// when
@@ -84,8 +81,7 @@ public class MDSL2GeneratorModelConverterTest extends AbstractMDSLInputIntegrati
 		// then
 		assertEquals("TestAPI", genModel.getApiName());
 		assertEquals(1, genModel.getDataTypes().size());
-		DataType listType = genModel.getDataTypes().stream().filter(d -> d.getName().equals("TestParameterList"))
-				.findFirst().get();
+		DataType listType = genModel.getDataTypes().stream().filter(d -> d.getName().equals("TestParameterList")).findFirst().get();
 		assertNotNull(listType);
 		assertEquals(2, listType.getFields().size());
 		DataTypeField field1 = listType.getFields().get(0);
@@ -101,8 +97,7 @@ public class MDSL2GeneratorModelConverterTest extends AbstractMDSLInputIntegrati
 	@Test
 	public void canConvertParameterTrees() throws IOException {
 		// given
-		ServiceSpecification mdsl = new MDSLResource(getTestResource("parameter-tree-model.mdsl"))
-				.getServiceSpecification();
+		ServiceSpecification mdsl = new MDSLResource(getTestResource("parameter-tree-model.mdsl")).getServiceSpecification();
 		MDSL2GeneratorModelConverter converter = new MDSL2GeneratorModelConverter(mdsl);
 
 		// when
@@ -111,13 +106,10 @@ public class MDSL2GeneratorModelConverterTest extends AbstractMDSLInputIntegrati
 		// then
 		assertEquals("TestAPI", genModel.getApiName());
 		assertEquals(4, genModel.getDataTypes().size());
-		DataType refType = genModel.getDataTypes().stream().filter(d -> d.getName().equals("RefType")).findFirst()
-				.get();
-		DataType treeType = genModel.getDataTypes().stream().filter(d -> d.getName().equals("TestType")).findFirst()
-				.get();
+		DataType refType = genModel.getDataTypes().stream().filter(d -> d.getName().equals("RefType")).findFirst().get();
+		DataType treeType = genModel.getDataTypes().stream().filter(d -> d.getName().equals("TestType")).findFirst().get();
 		DataType listType = genModel.getDataTypes().stream().filter(d -> d.getName().equals("List")).findFirst().get();
-		DataType subTreeType = genModel.getDataTypes().stream().filter(d -> d.getName().equals("SubTree")).findFirst()
-				.get();
+		DataType subTreeType = genModel.getDataTypes().stream().filter(d -> d.getName().equals("SubTree")).findFirst().get();
 		assertNotNull(refType);
 		assertNotNull(treeType);
 		assertNotNull(listType);
@@ -160,8 +152,7 @@ public class MDSL2GeneratorModelConverterTest extends AbstractMDSLInputIntegrati
 	@Test
 	public void canConvertParameterForest() throws IOException {
 		// given
-		ServiceSpecification mdsl = new MDSLResource(getTestResource("parameter-forest-model.mdsl"))
-				.getServiceSpecification();
+		ServiceSpecification mdsl = new MDSLResource(getTestResource("parameter-forest-model.mdsl")).getServiceSpecification();
 		MDSL2GeneratorModelConverter converter = new MDSL2GeneratorModelConverter(mdsl);
 
 		// when
@@ -170,14 +161,10 @@ public class MDSL2GeneratorModelConverterTest extends AbstractMDSLInputIntegrati
 		// then
 		assertEquals("TestAPI", genModel.getApiName());
 		assertEquals(4, genModel.getDataTypes().size());
-		DataType refType = genModel.getDataTypes().stream().filter(d -> d.getName().equals("RefType")).findFirst()
-				.get();
-		DataType forestType = genModel.getDataTypes().stream().filter(d -> d.getName().equals("TestType")).findFirst()
-				.get();
-		DataType tree1Type = genModel.getDataTypes().stream().filter(d -> d.getName().equals("Tree1")).findFirst()
-				.get();
-		DataType tree2Type = genModel.getDataTypes().stream().filter(d -> d.getName().equals("Tree2")).findFirst()
-				.get();
+		DataType refType = genModel.getDataTypes().stream().filter(d -> d.getName().equals("RefType")).findFirst().get();
+		DataType forestType = genModel.getDataTypes().stream().filter(d -> d.getName().equals("TestType")).findFirst().get();
+		DataType tree1Type = genModel.getDataTypes().stream().filter(d -> d.getName().equals("Tree1")).findFirst().get();
+		DataType tree2Type = genModel.getDataTypes().stream().filter(d -> d.getName().equals("Tree2")).findFirst().get();
 		assertNotNull(refType);
 		assertNotNull(forestType);
 		assertNotNull(tree1Type);
@@ -203,8 +190,7 @@ public class MDSL2GeneratorModelConverterTest extends AbstractMDSLInputIntegrati
 	@Test
 	public void canConvertEndpoint() throws IOException {
 		// given
-		ServiceSpecification mdsl = new MDSLResource(getTestResource("endpoint-model-1.mdsl"))
-				.getServiceSpecification();
+		ServiceSpecification mdsl = new MDSLResource(getTestResource("endpoint-model-1.mdsl")).getServiceSpecification();
 		MDSL2GeneratorModelConverter converter = new MDSL2GeneratorModelConverter(mdsl);
 
 		// when
@@ -230,8 +216,7 @@ public class MDSL2GeneratorModelConverterTest extends AbstractMDSLInputIntegrati
 	@Test
 	public void canConvertProviders() throws IOException {
 		// given
-		ServiceSpecification mdsl = new MDSLResource(getTestResource("provider-and-client-model.mdsl"))
-				.getServiceSpecification();
+		ServiceSpecification mdsl = new MDSLResource(getTestResource("provider-and-client-model.mdsl")).getServiceSpecification();
 		MDSL2GeneratorModelConverter converter = new MDSL2GeneratorModelConverter(mdsl);
 
 		// when
@@ -255,8 +240,7 @@ public class MDSL2GeneratorModelConverterTest extends AbstractMDSLInputIntegrati
 	@Test
 	public void canConvertProviderImplementation() throws IOException {
 		// given
-		ServiceSpecification mdsl = new MDSLResource(getTestResource("provider-implementation-model.mdsl"))
-				.getServiceSpecification();
+		ServiceSpecification mdsl = new MDSLResource(getTestResource("provider-implementation-model.mdsl")).getServiceSpecification();
 		MDSL2GeneratorModelConverter converter = new MDSL2GeneratorModelConverter(mdsl);
 
 		// when
@@ -269,6 +253,44 @@ public class MDSL2GeneratorModelConverterTest extends AbstractMDSLInputIntegrati
 		assertEquals("TestProvider", providerImpl.getProviderName());
 		assertEquals("PlainJava", providerImpl.getImplTechnology());
 		assertEquals("TestImplClass", providerImpl.getClazz());
+	}
+
+	@Test
+	public void canAddJavaProtocolBindingIfAvailable() throws IOException {
+		// given
+		ServiceSpecification mdsl = new MDSLResource(getTestResource("java-binding-model-1.mdsl")).getServiceSpecification();
+		MDSL2GeneratorModelConverter converter = new MDSL2GeneratorModelConverter(mdsl);
+
+		// when
+		MDSLGeneratorModel genModel = converter.convert();
+
+		// then
+		assertEquals(1, genModel.getEndpoints().size());
+		EndpointContract endpoint = genModel.getEndpoints().get(0);
+		assertNotNull(endpoint);
+		assertNotNull(endpoint.getProtocolBinding());
+		assertEquals("Java", endpoint.getProtocolBinding().getProtocolName());
+	}
+
+	@Test
+	public void canAddJavaProtocolBindingWithPackageAndOperationMappingIfAvailable() throws IOException {
+		// given
+		ServiceSpecification mdsl = new MDSLResource(getTestResource("java-binding-model-2.mdsl")).getServiceSpecification();
+		MDSL2GeneratorModelConverter converter = new MDSL2GeneratorModelConverter(mdsl);
+
+		// when
+		MDSLGeneratorModel genModel = converter.convert();
+
+		// then
+		assertEquals(1, genModel.getEndpoints().size());
+		EndpointContract endpoint = genModel.getEndpoints().get(0);
+		assertNotNull(endpoint);
+		assertNotNull(endpoint.getProtocolBinding());
+		assertEquals("Java", endpoint.getProtocolBinding().getProtocolName());
+		assertTrue(endpoint.getProtocolBinding() instanceof JavaBinding);
+		JavaBinding javaBinding = (JavaBinding) endpoint.getProtocolBinding();
+		assertEquals("io.mdsl.test", javaBinding.getPackage());
+		assertEquals("testOperationMethod", javaBinding.getJavaMethodName4Operation("TestOperation"));
 	}
 
 	@Override

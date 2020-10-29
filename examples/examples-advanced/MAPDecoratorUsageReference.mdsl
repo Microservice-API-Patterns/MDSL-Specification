@@ -15,8 +15,6 @@ usage context SOLUTION_INTERNAL_API for BACKEND_INTEGRATION
 
 // data type Entity1 (ID,D) // how about ", ..." as a placeholder for iteration/recursion, tbd TODO
 
-// TODO (v4.1) AsyncAPI generator has problems with some APLs (partially specified ones, with certain cardinalities), can use PTs instead
-
 // feature struct patterns as data types so that newbies do not get overwhelmed by big picture operations
 data type SampleAtomicParameter "sap":D<string>
 data type SampleAtomicParameterList ("ap1":D<int>,"ap2":D<string>)

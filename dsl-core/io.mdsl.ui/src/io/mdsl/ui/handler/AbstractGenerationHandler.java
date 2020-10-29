@@ -79,7 +79,9 @@ public abstract class AbstractGenerationHandler extends AbstractHandler implemen
 				String message = e.getMessage() != null && !"".equals(e.getMessage()) ? e.getMessage() : e.getClass().getName() + " occurred in " + this.getClass().getName();
 				Status status = new Status(IStatus.ERROR, MdslActivator.PLUGIN_ID, message, e);
 				StatusManager.getManager().handle(status);
-				ErrorDialog.openError(HandlerUtil.getActiveShell(event), "Error", "Exception occured during execution of command!", createMultiStatus(e.getLocalizedMessage(), e));
+				ErrorDialog.openError(HandlerUtil.getActiveShell(event), "Error",
+						"An unexpected exception occured during the execution of this command! Please ensure that your MDSL model has no compiler errors before you call generators.",
+						createMultiStatus(e.getLocalizedMessage(), e));
 			}
 		}
 		return null;
@@ -99,9 +101,11 @@ public abstract class AbstractGenerationHandler extends AbstractHandler implemen
 		String message = e.getMessage() != null && !"".equals(e.getMessage()) ? e.getMessage() : e.getClass().getName() + " occurred in " + this.getClass().getName();
 		Status status = new Status(IStatus.ERROR, MdslActivator.PLUGIN_ID, message, e);
 		StatusManager.getManager().handle(status);
-		ErrorDialog.openError(HandlerUtil.getActiveShell(event), "Error", "Exception occured during execution of command!", createMultiStatus(e.getLocalizedMessage(), e));
+		ErrorDialog.openError(HandlerUtil.getActiveShell(event), "Error",
+				"An unexpected exception occured during the execution of this command! Please ensure that your MDSL model has no compiler errors before you call generators.",
+				createMultiStatus(e.getLocalizedMessage(), e));
 	}
-	
+
 	protected void postGeneration(ExecutionEvent event) {
 		// do something after the successful generation
 	}

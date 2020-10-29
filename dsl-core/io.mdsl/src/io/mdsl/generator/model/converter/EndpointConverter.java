@@ -15,12 +15,22 @@
  */
 package io.mdsl.generator.model.converter;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.eclipse.xtext.EcoreUtil2;
 
 import io.mdsl.apiDescription.Cardinality;
 import io.mdsl.apiDescription.ElementStructure;
+import io.mdsl.apiDescription.EndpointList;
+import io.mdsl.apiDescription.JavaBinding;
+import io.mdsl.apiDescription.JavaOperationBinding;
 import io.mdsl.apiDescription.OperationResponsibility;
+import io.mdsl.apiDescription.TechnologyBinding;
 import io.mdsl.apiDescription.TypeReference;
+import io.mdsl.dsl.ServiceSpecificationAdapter;
+import io.mdsl.generator.AnonymousFieldNameGenerator;
 import io.mdsl.generator.CardinalityHelper;
 import io.mdsl.generator.model.DataType;
 import io.mdsl.generator.model.DataTypeField;
@@ -28,6 +38,7 @@ import io.mdsl.generator.model.EndpointContract;
 import io.mdsl.generator.model.MDSLGeneratorModel;
 import io.mdsl.generator.model.Operation;
 import io.mdsl.generator.model.OperationParameter;
+import io.mdsl.generator.model.ProtocolBinding;
 
 /**
  * Converts MDSL endpoints (AST model) into endpoints of our generator model.
@@ -37,14 +48,17 @@ public class EndpointConverter {
 
 	private MDSLGeneratorModel model;
 	private DataTypeConverter dataTypeConverter;
+	private ServiceSpecificationAdapter serviceSpecification;
 
-	public EndpointConverter(MDSLGeneratorModel model, DataTypeConverter dataTypeConverter) {
+	public EndpointConverter(ServiceSpecificationAdapter serviceSpecification, MDSLGeneratorModel model, DataTypeConverter dataTypeConverter) {
+		this.serviceSpecification = serviceSpecification;
 		this.model = model;
 		this.dataTypeConverter = dataTypeConverter;
 	}
 
 	public EndpointContract convert(io.mdsl.apiDescription.EndpointContract mdslEndpoint) {
 		EndpointContract endpoint = new EndpointContract(mdslEndpoint.getName());
+		endpoint.setProtocolBinding(createProtocolBindingIfAvailable(mdslEndpoint.getName()));
 		for (io.mdsl.apiDescription.Operation operation : mdslEndpoint.getOps()) {
 			endpoint.addOperation(convertOperation(operation));
 		}
@@ -53,15 +67,21 @@ public class EndpointConverter {
 
 	private Operation convertOperation(io.mdsl.apiDescription.Operation operation) {
 		DataType input = null;
+		String inputName = "anonymousInput";
 		DataType output = null;
 		if (operation.getRequestMessage() != null) {
 			// handle references specially: in this case we can assume the message as
 			// already been created
 			if (operation.getRequestMessage().getPayload().getNp() != null && operation.getRequestMessage().getPayload().getNp().getTr() != null) {
 				TypeReference ref = operation.getRequestMessage().getPayload().getNp().getTr();
+				if (ref.getName() != null && !"".equals(ref.getName()))
+					inputName = new AnonymousFieldNameGenerator().getUniqueName(ref.getName());
 				input = wrapDataTypeIntoListTypeIfNecessary(getExistingDataTypeOrCreateEmpty(ref.getDcref().getName()), ref.getCard());
 			} else {
 				ElementStructure payload = operation.getRequestMessage().getPayload();
+				String optName = getElementStructureName(payload);
+				if (optName != null && !"".equals(optName))
+					inputName = new AnonymousFieldNameGenerator().getUniqueName(optName);
 				input = wrapDataTypeIntoListTypeIfNecessary(createNewDataType(operation.getName() + "RequestDataType", payload), getCardinality4ElementStructure(payload));
 			}
 		}
@@ -86,7 +106,7 @@ public class EndpointConverter {
 		Operation genModelOperation = new Operation(operation.getName());
 		genModelOperation.setResponse(output);
 		if (input != null) {
-			OperationParameter parameter = new OperationParameter("anonymousInput", input);
+			OperationParameter parameter = new OperationParameter(inputName, input);
 			genModelOperation.addParameter(parameter);
 		}
 		genModelOperation.setResponsibility(getOperationResponsibility(operation.getResponsibility()));
@@ -181,6 +201,42 @@ public class EndpointConverter {
 			return operationResponsibility.getSto();
 		if (operationResponsibility.getOther() != null && !"".equals(operationResponsibility.getOther()))
 			return operationResponsibility.getOther();
+		return "";
+	}
+
+	private ProtocolBinding createProtocolBindingIfAvailable(String endpointName) {
+		List<EndpointList> endpointListList = EcoreUtil2.eAllOfType(serviceSpecification, EndpointList.class).stream()
+				.filter(e -> e.getContract() != null && endpointName.equals(e.getContract().getName())).collect(Collectors.toList());
+		for (EndpointList endpointList : endpointListList) {
+			Optional<JavaBinding> javaBinding = EcoreUtil2.eAllOfType(endpointList, JavaBinding.class).stream().findFirst();
+			if (javaBinding.isPresent())
+				return mapJavaBinding(javaBinding.get());
+			// TODO: handle other bindings (for now we just respect Java bindings)
+		}
+		return null;
+	}
+
+	private ProtocolBinding mapJavaBinding(JavaBinding mdslJavaBinding) {
+		io.mdsl.generator.model.JavaBinding binding = new io.mdsl.generator.model.JavaBinding();
+		if (mdslJavaBinding.getPackage() != null)
+			binding.setPackage(mdslJavaBinding.getPackage());
+		for (JavaOperationBinding operationBinding : mdslJavaBinding.getOpsBinding()) {
+			binding.mapOperationName(operationBinding.getBoundOperation(), operationBinding.getMethod());
+		}
+		return binding;
+	}
+
+	private String getElementStructureName(ElementStructure structure) {
+		if (structure.getApl() != null)
+			return structure.getApl().getName();
+		if (structure.getNp() != null && structure.getNp().getAtomP() != null && structure.getNp().getAtomP().getRat() != null)
+			return structure.getNp().getAtomP().getRat().getName();
+		if (structure.getNp() != null && structure.getNp().getGenP() != null)
+			return structure.getNp().getGenP().getName();
+		if (structure.getNp() != null && structure.getNp().getTr() != null)
+			return structure.getNp().getTr().getName();
+		if (structure.getPt() != null)
+			structure.getPt().getName();
 		return "";
 	}
 

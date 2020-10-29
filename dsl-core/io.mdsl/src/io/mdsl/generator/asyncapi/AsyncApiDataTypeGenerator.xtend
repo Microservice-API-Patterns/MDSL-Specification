@@ -14,6 +14,7 @@ import io.mdsl.apiDescription.AtomicParameter
 import io.mdsl.apiDescription.SingleParameterNode
 import io.mdsl.apiDescription.GenericParameter
 import io.mdsl.apiDescription.TreeNode
+import java.util.LinkedList
 
 class AsyncApiDataTypeGenerator {
 	
@@ -114,12 +115,11 @@ class AsyncApiDataTypeGenerator {
 		parameters.add(apl.first)
 		parameters.addAll(apl.nextap)
 		
-		val requiredParams = parameters.map[p | p.rat.name] // TODO: handle genericParameterNameCount()
-		
+		val requiredParams = new LinkedList<String>(); // TODO: handle genericParameterNameCount()
 		for(p : parameters){
-			if(p.card?.zeroOrMore !== null || p.card?.zeroOrOne !== null){
-				// optional parameter
-				requiredParams.removeIf(param | p.rat.name === param);
+			if(!(p.card?.zeroOrMore !== null || p.card?.zeroOrOne !== null)){
+				// required param
+				requiredParams.add(p.rat.name);
 			}
 		}
 		
@@ -171,7 +171,7 @@ class AsyncApiDataTypeGenerator {
 		required:
 			«FOR p : params»
 				«IF p !== null && p.length > 0»
-				-  «p»
+				-  «getNameOrPlaceholder(p)»
 				«ENDIF»
 			«ENDFOR»
 		«ENDIF»
@@ -196,7 +196,7 @@ class AsyncApiDataTypeGenerator {
 	
 	private def getNameOrPlaceholder(String name){
 		if(name !== null && name.length > 0)
-			return name;
+			return "'" + name + "'"; // use quotes to allow names like "Content-Type" or "200"
 			
 		return "unnamedParameter" + this.genericParameterNameCount++;
 	}
@@ -221,7 +221,7 @@ class AsyncApiDataTypeGenerator {
 				«ELSE»
 					«IF spn?.atomP?.card?.zeroOrOne === null && spn?.atomP?.rat?.name !== null» 
 					required:
-						-  «spn.atomP.rat.name»
+						-  «getNameOrPlaceholder(spn.atomP.rat.name)»
 					«ENDIF»
 					properties:
 						«spn.atomP?.compile»
@@ -253,10 +253,12 @@ class AsyncApiDataTypeGenerator {
 	
 	def getType(String type){
 		switch type{
-			case 'int': return 'number'
+			case 'int': return 'integer'
 			case 'double': return 'number'
 			case 'long': return 'number'
 			case 'bool': return 'boolean'
+			case 'raw': return 'string'
+			case 'void': return "['null']" 
 			default: return type 
 		}
 	}

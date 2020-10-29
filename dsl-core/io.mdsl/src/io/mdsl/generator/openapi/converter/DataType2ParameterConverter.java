@@ -48,7 +48,7 @@ public class DataType2ParameterConverter {
 		} else if (structure.getPt() != null && isParameterTreeAtomic(structure.getPt())) {
 			atomicParameterList.addAll(collectAtomicParameters(structure.getPt()));
 		} else {
-			// TODO (v4.1): use new HTTP binding to also map simple PTs
+			// TODO (v4.1, 4.2): use new HTTP binding to also map simple PTs
 			throw new MDSLException("Parameter in operation '" + operationName + "' must be atomic or list of atoms, no trees or forests with external types please.");
 		}
 		return convert(atomicParameterList);

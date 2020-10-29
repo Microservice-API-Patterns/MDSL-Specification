@@ -59,6 +59,7 @@ public class GeneratorsActionGroup extends ActionGroup {
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.ProtocolBuffersGenerationCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.JolieGenerationCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.GraphQLGenerationCommand"));
+		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.JavaGenerationCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.GenModelJSONExporterCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.GenModelYAMLExporterCommand"));
 		// generatorSubmenu.add(new Separator());

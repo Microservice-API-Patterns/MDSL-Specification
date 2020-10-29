@@ -47,7 +47,7 @@ public class MDSL2GeneratorModelConverter {
 		this.serviceSpecification = new ServiceSpecificationAdapter(serviceSpecification);
 		this.genModel = new MDSLGeneratorModel(serviceSpecification.getName());
 		this.dataTypeConverter = new DataTypeConverter(genModel);
-		this.endpointConverter = new EndpointConverter(genModel, dataTypeConverter);
+		this.endpointConverter = new EndpointConverter(this.serviceSpecification, genModel, dataTypeConverter);
 		this.providerConverter = new ProviderConverter(genModel);
 		this.providerImplementationConverter = new ProviderImplementationConverter(genModel);
 		this.clientConverter = new ClientConverter(genModel);

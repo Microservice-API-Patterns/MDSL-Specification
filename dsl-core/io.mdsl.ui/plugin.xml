@@ -390,6 +390,9 @@
 		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.GraphQLGenerationHandler"
 			commandId="io.mdsl.ui.handler.GraphQLGenerationCommand">
 		</handler>
+		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.JavaGenerationHandler"
+			commandId="io.mdsl.ui.handler.JavaGenerationCommand">
+		</handler>
 		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.GenModelJSONExporterHandler"
 			commandId="io.mdsl.ui.handler.GenModelJSONExporterCommand">
 		</handler>
@@ -411,6 +414,9 @@
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<command name="Generate GraphQL Specification" id="io.mdsl.ui.handler.GraphQLGenerationCommand"></command>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
+		<command name="Generate Java Modulith" id="io.mdsl.ui.handler.JavaGenerationCommand"></command>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<command name="Export Generator Model as JSON" id="io.mdsl.ui.handler.GenModelJSONExporterCommand"></command>
@@ -469,6 +475,15 @@
 					</visibleWhen>
 				</command>
 				<command defaultHandler="io.mdsl.ui.handler.GraphQLGenerationHandler" commandId="io.mdsl.ui.handler.GraphQLGenerationCommand" style="push">
+					<visibleWhen checkEnabled="false">
+						<iterate>
+							<adapt type="org.eclipse.core.resources.IResource">
+								<test property="org.eclipse.core.resources.name" value="*.mdsl"/>
+							</adapt>
+						</iterate>
+					</visibleWhen>
+				</command>
+				<command defaultHandler="io.mdsl.ui.handler.JavaGenerationHandler" commandId="io.mdsl.ui.handler.JavaGenerationCommand" style="push">
 					<visibleWhen checkEnabled="false">
 						<iterate>
 							<adapt type="org.eclipse.core.resources.IResource">

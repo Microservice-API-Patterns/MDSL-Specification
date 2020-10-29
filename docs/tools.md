@@ -86,61 +86,28 @@ The validation of this MDSL file yields the following errors, warnings and infor
 
 ### Generators
 
-In the MDSL Editor, you can invoke four generators from the "MDSL" entry in the context menu:
+In the MDSL Editor, you can invoke the following generators from the "MDSL" entry in the context menu:
 
-* Generate OpenAPI Specification 
-* Generate Protocol Buffers Specification
-* Generate GraphQL Schema, see [this page](./graphql) for instructions
-* Generate Jolie Lan(guage) Specification 
-* Generate Text File with Freemarker Template 
-
-<!-- TODO (v4.2) show result of HelloWorld generation (links) -->
+* [Generate OpenAPI Specification](./generators/open-api)
+* [Generate Protocol Buffers Specification](./generators/protocol-buffers)
+* [Generate GraphQL Schema](./generators/graphql)
+* [Generate Jolie Lan(guage) Specification](./generators/jolie)
+* [Generate Java «Moduliths» Code](./generators/java)
+* [Generate Text File with Freemarker Template](./generators/freemarker)
 
 These generator features are also available in the CLI (see above).
 
-#### IDL Generators: OpenAPI, Protocol Buffers, GraphQL, Jolie 
+#### Generator Model for Freemarker Templating and Model Exports
+To ease code generation with the [template-based generator](./generators/freemarker), we provide an intermediate model. The following class diagram illustrates it:
 
-The OpenAPI specification generator maps endpoint types to HTTP resource paths, and operations to HTTP methods/verbs like this:
-
-* If a MAP decorator is used, it is mapped as this:
-    * `STATE_CREATION_OPERATION` is transformed to `PUT` (yes, `POST` also would make sense)
-    * `RETRIEVAL_OPERATION` is transformed to `GET` (which causes problems if the request message has a complex structure)
-    * `STATE_TRANSITION_OPERATION` is transformed to `PATCH`
-    * `COMPUTATION_FUNCTION` is transformed to `POST`
-* If an HTTP verb is used instead of a MAP decorator (`"GET"`, `"POST"` etc.), it is passed through 
-* If the operation name suggests CRUDish semantics (or starts with HTTP verb names), it is mapped as this: 
-    * createX is transformed into `POST` 
-    * readX and getX are transformed into `GET`
-    * putX is transformed into `PUT` 
-    * updateX and patchX are transformed into `PATCH`
-    * deleteX is transformed into `DELETE`
-
-If an HTTP verb appears more than once in a resource endpoint, nothing will be generated on the endpoint type level. An HTTP [binding](./bindings#http-protocol-binding) has to be defined then; at present one and only one such binding should be present; the generator will use the first one it finds. Note that not all abstract contracts can be mapped to all HTTP verbs; `GET`, in particular expects the in parameters to be simple enough so that they can be mapped to path and query parameters (this holds for atomic parameters and flat, unnested parameter trees).
-
-See [this demo](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html) for the time being (note: only OpenAPI is featured in the demo so far; we now also support gRPC, GraphQL and Jolie). 
-
-
-#### Freemarker Templating
-
-The entire MDSL grammar is available as a data model to the Freemarker templating feature.  
-
-Examples of generated reports can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/generator-templates).
-
-
-#### Generator Model (technology preview) for Freemarker Templating and Model Exports
-To ease code generation with the template-based generator (Freemarker Templating, explained above), we provide an intermediate model. The following class diagram illustrates it:
-
-<a href="/media/mdsl-generator-model.png" target="_blank">![MDSL Generator Model](/media/mdsl-generator-model.png)</a>
-
-The _MDSLGeneratorModel_ object is the root object of the model and available in Freemarker templates in the variable `genModel`.
+<a href="./media/mdsl-generator-model.png" target="_blank">![MDSL Generator Model](./media/mdsl-generator-model.png)</a>
 
 This model can also be exported for offline processing (for instance, to feed other tools): 
 
 * Export Generator Model as JSON 
 * Export Generator Model as YAML
 
-*Note*: This feature is not yet complete, and the model API subject to change at any time. We do use it internally in the [GraphQL schema](./graphql) generator, so it has reached a certain level of maturity and test coverage. That said, it also has some known limitations; for instance, the output can be rather verbose and partially redundant (input depending, of course). 
-
+*Note*: This feature is not yet complete, and the model API subject to change at any time. We do use it internally in the [GraphQL schema](./graphql) and [Java](./java) generators, so it has reached a certain level of maturity and test coverage. That said, it also has some known limitations; for instance, the output can be rather verbose and partially redundant (input depending, of course). 
 
 #### AsyncAPI (technology preview)
 
@@ -150,7 +117,6 @@ See [readme in this examples folder](https://github.com/Microservice-API-Pattern
 
 
 # Site Navigation
-<!-- TODO update for V4.1 consistently -->
 
 * [Quick reference](./quickreference) and [tutorial](./tutorial). 
 * Language specification: 

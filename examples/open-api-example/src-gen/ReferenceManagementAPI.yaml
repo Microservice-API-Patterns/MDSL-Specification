@@ -1,0 +1,103 @@
+openapi: 3.0.1
+info:
+  title: ReferenceManagementServiceAPI
+  version: "1.0"
+tags:
+- name: PaperArchiveFacade
+  description: general data-oriented endpoint
+  externalDocs:
+    description: INFORMATION_HOLDER_RESOURCE
+    url: https://microservice-api-patterns.org/patterns/responsibility/
+paths:
+  /PaperArchiveFacade:
+    summary: general data-oriented endpoint
+    description: 'MAP link: INFORMATION_HOLDER_RESOURCE available at [the MAP website](https://microservice-api-patterns.org/)'
+    get:
+      tags:
+      - PaperArchiveFacade
+      summary: read only
+      description: This operation realizes the Retrieval Operation pattern, described
+        [on the MAP website](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html).
+      operationId: lookupPapersFromAuthor
+      parameters:
+      - name: Parameter1
+        in: query
+        description: unspecified
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: response message payload (success case)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaperItemDTO'
+    put:
+      tags:
+      - PaperArchiveFacade
+      summary: write only
+      description: This operation realizes the State Creation Operation pattern, described
+        [on the MAP website](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html).
+      operationId: createPaperItem
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createPaperItemParameter'
+      responses:
+        "200":
+          description: response message payload (success case)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaperItemDTO'
+    post:
+      tags:
+      - PaperArchiveFacade
+      description: unspecified operation responsibility
+      operationId: convertToMarkdownForWebsite
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaperItemKey'
+      responses:
+        "200":
+          description: response message payload (success case)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  anonymous1:
+                    type: string
+components:
+  schemas:
+    PaperItemDTO:
+      type: object
+      properties:
+        title:
+          type: string
+        authors:
+          type: string
+        venue:
+          type: string
+        paperItemId:
+          $ref: '#/components/schemas/PaperItemKey'
+    PaperItemKey:
+      type: object
+      properties:
+        doi:
+          type: string
+    createPaperItemParameter:
+      type: object
+      properties:
+        who:
+          type: string
+        what:
+          type: string
+        where:
+          type: string

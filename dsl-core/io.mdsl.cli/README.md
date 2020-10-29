@@ -30,10 +30,10 @@ usage: mdsl
                          following values: oas (Open API Specification),
                          jolie (Jolie), text (arbitraty text file by using
                          a Freemarker template), proto (Protocol Buffers),
-                         graphql (GraphQL Schemas), gen-model-json
-                         (Generator model as JSON (exporter)),
-                         gen-model-yaml (Generator model as YAML
-                         (exporter))
+                         graphql (GraphQL Schemas), java (Java Modulith),
+                         gen-model-json (Generator model as JSON
+                         (exporter)), gen-model-yaml (Generator model as
+                         YAML (exporter))
  -h,--help               Prints this message.
  -i,--input <arg>        Path to the MDSL file for which you want to
                          generate output.
@@ -53,6 +53,7 @@ In case you want to generate output, you have to pass `-g` and one of the genera
  * text (any textual file by using a Freemarker template)
  * proto (Protocol Buffers)
  * graphql (GraphQL schemas)
+ * java (Java Modulith)
  * gen-model-json (export generator model as JSON)
  * gen-model-yaml (export generator model as YAML)
  
@@ -95,6 +96,18 @@ In case it cannot be compiled you will get an error message (exception).
 
 ```bash
 ./mdsl -i my-model.mdsl -g proto
+```
+
+### Generate GraphQL Schema's
+
+```bash
+./mdsl -i my-model.mdsl -g graphql
+```
+
+### Generate Java Code for Moduliths
+
+```bash
+./mdsl -i my-model.mdsl -g java
 ```
 
 ### Generate Arbitrary Text File with Freemarker Template

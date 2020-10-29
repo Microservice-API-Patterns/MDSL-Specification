@@ -22,25 +22,15 @@ exposes
   operation downloadSpreadsheet
     expecting payload ID
     delivering payload CSVSpreadsheet
-      reporting error "SheetNotFound" 
+      reporting error "204":ID<int> // 204: No Content, aka "SheetNotFound" 
 
 API provider SpreadSheetExchangeAPIProvider
 offers SpreadSheetExchangeEndpoint
+at endpoint location "https://some.domain.name/relativePath"
+via protocol HTTP
+  binding 
+    operation uploadSpreadsheet to PUT
+    operation downloadSpreadsheet to GET
 
 API client SpreadSheetExchangeAPIClient
 consumes SpreadSheetExchangeEndpoint
-
-API gateway SpreadSheetExchangeAPIGateway 
-offers SpreadSheetExchangeEndpoint at endpoint location "tbd" 
-via protocol HTTP 
-  /* 
-  TODO update to V4.1 binding syntax:
-  mapping default body
-  mapping path parameters (id) 
-  mapping query parameters (id, id2) 
-  mapping form parameters (id, id2 , id3) 
- */
-consumes SpreadSheetExchangeEndpoint 
-from SpreadSheetExchangeAPIProvider
-via protocol AMQP
-mediates from Cell to Column // just a fake PoC, does not make sense (could do CSV vs. raw)
