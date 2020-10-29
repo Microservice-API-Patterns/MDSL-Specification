@@ -67,12 +67,12 @@ dataTransferRepresentation:
 
 Endpoint types correspond to ports in the Hexagonal Architecture terminology.
 
-The notation used above is the [grammar language of Xtext](https://www.eclipse.org/Xtext/documentation/301_grammarlanguage.html) (which is close to that of antlr4). The full MSDL grammar can be found [here](https://github.com/socadk/MDSL/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext).
+The notation used above is the [grammar language of Xtext](https://www.eclipse.org/Xtext/documentation/301_grammarlanguage.html) (which is close to that of antlr4). The full MSDL grammar can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext).
 
 
 ## Example
 
-The following exemplary API specification compiles against the [MDSL grammar](https://github.com/socadk/MDSL/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) sketched above: 
+The following exemplary API specification compiles against the [MDSL grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) sketched above: 
 
 <!-- TODO feature new role keyword (if we keep it)? -->
 
@@ -204,6 +204,6 @@ MSDL service contracts can also be mapped to GraphQL, and Avro in a straightforw
 * [Quick reference](./quickreference), [tutorial](./tutorial) and [tools](./tools)
 * Back to [MDSL homepage](./index).
 
-*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/socadk/MDSL/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

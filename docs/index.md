@@ -8,21 +8,15 @@ copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ## TL;DR
 Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as Swagger, WSDL and <!-- gRPC --> Protocol Buffers. 
 
-> If the URI of this page is `https://socadk.github.io/MDSL/index`, you are looking at the GitHub pages of the next version (technology preview)! Please refer to [https://microservice-api-patterns.github.io/MDSL-Specification/index](https://microservice-api-patterns.github.io/MDSL-Specification/index) for the current, publicly released open source version.
+> If the URI of this page is `https://microservice-api-patterns.github.io/MDSL-Specification/index`, you are looking at the GitHub pages of the next version (technology preview)! Please refer to [https://microservice-api-patterns.github.io/MDSL-Specification/index](https://microservice-api-patterns.github.io/MDSL-Specification/index) for the current, publicly released open source version.
 
 Quick links: 
 
 * Documentation pages (GitHub pages): [Tutorial](./tutorial), [quick reference](./quickreference)<!-- providing skeletons-->, [example](./examples)
-* Language and tools repository (GitHub): [Grammar](https://github.com/socadk/MDSL/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext), [examples](https://github.com/socadk/MDSL/tree/master/examples)
-* Tools: [Overview](./tools), [CLI](https://github.com/socadk/MDSL/tree/master/dsl-core/io.mdsl.cli), [update site for editor (Eclipse plugin)](./updates/)
+* Language and tools repository (GitHub): [Grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext), [examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples)
+* Tools: [Overview](./tools), [CLI](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli), [update site for editor (Eclipse plugin)](./updates/)
 * Generators: [Open API generator](./generators/open-api), [Protocol buffers generator](./generators/protocol-buffers), [Graphql generator](./generators/graphql), [Jolie generator](./generators/jolie), [Java «Modulith» generator](./generators/java), [Arbitrary textual generation with Freemarker](./generators/freemarker)
 
-<!--
-### Installation in Eclipse
-
- * Update site: [https://socadk.github.io/MDSL/updates/](https://socadk.github.io/MDSL/updates/)
- * The grammar can be found in the `dsl-core` project (more precisely, in the `io.mdsl./src/io.mdsl` folder of this project): [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) and [private](https://github.com/socadk/MDSL/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) repository.
--->
 
 ## Getting Started with MDSL
 
@@ -157,6 +151,6 @@ The four types of decorators/annotations and stereotypes are optional; if presen
 
 <!-- TODO point to presentations (JUG, VSS, Modelsward, GI-AK ICWE, point at VSS report https://www.computer.org/csdl/magazine/so/2020/01/08938118/1fUSO0QBDnW -->
 
-*Copyright: [Olaf Zimmermann](https://ozimmer.ch/index.html), 2018-2020. All rights reserved. See [license information](https://github.com/socadk/MDSL/blob/master/LICENSE).*
+*Copyright: [Olaf Zimmermann](https://ozimmer.ch/index.html), 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

@@ -135,7 +135,7 @@ scalar Raw
 scalar VoidResponse
 ```
 
-You can find the sources for this example [here](https://github.com/socadk/MDSL/tree/master/examples/graphql-example).
+You can find the sources for this example [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/graphql-example).
 
 **Note:** The GraphQL generator is an experimental prototype and implemented in a straightforward fashion. We generate an "input" and an "output" type for all MDSL types available; not all of these generated types might not be required. We also wrap lists into objects, which could often be simplified after generation.
 
@@ -246,7 +246,7 @@ const resolvers = {
 };
 ```
 
-Find the complete server example [here](https://github.com/socadk/MDSL/tree/master/examples/graphql-example/apollo-server-example/index.js).
+Find the complete server example [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/graphql-example/apollo-server-example/index.js).
 
 Once you created the `index.js` with the generated GraphQL schema and at least one resolver, you can start the server with the following command:
 
@@ -415,7 +415,7 @@ You can now open the browser and `localhost:3000` will start the app and list ou
 
 <a target="_blank" href="/media/apollo-client-test-screenshot.png">![Locally test Apollo client](/media/apollo-client-test-screenshot.png)</a>
 
-Find the complete client example [here](https://github.com/socadk/MDSL/tree/master/examples/graphql-example/apollo-client-example/).
+Find the complete client example [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/graphql-example/apollo-client-example/).
 
 
 ### Generating Code for other GraphQL Implementations
@@ -427,7 +427,7 @@ An easy way to get an impression of how the code generator works is by using the
 
 <a target="_blank" href="/media/code-generator-live-demo.png">![Code Generator Live Demo](/media/code-generator-live-demo.png)</a>
 
-We created an example Java (Spring Boot) application that uses the code generator. You find the complete example project [here](https://github.com/socadk/MDSL/tree/master/examples/graphql-example/spring-boot-example/).
+We created an example Java (Spring Boot) application that uses the code generator. You find the complete example project [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/graphql-example/spring-boot-example/).
 
 #### Create Spring Boot (Java) Application
 First, we created a classic Spring Boot project with [Spring initializr](https://start.spring.io/) (Gradle project).
@@ -565,7 +565,7 @@ public class GraphQLProvider {
 }
 ```
 
-**Note** that we had to provide implementations for our custom scalars (_Void_ and _Raw_). You find it in our [example project](https://github.com/socadk/MDSL/tree/master/examples/graphql-example/spring-boot-example/).
+**Note** that we had to provide implementations for our custom scalars (_Void_ and _Raw_). You find it in our [example project](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/graphql-example/spring-boot-example/).
 
 The Spring Boot application can now be started with `./gradlew clean bootRun` (please adopt the command invocation to your OS). As soon as the application is started, you can run the same query as we did before with Apollo. The following screenshot shows our test with Postman:
 
@@ -593,6 +593,6 @@ Also checkout our other generators:
     * [Bindings](./../bindings) and [instance-level concepts](./../optionalparts). 
 * Back to [MDSL homepage](./../index).
 
-*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020. All rights reserved. See [license information](https://github.com/socadk/MDSL/blob/master/LICENSE).*
+*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

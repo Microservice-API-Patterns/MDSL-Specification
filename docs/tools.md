@@ -10,8 +10,8 @@ MDSL Tools: Users Guide
 <!-- from top-level index page/readme:
 ### Installation in Eclipse
 
- * Update site: [https://socadk.github.io/MDSL/updates/](https://socadk.github.io/MDSL/updates/)
- * The grammar can be found in the `dsl-core` project (more precisely, in the `io.mdsl./src/io.mdsl` folder of this project): [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) and [private](https://github.com/socadk/MDSL/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) repository.
+ * Update site: [https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
+ * The grammar can be found in the `dsl-core` project (more precisely, in the `io.mdsl./src/io.mdsl` folder of this project): [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) and [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) repository.
 
 ### Direct links into repository
 
@@ -53,7 +53,7 @@ usage: mdsl
                          the 'generator' (-g) parameter.
 ```
 
-Please refer to the [readme of the DSL core project](https://github.com/socadk/MDSL/tree/master/dsl-core/README.md) and the [CLI package readme](https://github.com/socadk/MDSL/tree/master/dsl-core/io.mdsl.cli) for  more information.
+Please refer to the [readme of the DSL core project](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/README.md) and the [CLI package readme](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli) for  more information.
 
 
 ## Eclipse Plugin
@@ -61,9 +61,9 @@ Please refer to the [readme of the DSL core project](https://github.com/socadk/M
 ### MDSL Editor
 The MDSL Eclipse plugin provides editing support (syntax highlighting, auto completion, etc.) for our DSL. You can install the plugin in your Eclipse from the following update site:
 
-[https://socadk.github.io/MDSL/updates/](https://socadk.github.io/MDSL/updates/)
+[https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
 
-Once you have installed the plugin successfully, the MDSL editor should open for any file that ends with `.mdsl`. You can create one and copy-paste the above hello world example, or find additional examples [in this folder](https://github.com/socadk/MDSL/tree/master/examples).
+Once you have installed the plugin successfully, the MDSL editor should open for any file that ends with `.mdsl`. You can create one and copy-paste the above hello world example, or find additional examples [in this folder](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples).
 
 If you want to check whether the plugin has installed successfully, you can go to the Eclipse "Help" menu, select "About Eclipse IDE" and then "Installation Details". Two MDSL entries should be there.
 
@@ -79,7 +79,7 @@ In addition to the usual editor features such as syntax highlighting, completion
 * The number of operations per endpoint is reported; if is likely that the endpoint cannot be mapped to OpenAPI due to a large amount of operations, the user is warned.
 <!-- TODO (v4.2) check whether there are more now -->
 
-An example that features all validators in action can be found in the examples folder of the repository: [`APILinterTestAndDemo.mdsl`](https://github.com/socadk/MDSL/blob/master/examples/APILinterTestAndDemo.mdsl).
+An example that features all validators in action can be found in the examples folder of the repository: [`APILinterTestAndDemo.mdsl`](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/examples/APILinterTestAndDemo.mdsl).
 The validation of this MDSL file yields the following errors, warnings and information messages (among others):
 <a target="_blank" href="/media/api-linter-example.png">![API Linter example](/media/api-linter-example.png)</a>
 
@@ -113,7 +113,7 @@ This model can also be exported for offline processing (for instance, to feed ot
 
 This generator uses a different model management technology internally, and is run every time an MDSL file is saved. It is not available via a context menu.
 
-See [readme in this examples folder](https://github.com/socadk/MDSL/tree/master/examples/asyncMDSL) for further instructions.
+See [readme in this examples folder](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/asyncMDSL) for further instructions.
 
 
 # Site Navigation
@@ -124,6 +124,6 @@ See [readme in this examples folder](https://github.com/socadk/MDSL/tree/master/
     * [Bindings](./bindings) and [instance-level concepts](./optionalparts). 
 * Back to [MDSL homepage](./index).
 
-*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/socadk/MDSL/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->
