@@ -40,7 +40,7 @@ The OpenAPI specification generator maps endpoint types to HTTP resource paths, 
     * updateX and patchX are transformed into `PATCH`
     * deleteX is transformed into `DELETE`
 
-If an HTTP verb appears more than once in a resource endpoint, nothing will be generated on the endpoint type level. An HTTP [binding](./bindings#http-protocol-binding) has to be defined then; at present one and only one such binding should be present; the generator will use the first one it finds. Note that not all abstract contracts can be mapped to all HTTP verbs; `GET`, in particular expects the in parameters to be simple enough so that they can be mapped to path and query parameters (this holds for atomic parameters and flat, unnested parameter trees).
+If an HTTP verb appears more than once in a resource endpoint, nothing will be generated on the endpoint type level. An HTTP [binding](./../bindings#http-protocol-binding) has to be defined then. At present, one and only one such binding should be present; the generator will use the first one it finds. Note that not all abstract contracts can be mapped to all HTTP verbs; `GET`, in particular expects the in parameters to be simple enough so that they can be mapped to path and query parameters (this holds for atomic parameters and flat, unnested parameter trees).
 
 See [this demo](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html) as well.
 

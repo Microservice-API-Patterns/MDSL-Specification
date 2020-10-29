@@ -91,7 +91,7 @@ In the MDSL Editor, you can invoke the following generators from the "MDSL" entr
 * [Generate OpenAPI Specification](./generators/open-api)
 * [Generate Protocol Buffers Specification](./generators/protocol-buffers)
 * [Generate GraphQL Schema](./generators/graphql)
-* [Generate Jolie Lan(guage) Specification](./generators/jolie)
+* [Generate Jolie Lang(uage) Specification](./generators/jolie)
 * [Generate Java «Moduliths» Code](./generators/java)
 * [Generate Text File with Freemarker Template](./generators/freemarker)
 
