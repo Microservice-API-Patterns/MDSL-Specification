@@ -9,7 +9,7 @@ MDSL Grammar Example
 
 
 ## Service Contract
-The following exemplary API specification compiles against the [MDSL grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext): 
+The following exemplary API specification compiles against the [MDSL grammar](https://github.com/socadk/MDSL/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext): 
 
 <!-- TODO feature error reporting and versioning of data types -->
 
@@ -84,8 +84,8 @@ Optional [Instance-level language constructs](./optionalparts).
 
 Back to [MDSL homepage](./index). 
 
-More examples in [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) and in [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) repository.
+More examples in [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) and in [private](https://github.com/socadk/MDSL/tree/master/examples) repository.
 
-*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/socadk/MDSL/blob/master/LICENSE).*
 
 <!-- *EOF* -->

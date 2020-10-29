@@ -143,6 +143,6 @@ Language specification pages:
 
 [Quick reference](./quickreference). [Tutorial](./tutorial). [Tools](./tools). Back to [MDSL homepage](./index).
 
-*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/socadk/MDSL/blob/master/LICENSE).*
 
 <!-- *EOF* -->
