@@ -84,10 +84,6 @@ public class DataType2SchemaConverter {
 			return mapCardinalities(pt.getCard(), treeWrapperSchema);
 	}
 
-	/**
-	 * Wraps a schema with an ArraySchema according to given cardinalities.
-	 * @param externalCardinality 
-	 */
 	public Schema mapCardinalities(Cardinality card, Schema schema) {
 		if (card == null)
 			return schema;

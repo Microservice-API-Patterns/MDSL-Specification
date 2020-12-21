@@ -4,7 +4,7 @@ author: Olaf Zimmermann, Stefan Kapferer
 copyright: Olaf Zimmermann, 2020. All rights reserved.
 ---
 
-[Tools Overview](./../tools), [Protocol Buffers](./protocol-buffers) [GraphQL](./graphql) [Jolie](./jolie) [Java](./java) [Freemarker templating](./freemarker)
+[Tools Overview](./../tools), [Protocol Buffers](./protocol-buffers), [GraphQL](./graphql), [Jolie](./jolie), [Java](./java), [Freemarker templating](./freemarker)
 
 Open API Specification Generator
 ================================
