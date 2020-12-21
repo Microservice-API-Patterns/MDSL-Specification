@@ -19,7 +19,7 @@ import io.mdsl.tests.AbstractMDSLInputIntegrationTest;
 /**
  * Tests for the OpenAPI generator.
  * 
- * @author ska
+ * @author ska, socadk
  *
  */
 public class OpenAPIGeneratorTest extends AbstractMDSLInputIntegrationTest {
@@ -56,7 +56,7 @@ public class OpenAPIGeneratorTest extends AbstractMDSLInputIntegrationTest {
 
 	@Test
 	public void canGenerateOperationWithPayload() throws IOException {
-		assertThatInputFileGeneratesExpectedOutput("endpoint-test-operation-test-1");
+		assertThatInputFileGeneratesExpectedOutput("endpoint-test-operation-test-1");	
 	}
 
 	@Test
@@ -69,10 +69,10 @@ public class OpenAPIGeneratorTest extends AbstractMDSLInputIntegrationTest {
 		assertThatInputFileGeneratesExpectedOutput("endpoint-test-operation-test-3");
 	}
 
-	@Test
-	public void canGenerateOperationWithInlineReturnValue() throws IOException {
-		assertThatInputFileGeneratesExpectedOutput("endpoint-test-operation-test-4");
-	}
+    @Test
+    public void canGenerateOperationWithInlineReturnValue() throws IOException {
+    	assertThatInputFileGeneratesExpectedOutput("endpoint-test-operation-test-4");
+    }
 
 	@Test
 	public void canHandleCardinality4AtomicParameter() throws IOException {
@@ -110,6 +110,26 @@ public class OpenAPIGeneratorTest extends AbstractMDSLInputIntegrationTest {
 	}
 	
 	@Test
+	public void canRespectOnePATHParameterInHttpBinding1() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("endpoint-http-mapping-PATH-parameter-test-1");
+	}
+	
+	@Test
+	public void canRespectMultiplePATHParameterInHttpBinding() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("endpoint-http-mapping-PATH-parameter-test-2");
+	}
+	
+	@Test
+	public void canRespectOnePATHParameterInHttpBinding2() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("endpoint-http-mapping-PATH-parameter-test-3");
+	}
+	
+	@Test
+	public void canRespectCOOKIEParameterInHttpBinding() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("endpoint-http-mapping-COOKIE-parameter-test-1");
+	}
+	
+	@Test
 	public void cannotHaveDuplicateMappings() throws IOException {
 		// given
 		Resource inputModel = getTestResource("endpoint-test-duplicate-operations-error.mdsl");
@@ -119,6 +139,8 @@ public class OpenAPIGeneratorTest extends AbstractMDSLInputIntegrationTest {
 		JavaIoFileSystemAccess javaIoFileSystemAccess = getFileSystemAccess();
 		javaIoFileSystemAccess.setOutputPath(getGenerationDirectory().getAbsolutePath());
 
+		// TODO use this for other MDSL Exceptions too
+		
 		assertThrows(MDSLException.class, () -> {
 			generator.doGenerate(inputModel, javaIoFileSystemAccess, new GeneratorContext());
 		});
@@ -128,12 +150,58 @@ public class OpenAPIGeneratorTest extends AbstractMDSLInputIntegrationTest {
 	public void canGenerateMultipleOperationsAccordingToVerbMapping() throws IOException {
 		assertThatInputFileGeneratesExpectedOutput("endpoint-test-operation-test-5");
 	}
+	
+	@Test 
+	public void testHTTPBindingVerbsDatatypesInCRUDAPI() throws IOException {
+		// TODO add a test with `P`and `D<void>`
+		assertThatInputFileGeneratesExpectedOutput("http-binding-verbs-datatypes");
+	}
+	
+	@Test // 
+	public void testHTTPBindingVerbMappingHeuristics() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("http-binding-verb-heuristics");
+	}
 
+	@Test
+	public void testHTTPBindingMAPDecoratorsAndMIMETypes() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("http-binding-map-mimetypes");
+	}
+	
+	@Test
+	public void testHTTPBindingMultipleEndpointsAndProvider() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("http-binding-multiple-endpoints-and-providers");
+	}
+	
+	@Test
+	public void testHTTPBindingReportsPoliciesHeaders() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("http-binding-reports-policies-headers");
+	}
+	
+	
+	@Test
+	public void testHTTPBindingHypermediaURITemplates() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("http-binding-hypermedia-uritemplates");
+	}
+	
+	@Test
+	public void testHTTPBindingsMaturityLevels12() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("http-binding-restbucks-ml12");
+	}
+	
+	@Test
+	public void testHTTPBindingsMaturityLevels3() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("http-binding-restbucks-ml3");
+	}
+	
+	
 	/**
-	 * Allows to test whether a test input file ({baseFilename}.mdsl) leads to the
+	 * Allows testing whether a test input file ({baseFilename}.mdsl) leads to the
 	 * expected output ({baseFilename}.yaml).
 	 */
 	private void assertThatInputFileGeneratesExpectedOutput(String baseFilename) throws IOException {
+		
+		// System.out.println("[*** Next test ***]: " + baseFilename + ".mdsl");
+		
 		// given
 		Resource inputModel = getTestResource(baseFilename + ".mdsl");
 		OpenAPIGenerator generator = new OpenAPIGenerator();
@@ -146,6 +214,8 @@ public class OpenAPIGeneratorTest extends AbstractMDSLInputIntegrationTest {
 		// then
 		assertTrue(generator.getValidationMessages().isEmpty());
 		assertEquals(getTestFileContent(baseFilename + ".yaml"), getGeneratedFileContent(baseFilename + ".yaml"));
+		
+		// System.out.println("[*** Done testing ***]: " + baseFilename + ".mdsl");
 	}
 
 	private String getTestFileContent(String fileName) throws IOException {

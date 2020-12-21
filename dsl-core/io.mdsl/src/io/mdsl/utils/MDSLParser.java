@@ -17,9 +17,9 @@ public class MDSLParser {
 			MDSLXtextParserWrapper parser = new MDSLXtextParserWrapper();
 			return (ServiceSpecification) parser.parse(r);
 		} catch (FileNotFoundException e) {
-			throw new MDSLException("spec" + mdslFile + " not found.", e);
+			throw new MDSLException("Spec" + mdslFile + " not found.", e);
 		} catch (IOException e) {
-			throw new MDSLException("spec" + mdslFile + " caused IOException.", e);
+			throw new MDSLException("Spec" + mdslFile + " caused IOException.", e);
 		}
 	}
 }

@@ -16,38 +16,38 @@ public class MessageExchangePatternValidator extends AbstractMDSLValidator {
 
 	@Check
 	public void validateMessagePresenenceForExchangePattern(Operation nextOp) {
-		
+				
+		// note: it is valid to model operation w/o any message, for early stage (no MEP to be defined)
+
 		String mep = nextOp.getMep();
 		DataTransferRepresentation inDtr = nextOp.getRequestMessage();
 		DataTransferRepresentation outDtr = nextOp.getResponseMessage();
 		
 		if(mep.equals("REQUEST_REPLY")) {
 			if(inDtr == null) {
-				error(nextOp.getName() + " is a REQUEST_REPLY operation, which expects a request message", nextOp, ApiDescriptionPackage.Literals.OPERATION__MEP);
+				error(nextOp.getName() + " is a REQUEST_REPLY operation, which expects a request message", nextOp, ApiDescriptionPackage.eINSTANCE.getOperation_Mep()); // Literals.OPERATION__MEP);
 			}
 			if(outDtr == null) {
-				error(nextOp.getName() + " is a REQUEST_REPLY operation, which must deliver a response message", nextOp, ApiDescriptionPackage.Literals.OPERATION__MEP);
+				error(nextOp.getName() + " is a REQUEST_REPLY operation, which must deliver a response message", nextOp, ApiDescriptionPackage.eINSTANCE.getOperation_Mep()); // Literals.OPERATION__MEP);
 			}
 		}
 		// TODO test ONE_WAY, NOTIFICATION
 		else if( mep.equals("ONE_WAY")) {
 			if(inDtr == null) {
-				error(nextOp.getName() + " is a ONE_WAY operation, which expects a request message", nextOp, ApiDescriptionPackage.Literals.OPERATION__MEP);
+				error(nextOp.getName() + " is a ONE_WAY operation, which expects a request message", nextOp, ApiDescriptionPackage.eINSTANCE.getOperation_Mep()); // Literals.OPERATION__MEP);
 			}
 			if(outDtr != null) {
-				error(nextOp.getName() + " is a ONE_WAY operation, which should not deliver a response message", nextOp, ApiDescriptionPackage.Literals.OPERATION__MEP);
+				error(nextOp.getName() + " is a ONE_WAY operation, which should not deliver a response message", nextOp, ApiDescriptionPackage.eINSTANCE.getOperation_Mep()); // Literals.OPERATION__MEP);
 			}
 		}
 		else if( mep.equals("NOTIFICATION")) {
 			if(inDtr != null) {
-				error(nextOp.getName() + " is a NOTIFICATION operation, which should not expect a request message", nextOp, ApiDescriptionPackage.Literals.OPERATION__MEP);
+				error(nextOp.getName() + " is a NOTIFICATION operation, which should not expect a request message", nextOp, ApiDescriptionPackage.eINSTANCE.getOperation_Mep()); // Literals.OPERATION__MEP);
 			}
 			if(outDtr == null) {
-				error(nextOp.getName() + " is a NOTIFICATION operation, which must deliver a response message", nextOp, ApiDescriptionPackage.Literals.OPERATION__MEP);
+				error(nextOp.getName() + " is a NOTIFICATION operation, which must deliver a response message", nextOp, ApiDescriptionPackage.eINSTANCE.getOperation_Mep()); // Literals.OPERATION__MEP);
 			}
 		}
 		// TODO what about "other" STRING (warning/info)? how to distinguish from unset MEP? 
-		
-		// note: it is possible to model operation w/o any message, for early stage (no MEP to be defined)
 	}
 }

@@ -95,7 +95,7 @@ channel BanksLoansInsightsChannel
 
 	
 message broker LoanBrokerAmqpProvider
-	exposes LoanBrokerExample
+	exposes BanksChannel, BanksLoansInsightsChannel, CreditBureauChannel, LoanBrokerChannel
 	at location "amqp.loanbroker.com"
 	via protocol AMQP
 

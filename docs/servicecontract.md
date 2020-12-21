@@ -4,6 +4,8 @@ author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019-2020.  All rights reserved.
 ---
 
+[Home](./index) &mdash; [Data Types](./datacontract) &mdash; [Bindings](./bindings) &mdash; [Provider and Client](./optionalparts) &mdash; [Tutorial](./tutorial) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
+
 Service Endpoint Contracts in MDSL
 ==================================
 
@@ -12,7 +14,7 @@ Service Endpoint Contracts in MDSL
 
 * Creation, review and evolution of [Elaborate API Descriptions](https://microservice-api-patterns.org/patterns/foundation/APIDescription) as featured in Microservice API Patterns (MAP), in forward engineering:
   * A context-sensitive, Eclipse-based editor for MDSL, developed with [Xtext](https://www.eclipse.org/Xtext/), is available [here](./updates/)
-  * Generators for platform-specific technologies such as Open API (f.k.a. Swagger), WSDL/SOAP, and gRPC  <!-- plus GQL; early prototypes/demonstrators available -->
+  * Generators for platform-specific technologies such as Open API (f.k.a. Swagger), WSDL/SOAP, gRPC  <!-- GQL: early prototype/demonstrators available (not fully tested yet) -->
 * Reverse engineering (future work):
   * Discover contracts, clients, providers in existing systems 
   * Analysis support (metrics)
@@ -22,6 +24,7 @@ Requirements/principles (wouldn't it be nice?):
 
 * Be quick, be human readable w/o tools
 * Abstract from WSDL, OAS, JSON, XSD w/o loosing detail/PIM specifics
+
 -->
 
 ## Concepts 
@@ -65,7 +68,9 @@ dataTransferRepresentation:
 	('structured' 'as' ts=typeSystem)?;
 ~~~
 
-Endpoint types correspond to ports in the Hexagonal Architecture terminology.
+Endpoint types correspond to ports in the Hexagonal Architecture terminology. <!-- [O] generate hexagon drawing -->
+
+<!-- TODO feature states, compensation, flows -->
 
 The notation used above is the [grammar language of Xtext](https://www.eclipse.org/Xtext/documentation/301_grammarlanguage.html) (which is close to that of antlr4). The full MSDL grammar can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext).
 
@@ -154,7 +159,7 @@ In this example, the error report is a simple numeric code (`400`); elaborate [e
 
 *Important note*: This MDSL feature is still under design and construction (view it as a technology preview); future versions of the MDSL documentation pages will provide more examples.
 
-The security `policy` also is modelled as an MDSL data contract; it can be used to define the various security assertions and protocol headers that exist (for instance, basic authentication in HTTP, as explained in the [OpenAPI specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securitySchemeObject)). *Important note*: This MDSL feature also still is under design and construction (view it as an incomplete technology preview); future versions of the MDSL documentation pages will provide more examples.
+The security `policy` also is modelled as an MDSL data contract; it can be used to define the various security assertions and protocol headers that exist (for instance, basic authentication in HTTP, as explained in the [OpenAPI specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securitySchemeObject)). *Important note*: This MDSL feature also still is under design and construction (view it as an incomplete [technology preview](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview)); future versions of the MDSL documentation pages will provide more examples.
 
 
 ## Technology Mappings

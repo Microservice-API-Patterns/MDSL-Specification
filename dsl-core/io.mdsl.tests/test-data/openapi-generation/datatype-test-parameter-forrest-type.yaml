@@ -2,13 +2,14 @@ openapi: 3.0.1
 info:
   title: TestAPI
   version: "1.0"
+servers: []
 tags:
 - name: TestEndpoint
   externalDocs:
-    url: https://microservice-api-patterns.org/patterns/responsibility/
+    description: The role of this endpoint is not specified.
+    url: ""
 paths:
-  /TestEndpoint:
-    description: ""
+  /TestEndpoint: {}
 components:
   schemas:
     RefType:

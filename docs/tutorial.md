@@ -4,6 +4,8 @@ author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ---
 
+[Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Type](./datacontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Bindings](./bindings) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
+
 MDSL Tutorial
 =============
 
@@ -196,10 +198,17 @@ exposes
   operation downloadSpreadsheet with responsibility RETRIEVAL_OPERATION
     expecting payload ID 
     delivering payload CSVSpreadsheet
-      reporting error "SheetNotFound" 
+      reporting error SheetNotFound "e204":ID<int> // 204: No Content
 
 API provider SpreadSheetExchangeAPIProvider
 offers SpreadSheetExchangeEndpoint
+at endpoint location "https://some.domain.name/relativePath"
+via protocol HTTP 
+  binding 
+   resource CSVResource
+    operation uploadSpreadsheet to PUT
+    operation downloadSpreadsheet to GET
+    report SheetNotFound realized as 204 with "No Content"
 
 API client SpreadSheetExchangeAPIClient
 consumes SpreadSheetExchangeEndpoint

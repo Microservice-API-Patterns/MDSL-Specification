@@ -4,6 +4,9 @@ author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ---
 
+[Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Type](./datacontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Bindings](./bindings) &mdash; [Tutorial](./tutorial) &mdash; [Tools](./tools)
+
+
 MDSL Grammar Quick Reference (Skeletons)
 ========================================
 
@@ -50,6 +53,8 @@ MAP defines the following *roles* (of endpoint types):
 
 And the *responsibilities* (of operations) are: 
 > COMPUTATION_FUNCTION | STATE_CREATION_OPERATION | RETRIEVAL_OPERATION |  STATE_TRANSITION_OPERATION
+
+<!--  TODO feature 2 new one if they stay: SReplO, STermO -->
 
 All these enum values correspond to Microservice API Patterns (MAP); go to the [pattern index](https://microservice-api-patterns.org/patterns/index) for quick access.
 
@@ -145,11 +150,14 @@ reporting
 
 The placeholder `[...]` resolves to a data contract (see above). The simplest one is `P`. Some more advances examples are: 
 
-* `error "BadRequest": {D<string>}`, 
-* `error <<Error_Report>>"resourceNotFound": {"errorCode":D<int>, "errorMessage":D<string>}+`, and 
-* `error <<Error_Report>>{("code402":D<int>, "notAuthorized":D<string>) | ("code403":D<int>, "anotherMessage":D<string>)}`.
+* `error BadRequest "MoreInformation": {D<string>} 
 
-<!-- TODO tbd: feature `analytics`? move examples to service contract page? -->
+<!--
+* `error <<Error_Report>>"resourceNotFound": {"errorCode":D<int>, "errorMessage":D<string>}+`
+* `error <<Error_Report>>{("code402":D<int>, "notAuthorized":D<string>) | ("code403":D<int>, "anotherMessage":D<string>)}`.
+-->
+
+<!-- TODO tbd: feature `status` and analytics`? move examples to service contract page? -->
 
 The report elements can be modeled as data types as described under [data contracts (schemas)](./datacontract). Examples are: 
 

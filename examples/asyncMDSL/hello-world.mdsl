@@ -9,7 +9,7 @@ produces message HelloMessage
 	delivering payload SampleDTO
 
 message broker HelloWorldAmqpProvider 
-exposes HelloWorldAsyncAPI
+exposes SayHello
 at location "amqp.example.com"
 via protocol AMQP
 

@@ -10,8 +10,8 @@ exposes
 
 API provider SampleAPIProvider1 
   offers SomeDemoContract 
-    at endpoint location "http://www.testdomain.io:80/path/subpath"
-    via protocol HTTP   
+    at endpoint location "http://www.testdomain.io:80"
+    via protocol HTTP binding resource SomeResource at "/path/subpath"
   	with endpoint SLA // provider1Endpoint1SLA
       type QUANTITATIVE // optional now
     	objective performanceSLO1 "responseTimeUnder" 5 seconds
@@ -26,17 +26,18 @@ API provider SampleAPIProvider1
      100 "every commercially reasonable effort, but not guaranteed"
   provider governance TWO_IN_PRODUCTION
   
-API provider sampleProvider
+API provider SampleProvider
 offers SomeDemoContract
 at endpoint location "http://www.tbc.io:80/path/subpath"
 via protocol HTTP // or other supported protocol
+binding resource SampleProvider
 under conditions "See http://www.tbc.io/terms-and-conditions.html"
 provider governance AGGRESSIVE_OBSOLESCENCE
 
 API client SampleAPIClient
 consumes SomeDemoContract
-from sampleProvider
-via protocol HTTP
+from SampleProvider
+via protocol HTTP binding resource X
 
 API gateway SampleAPIGatweway
   offers SomeDemoContract

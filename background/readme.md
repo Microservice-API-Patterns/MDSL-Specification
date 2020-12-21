@@ -1,6 +1,14 @@
 This folder contains pointers to background information and supporting tools.
 
-# Tools supporting MDSL
+# Microservice API Patterns (MAP)
+
+* MAP <https://microservice-api-patterns.org/> uses MDSL to feature patterns in action. 
+
+# Design Practice Repository (DPR)
+
+* <https://github.com/socadk/design-practice-repository> features MDSL in its Stepwise Service Design activity.
+
+# Other Tools supporting MDSL
 
 * Context Mapper has a MDSL generator, see [here](https://contextmapper.org/docs/mdsl/).
 

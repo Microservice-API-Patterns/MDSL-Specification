@@ -1,0 +1,93 @@
+openapi: 3.0.1
+info:
+  title: MAPDecoratorAndMIMETest
+  version: "1.0"
+servers:
+- url: https://some.sample.domain/mvcEndpoint
+tags:
+- name: FlexibleAndAdaptiveAPIProvider-self
+  externalDocs:
+    description: The role of this endpoint, offering a MultiRepresentationResource
+      contract, is Processing Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
+paths:
+  /https://some.sample.domain/mvcEndpoint:
+    summary: activity-oriented endpoint
+    put:
+      tags:
+      - FlexibleAndAdaptiveAPIProvider-self
+      summary: write only
+      description: This operation realizes the [State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html)
+        pattern.
+      operationId: self-testOperation1
+      parameters: []
+      requestBody:
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SampleDTOType'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SampleDTOType'
+      responses:
+        "200":
+          description: testOperation1 successful execution
+          content:
+            vnd.application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SampleDTOType'
+            plain/text:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SampleDTOType'
+    post:
+      tags:
+      - FlexibleAndAdaptiveAPIProvider-self
+      summary: read only
+      description: This operation realizes the [Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html)
+        pattern.
+      operationId: self-testOperation2
+      parameters: []
+      requestBody:
+        content:
+          vnd.application/json:
+            schema:
+              type: object
+              properties:
+                expecting:
+                  type: integer
+                  format: int32
+          vnd.application/xml:
+            schema:
+              type: object
+              properties:
+                expecting:
+                  type: integer
+                  format: int32
+      responses:
+        "200":
+          description: testOperation2 successful execution
+          content:
+            vnd.application/xml:
+              schema:
+                type: object
+            plain/text:
+              schema:
+                type: object
+components:
+  schemas:
+    SampleDTOType:
+      type: object
+      properties:
+        data:
+          type: integer
+          format: int32
+          nullable: true
+        formats:
+          minItems: 1
+          type: array
+          items:
+            type: string

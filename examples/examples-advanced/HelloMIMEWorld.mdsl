@@ -1,0 +1,24 @@
+API description HelloMIMEWorld2
+
+data type TestDTO1 "dto1": {"data":ID<int>, <<Wish_List>> "formats":D<string>+}
+
+endpoint type MultiRepresentationResource
+  exposes
+    operation testOperation with responsibility STATE_CREATION_OPERATION
+      expecting
+      	payload "expecting": TestDTO1
+      delivering
+        payload "delivering": TestDTO1*
+                                                   
+API provider FlexibleAndAdaptiveAPIProvider
+offers MultiRepresentationResource
+at endpoint location "https://some.sample.domain/apiEndpoint"
+via protocol HTTP 
+binding 
+  resource single // at "/{primaryIntegerKey}/{atLeastOneString}"
+    media type CMT1 as "application/json"
+    media type CMT2 as "application/xml"
+    operation testOperation to PUT
+      // all elements realized as BODY parameters
+      accepts "application/xml" "application/json"
+      replies CMT1 CMT2 "plain/text"

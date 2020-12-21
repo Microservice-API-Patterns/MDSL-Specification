@@ -8,17 +8,20 @@ copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ## TL;DR
 Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as Swagger, WSDL and <!-- gRPC --> Protocol Buffers. 
 
-<!-- 
-> If the URI of this page is `https://microservice-api-patterns.github.io/MDSL-Specification/index`, you are looking at the GitHub pages of the next version (technology preview)! Please refer to [https://microservice-api-patterns.github.io/MDSL-Specification/index](https://microservice-api-patterns.github.io/MDSL-Specification/index) for the current, publicly released open source version.
--->
-
 Quick links: 
 
-* Documentation pages (GitHub pages): [Tutorial](./tutorial), [quick reference](./quickreference)<!-- providing skeletons-->, [example](./examples)
-* Language and tools repository (GitHub): [Grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext), [examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples)
+* Documentation pages (these GitHub pages): 
+    * [Endpoint Type](./servicecontract), [Data Types](./datacontract), [Provider and Client](./optionalparts), [Bindings](./bindings), [Tutorial](./tutorial), [Quick Reference](./quickreference)<!-- providing skeletons-->
 * Tools: [Overview](./tools), [CLI](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli), [update site for editor (Eclipse plugin)](./updates/)
-* Generators: [Open API generator](./generators/open-api), [Protocol buffers generator](./generators/protocol-buffers), [Graphql generator](./generators/graphql), [Jolie generator](./generators/jolie), [Java «Modulith» generator](./generators/java), [Arbitrary textual generation with Freemarker](./generators/freemarker)
+    * Generators: [Open API generator](./generators/open-api), [Protocol buffers generator](./generators/protocol-buffers), [Graphql generator](./generators/graphql), [Jolie generator](./generators/jolie), [Java «Modulith» generator](./generators/java), [Arbitrary textual generation with Freemarker](./generators/freemarker)
+* Language and tools repository (GitHub): [XText grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext), [examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) folder
 
+<!--
+### Installation in Eclipse
+
+ * Update site: [https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
+ * The grammar can be found in the `dsl-core` project (more precisely, in the `io.mdsl./src/io.mdsl` folder of this project): [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) and [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) repository.
+-->
 
 ## Getting Started with MDSL
 

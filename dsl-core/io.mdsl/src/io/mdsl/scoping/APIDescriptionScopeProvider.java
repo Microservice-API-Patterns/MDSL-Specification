@@ -30,7 +30,7 @@ public class APIDescriptionScopeProvider extends AbstractAPIDescriptionScopeProv
 	public IScope getScope(EObject context, EReference reference) {
 
 		if (context instanceof AsyncConsumptionNoProtocolBinding
-				&& reference == ApiDescriptionPackage.Literals.ASYNC_CONSUMPTION_NO_PROTOCOL_BINDING__CHANNEL) {
+				&& reference == ApiDescriptionPackage.eINSTANCE.getAsyncConsumptionNoProtocolBinding_Channel()) { //  Literals.ASYNC_CONSUMPTION_NO_PROTOCOL_BINDING__CHANNEL) {
 			// TODO: should select only channels available from parent broker
 			EObject rootElement = EcoreUtil2.getRootContainer(context);
 			List<Channel> candidates = EcoreUtil2.getAllContentsOfType(rootElement, Channel.class);
@@ -38,7 +38,7 @@ public class APIDescriptionScopeProvider extends AbstractAPIDescriptionScopeProv
 		}
 
 		if (context instanceof AsyncConsumptionWithProtocolBinding
-				&& reference == ApiDescriptionPackage.Literals.ASYNC_CONSUMPTION_WITH_PROTOCOL_BINDING__CHANNEL) {
+				&& reference == ApiDescriptionPackage.eINSTANCE.getAsyncConsumptionWithProtocolBinding_Channel()) { // Literals.ASYNC_CONSUMPTION_WITH_PROTOCOL_BINDING__CHANNEL) {
 			EObject rootElement = EcoreUtil2.getRootContainer(context);
 			List<Channel> candidates = EcoreUtil2.getAllContentsOfType(rootElement, Channel.class);
 			return Scopes.scopeFor(candidates);

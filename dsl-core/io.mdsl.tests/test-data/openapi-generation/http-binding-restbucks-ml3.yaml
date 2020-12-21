@@ -1,0 +1,385 @@
+openapi: 3.0.1
+info:
+  title: RESTBucksHypermediaAPI
+  version: '"Maturity Level 3 (HATEOAS), example Version 0.2"'
+servers:
+- url: http://restbucks.com/order
+tags:
+- name: RESTBucksProvider-RESTBucksHome
+  externalDocs:
+    description: The role of this endpoint, offering a OrderManagementEndpoint contract,
+      is Processing Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
+- name: RESTBucksProvider-Orders
+  externalDocs:
+    description: The role of this endpoint, offering a OrderManagementEndpoint contract,
+      is Processing Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
+- name: RESTBucksProvider-PaymentResource
+  externalDocs:
+    description: The role of this endpoint, offering a OrderManagementEndpoint contract,
+      is Processing Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
+- name: RESTBucksProvider-ReceiptResource
+  externalDocs:
+    description: The role of this endpoint, offering a OrderManagementEndpoint contract,
+      is Processing Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
+paths:
+  /http://restbucks.com/order:
+    summary: activity-oriented endpoint
+    post:
+      tags:
+      - RESTBucksProvider-RESTBucksHome
+      summary: POST
+      description: POST
+      operationId: RESTBucksHome-placeOrder
+      requestBody:
+        content:
+          application/vnd.order+json:
+            schema:
+              $ref: '#/components/schemas/OrderDTO'
+          application/vnd.restbucks.order+xml:
+            schema:
+              $ref: '#/components/schemas/OrderDTO'
+      responses:
+        "200":
+          description: placeOrder successful execution
+          content:
+            application/vnd.restbucks.payment+xml:
+              schema:
+                type: object
+                properties:
+                  oid:
+                    type: integer
+                    format: int32
+            application/vnd.restbucks.order-payment+json:
+              schema:
+                type: object
+                properties:
+                  oid:
+                    type: integer
+                    format: int32
+          links:
+            payment:
+              operationId: RESTBucksHome-acceptPayment
+              parameters:
+                payment: PaymentDTO
+                resource: PaymentResource
+                verb: POST
+                cmt: PaymentRepresentationJSON
+              description: 'Targeted operation: acceptPayment'
+            extPayment:
+              operationId: RESTBucksHome-payExternally
+              parameters:
+                extPayment: PaymentDTO
+                resource: PaymentResource
+                verb: POST
+                cmt: PaymentRepresentationJSON
+              description: 'Targeted operation: payExternally'
+              server:
+                url: PaymentServerAddress
+            compensatingOperation:
+              operationId: cancelOrder
+  /http://restbucks.com/order/{id}:
+    summary: activity-oriented endpoint
+    get:
+      tags:
+      - RESTBucksProvider-Orders
+      summary: read only
+      description: This operation realizes the [Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html)
+        pattern.
+      operationId: Orders-get
+      parameters:
+      - name: id
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: get successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
+    put:
+      tags:
+      - RESTBucksProvider-Orders
+      summary: read and write
+      description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
+        pattern.
+      operationId: Orders-updateOrder
+      requestBody:
+        content:
+          application/vnd.restbucks.order-payment+json:
+            schema:
+              $ref: '#/components/schemas/OrderDTO'
+      responses:
+        "200":
+          description: updateOrder successful execution
+          content:
+            application/vnd.restbucks.order+json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    format: int32
+          links:
+            self:
+              operationId: unknownOperation
+              parameters:
+                resource: Orders
+                verb: POST
+                cmt: OrderRepresentationJSON
+            payment:
+              operationId: Orders-acceptPayment
+              parameters:
+                payment: PaymentDTO
+                resource: PaymentResource
+                verb: POST
+                cmt: PaymentRepresentationJSON
+              description: 'Targeted operation: acceptPayment'
+            extPayment:
+              operationId: Orders-payExternally
+              parameters:
+                extPayment: PaymentDTO
+                resource: PaymentResource
+                verb: POST
+                cmt: PaymentRepresentationJSON
+              description: 'Targeted operation: payExternally'
+              server:
+                url: PaymentServerAddress
+    delete:
+      tags:
+      - RESTBucksProvider-Orders
+      summary: read and write
+      description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
+        pattern.
+      operationId: Orders-cancelOrder
+      parameters:
+      - name: id
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: cancelOrder successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+    patch:
+      tags:
+      - RESTBucksProvider-Orders
+      summary: read and write
+      description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
+        pattern.
+      operationId: Orders-updateAmount
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newAmount:
+                  type: integer
+                  format: int32
+      responses:
+        "200":
+          description: updateAmount successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: integer
+                    format: int32
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  /http://restbucks.com/order/payment/{id}:
+    summary: activity-oriented endpoint
+    put:
+      tags:
+      - RESTBucksProvider-PaymentResource
+      summary: read and write
+      description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
+        pattern.
+      operationId: PaymentResource-acceptPayment
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentDTO'
+      responses:
+        "200":
+          description: acceptPayment successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+          links:
+            orderPaidAndReadyForPickUpAndAndDrinking:
+              operationId: unknownOperation
+              parameters:
+                resource: Orders
+                verb: POST
+                cmt: OrderRepresentationJSON
+        x-743:
+          description: n/a
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  info:
+                    type: string
+      security:
+      - OnlyAuthenticatedShoppers: []
+    post:
+      tags:
+      - RESTBucksProvider-PaymentResource
+      summary: read and write
+      description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
+        pattern.
+      operationId: PaymentResource-prepareOrderViaBarista
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int32
+      responses:
+        "200":
+          description: prepareOrderViaBarista successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+          links:
+            self:
+              operationId: unknownOperation
+              parameters:
+                resource: Orders
+                verb: POST
+                cmt: OrderRepresentationJSON
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  /http://restbucks.com/order/receipt/{id}:
+    summary: activity-oriented endpoint
+    patch:
+      tags:
+      - RESTBucksProvider-ReceiptResource
+      summary: read and write
+      description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
+        pattern.
+      operationId: ReceiptResource-handOutAndConcludeProcess
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int32
+      responses:
+        "200":
+          description: handOutAndConcludeProcess successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+          links:
+            forHereOrToGo:
+              operationId: ReceiptResource-print
+              parameters:
+                resource: RESTBucksHome
+                verb: POST
+                cmt: ReceiptRepresentationJSON
+        x-743:
+          description: n/a
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  info:
+                    type: string
+      security:
+      - OnlyAuthenticatedShoppers: []
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    OrderDTO:
+      minItems: 1
+      type: array
+      items:
+        type: object
+        properties:
+          milk:
+            type: string
+          size:
+            type: string
+          drink:
+            type: string
+          amount:
+            type: integer
+            format: int32
+    PaymentDTO:
+      type: object
+      properties:
+        means:
+          type: string
+        authToken:
+          type: string
+          format: binary
+        amount:
+          type: integer
+          format: int32
+  securitySchemes:
+    OnlyAuthenticatedShoppers:
+      type: http
+      description: Default Element Name (Feature NYI)
+      scheme: basic

@@ -1,0 +1,237 @@
+openapi: 3.0.1
+info:
+  title: HTTPBindingOptionsDemo
+  version: "1.0"
+servers:
+- url: /endpoint1
+- url: /endpoint21
+- url: /endpoint22
+- url: /endpoint42
+tags:
+- name: NameHeuristicEndpointProvider1-self1
+  externalDocs:
+    description: The role of this endpoint, offering a HeuristicEndpoint1 contract,
+      is Information Holder Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
+- name: NameHeuristicEndpointProvider21-self2
+  externalDocs:
+    description: The role of this endpoint, offering a HeuristicEndpoint2 contract,
+      is Processing Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
+- name: NameHeuristicEndpointProvider22-self3
+  externalDocs:
+    description: The role of this endpoint, offering a HeuristicEndpoint2 contract,
+      is Processing Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
+- name: NameHeuristicEndpointProvider42-self
+  externalDocs:
+    description: The role of this endpoint, offering a HeuristicEndpoint3 contract,
+      is "Another Role (not in MAP)"(non-pattern role)
+    url: ""
+paths:
+  /endpoint1/:
+    summary: general data-oriented endpoint
+    get:
+      tags:
+      - NameHeuristicEndpointProvider1-self1
+      summary: POST
+      description: POST
+      operationId: self1-createSomething
+      parameters:
+      - name: dataString
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: metadataString
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: intIdentifier
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: stringLink
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: createSomething successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericParameterP'
+  /endpoint21/:
+    summary: activity-oriented endpoint
+    post:
+      tags:
+      - NameHeuristicEndpointProvider21-self2
+      summary: HEAD
+      description: HEAD
+      operationId: self2-readSomething
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListOfBasicAtomicParameterTypes'
+      responses:
+        "200":
+          description: readSomething successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericParameterP'
+  /endpoint22/:
+    summary: activity-oriented endpoint
+    post:
+      tags:
+      - NameHeuristicEndpointProvider22-self3
+      summary: HEAD
+      description: HEAD
+      operationId: self3-readSomething
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListOfBasicAtomicParameterTypes'
+      responses:
+        "200":
+          description: readSomething successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericParameterP'
+  /endpoint42/:
+    summary: 'main repsonsibility: "Another Role (not in MAP)"'
+  /HeuristicEndpoint4:
+    put:
+      tags:
+      - HeuristicEndpoint4
+      summary: PUT
+      description: PUT
+      operationId: updateSomething
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListOfBasicAtomicParameterTypes'
+      responses:
+        "200":
+          description: updateSomething successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericParameterP'
+    patch:
+      tags:
+      - HeuristicEndpoint4
+      description: unspecified operation responsibility
+      operationId: patchSomething
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListOfBasicAtomicParameterTypes'
+      responses:
+        "200":
+          description: patchSomething successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericParameterP'
+  /HeuristicEndpoint5:
+    post:
+      tags:
+      - HeuristicEndpoint5
+      summary: POST
+      description: POST
+      operationId: removeSomething
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListOfBasicAtomicParameterTypes'
+      responses:
+        "200":
+          description: removeSomething successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericParameterP'
+    delete:
+      tags:
+      - HeuristicEndpoint5
+      description: unspecified operation responsibility
+      operationId: deleteSomething
+      parameters:
+      - name: dataString
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: metadataString
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: intIdentifier
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: stringLink
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: deleteSomething successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericParameterP'
+components:
+  schemas:
+    GenericParameterP:
+      type: object
+    ListOfBasicAtomicParameterTypes:
+      type: object
+      properties:
+        dataString:
+          type: string
+        metadataString:
+          type: string
+        intIdentifier:
+          type: integer
+          format: int32
+        stringLink:
+          type: string
+    PersonAsFlatParamaterTree:
+      type: object
+      properties:
+        person:
+          type: string
+        street:
+          type: string
+        zip:
+          type: integer
+          format: int32
+        city:
+          type: string
+        phoneNumbers:
+          minItems: 1
+          type: array
+          items:
+            type: string

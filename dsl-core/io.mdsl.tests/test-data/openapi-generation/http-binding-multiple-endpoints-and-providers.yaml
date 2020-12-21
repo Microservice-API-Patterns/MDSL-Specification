@@ -1,0 +1,294 @@
+openapi: 3.0.1
+info:
+  title: HTTPMultipleBindingsTest
+  version: "1.0"
+servers:
+- url: /providerEndpoint02
+- url: /providerEndpoint03
+tags:
+- name: HelloHTTPEndpointNoBinding2-Home
+  externalDocs:
+    description: The role of this endpoint, offering a HTTPSampleContract01 contract,
+      is not specified.
+    url: ""
+- name: HelloHTTPEndpointNoBinding3-Home
+  externalDocs:
+    description: The role of this endpoint, offering a HTTPSampleContract01 contract,
+      is not specified.
+    url: ""
+- name: HelloHTTPEndpointNoBinding3-Subresource1
+  externalDocs:
+    description: The role of this endpoint, offering a HTTPSampleContract01 contract,
+      is not specified.
+    url: ""
+paths:
+  /HTTPSampleContract00:
+    get:
+      tags:
+      - HTTPSampleContract00
+      description: unspecified operation responsibility
+      operationId: getOperation
+      parameters:
+      - name: aQueryParameter
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: abc
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: getOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedResponseDTR'
+    put:
+      tags:
+      - HTTPSampleContract00
+      description: unspecified operation responsibility
+      operationId: putOperation
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlatParameterTree'
+      responses:
+        "200":
+          description: putOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedResponseDTR'
+    post:
+      tags:
+      - HTTPSampleContract00
+      description: unspecified operation responsibility
+      operationId: createOperation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedParameterTree'
+      responses:
+        "200":
+          description: createOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlatResponseDTR'
+    delete:
+      tags:
+      - HTTPSampleContract00
+      description: unspecified operation responsibility
+      operationId: deleteOperation
+      parameters:
+      - name: id
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: md
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: dInt
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: lString
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: dLong
+        in: query
+        required: true
+        schema:
+          type: number
+      - name: Parameter1
+        in: query
+        required: true
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: deleteOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedResponseDTR'
+    patch:
+      tags:
+      - HTTPSampleContract00
+      description: unspecified operation responsibility
+      operationId: patchOperation
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlatParameterTree'
+      responses:
+        "200":
+          description: patchOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlatParameterTree'
+  /providerEndpoint02: {}
+  /providerEndpoint03/:
+    get:
+      tags:
+      - HelloHTTPEndpointNoBinding3-Home
+      description: unspecified operation responsibility
+      operationId: Home-getOperation
+      parameters:
+      - name: abc
+        in: cookie
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: getOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedResponseDTR'
+    put:
+      tags:
+      - HelloHTTPEndpointNoBinding3-Home
+      description: unspecified operation responsibility
+      operationId: Home-createOperation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedParameterTree'
+      responses:
+        "200":
+          description: createOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlatResponseDTR'
+    post:
+      tags:
+      - HelloHTTPEndpointNoBinding3-Home
+      description: unspecified operation responsibility
+      operationId: Home-putOperation
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlatParameterTree'
+      responses:
+        "200":
+          description: putOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedResponseDTR'
+  /providerEndpoint03/subresource1:
+    put:
+      tags:
+      - HelloHTTPEndpointNoBinding3-Subresource1
+      description: unspecified operation responsibility
+      operationId: Subresource1-createOperation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedParameterTree'
+      responses:
+        "200":
+          description: createOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlatResponseDTR'
+    post:
+      tags:
+      - HelloHTTPEndpointNoBinding3-Subresource1
+      description: unspecified operation responsibility
+      operationId: Subresource1-putOperation
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlatParameterTree'
+      responses:
+        "200":
+          description: putOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedResponseDTR'
+components:
+  schemas:
+    FlatParameterTree:
+      type: object
+      properties:
+        id:
+          type: string
+        md:
+          type: string
+        dInt:
+          type: integer
+          format: int32
+        lString:
+          type: string
+        dLong:
+          type: number
+        anonymous1:
+          type: boolean
+    NestedParameterTree:
+      type: object
+      properties:
+        npt1:
+          type: string
+        npt2:
+          $ref: '#/components/schemas/FlatParameterTree'
+    FlatResponseDTR:
+      type: object
+      properties:
+        fr1:
+          type: string
+        fr2:
+          type: string
+    NestedResponseDTR:
+      type: object
+      properties:
+        r1:
+          type: string
+        r2:
+          type: string
+        anonymous2:
+          $ref: '#/components/schemas/FlatResponseDTR'
+    AtomicParameter:
+      type: object
+      properties:
+        abc:
+          type: integer
+          format: int32
+    AtomicParameterList:
+      type: object
+      properties:
+        abc:
+          type: integer
+          format: int32
+        def:
+          type: integer
+          format: int32

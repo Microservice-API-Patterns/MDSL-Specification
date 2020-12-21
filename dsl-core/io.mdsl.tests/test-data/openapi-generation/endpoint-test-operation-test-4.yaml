@@ -2,39 +2,39 @@ openapi: 3.0.1
 info:
   title: TestAPI
   version: "1.0"
+servers: []
 tags:
 - name: TestEndpoint
-  description: general data-oriented endpoint
   externalDocs:
-    description: INFORMATION_HOLDER_RESOURCE
-    url: https://microservice-api-patterns.org/patterns/responsibility/
+    description: The role of this endpoint is Information Holder Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
 paths:
   /TestEndpoint:
     summary: general data-oriented endpoint
-    description: 'MAP link: INFORMATION_HOLDER_RESOURCE available at [the MAP website](https://microservice-api-patterns.org/)'
-    post:
+    put:
       tags:
       - TestEndpoint
-      summary: Creates new Test object
-      description: Creates new Test object
-      operationId: createTest
+      summary: Puts a new test object (inlined data)
+      description: Puts a new test object (inlined data)
+      operationId: putTest
+      parameters: []
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                attr1:
+                someText:
                   type: string
       responses:
         "200":
-          description: response message payload (success case)
+          description: putTest successful execution
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  attr2:
-                    type: string
+                  flag:
+                    type: boolean
 components:
   schemas: {}

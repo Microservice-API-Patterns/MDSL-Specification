@@ -17,7 +17,7 @@ import io.swagger.v3.parser.core.models.SwaggerParseResult;
 /**
  * Generates an OpenAPI specification with an MDSL model as input.
  * 
- * @author ska
+ * @author ska, socadk
  *
  */
 public class OpenAPIGenerator extends AbstractMDSLGenerator {

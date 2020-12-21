@@ -4,6 +4,8 @@ author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ---
 
+[Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Bindings](./bindings) &mdash; [Tutorial](./tutorial) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
+
 Data Contracts and Schemas in MDSL
 ==================================
 
@@ -15,6 +17,7 @@ MDSL aims at supporting agile modeling. Any service API exposes a published lang
 * Service Level Objectives (SLOs) and/or Service Level Indicators (SLIs) that are part of [Service Level Agreements (SLAs)](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ServiceLevelAgreement)
 * Data Transfer Objects (DTOs) or, more precisely, Data Transfer Representations (DTRs) 
 
+<!-- TODO feature link types, event types -->
 
 ## Concepts
 

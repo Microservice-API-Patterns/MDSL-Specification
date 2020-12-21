@@ -22,21 +22,21 @@ public class EndpointContractValidator extends AbstractMDSLValidator {
 		// not needed for classes used as ComposedCheck
 	}
 	
+	// TODO 8tbc) disable this one? 
 	@Check
 	public void dataContractValidator(final ServiceSpecification specRoot) {
-		info("MDSL API Linter activated, checking semantic rules in " + specRoot.getName(), specRoot, ApiDescriptionPackage.Literals.SERVICE_SPECIFICATION__NAME);
+		info("MDSL API Linter activated, checking semantic rules in " + specRoot.getName(), specRoot, ApiDescriptionPackage.eINSTANCE.getServiceSpecification_Name()); // Literals.SERVICE_SPECIFICATION__NAME);
 	}
-	
 	
 	@Check
 	public void reportContractSize(EndpointContract epc) {
 		int opsInContract = epc.getOps().size();
 		
-		if(opsInContract>7) {
-			warning(epc.getName() + " exposes " + opsInContract + " operation(s), more than a single HTTP resource can support in its unified method/verb interface", epc, ApiDescriptionPackage.Literals.ENDPOINT_CONTRACT__NAME);		
+		if(opsInContract>5) {
+			warning(epc.getName() + " exposes " + opsInContract + " operation(s), more than a single HTTP resource supports in its unified method/verb interface. Split the endpoint type into multiple resources in an HTTP binding before mapping to OpenAPI.", epc, ApiDescriptionPackage.eINSTANCE.getEndpointContract_Name()); // Literals.ENDPOINT_CONTRACT__NAME);		
 		}
 		else {
-			info(epc.getName() + " exposes " + opsInContract + " operation(s)", epc, ApiDescriptionPackage.Literals.ENDPOINT_CONTRACT__NAME);
+			info(epc.getName() + " exposes " + opsInContract + " operation(s)", epc, ApiDescriptionPackage.eINSTANCE.getEndpointContract_Name()); // Literals.ENDPOINT_CONTRACT__NAME);
 		}
 	}
 }

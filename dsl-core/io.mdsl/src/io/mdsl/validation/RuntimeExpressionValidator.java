@@ -24,7 +24,7 @@ public class RuntimeExpressionValidator extends AbstractMDSLValidator {
 		if (!clausole.getSource().matches(this.runtimeExpressionRegex)) {
 
 			error("Incorrect format for the expression. Format is $message.(payload | header)#/<path>.", clausole,
-					ApiDescriptionPackage.Literals.CORRELATION_ID_WHERE_CLAUSE__SOURCE);
+					ApiDescriptionPackage.eINSTANCE.getCorrelationIdWhereClause_Source()); // Literals.CORRELATION_ID_WHERE_CLAUSE__SOURCE);
 
 		}
 
@@ -36,7 +36,7 @@ public class RuntimeExpressionValidator extends AbstractMDSLValidator {
 		if (!clausole.getLeftExp().matches(this.runtimeExpressionRegex)) {
 
 			error("Incorrect format for the left expression. Format is $message.(payload | header)#/<path>.", clausole,
-					ApiDescriptionPackage.Literals.CONSUMPTION_WHERE_CLAUSES__LEFT_EXP);
+					ApiDescriptionPackage.eINSTANCE.getConsumptionWhereClauses_LeftExp()); // Literals.CONSUMPTION_WHERE_CLAUSES__LEFT_EXP);
 
 		}
 
@@ -61,17 +61,17 @@ public class RuntimeExpressionValidator extends AbstractMDSLValidator {
 
 		if (policy.getValue() == OASSecurity.BASIC_AUTHENTICATION_VALUE && policyExpression != null) {
 			warning("Expression not needed when using BASIC_AUTHENTICATION.", endpoint,
-					ApiDescriptionPackage.Literals.ASYNC_ENDPOINT__SECURITY_POLICY_EXPRESSION);
+					ApiDescriptionPackage.eINSTANCE.getAsyncEndpoint_SecurityPolicyExpression()); // Literals.ASYNC_ENDPOINT__SECURITY_POLICY_EXPRESSION);
 		}
 
 		if (policy.getValue() == OASSecurity.API_KEY_VALUE) {
 			if (policyExpression == null) {
 				warning("A policy expression is required for API_KEY. Consider to specify where to find the API_KEY in the message. Example: using API_KEY in \"$message.header#/apiKey\"",
-						endpoint, ApiDescriptionPackage.Literals.ASYNC_ENDPOINT__SECURITY_POLICY);
+						endpoint, ApiDescriptionPackage.eINSTANCE.getAsyncEndpoint_SecurityPolicy()); // Literals.ASYNC_ENDPOINT__SECURITY_POLICY);
 			} else if (!policyExpression.matches(this.runtimeExpressionRegex)) {
 
 				error("Incorrect format for the security policy expression. Format is $message.(payload | header)#/<path>.",
-						endpoint, ApiDescriptionPackage.Literals.ASYNC_ENDPOINT__SECURITY_POLICY_EXPRESSION);
+						endpoint, ApiDescriptionPackage.eINSTANCE.getAsyncEndpoint_SecurityPolicyExpression()); // Literals.ASYNC_ENDPOINT__SECURITY_POLICY_EXPRESSION);
 
 			}
 		}

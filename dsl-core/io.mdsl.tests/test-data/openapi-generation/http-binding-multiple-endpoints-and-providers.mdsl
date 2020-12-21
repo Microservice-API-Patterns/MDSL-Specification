@@ -1,0 +1,95 @@
+
+API description HTTPMultipleBindingsTest
+
+data type FlatParameterTree {"id":ID<string>, "md":MD<string>, "dInt": D<int>, "lString": L<string>, "dLong": D<long>, D<bool>}
+data type NestedParameterTree {"npt1":D<string>, "npt2":FlatParameterTree}
+data type FlatResponseDTR {"fr1":D<string>, "fr2":MD<string>}
+data type NestedResponseDTR {"r1":ID<string>, "r2":L<string>, FlatResponseDTR}
+data type AtomicParameter "abc":D<int>
+data type AtomicParameterList ("abc":D<int>, "def":D<int>)
+
+endpoint type HTTPSampleContract00
+  exposes
+    operation createOperation 
+      expecting
+        payload NestedParameterTree
+      delivering
+        payload FlatResponseDTR
+    operation getOperation 
+      expecting
+        payload ("aQueryParameter": D<string>, "abc":D<int>)
+      delivering
+        payload "queryResponse": NestedResponseDTR
+    operation putOperation 
+      expecting
+        payload FlatParameterTree
+      delivering
+        payload NestedResponseDTR
+    operation patchOperation 
+      expecting
+        payload FlatParameterTree
+      delivering
+        payload FlatParameterTree 
+    operation deleteOperation
+      expecting
+        payload FlatParameterTree
+      delivering
+        payload NestedResponseDTR    
+
+endpoint type HTTPSampleContract01
+  exposes
+    operation createOperation  
+      expecting
+        payload NestedParameterTree
+      delivering
+        payload FlatResponseDTR
+    operation getOperation 
+      expecting
+        payload AtomicParameter 
+      delivering
+        payload "queryResponse": NestedResponseDTR
+    operation putOperation 
+      expecting
+        payload FlatParameterTree
+      delivering
+        payload NestedResponseDTR
+    operation patchOperation 
+      expecting
+        payload FlatParameterTree
+      delivering
+        payload FlatParameterTree 
+    operation deleteOperation
+      expecting
+        payload FlatParameterTree
+      delivering
+        payload NestedResponseDTR    
+
+// no provider defined for HTTPBindingTest00
+
+API provider HelloHTTPEndpointNoBinding1
+offers HTTPSampleContract01
+// at endpoint location "/providerEndpoint01" // URI ignored, which is correct (validator needed!)
+// no protocol binding
+  // no resources defined
+    // no operations defined
+    
+API provider HelloHTTPEndpointNoBinding2
+offers HTTPSampleContract01
+at endpoint location "/providerEndpoint02"
+via protocol HTTP binding 
+resource Home // no relative URI here
+    // no operations defined, therefore not mapped
+    
+API provider HelloHTTPEndpointNoBinding3
+offers HTTPSampleContract01
+at endpoint location "/providerEndpoint03"
+via protocol HTTP binding 
+resource Home at "/"
+  operation createOperation to PUT 
+  operation putOperation to POST 
+  operation getOperation to GET
+    element "abc" realized as COOKIE parameter
+  // other operations not  bound
+resource Subresource1 at "subresource1" 
+  operation createOperation to PUT
+  operation putOperation to POST

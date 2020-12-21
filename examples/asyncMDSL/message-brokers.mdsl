@@ -1,0 +1,46 @@
+// Will generate two yaml files
+// - message-brokers-group-0-asyncapi.yaml: contains BrokerA and BrokerB (and channels A,B,C)
+// - message-brokers-group-1-asyncapi.yaml: contains BrokerC (and only channel B)
+
+API description BrokersGroupExample
+
+channel ChannelA
+of type POINT_TO_POINT
+on path "channel-logical-path-A"
+produces message MessageA
+   delivering payload D
+
+channel ChannelB
+of type POINT_TO_POINT
+on path "channel-logical-path-B"
+produces message MessageB
+   delivering payload D
+
+channel ChannelC
+of type POINT_TO_POINT
+on path "channel-logical-path-C"
+produces message MessageC
+   delivering payload D
+  
+channel ChannelD
+of type POINT_TO_POINT
+on path "channel-logical-path-D"
+produces message MessageD
+   delivering payload D
+
+
+message broker BrokerA 
+exposes ChannelA, ChannelB, ChannelC
+at location "amqp.example.com"
+via protocol AMQP
+
+message broker BrokerB
+exposes ChannelB, ChannelC, ChannelA
+at location "amqp.example.com"
+via protocol AMQP
+
+
+message broker BrokerC
+exposes ChannelB
+at location "amq2.example.com"
+via protocol AMQP

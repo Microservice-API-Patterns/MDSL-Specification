@@ -15,22 +15,24 @@ data type Cell {"formula":D<string>
 
 endpoint type SpreadSheetExchangeEndpoint serves as DATA_TRANSFER_RESOURCE
 exposes 
-  operation uploadSpreadheet with responsibility STATE_CREATION_OPERATION
+  operation uploadSpreadsheet with responsibility STATE_CREATION_OPERATION
     expecting payload CSVSpreadsheet
     delivering payload {"successFlag":D<bool>, ID}
     
-  operation downloadCSVFile with responsibility RETRIEVAL_OPERATION
+  operation downloadSpreadsheet with responsibility RETRIEVAL_OPERATION
     expecting payload ID 
     delivering payload CSVSpreadsheet
-      reporting error "204":ID<int> // 204: No Content, aka "SheetNotFound" 
+      reporting error SheetNotFound "e204":ID<int> // 204: No Content
 
 API provider SpreadSheetExchangeAPIProvider
 offers SpreadSheetExchangeEndpoint
 at endpoint location "https://some.domain.name/relativePath"
-via protocol HTTP
+via protocol HTTP 
   binding 
+   resource CSVResource
     operation uploadSpreadsheet to PUT
     operation downloadSpreadsheet to GET
+    report SheetNotFound realized as 204 with "No Content"
 
 API client SpreadSheetExchangeAPIClient
 consumes SpreadSheetExchangeEndpoint

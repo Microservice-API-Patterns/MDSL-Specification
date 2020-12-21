@@ -2,45 +2,52 @@ openapi: 3.0.1
 info:
   title: TestAPI
   version: "1.0"
+servers: []
 tags:
 - name: TestEndpoint
-  description: general data-oriented endpoint
   externalDocs:
-    description: INFORMATION_HOLDER_RESOURCE
-    url: https://microservice-api-patterns.org/patterns/responsibility/
+    description: The role of this endpoint is Information Holder Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
 paths:
   /TestEndpoint:
     summary: general data-oriented endpoint
-    description: 'MAP link: INFORMATION_HOLDER_RESOURCE available at [the MAP website](https://microservice-api-patterns.org/)'
-    get:
-      tags:
-      - TestEndpoint
-      summary: Gets a Test object
-      description: Gets a Test object
-      operationId: getTest
-      responses:
-        "200":
-          description: response message payload (success case)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Test'
     post:
       tags:
       - TestEndpoint
       summary: Creates new Test object
       description: Creates new Test object
       operationId: postTest
+      parameters: []
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Test'
+              $ref: '#/components/schemas/TestData1'
       responses:
         "200":
           description: no return value
           content: {}
+    patch:
+      tags:
+      - TestEndpoint
+      summary: Updates a Test object partially
+      description: Updates a Test object partially
+      operationId: patchTest
+      responses:
+        "200":
+          description: patchTest successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestData2'
 components:
   schemas:
-    Test:
+    TestData1:
+      type: object
+      properties:
+        testData1:
+          type: string
+    TestData2:
+      type: object
+    TestData3:
       type: object

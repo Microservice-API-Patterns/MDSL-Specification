@@ -21,24 +21,24 @@ public class OneWayChannelValidator extends AbstractMDSLValidator {
 
 		if (channel.isPublish() && msg.isExpectingPayload()) {
 			error("Message '" + msg.getName() + "' is defined as a PUBLISH channel. Change 'expecting' to 'delivering'.",
-					msg, ApiDescriptionPackage.Literals.MESSAGE__EXPECTING_PAYLOAD);
+					msg, ApiDescriptionPackage.eINSTANCE.getMessage_ExpectingPayload()); // Literals.MESSAGE__EXPECTING_PAYLOAD);
 		}
 
 		if (channel.isSubscribe() && msg.isDeliveringPayload()) {
 			error("Message '" + msg.getName()
 					+ "' is defined as a SUBSCRIBE channel. Change 'delivering' to 'expecting'.", msg,
-					ApiDescriptionPackage.Literals.MESSAGE__DELIVERING_PAYLOAD);
+					ApiDescriptionPackage.eINSTANCE.getMessage_ExpectingPayload()); // Literals.MESSAGE__DELIVERING_PAYLOAD);
 		}
 		
 		if (channel.isPublish() && msg.isExpectingPayload()) {
 			error("Message '" + msg.getName() + "' is defined as a PUBLISH channel. Change 'expecting' to 'delivering'.",
-					msg, ApiDescriptionPackage.Literals.MESSAGE__EXPECTING_PAYLOAD);
+					msg, ApiDescriptionPackage.eINSTANCE.getMessage_ExpectingPayload()); // Literals.MESSAGE__EXPECTING_PAYLOAD);
 		}
 
 		if (channel.isSubscribe() && msg.isDeliveringPayload()) {
 			error("Message '" + msg.getName()
 					+ "' is defined as a SUBSCRIBE channel. Change 'delivering' to 'expecting'.", msg,
-					ApiDescriptionPackage.Literals.MESSAGE__DELIVERING_PAYLOAD);
+					ApiDescriptionPackage.eINSTANCE.getMessage_ExpectingPayload()); // Literals.MESSAGE__DELIVERING_PAYLOAD);
 		}
 
 	}

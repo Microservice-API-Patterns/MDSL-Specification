@@ -14,6 +14,6 @@ endpoint type TestEndpoint
 API provider TestEndpointProvider
 	offers TestEndpoint
 	at endpoint location "/endpoint"
-	via protocol HTTP binding operation doSomethingJust4Test to GET
+	via protocol HTTP binding resource Home at "/home" operation doSomethingJust4Test to GET
 
 IPA

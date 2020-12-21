@@ -1,0 +1,54 @@
+API description HelloCRUDWorld 
+
+data type TestDTO1 "dto1": {"dtoKey1":ID<int>, "dtoValue":D<string>}*
+data type TestDTO2 "dto2a": {"dtoKey":ID<int>?, "dto1Nested":TestDTO1*}
+data type TestDTO2a "apl": ("a1":ID<int>?, "a2":D<string>)* // * not supported yet
+data type TestDTO3 "noDTOButInt": D<int>
+
+endpoint type SampleEntityInformationHolder
+  exposes
+    operation createOp // with responsibility STATE_CREATION_OPERATION
+      expecting
+        headers {"h1":D<string>, "h2":D<int>} // should not be a deep tree but AP, APL or flat PT
+        // TODO id strings "expecting" and "delivering" not used, can they go to description if present?
+        payload "expecting": {"primaryIntegerKey":ID<int>, "atLeastOneString":D<string>+} 
+      delivering
+        payload "delivering": TestDTO2+
+    operation getOp
+      expecting
+      	payload TestDTO2*
+      	// payload "dto2": {"dtoKey":ID<int>?, "dto1Nested":TestDTO1*}*
+        // payload "someData":D<string>+ 
+        // payload {"primaryKey":ID<int>, "someData":D<string>+} 
+      delivering
+        payload "delivering": TestDTO2 // TestDTO1*
+    operation updateOp // with responsibility STATE_CREATION_OPERATION
+      expecting
+        payload "updateObject": {"dtoKey":ID<int>?, "dto1Nested":TestDTO1*}*
+      delivering
+        payload TestDTO1?
+    operation deleteOp
+      expecting
+        // description is there but not "primaryKey" (hard coded tbc)?
+        payload "primaryKey":ID<int> 
+      // delivering
+        // payload "successCode" // "successCode" text not used, answer is an empty "object" (ok)  
+                                                   
+API provider SampleAPIProvider
+offers SampleEntityInformationHolder
+at endpoint location "https://some.sample.domain/apiEndpoint"
+via protocol HTTP 
+binding 
+  resource Home at "/eihHome/{primaryIntegerKey}/{atLeastOneString}"
+    operation createOp to PUT
+      // element "h1" realized as HEADER parameter // must be
+      // element h2 realized as HEADER parameter // must be
+      all elements realized as QUERY parameters
+      // all elements realized as COOKIE parameters
+      // all elements realized as HEADER parameters
+      // all elements realized as PATH parameters
+    operation getOp to GET
+      all elements realized as QUERY parameters
+      // all elements realized as COOKIE parameters
+      // all elements realized as HEADER parameters
+      // all elements realized as PATH parameters

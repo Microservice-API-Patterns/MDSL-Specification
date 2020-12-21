@@ -1,0 +1,37 @@
+API description ProductManagement version "v0.0.1"
+
+data type ProductDescription "productDescription":D<int> // P /* defined incompletely */
+data type Money {"currency":D<int>, "amount":D<int>} /* defined incompletely, but a bit more precisely */
+data type ErrorReport {"rootCause":D<string>, "correctiveAction":D<string>}
+
+endpoint type ProductManagementService
+exposes 
+  operation define
+    expecting payload "productDescription": ProductDescription
+    delivering payload "successAck": D<bool>
+      // technology-neutral error reporting (to be bound to OAS/HTTP, gRPC, Java, Jolie):
+      reporting error DuplicateEntry D<string>
+    // technology-neutral security policy (to be bound to protocols and platforms):
+    protected by policy BasicAuthentication "UserIdPassword": {"userId":ID<string>, "password":MD<string>}
+  operation updatePrice /* optional: "in REQUEST_REPLY conversation" */
+    expecting payload "price": Money  
+    delivering payload "aVoidResponse": D<void>
+    // not delivering any payload, just a transport-level status code
+ 
+ API provider ProductManagementWebServiceProvider
+  offers ProductManagementService
+  at endpoint location "http://www.tbc.io:80/path/subpath"
+  via protocol HTTP  
+    binding 
+     resource PMSResource at "/products/{productId}" // PATH parameter (implicit)
+      operation define to POST 
+        // element "productDescription" realized as BODY parameter
+        all elements realized as BODY parameters
+        report DuplicateEntry realized as 412 with "DuplicateEntry"
+        policy BasicAuthentication realized as BASIC_AUTHENTICATION
+        accepts "application/json"// defined at https://www.iana.org/assignments/media-types/media-types.xhtml
+        replies "application/vnd.custom-mediatype-for-productDTO-v1" // custom media type 
+      
+      operation updatePrice to PATCH at "/products/{productId}/price"
+        element "currency" realized as QUERY parameter
+        element "amount" realized as QUERY parameter

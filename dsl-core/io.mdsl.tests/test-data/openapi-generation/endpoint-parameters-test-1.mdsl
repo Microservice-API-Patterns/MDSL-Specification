@@ -1,6 +1,6 @@
 API description TestAPI
 
-data type Test P
+data type Test ID<long> // P
 
 endpoint type TestEndpoint
   serves as INFORMATION_HOLDER_RESOURCE

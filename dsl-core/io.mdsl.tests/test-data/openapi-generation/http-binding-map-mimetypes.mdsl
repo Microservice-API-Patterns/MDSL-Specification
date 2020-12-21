@@ -1,0 +1,31 @@
+API description MAPDecoratorAndMIMETest usage context PUBLIC_API for FRONTEND_INTEGRATION 
+
+data type SampleDTOType <<Annotated_Parameter_Collection>> "testDTO": {"data":ID<int>?, <<Wish_List>> "formats":MD<string>+}
+
+endpoint type MultiRepresentationResource serves as PROCESSING_RESOURCE
+  exposes
+    operation testOperation1 with responsibility STATE_CREATION_OPERATION
+      expecting
+      	payload "expecting": SampleDTOType
+      delivering
+        payload "delivering": SampleDTOType*
+    operation testOperation2 with responsibility RETRIEVAL_OPERATION
+      expecting
+      	payload "expecting": D<int>
+      delivering
+        payload "deliveringSomeData" // becomes anonymous object at present
+                                                           
+API provider FlexibleAndAdaptiveAPIProvider
+offers MultiRepresentationResource
+at endpoint location "https://some.sample.domain/mvcEndpoint"
+via protocol HTTP 
+binding 
+  resource self // at "/{primaryIntegerKey}/{atLeastOneString}"
+    media type CMT1 as "vnd.application/json"
+    media type CMT2 as "vnd.application/xml"
+    operation testOperation1 to PUT
+      accepts "application/xml" "application/json"
+      replies CMT1 "plain/text"
+    operation testOperation2 to POST
+      accepts CMT1 CMT2 
+      replies "plain/text" CMT2

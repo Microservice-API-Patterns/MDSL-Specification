@@ -111,13 +111,16 @@ Once you imported the project into Eclipse it is likely that you will have build
     5. Press _Select All_ and then _Next >_.
     6. Finish the installation wizard and restart Eclipse.
 
-## Bumping Snapshot Version
-To update all the POM and MANIFEST files to a new snapshot version use the following two commands:
+## Upgrading Snapshot Version
+To update all the POM and MANIFEST files to a new snapshot version, use the following two commands:
 
  1. `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=x.y.z-SNAPSHOT` (replace _x.y.z_ with the preferred version)
- 2. `mvn org.eclipse.tycho:tycho-versions-plugin:1.2.0:update-eclipse-metadata` (do *not* replace 1.2.0, the version of the Tycho plugin)
+ 2. `mvn org.eclipse.tycho:tycho-versions-plugin:1.2.0:update-eclipse-metadata` (do *not* replace 1.2.0, which is the version of the Tycho plugin)
  
 Having the two commands executed, you can commit the changed pom.xml's, MANIFEST.MF's and feature.xml files. You may want to build again from scratch too (see above). 
+
+## Create a new MDSL Release
+The step by step process that explains how the MDSL tool is released can be found [here](./RELEASING.md).
 
 ## Context Mapper 
 Context Mapper can generate MDSL from bounded contexts and their aggregates. So you might want to install it too.

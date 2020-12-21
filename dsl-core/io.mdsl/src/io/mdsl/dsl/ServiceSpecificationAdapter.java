@@ -34,10 +34,13 @@ import io.mdsl.apiDescription.ChannelContract;
 import io.mdsl.apiDescription.Client;
 import io.mdsl.apiDescription.DataContract;
 import io.mdsl.apiDescription.DirectionList;
+import io.mdsl.apiDescription.DomainEvent;
 import io.mdsl.apiDescription.EndpointContract;
 import io.mdsl.apiDescription.Gateway;
+import io.mdsl.apiDescription.LinkContract;
 import io.mdsl.apiDescription.MessageBroker;
 import io.mdsl.apiDescription.MessageEndpoint;
+import io.mdsl.apiDescription.Orchestration;
 import io.mdsl.apiDescription.Provider;
 import io.mdsl.apiDescription.ProviderImplementation;
 import io.mdsl.apiDescription.SLATemplate;
@@ -215,7 +218,7 @@ public class ServiceSpecificationAdapter implements ServiceSpecification, Servic
 	public EList<EObject> getClients() {
 		return internalSpec.getClients();
 	}
-
+	
 	@Override
 	public EList<Gateway> getGateways() {
 		return internalSpec.getGateways();
@@ -256,6 +259,21 @@ public class ServiceSpecificationAdapter implements ServiceSpecification, Servic
 	@Override
 	public List<Client> getClientClients() {
 		return internalSpec.getClients().stream().filter(client -> client instanceof Client).map(client -> (Client) client).collect(Collectors.toList());
+	}
+
+	@Override
+	public EList<LinkContract> getLinks() {
+		return internalSpec.getLinks();
+	}
+	
+	@Override
+	public EList<DomainEvent> getEvents() {
+		return internalSpec.getEvents();
+	}
+
+	@Override
+	public EList<Orchestration> getOrchestration() {
+		return internalSpec.getOrchestration();
 	}
 
 }

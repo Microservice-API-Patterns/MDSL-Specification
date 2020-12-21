@@ -33,29 +33,29 @@ public class DataTypeValidator extends AbstractMDSLValidator {
 		String basicType = rat.getBtype();
 		
 		if(basicType==null || basicType.equals("")) {
-			info("Incomplete specification: No type such as <String> or <int> specified yet.", rat, ApiDescriptionPackage.Literals.ROLE_AND_TYPE__BTYPE);
+			info("Incomplete specification: No type such as <String> or <int> specified yet.", rat, ApiDescriptionPackage.eINSTANCE.getRoleAndType_Btype()); // ()Literals.ROLE_AND_TYPE__BTYPE);
 	    }
 		else if(basicType.equals("void")) {
-			info("Imprecise specification: <void> only makes sense as sole element of a response message; you might want to remove the empty message from the specification.", rat, ApiDescriptionPackage.Literals.ROLE_AND_TYPE__BTYPE);
+			info("Imprecise specification: <void> only makes sense as sole element of a response message; you might want to remove the empty message from the specification.", rat, ApiDescriptionPackage.eINSTANCE.getRoleAndType_Btype()); // Literals.ROLE_AND_TYPE__BTYPE);
 	    }
 		else if(role.equals("ID") && !(basicType.equals("int")|| basicType.equals("string"))) {
-			warning("The role-type combination ID<" + basicType + "> is somewhat unusual. Use ID<string> or ID<int> instead?", rat, ApiDescriptionPackage.Literals.ROLE_AND_TYPE__BTYPE);
+			warning("The role-type combination ID<" + basicType + "> is somewhat unusual. Use ID<string> or ID<int> instead?", rat, ApiDescriptionPackage.eINSTANCE.getRoleAndType_Btype()); // Literals.ROLE_AND_TYPE__BTYPE);
 	    }
 		else if(role.equals("L") && !(basicType.equals("int") || basicType.equals("string"))) {
-			warning("The role-type combination L<" + basicType + "> is somewhat unusual. Use L<string> or L<int> instead?", rat, ApiDescriptionPackage.Literals.ROLE_AND_TYPE__BTYPE);
+			warning("The role-type combination L<" + basicType + "> is somewhat unusual. Use L<string> or L<int> instead?", rat, ApiDescriptionPackage.eINSTANCE.getRoleAndType_Btype()); // Literals.ROLE_AND_TYPE__BTYPE);
 	    }
 		else if(role.equals("MD") && basicType.equals("raw")) {
-			warning("The role-type combination MD<raw> is somewhat unusual. Use MD<string> instead?", rat, ApiDescriptionPackage.Literals.ROLE_AND_TYPE__BTYPE);
+			warning("The role-type combination MD<raw> is somewhat unusual. Use MD<string> instead?", rat, ApiDescriptionPackage.eINSTANCE.getRoleAndType_Btype()); // Literals.ROLE_AND_TYPE__BTYPE);
 	    }
 	}
 
 	@Check
 	public void checkIncompleteTypeInformation(final GenericParameter gp) {
 		if(gp.getName() != null) {
-			warning("\"" + gp.getName() + "\" is a generic parameter. You might want to provide a full identfier-role-type triple before invoking any generator.", gp, ApiDescriptionPackage.Literals.GENERIC_PARAMETER__P);
+			warning("\"" + gp.getName() + "\" is a generic parameter. You might want to provide a full identfier-role-type triple before invoking any generator.", gp, ApiDescriptionPackage.eINSTANCE.getGenericParameter_P()); // Literals.GENERIC_PARAMETER__P);
 		}
 		else {
-			warning("This is a generic parameter. You might want to provide a full identfier-role-type triple. See MDSL documentation at https://microservice-api-patterns.github.io/MDSL-Specification/datacontract.", gp, ApiDescriptionPackage.Literals.GENERIC_PARAMETER__P);
+			warning("This is a generic parameter. You might want to provide a full identfier-role-type triple. See MDSL documentation at https://microservice-api-patterns.github.io/MDSL-Specification/datacontract.", gp, ApiDescriptionPackage.eINSTANCE.getGenericParameter_P()); // Literals.GENERIC_PARAMETER__P);
 		}
 	}
 
@@ -69,7 +69,7 @@ public class DataTypeValidator extends AbstractMDSLValidator {
 			if (pt.getName() != null) {
 				// parameterForest is considered like a tuple
 				info("ParameterForest are like tuples. Tuple items names are ignored.",
-						pt, ApiDescriptionPackage.Literals.PARAMETER_TREE__NAME);
+						pt, ApiDescriptionPackage.eINSTANCE.getParameterTree_Name()); //  Literals.PARAMETER_TREE__NAME);
 			}
 		}
 

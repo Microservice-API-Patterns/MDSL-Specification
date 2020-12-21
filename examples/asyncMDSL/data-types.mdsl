@@ -4,7 +4,7 @@ description "
 	A example of the available data types available in MDSL and AsyncMDSL.
 
 	More information at:
-	- [https://microservice-api-patterns.github.io/MDSL-Specification/](https://microservice-api-patterns.github.io/MDSL-Specification/)
+	- [https://github.com/Microservice-API-Patterns/MDSL-Specification](https://github.com/Microservice-API-Patterns/MDSL-Specification)
 "
 
 // data type definitions
@@ -80,6 +80,6 @@ description "
 	
 	Note that the server URL does not actually exist.
 "
-exposes DatatypesExampleAPI
+exposes DatatypesTestChannel
 at location "amqp.mdsl-datatypesexample.org"
 via protocol AMQP

@@ -1,0 +1,187 @@
+openapi: 3.0.1
+info:
+  title: HTTPBindingWithReportAndPolicy
+  version: "1.0"
+servers:
+- url: /mySampleHTTPEndpoint
+tags:
+- name: HelloHTTPEndpointNoBinding2-Home
+  externalDocs:
+    description: The role of this endpoint, offering a ReportAndPolicyEnabledPortType
+      contract, is not specified.
+    url: ""
+paths:
+  /mySampleHTTPEndpoint:
+    get:
+      tags:
+      - HelloHTTPEndpointNoBinding2-Home
+      description: unspecified operation responsibility
+      operationId: Home-getOperation
+      parameters:
+      - name: aQueryParameter
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedResponseDTR'
+        "500":
+          description: SomeExtraErrorReportText
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  e500:
+                    type: integer
+                    format: int32
+    put:
+      tags:
+      - HelloHTTPEndpointNoBinding2-Home
+      description: unspecified operation responsibility
+      operationId: Home-putOperation
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlatParameterTree'
+      responses:
+        "200":
+          description: putOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedResponseDTR'
+        "502":
+          description: SomeExtraErrorReportText
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  e502:
+                    type: integer
+                    format: int32
+      security:
+      - BasicAuthenticationSample2: []
+    post:
+      tags:
+      - HelloHTTPEndpointNoBinding2-Home
+      description: unspecified operation responsibility
+      operationId: Home-createOperation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedParameterTree'
+      responses:
+        "200":
+          description: createOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlatResponseDTR'
+      security:
+      - BasicAuthenticationSample: []
+    patch:
+      tags:
+      - HelloHTTPEndpointNoBinding2-Home
+      description: unspecified operation responsibility
+      operationId: Home-patchOperation
+      parameters:
+      - name: customHeader1
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: customHeader2
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlatParameterTree'
+      responses:
+        "200":
+          description: patchOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlatParameterTree'
+components:
+  schemas:
+    FlatParameterTree:
+      type: object
+      properties:
+        id:
+          type: string
+        md:
+          type: string
+        dInt:
+          type: integer
+          format: int32
+        lString:
+          type: string
+        dLong:
+          type: number
+        anonymous1:
+          type: boolean
+    NestedParameterTree:
+      type: object
+      properties:
+        npt1:
+          type: string
+        npt2:
+          $ref: '#/components/schemas/FlatParameterTree'
+    FlatResponseDTR:
+      type: object
+      properties:
+        fr1:
+          type: string
+        fr2:
+          type: string
+    NestedResponseDTR:
+      type: object
+      properties:
+        r1:
+          type: string
+        r2:
+          type: string
+        anonymous2:
+          $ref: '#/components/schemas/FlatResponseDTR'
+    ErrorReport:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: integer
+          format: int32
+    Credentials:
+      type: object
+      properties:
+        user:
+          type: string
+        password:
+          type: string
+          format: binary
+  securitySchemes:
+    BasicAuthenticationSample:
+      type: apiKey
+      description: Default Element Name (Feature NYI)
+      name: api_key
+      in: header
+    BasicAuthenticationSample2:
+      type: openIdConnect
+      description: Default Element Name (Feature NYI)
+      openIdConnectUrl: http://tbc.tbc

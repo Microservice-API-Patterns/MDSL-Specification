@@ -4,6 +4,8 @@ author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ---
 
+[Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Type](./datacontract) &mdash; [Bindings](./bindings) &mdash; [Tutorial](./tutorial) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
+
 Runtime Language Concepts: API Provider, API Client, API Gateway
 ================================================================
 
@@ -42,7 +44,7 @@ A more complete example, also featuring an SLA and evolution governance informat
 API provider SampleAPIProvider1 
   offers SomeDemoContract 
     at endpoint location "http://www.testdomain.io:80/path/subpath"
-    via protocol HTTP   
+    via protocol HTTP binding resource SampleAPIProvider1Resource
   	with endpoint SLA // provider1Endpoint1SLA
       type QUANTITATIVE // optional now
     	objective performanceSLO1 "responseTimeUnder" 5 seconds
@@ -71,9 +73,9 @@ The consumers of endpoint contracts (API clients) are modeled according to the f
 
 ~~~
 API client SampleAPIClient
-    consumes SomeDemoContract
-    from sampleProvider
-    via protocol HTTP
+  consumes SomeDemoContract
+  from SampleAPIProvider1
+  via protocol HTTP binding resource SampleAPIProvider1Resource
 ~~~
 
 Clients merely have to decide which APIs to consume and which protocol to use to do so.
@@ -115,12 +117,11 @@ enum ImplementationTechnology: PlainJava | SpringMVC | STRING // more to be adde
 An example of an instance of such provider binding is:
 
 ~~~
-
-API provider implementation ProductManagementJavaServiceProviderImpl 
-  realizes ProductManagementWebServiceProvider
+API provider implementation SampleAPIProvider1Impl 
+  realizes SampleAPIProvider1
   in PlainJava
-  as "co.something.model.ProductActor" extending "Entity"
-  // or: with binding ProductManagementJavaServiceProvider
+  as "co.something.model.SomeClassName" extending "Entity"
+  // or: with binding SomeJavaBinding (if defined)
 ~~~
 
 

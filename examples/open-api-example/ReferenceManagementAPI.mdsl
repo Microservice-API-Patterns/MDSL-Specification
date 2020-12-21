@@ -16,7 +16,7 @@ endpoint type PaperArchiveFacade
     operation lookupPapersFromAuthor
       with responsibility RETRIEVAL_OPERATION
       expecting
-        payload D<string>
+        payload "author": D<string>
       delivering
         payload PaperItemDTO*
     operation convertToMarkdownForWebsite
@@ -24,4 +24,3 @@ endpoint type PaperArchiveFacade
         payload PaperItemKey
       delivering
         payload D<string>
-      

@@ -2,16 +2,15 @@ openapi: 3.0.1
 info:
   title: TestAPI
   version: "1.0"
+servers: []
 tags:
 - name: TestEndpoint
-  description: general data-oriented endpoint
   externalDocs:
-    description: INFORMATION_HOLDER_RESOURCE
-    url: https://microservice-api-patterns.org/patterns/responsibility/
+    description: The role of this endpoint is Information Holder Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
 paths:
   /TestEndpoint:
     summary: general data-oriented endpoint
-    description: 'MAP link: INFORMATION_HOLDER_RESOURCE available at [the MAP website](https://microservice-api-patterns.org/)'
     get:
       tags:
       - TestEndpoint
@@ -20,13 +19,12 @@ paths:
       parameters:
       - name: attr1
         in: query
-        description: unspecified
         required: true
         schema:
           type: string
       responses:
         "200":
-          description: response message payload (success case)
+          description: getTest successful execution
           content:
             application/json:
               schema:

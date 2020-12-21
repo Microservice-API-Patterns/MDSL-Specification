@@ -25,8 +25,8 @@ public class MessageEndpointValidator extends AbstractMDSLValidator {
 		if ((channelsFromBrokers == null || channelsFromBrokers.size() == 0)
 				&& (channelsWithoutBrokers == null || channelsWithoutBrokers.size() == 0)) {
 			error("Message Endpoint '" + messageEndpoint.getName()
-					+ "' contains not channels. Consider adding some.", messageEndpoint,
-					ApiDescriptionPackage.Literals.MESSAGE_ENDPOINT__NAME);
+					+ "' does not contain any channels. Consider adding some.", messageEndpoint,
+					ApiDescriptionPackage.eINSTANCE.getMessageEndpoint_Name()); // ()Literals.MESSAGE_ENDPOINT__NAME);
 		}
 
 	}

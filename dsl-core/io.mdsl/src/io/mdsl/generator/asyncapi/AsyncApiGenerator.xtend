@@ -20,12 +20,14 @@ import io.mdsl.generator.AbstractMDSLGenerator
 import io.mdsl.generator.asyncapi.helpers.AsyncApiGeneratorHelper
 import java.util.ArrayList
 import java.util.List
-import java.util.stream.Collectors
 import org.apache.commons.lang3.StringUtils
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
+import java.util.Map
+import java.util.HashMap
+import java.util.LinkedList
 
 /*
 	Test generation using Docker running the following command
@@ -50,17 +52,73 @@ class AsyncApiGenerator extends AbstractMDSLGenerator {
 	@Inject AsyncApiDataTypeGenerator dataTypeGenerator;
 
 	override protected generateFromServiceSpecification(ServiceSpecification mdslSpecification, IFileSystemAccess2 fsa, URI inputFileURI) {
-		val fileName = inputFileURI.trimFileExtension().lastSegment() + "-asyncapi.yaml";
 	
 		if(mdslSpecification.contracts.filter(ChannelContract).length == 0){
 			// no messaging contracts found
-			val fileContent = inputFileURI.lastSegment() + " does not contain any ChannelContract. AsyncAPI generation is not possible."
-			fsa.generateFile(fileName, fileContent);
 			return;
 		}
 		
-		val yamlWithNoTabs = mdslSpecification.compile.toString().replaceAll("\t", "  ");
-		fsa.generateFile(fileName, yamlWithNoTabs);
+		val brokers = mdslSpecification.providers.filter(MessageBroker).clone();
+		if (brokers.length > 0) {
+			// Generate a separate yaml file as they might expose different ChannelContract.
+			// Brokers will appear in the same AsyncAPI file iff they share exactly the same ChannelContracts,
+			// otherwise they will be splitted across multiple files (which will contain only the channels supported by the supplied brokers).
+			// If no broker is specified, a single file will be produced, containing all ChannelContracts.
+			
+			val brokersChannels = new HashMap<MessageBroker,List<ChannelContract>>();
+			brokers.forEach [ broker |
+				// create a map of brokers and their supported channels
+				brokersChannels.put(broker, broker.epl.flatMap[ep | ep.contracts].toList().sortBy[channel | channel.name]);	
+			];
+			
+			// keep track of the brokers that have already be written in a file
+			val alreadyUsedBrokers = new LinkedList<MessageBroker>();
+			brokersChannels.forEach[broker, channels, index | 
+				
+				if(!alreadyUsedBrokers.contains(broker)){
+					val brokersThatExposeSameChannels = getBrokersThatExposeSameChannels(broker, brokersChannels);
+					
+					alreadyUsedBrokers.add(broker);
+					alreadyUsedBrokers.addAll(brokersThatExposeSameChannels);
+					
+					// create a MDSL Specification object with only the needed information
+					mdslSpecification.providers.clear();
+					mdslSpecification.providers.addAll(brokersThatExposeSameChannels);	
+					
+					mdslSpecification.contracts.clear();
+					mdslSpecification.contracts.addAll(channels);
+					
+					// output the resulting AsyncAPI specification
+					val yamlWithNoTabs = mdslSpecification.compile.toString().replaceAll("\t", "  ");
+					val fileName = inputFileURI.trimFileExtension().lastSegment() + "-group-" + index + "-asyncapi.yaml";
+					fsa.generateFile(fileName, yamlWithNoTabs);
+				
+				}
+			];
+			
+		} else {
+			// output just one file
+			val yamlWithNoTabs = mdslSpecification.compile.toString().replaceAll("\t", "  ");
+			val fileName = inputFileURI.trimFileExtension().lastSegment() + "-asyncapi.yaml";
+			fsa.generateFile(fileName, yamlWithNoTabs);
+		}
+	}
+	
+	/*
+	 * Returns all the MessageBrokers that expose the same ChannelContracts as the source broker
+	 */
+	private def getBrokersThatExposeSameChannels(MessageBroker source, Map<MessageBroker,List<ChannelContract>> context){
+		
+		val sourceChannels = source.epl.flatMap[ep | ep.contracts].toList().sortBy[channel | channel.name];
+		val brokersThatExposeSameChannelsOfSource = new LinkedList<MessageBroker>();
+		
+		context.forEach[broker, channelsThatBrokerExposes |
+			if(sourceChannels.equals(channelsThatBrokerExposes)){
+				brokersThatExposeSameChannelsOfSource.add(broker);
+			}	
+		];
+		
+		return brokersThatExposeSameChannelsOfSource;
 	}
 
 	private def compile(ServiceSpecification serviceSpecificationInstance) '''
@@ -200,7 +258,7 @@ class AsyncApiGenerator extends AbstractMDSLGenerator {
 
 	private def compile(ChannelContract contract) '''
 		«IF contract.conversationType instanceof OneWayChannel»
-			«compile(contract.conversationType as OneWayChannel)»
+			«(contract.conversationType as OneWayChannel).compile»
 		«ENDIF»
 		«IF contract.conversationType instanceof RequestReplyChannel»
 			«(contract.conversationType as RequestReplyChannel).compile»
@@ -243,6 +301,10 @@ class AsyncApiGenerator extends AbstractMDSLGenerator {
 			«ENDIF»
 		«ENDIF»
 	'''
+	
+	private def insertChannelQuality(ChannelContract contract) '''
+		Delivering guarantee: «contract.quality».
+	'''
 
 	private def compile(OneWayChannel channel) '''
 		«channel.path.compile»
@@ -257,6 +319,7 @@ class AsyncApiGenerator extends AbstractMDSLGenerator {
 
 		    	«getValueOrDefault(channel.description, "No description specified")»
 		    	
+		    	«insertChannelQuality(channel.eContainer as ChannelContract)»
 		    	«getClausoles(channel.whereClauses)»
 		    	
 		    	One way channel (does not expect reply).
@@ -278,6 +341,7 @@ class AsyncApiGenerator extends AbstractMDSLGenerator {
 					
 					«getValueOrDefault(channel.request.description, "No description specified")»
 					
+					«insertChannelQuality(channel.eContainer as ChannelContract)»
 			    	«getClausoles(channel.request.whereClauses)»
 					
 					Request channel. Reply channel is [«channel.reply.name»](#operation-publish-«channel.reply.path.path»)

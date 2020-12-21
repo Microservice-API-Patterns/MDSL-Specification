@@ -4,11 +4,13 @@ author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019. All rights reserved.
 ---
 
-MDSL Grammar Example
-====================
+[Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Type](./datacontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Bindings](./bindings) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
 
 
-## Service Contract
+MDSL Examples
+=============
+
+## Service Contract (Grammar Reference)
 The following exemplary API specification compiles against the [MDSL grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext): 
 
 <!-- TODO feature error reporting and versioning of data types -->
@@ -50,7 +52,7 @@ endpoint type CustomerManagementContract
 
 <!-- some text from service contract page could be copied or moved here -->
 
-## Data Contract
+## Data Contract Examples
 
 The following simple examples feature the structural language primitives and give instantiation examples (in the comments):
 
@@ -70,9 +72,14 @@ data type TwoNestingLevels {SomeStructuredRecord, SomeAtomicParameter}
 data type SomeFlatRecord (D<string>, D<int>, D<bool>) 
 // yields ("A", 1, true)
 
-data type ChoiceDemo {"optionA":D | "optionB":D}
+data type ChoiceDemo {"optionA":D | "optionB":D} // not implemented in tools yet
 ~~~
 
+## More Examples 
+
+Can be found in the repo. 
+
+<!-- TODO feture RESTBucks here -->
 
 ## Links
 

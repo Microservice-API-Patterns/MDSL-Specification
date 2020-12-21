@@ -1,28 +1,29 @@
 ---
 title: Microservice Domain Specific Language (MDSL) Tools
-author: Olaf Zimmermann
+author: Olaf Zimmermann, Stefan Kapferer
 copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ---
+
+
+[MDSL Home](./index), [OpenAPI](./generators/open-api), [Protocol Buffers](./generators/protocol-buffers), [GraphQL schema](./generators/graphql), [Jolie](./generators/jolie), [Java POJOs](./java), [Freemarker](./generators/freemarker) generators
+
 
 MDSL Tools: Users Guide
 =======================
 
 <!-- from top-level index page/readme:
-### Installation in Eclipse
-
- * Update site: [https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
- * The grammar can be found in the `dsl-core` project (more precisely, in the `io.mdsl./src/io.mdsl` folder of this project): [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) and [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) repository.
 
 ### Direct links into repository
 
 * [Full grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext)
 * [Examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/tree/master/examples)
+
 -->
 
 At present, two types of MDSL tools are available: 
 
-* Command Line Interface (CLI) tools: API Linter (validation), technology-specific contract generation 
-* Eclipse Plugin: editor, API Linter (validation), technology-specific contract generation
+* *Command Line Interface (CLI)* tools: API Linter (validation), technology-specific contract generation 
+* *Eclipse Plugin*: editor, API Linter (validation), technology-specific contract generation
 
 
 ## Command Line Interface (CLI) Tools
@@ -53,13 +54,13 @@ usage: mdsl
                          the 'generator' (-g) parameter.
 ```
 
-Please refer to the [readme of the DSL core project](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/README.md) and the [CLI package readme](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli) for  more information.
+Please refer to the readme of the [DSL core project](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/README.md) and of the [CLI package](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli) for  more information.
 
 
 ## Eclipse Plugin
 
 ### MDSL Editor
-The MDSL Eclipse plugin provides editing support (syntax highlighting, auto completion, etc.) for our DSL. You can install the plugin in your Eclipse from the following update site:
+The MDSL Eclipse plugin provides editing support (syntax highlighting, auto completion, etc.) for our DSL. You can install the released snapshot versions of he plugin in your Eclipse from the following update site:
 
 [https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
 
@@ -109,7 +110,7 @@ This model can also be exported for offline processing (for instance, to feed ot
 
 *Note*: This feature is not yet complete, and the model API subject to change at any time. We do use it internally in the [GraphQL schema](./graphql) and [Java](./java) generators, so it has reached a certain level of maturity and test coverage. That said, it also has some known limitations; for instance, the output can be rather verbose and partially redundant (input depending, of course). 
 
-#### AsyncAPI (technology preview)
+#### AsyncAPI (technology [preview](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview))
 
 This generator uses a different model management technology internally, and is run every time an MDSL file is saved. It is not available via a context menu.
 

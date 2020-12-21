@@ -31,7 +31,7 @@ import io.swagger.v3.oas.models.media.UUIDSchema;
 /**
  * Converts an MDSL datatype to an OpenAPI schema
  * 
- * @author ska, zio
+ * @author ska, socadk
  *
  */
 @SuppressWarnings("rawtypes")
@@ -72,9 +72,21 @@ public class DataType2SchemaConverter {
 			schema = mapCardinalities(atomicParameter.getCard(), schema);
 		return schema;
 	}
+	
+	public Schema convertAndCreateSchema4TreeNode(ParameterTree pt, boolean externalCardinality) {
+		Schema treeWrapperSchema = new ObjectSchema();
+		treeWrapperSchema.setName(fieldNameGenerator.getUniqueName(pt.getName()));
+		treeWrapperSchema.setProperties(convertProperties(pt));
+		
+		if(externalCardinality)
+			return getArrayWrapperSchema(treeWrapperSchema);
+		else
+			return mapCardinalities(pt.getCard(), treeWrapperSchema);
+	}
 
 	/**
 	 * Wraps a schema with an ArraySchema according to given cardinalities.
+	 * @param externalCardinality 
 	 */
 	public Schema mapCardinalities(Cardinality card, Schema schema) {
 		if (card == null)
@@ -118,7 +130,6 @@ public class DataType2SchemaConverter {
 
 	private Map<String, Schema> convertProperties(SingleParameterNode parameterNode) {
 		// do not create attribute node in case it is a P type (on root level)
-		// TODO (low prio) how about mapping P to "unknown" in OAS? or at least warn?
 		if (parameterNode.getGenP() != null)
 			return null;
 
@@ -161,15 +172,18 @@ public class DataType2SchemaConverter {
 
 	private Schema createSchema4SingleParameterNode(SingleParameterNode singleNode) {
 		// only consider 'atomP'; nothing to generate for 'genP'
-		// TODO (low prio) actually we could map genP to a string
+		// TODO (tbd) map genP to a string (but no schema needed?)
 		if (singleNode.getAtomP() != null) {
 			Schema atomPSchema = convert(singleNode.getAtomP());
 			if (atomPSchema != null)
 				return atomPSchema;
 		} else if (singleNode.getTr() != null) {
+			// TODO null check required?
+			String un = singleNode.getTr().getName();
+			// TODO null checks required?
+			String refn = REF_PREFIX + singleNode.getTr().getDcref().getName();
 			return mapCardinalities(singleNode.getTr().getCard(),
-					new Schema<>().name(fieldNameGenerator.getUniqueName(singleNode.getTr().getName()))
-							.$ref(REF_PREFIX + singleNode.getTr().getDcref().getName()));
+				new Schema<>().name(fieldNameGenerator.getUniqueName(un)).$ref(refn));
 		} else if (singleNode.getGenP() != null) {
 			return new ObjectSchema().name(fieldNameGenerator.getUniqueName(singleNode.getGenP().getName()));
 		}
@@ -228,13 +242,18 @@ public class DataType2SchemaConverter {
 			return new StringSchema();
 		case "raw":
 			return new BinarySchema();
+		// new in v5.0.3:
+		case "void": {
+			// TODO (tbd) warn about this?
+			return new StringSchema();
+		}
 		default:
-			// TODO warn about this?
+			// TODO (tbd) warn about this?
 			return new VoidSchema();
 		}
 	}
 
-	// TODO (high prio) map D<void> (and other voids) properly:
+	// TODO (H) map D<void> (and other voids) properly:
 	// [x] ignore? [-] map to string?
 
 	private class VoidSchema extends Schema<Void> {

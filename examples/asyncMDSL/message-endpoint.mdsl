@@ -18,7 +18,7 @@ produces message Message3
 	delivering payload SampleDTO
 
 message broker HelloWorldAmqpProvider 
-exposes HelloWorldAsyncAPI
+exposes Channel1, Channel2, Channel3
 at location "amqp.example.com"
 via protocol AMQP
 

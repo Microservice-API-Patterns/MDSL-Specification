@@ -4,6 +4,9 @@ author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
 ---
 
+[Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Types](./datacontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Tutorial](./tutorial) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
+
+
 Protocol Bindings for HTTP, gRPC, Jolie, Java
 =============================================
 
@@ -22,7 +25,7 @@ Let us start with the following endpoint type (and then show all available bindi
 API description ProductManagement version "v0.0.1"
 
 data type ProductDescription P /* defined incompletely */
-data type Money {"currency", "amount":D<int>} /* defined incompletely, but a bit more precise */
+data type Money {"currency":D, "amount":D<int>} /* defined incompletely, but a bit more precisely */
 data type ErrorReport {"rootCause":D<string>, "correctiveAction":D<string>}
 
 endpoint type ProductManagementService
@@ -31,13 +34,13 @@ exposes
     expecting payload "productDescription": ProductDescription
     delivering payload "successAck": D<bool>
       // technology-neutral error reporting (to be bound to OAS/HTTP, gRPC, Java, Jolie):
-      reporting error "DuplicateEntry": D<string>
+      reporting error DuplicateEntry D<string>
     // technology-neutral security policy (to be bound to protocols and platforms):
-    protected by policy "UserIdPassword":{"userId":ID<string>, "password":MD<string>}
+    protected by policy BasicAuthentication "UserIdPassword": {"userId":ID<string>, "password":MD<string>}
   operation updatePrice /* optional: "in REQUEST_REPLY conversation" */
     expecting payload "price": Money  
-    delivering payload D<void>
-    // not delivering any payload, just a transport-level status code (?)
+    // delivering payload D<void>
+    // not delivering any payload, just a transport-level status code
 ~~~
 
 
@@ -45,27 +48,40 @@ exposes
 
 HTTP handles addressing, request and response parameters, errors, and security concerns in certain ways (for good reasons). The protocol design deviates from than of most interface definition languages and "RPC-ish" communication protocols. To generate OpenAPI and, later on, server-side stubs and client-side proxies from MDSL specifications, some of the required information can therefore always be derived from the abstract endpoint types. A primary  example is the mapping of MDSL operations to HTTP verbs/methods such as GET, POST, PUT etc. 
 
-The additional information can be specified in a provider-level *binding*: 
+The additional information can be specified in a provider-level *HTTP binding*: 
 
 ~~~
 API provider ProductManagementWebServiceProvider
   offers ProductManagementService
   at endpoint location "http://www.tbc.io:80/path/subpath"
-  via protocol HTTP 
+  via protocol HTTP  
     binding 
-      operation define to POST at "/products/{productId}" // PATH parameter (implicit)
-        element productDescription realized as BODY parameter
-        element successAck realized as BODY parameter // only possibility for response payload element 
-        report DuplicateEntry realized as 412 with ErrorReport
-        policy UserIdPassword realized as BASIC_AUTHENTICATION
-        // media types (defined in several RFCs, see https://en.wikipedia.org/wiki/Media_type)
-        accepts application/json // defined at https://www.iana.org/assignments/media-types/media-types.xhtml
-        replies "application/custom-mediatype-for-productDTO-v1" // custom media type (recommended REST practice) 
+     resource PMSResource at "/products/{productId}" // PATH parameter (implicit)
+      operation define to POST 
+        all elements realized as BODY parameters
+        report DuplicateEntry realized as 412 with "DuplicateEntry"
+        policy BasicAuthentication realized as BASIC_AUTHENTICATION
+        accepts "application/json"// defined at https://www.iana.org/assignments/media-types/media-types.xhtml
+        replies "application/vnd.custom-mediatype-for-productDTO-v1" // custom media type 
+      
       operation updatePrice to PATCH at "/products/{productId}/price"
-        element money realized as BODY parameter
+        element "currency" realized as QUERY parameter
+        element "amount" realized as QUERY parameter
 ~~~
 
-*Important note*: This binding is work in progress and yet has to be completed and fully validated. For instance, the parameter mappings to path, query, form/body and cookie parameters is not fully implemented in the current MDSL tools yet. 
+The information in the binding refers to and refines the operation- and message level specification (abstract endpoint type level:)
+
+* At least one resource must/can be defined (`PMSResource`); their names and URIs must differ. 
+* The resource URIs may contain URI name templates /`{productId}`).
+* The operations from the references endpoint type can be bound in multiple resources (once each). The operation-to-verb assignment (`POST`, `PATCH`) must be unique in each resource.  
+* The representation elements from request payloads of operations can be mapped to HTTP parameter types jointly (`all elements realized as BODY parameters`) or individually (`element "currency" realized as QUERY parameter`). Default are in place (see [here](./tools/generators/open-api)). There are some limitations of flat/nested tree usage; cardinalities (`?`, `*`, `+`) are respected, though.
+* The abstract error/status reporting is mapped to HTTP codes (`report DuplicateEntry realized as 412 with "DuplicateEntry"`). In our MDSL tools, a validator checks that only existing reports are bound. 
+* Security policies are bound and mapped in the same way (`policy BasicAuthentication realized as BASIC_AUTHENTICATION`).
+* One or more MIME types of request and response messages can be defined (`accepts`, `replies`). Both standard and custom media types can be specified.
+* Not shown in the above example, but explained [here](./http-rest), links are mapped to OpenAPI [link objects](https://swagger.io/docs/specification/links/) and, in turn hypermedia links in response messages. 
+* Server instances are created for the endpoint addresses.
+
+*Status update*: This is the first complete version of the binding. It is implemented in the current [MDSL tools](./tools), but has not been fully validated yet. The tool implementation has some known limitations. 
 
 
 ## gRPC Protocol Buffers Binding
@@ -117,8 +133,7 @@ API provider ProductManagementJavaServiceProvider
         element money realized as boolean type
 ~~~
 
-In the current release, only the package name is used. 
-<!-- there is an unfinished Freemarker template; /* [Q]: "extends"? */ -->
+In the current release, only the package name is used. <!-- there is an unfinished Freemarker template; /* [Q]: "extends"? */ -->
 
 
 ## Other Bindings
@@ -140,8 +155,6 @@ Language specification pages:
 * Service [endpoint contract types](./servicecontract)
 * [Data contracts (schemas)](./datacontract)
 * Other [runtime concepts](./optionalparts)
-
-[Quick reference](./quickreference). [Tutorial](./tutorial). [Tools](./tools). Back to [MDSL homepage](./index).
 
 *Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 

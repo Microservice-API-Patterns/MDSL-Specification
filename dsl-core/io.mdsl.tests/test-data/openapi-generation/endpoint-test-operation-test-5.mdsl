@@ -1,6 +1,10 @@
 API description TestAPI
 
-data type Test P
+data type TestData1 "testData1": MD // no type, string is default
+data type TestData2 "idOnly" // name "idOnly" does not make it into generated OAS
+data type TestData3 P // genPs make it to response body but not to request parameter/body
+
+// this endpoint type features unusual but valid MEPs 
 
 endpoint type TestEndpoint
   serves as INFORMATION_HOLDER_RESOURCE
@@ -8,10 +12,12 @@ endpoint type TestEndpoint
     operation postTest
       with responsibility "Creates new Test object"
       expecting
-        payload Test
-    operation getTest
-      with responsibility "Gets a Test object"
+        payload "td1": TestData1
+      // not delivering anything
+    operation patchTest
+      with responsibility "Updates a Test object partially"
+      // not expecting anything
       delivering
-        payload Test
+        payload "td2": TestData2
 
 IPA

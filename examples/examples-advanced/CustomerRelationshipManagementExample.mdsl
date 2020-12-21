@@ -117,7 +117,7 @@ SLA template externalPerformanceSLAExampleLandingZone
 API provider SampleAPIProvider1 
   offers CustomerManagementContract 
   at endpoint location "http://www.testdomain.io:80/path/subpath" 
-  via protocol HTTP
+  via protocol HTTP binding resource SampleAPIProvider1Resource
   with endpoint SLA externalPerformanceSLAExample
  
   at endpoint location "http://www.testdomain.io:81/path/subpath" 
@@ -126,7 +126,7 @@ API provider SampleAPIProvider1
 
   offers CustomerManagementContract2
   at endpoint location "http://www.testdomain.io:80/path2/subpath2" // full URI: https://a.b.c:9090/d/e.map?p1=v1&p2=v2;
-  via protocol HTTP
+  via protocol HTTP binding resource CustomerManagementContract2Resource
   with endpoint SLA // inlined/embedded SLA
   	type QUANTITATIVE
     objective performanceSLO1 "responseTimeUnder" 5 seconds
@@ -160,16 +160,16 @@ API gateway SampleAPIGatweway
   // Gate 1
   offers CustomerManagementContract
   at endpoint location "ExternalURI"
-  via protocol HTTP
+  via protocol HTTP binding resource CustomerManagementRemoteFacade
 
   consumes CustomerManagementContract2 
   from SampleAPIProvider1
-  via protocol gRPC
+  via protocol gRPC 
 
   // Gate 2:
   offers CustomerManagementContract
   at endpoint location "ExternalURI2" 
-  via protocol HTTP
+  via protocol HTTP binding resource CustomerManagementRemoteFacade2
 
   consumes CustomerManagementContract2 
   from SampleAPIProvider1

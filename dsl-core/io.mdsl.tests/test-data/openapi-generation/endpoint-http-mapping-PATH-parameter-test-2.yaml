@@ -1,0 +1,42 @@
+openapi: 3.0.1
+info:
+  title: TestAPI
+  version: "1.0"
+servers:
+- url: /endpoint
+tags:
+- name: TestEndpointProvider-Home
+  externalDocs:
+    description: The role of this endpoint, offering a TestEndpoint contract, is Information
+      Holder Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
+paths:
+  /endpoint:
+    summary: general data-oriented endpoint
+    get:
+      tags:
+      - TestEndpointProvider-Home
+      description: unspecified operation responsibility
+      operationId: Home-doSomethingJust4Test
+      parameters:
+      - name: attr1
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: attr2
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: doSomethingJust4Test successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+components:
+  schemas:
+    Test:
+      type: object

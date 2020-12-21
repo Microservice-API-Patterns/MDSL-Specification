@@ -1,0 +1,198 @@
+API description RESTBucksHypermediaAPI version "Maturity Level 3 (HATEOAS), example Version 0.2"
+
+// TODO (started, differently, revisit: H<REF>) let endpoint type be an option in data types (for WS-Addressing and DAPs)
+// TODO (done, new keywords) model state transitions in grammar
+
+// TODO revise error/status codes and security (in new binding design)
+// TODO look at OpenAPI linkObjects, deepObject serialization, see https://github.com/swagger-api/swagger-ui/issues/4216
+//      and use these concepts in GET, DELETE bindings (and elsewhere); revisit PUT semantics
+// TODO decide how to get/back {id} parameters for URI templating
+
+// TODO design validators and transformations: HLD->REST, HLD->RPC (add binding); HLD->REST, RPC<->REST?
+
+// data type tbd "tbd":D<string>
+data type OrderDTO "a": {"milk": D<string>, "size":D<string>, "drink": D<string>, "amount": D<int>}+
+data type PaymentDTO "b": {"means": D<string>, "authToken": D<raw>, "amount": D<int>} // means: "credit card" or "other"  
+
+// data type DAPIdiom {"statusCode": MD<int>, "hRef": L<string>, "relType": D<string>} // not yet domain specific!data type PaymentInformation  {"type", "number", "amount"}
+// data type HTTPIdiom {"header": MD<string>, "method": MD<string>, "statusCode": MD<int>} // not yet domain specific!data type PaymentInformation  {"type", "number", "amount"}
+
+// data type LinkReferenceTest {"type":D<string>, <<Linked_Information_Holder>> "id2":[ExternalLink]}
+relation type GenericHATEOASLink targets any resource
+relation type ExternalLink targets external resource at "http://a.b.c/elsewehere"
+
+// no longer working with one endpoint type: 
+// relation type PaymentLinkRelation targets Payment action "pay" input PaymentDTO // resource, verb, contentType
+// relation type ReceiptLink targets Receipt action "print" // resource and verb
+
+relation type OrderLink targets OrderManagementEndpoint // target resource only
+relation type OrderPage targets OrderManagementEndpoint action get // Pagination
+relation type PaymentLinkRelation targets OrderManagementEndpoint action acceptPayment input PaymentDTO // resource, verb, contentType
+relation type ExternalPaymentLinkRelation targets external resource at "PaymentServerAddress" action payExternally input PaymentDTO 
+
+relation type ReceiptLink targets OrderManagementEndpoint action print // resource and verb
+
+ 
+// ** modeled (roughly) after Figure 5-4 in "REST in Practice" (page 112):
+
+endpoint type OrderManagementEndpoint
+  serves as PROCESSING_RESOURCE
+  exposes
+    operation placeOrder with responsibility "POST" // STATE_CREATION_OPERATION
+      expecting
+        payload "odto": OrderDTO
+      delivering
+        payload "oid": ID<int> // the unique identifier of the order (for further processing) 
+        links 
+         "payment": PaymentLinkRelation // PaymentLink // DAP here: payment resource next
+         "extPayment": ExternalPaymentLinkRelation
+        reporting 
+          status rep1
+          error ep2 
+      // state transition: 1 to 2 
+    transitions from "" to "paymentExpected" // empty string: initial state 
+    compensated by cancelOrder
+      
+    operation updateOrder with responsibility STATE_TRANSITION_OPERATION
+      expecting
+        payload "odto": OrderDTO
+      delivering
+        // payload {"statusCode", R<PaymentLinkRelation>}
+        payload {"statusCode":D<int>}
+        links 
+          "self": OrderLink
+          "payment": PaymentLinkRelation // PaymentLink // DAP here: payment resource next
+          "extPayment": ExternalPaymentLinkRelation
+    // state transition: 2 to 1 ["paymentExpected" -> "paymentExpected"]
+    transitions from "pamentExpected" to "paymentExpected"  
+      
+    operation updateAmount with responsibility STATE_TRANSITION_OPERATION // not in book!
+      expecting
+        payload "newAmount":D<int>
+      delivering
+        payload "value":D<int> // DAPIdiom
+      // state transition: 2 to 2 ["paymentExpected" -> "paymentExpected"]
+      
+    operation cancelOrder with responsibility STATE_TRANSITION_OPERATION
+      expecting
+        payload "id":ID<int> // D<void> as id is in URI?
+      delivering
+        payload "success":D<bool>
+      // state transition: 2 to 2 ["paymentExpected" -> "cancelled"]
+      
+    operation get with responsibility RETRIEVAL_OPERATION
+      expecting
+        payload "id":ID<int> // D<void> as id is in URI?
+      delivering
+        payload "latestRepresentation":OrderDTO
+        links "next": OrderPage // TODO model Pagination options: cursor, offset, time
+        
+    operation acceptPayment with responsibility STATE_TRANSITION_OPERATION // state created in other endpoint!
+      expecting
+        payload "pdto": PaymentDTO
+      delivering
+        payload "success":D<bool>
+        links "orderPaidAndReadyForPickUpAndAndDrinking": OrderLink
+      reporting 
+        error sc400 {"code":ID<string>, "info":D<string>} 
+        error sc401 // TODO tbc model as full "DTO" (which is then bound) 
+        protected by policy OnlyAuthenticatedShoppers "ba": {"userId":ID<string>, "password":MD<string>}
+    // state transition: 2 to 4 ["paymentExpected" -> "preparing"] // in other endpoint!
+       
+    operation prepareOrderViaBarista with responsibility STATE_TRANSITION_OPERATION // state created in other endpoint!
+      expecting
+        payload "id":ID<int> // D<void> as id is in URI?
+      delivering
+        payload "success":D<bool>
+        links "self": OrderLink
+      // state transition: 4 to 5 ["preparing" -> "ready"] // in other endpoint!
+
+    operation handOutAndConcludeProcess with responsibility STATE_TRANSITION_OPERATION // in other endpoint!
+      expecting
+        payload "id":ID<int>
+      delivering
+        payload "success":D<bool>
+      // state transition: 5 to 6 ["ready" -> "completed"] // in other endpoint!
+      // TODO how to combine reporting, protection, compensation (order?) 
+        links 
+          "forHereOrToGo": ReceiptLink 
+        reporting 
+          error rc400 "rc400":{"code":ID<string>, "info":D<string>} 
+      transitions from "5" to "6"
+      // compensated by placeOrder // TODO tbc
+      protected by policy OnlyAuthenticatedShoppers "ba": {"userId":ID<string>, "password":MD<string>}
+      // validation NYI: policy defined here but not in binding is ignored (no warning)
+       
+// ** see https://www.infoq.com/articles/subbu-allamaraju-rest/ and
+// https://www.researchgate.net/publication/221271423_The_role_of_hypermedia_in_distributed_system_development
+
+API provider RESTBucksProvider
+  offers OrderManagementEndpoint
+  at endpoint location "http://restbucks.com/order"
+  via protocol HTTP
+   static binding
+    resource RESTBucksHome // at "/" // TODO relative URI (templated!)
+     
+      media type OrderRepresentationJSON as "application/vnd.order+json"
+      media type OrderRepresentationXML as "application/vnd.restbucks.order+xml"
+      media type PaymentRepresentationJSON as "application/vnd.restbucks.payment+json"
+      media type PaymentRepresentationXML as "application/vnd.restbucks.payment+xml"
+                  
+      // do not need more here to map abstract MDSL data type to concrete JSON or XML (?)
+      data type OrderDTO to OrderRepresentationJSON OrderRepresentationXML  // MIME RFC as keywords
+      data type PaymentDTO to "application/vnd.restbucks.payment+json" PaymentRepresentationXML
+      
+      relation type GenericHATEOASLink to {RESTBucksHome} // TODO defaults? dynamic contracts? was "JSON-LD, HAL, etc."
+      
+      relation type PaymentLinkRelation to {PaymentResource, POST, PaymentRepresentationJSON} // TODO allow n ones?
+      relation type ExternalPaymentLinkRelation to {PaymentResource, POST, PaymentRepresentationJSON} // TODO allow n ones?
+                
+      // TODO is accept/replies now redundant because all info appears in data type/relation type binding? or alternative (REST ML 1, 2)?
+      operation placeOrder to POST
+        accepts OrderRepresentationJSON "application/vnd.restbucks.order+xml"
+        replies "application/vnd.restbucks.order-payment+json" PaymentRepresentationXML
+ 
+    // TODO show modeling options in different versions of example/different resources of same example
+    // a) links in abstract endpoint, b) links in binding only (explicit, in operation binding), c) custom vs. standard MIME types, d) operation vs. links leading 
+       
+    resource Orders at "/{id}" // TODO relative URI (templated!), tbd: where does 'id' come from (endpoint type?)
+      
+      // TODO DRY violated, [R] move up to binding level (optionally)?
+      media type OrderRepresentationJSON as "application/vnd.restbucks.order+json"
+      media type PaymentRepresentationJSON as "application/vnd.restbucks.payment+json"
+            
+      data type OrderDTO to OrderRepresentationJSON  // MIME RFC as keywords
+      
+      relation type OrderLink to {Orders, POST, OrderRepresentationJSON}
+      relation type PaymentLinkRelation to {PaymentResource, POST, PaymentRepresentationJSON} // TODO allow n ones?
+      relation type ExternalPaymentLinkRelation to {PaymentResource, POST, PaymentRepresentationJSON} // TODO allow n ones?
+       
+      operation updateOrder to PUT
+        accepts "application/vnd.restbucks.order-payment+json"  
+        replies  OrderRepresentationJSON
+      operation updateAmount to PATCH // just a demo (not in book)
+      operation get to GET
+      operation cancelOrder to DELETE
+      
+      // TODO  [R] add link mapping information: HAL, Alps, etc.
+     
+    resource PaymentResource at "/payment/{id}"
+    
+      media type OrderRepresentationJSON as "application/vnd.restbucks.order+json"
+      media type PaymentRepresentationJSON as "application/vnd.restbucks.payment+json"
+      // unbound links not warned about (?)
+      relation type ExternalPaymentLinkRelation to {PaymentResource, POST, PaymentRepresentationJSON}
+      relation type OrderLink to {Orders, POST, OrderRepresentationJSON}
+    
+      operation acceptPayment to PUT
+        policy OnlyAuthenticatedShoppers realized as BASIC_AUTHENTICATION 
+      operation prepareOrderViaBarista to POST // (default), not in book?
+  
+     resource ReceiptResource at "/receipt/{id}"
+     
+       media type ReceiptRepresentationJSON as "application/vnd.restbucks.receipt+json"
+       relation type ReceiptLink to {RESTBucksHome, POST, ReceiptRepresentationJSON}
+     
+       operation handOutAndConcludeProcess to PATCH
+  
+       policy OnlyAuthenticatedShoppers realized as BASIC_AUTHENTICATION 

@@ -15,6 +15,8 @@ usage context SOLUTION_INTERNAL_API for BACKEND_INTEGRATION
 
 // data type Entity1 (ID,D) // how about ", ..." as a placeholder for iteration/recursion, tbd TODO
 
+// TODO (v4.1) AsyncAPI generator has problems with some APLs (partially specified ones, with certain cardinalities), can use PTs instead
+
 // feature struct patterns as data types so that newbies do not get overwhelmed by big picture operations
 data type SampleAtomicParameter "sap":D<string>
 data type SampleAtomicParameterList ("ap1":D<int>,"ap2":D<string>)
@@ -46,7 +48,7 @@ data type SampleJolieMapping "tbc"
 data type SampleYAMLMapping "customer: {name: string, address: E}"
 data type SampleYAMLSequence "- customerList: {name: string, address: E}"
 
-data type SOAPFaultElement {"code":D<int>, "string": D<string>, "actor":D<string>, "detail":D<string>}
+data type SOAPFaultDataRepreentation {"code":D<int>, "string": D<string>, "actor":D<string>, "detail":D<string>}
 
 endpoint type PatternStereotypesDemoContract
   version "1.0" 
@@ -73,13 +75,13 @@ endpoint type PatternStereotypesDemoContract
 				{<<Pagination>>"payload2":Page, "metadata":MD*, "previousPage":Page?, "nextPage":Page?}	
 		} structured as MAP_TYPE
 	  reporting 
-	  	  error "Not Found": D<bool>
-	  	  error "General_Error": D<string>
-	  	  error "Unauthenticated"
-	  	  error P
-	  	  error D<int>
-	  	  error {<<Error_Report>>("errorCode":D<int>, "errorMessage":D<string>)}+
-	  	  analytics "tracking": ID // experimental
+	  	  error NotFound D<bool>
+	  	  error GeneralError D<string>
+	  	  error Unauthenticated
+	  	  error Unknown P
+	  	  error Code D<int>
+	  	  error MAPDecoratedReport {<<Error_Report>>("errorCode":D<int>, "errorMessage":D<string>)}+
+	  	  analytics OtherReport "tracking": ID // experimental; "status" also available
 
   	operation testOpEverything
 	  // with responsibility CRUD // CRUD no longer supported   
@@ -105,12 +107,12 @@ endpoint type PatternStereotypesDemoContract
 		]
 		structured as MAP_TYPE
 		reporting 
-			error "Internal Server Error"
-			error "400 Bad Request": D<string>
-			error <<Error_Report>>"resource not found": {"errorCode":D<int>, "errorMessage":D<string>}+	
-			error <<Error_Report>>{("402":D<int>, "notAuthorized":D<string>) | ("403":D<int>, "anotherMessage":D<string>)}	
-			error "500 tbd": SOAPFaultElement
-			analytics "usage statistics": P
+			error InternalServerError D<int> // binding to 500
+			error BadRequest D<int> // binding to 400
+			error NotFound <<Error_Report>>"resource not found": {"errorCode":D<int>, "errorMessage":D<string>}+	
+			error NotAllowed <<Error_Report>>{("402":D<int>, "notAuthorized":D<string>) | ("403":D<int>, "anotherMessage":D<string>)}	
+			error SOAPFaultReport SOAPFaultDataRepreentation
+			analytics MetricsReport "usage statistics": P
 
 	    
   	operation testOpJolieYaml
@@ -169,7 +171,7 @@ endpoint type CustomerInformationHolderService serves as INFORMATION_HOLDER_RESO
 API provider SampleAPIProvider1 
   offers PatternStereotypesDemoContract 
     at endpoint location "http://www.testdomain.io:80/path/subpath?p1=v1&p2=v2"
-    via protocol HTTP   
+    via protocol HTTP binding resource SampleAPIProvider1HomeResource
   	with endpoint SLA // provider1Endpoint1SLA
       type QUANTITATIVE // optional now
     	objective performanceSLO1 "responseTimeUnder" 5 seconds // "in 80% of calls)"

@@ -97,6 +97,7 @@ public class AsyncApiGeneratorHelper {
 			if (pb.getOther().getThrift() != null)
 				return pb.getOther().getThrift();
 
+			// TODO JSON-RPC, Web_Sockets (grammar extended!)
 		}
 
 		return "Unknown protocol";

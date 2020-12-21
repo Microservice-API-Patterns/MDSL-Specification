@@ -1,21 +1,22 @@
 API description NN
 usage context COMMUNITY_API for BACKEND_INTEGRATION // MAP pattern tags (optional)
+// see https://microservice-api-patterns.org/patterns/index
 
 data type nn {D} // reusable data contract elements (optional) 
 
 endpoint type NN  
   version "1.0.0" // semantic versioning information (optional) 
-  serves as PROCESSING_RESOURCE // MAP pattern tag(s) (optional)
+  serves as PROCESSING_RESOURCE // can also be a MAP pattern tag (optional))
   exposes 
-  	operation o
-	  with responsibility BUSINESS_ACTIVITY_PROCESSOR // MAP pattern tag (optional)
+  	operation myOp
+	  with responsibility "myOpSemanticsDecorator" // can also be a MAP pattern tag (optional)
 	  expecting
-	    headers "Name" // optional 
-		payload  {D}
+	    headers ("myHeader1": D<string>, "myHeader2":D<string>) // optional "header1" not possible
+		payload "myRequest": {D}
 				structured as MAP_TYPE
 	  delivering  
 	    headers {D} // optional
 		payload {D} 
 		structured as MAP_TYPE
 	  reporting 
-	  	error {D} // see bottom of page for explanation (optional)
+	  	error SomeReport "myReport": {D} // see bottom of page for explanation (optional)

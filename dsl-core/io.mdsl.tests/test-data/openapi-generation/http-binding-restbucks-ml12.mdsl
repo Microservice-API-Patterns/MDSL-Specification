@@ -1,0 +1,107 @@
+API description RESTBucksResourceAPI
+version "Maturity Level 1/2, example Version 0.2"
+data type OrderDTO {"milk": D<string>, "size":D<string>, "drink": D<string>, "amount": D<int>}+
+data type PaymentDTO {"means": D<string>, "authToken": D<raw>, "amount": D<int>} // means: "credit card" or "other"  
+
+// ** modeled (roughly) after Figure 5-4 in "REST in Practice" (page 112), but unRESTed (see RPCBucks too)
+
+endpoint type OrderManagementEndpoint
+  serves as PROCESSING_RESOURCE 
+  exposes
+    operation placeOrder with responsibility STATE_CREATION_OPERATION
+      expecting
+        payload OrderDTO
+      delivering
+        payload "orderId": ID<int> // the unique identifier of the order (for further processing) 
+      transitions from "" to "paymentExpected" // empty string: initial state 
+      compensated by cancelOrder // experimental
+      
+    operation updateOrder with responsibility STATE_REPLACEMENT_OPERATION
+      expecting
+        payload OrderDTO
+      delivering
+        payload {"statusCode":D<int> /*, R<PaymentLinkRelation> */}
+
+    operation updateAmount with responsibility STATE_TRANSITION_OPERATION // not in book!
+      expecting
+        payload "newAmount":D<int>
+      delivering
+        payload "statusCode":D<int> // was: DAPIdiom
+      
+    operation cancelOrder with responsibility STATE_DELETION_OPERATION
+      expecting
+        payload "id":ID<int> // D<void> as id is in URI?
+      delivering
+        payload "success":D<bool>
+      
+    operation get with responsibility RETRIEVAL_OPERATION
+      expecting
+        payload "id":ID<int> // D<void> as id is in URI?
+      delivering
+        payload "LatestRepresentation":OrderDTO
+        
+    operation acceptPayment with responsibility STATE_TRANSITION_OPERATION // state created in other endpoint!
+      expecting
+        payload PaymentDTO
+      delivering
+        payload PaymentDTO
+      reporting 
+        error e400 
+        error e401 {"code":ID<string>, "info":D<string>}  
+        protected by policy OnlyAuthenticatedShoppers {"userId":ID<string>, "password":MD<string>}
+      
+    operation prepareOrderViaBarista with responsibility STATE_TRANSITION_OPERATION // state created in other endpoint!
+      expecting
+        payload "id":ID<int> // D<void> as id is in URI?
+      delivering
+        payload "success":D<bool>
+
+    operation handOutAndConcludeProcess with responsibility STATE_TRANSITION_OPERATION // in other endpoint!
+      expecting
+        payload "id":ID<int>
+      delivering
+        payload "success":D<bool>
+        reporting 
+          error e400 {"code":ID<string>, "info":D<string>} 
+      transitions from "1" to "2"
+      
+API provider RESTBucksProvider
+  offers OrderManagementEndpoint
+  at endpoint location "http://restbucks.com/order"
+  via protocol HTTP
+   static binding
+   
+    resource RESTBucksHome // at "/" // TODO support default in OAS generator
+     
+      media type OrderRepresentationJSON as "application/vnd.order+json"
+      media type OrderRepresentationXML as "application/vnd.restbucks.order+xml"
+      media type PaymentRepresentationJSON as "application/vnd.restbucks.payment+json"
+      media type PaymentRepresentationXML as "application/vnd.restbucks.payment+xml"
+            
+      // do not need more here to map abstract MDSL data type to concrete JSON or XML (?)
+      data type OrderDTO to OrderRepresentationJSON OrderRepresentationXML  // MIME RFC as keywords
+      data type PaymentDTO to "application/vnd.restbucks.payment+json"
+ 
+      operation placeOrder to POST
+        accepts OrderRepresentationJSON OrderRepresentationXML
+        replies PaymentRepresentationJSON PaymentRepresentationXML // "application/vnd.restbucks.order-payment+json" 
+        
+      // GET operation not mapped at present
+        
+    resource Orders at "/{id}" // TODO relative URI (templated!), tbd: where does 'id' come from (endpoint type?)
+      
+      operation updateOrder to PUT
+      operation updateAmount to PATCH // just a demo (not in book)
+      operation cancelOrder to DELETE
+     
+    resource PaymentResource at "/payment/{id}"
+      
+      operation acceptPayment to PUT
+        report e401 realized as 401 with "Payment Problem"
+      	policy OnlyAuthenticatedShoppers realized as BASIC_AUTHENTICATION 
+      operation prepareOrderViaBarista to POST // (default), not in book?
+  
+    resource ReceiptResource at "/receipt/{id}"
+      
+      operation handOutAndConcludeProcess to DELETE
+      

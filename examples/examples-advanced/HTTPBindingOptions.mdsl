@@ -1,0 +1,115 @@
+API description HTTPBindingOptionsDemo
+
+data type GenericParameterP P
+data type ListOfBasicAtomicParameterTypes ("dataString":D<string>, "metadataString":MD<string>, "intIdentifier":ID<int>, "stringLink":L<string>)
+data type PersonAsFlatParamaterTree {"person":D<string>, "street":D<string>, "zip":D<int>, "city":D<string>, "phoneNumbers":D<string>+}
+
+endpoint type HeuristicEndpoint1
+  serves as INFORMATION_HOLDER_RESOURCE
+  exposes
+    operation createSomething with responsibility "POST"
+      expecting
+        payload ListOfBasicAtomicParameterTypes
+      delivering
+        payload GenericParameterP
+    operation addSomething with responsibility "PUT"
+      expecting
+        payload ListOfBasicAtomicParameterTypes
+      delivering
+        payload GenericParameterP
+        
+endpoint type HeuristicEndpoint2
+  serves as PROCESSING_RESOURCE and INFORMATION_HOLDER_RESOURCE
+  exposes
+    operation getSomething with responsibility RETRIEVAL_OPERATION
+      expecting
+        payload ListOfBasicAtomicParameterTypes
+      delivering
+        payload GenericParameterP
+    operation readSomething with responsibility "HEAD"
+      expecting
+        payload ListOfBasicAtomicParameterTypes
+      delivering
+        payload GenericParameterP   
+    operation retrieveSomething with responsibility "TRACE"
+      expecting
+        payload ListOfBasicAtomicParameterTypes
+      delivering
+        payload GenericParameterP
+    operation searchSomething with responsibility "OPTIONS"
+      expecting
+        payload ListOfBasicAtomicParameterTypes
+      delivering
+        payload GenericParameterP
+
+endpoint type HeuristicEndpoint3
+  serves as "Another Role (not in MAP)"
+  exposes
+      operation putSomething
+      expecting
+        payload ListOfBasicAtomicParameterTypes
+      delivering
+        payload GenericParameterP
+    operation replaceSomething with responsibility "POST"
+      expecting
+        payload ListOfBasicAtomicParameterTypes
+      delivering
+        payload GenericParameterP
+
+endpoint type HeuristicEndpoint4
+  // serves as INFORMATION_HOLDER_RESOURCE
+  exposes
+      operation patchSomething
+      expecting
+        payload ListOfBasicAtomicParameterTypes
+      delivering
+        payload GenericParameterP
+    operation updateSomething with responsibility "PUT"
+      expecting
+        payload ListOfBasicAtomicParameterTypes
+      delivering
+        payload GenericParameterP
+                    
+  endpoint type HeuristicEndpoint5
+  // serves as INFORMATION_HOLDER_RESOURCE
+  exposes
+      operation deleteSomething
+      expecting
+        payload ListOfBasicAtomicParameterTypes
+      delivering
+        payload GenericParameterP
+    operation removeSomething with responsibility "POST"
+      expecting
+        payload ListOfBasicAtomicParameterTypes
+      delivering
+        payload GenericParameterP
+            
+API provider NameHeuristicEndpointProvider1
+offers HeuristicEndpoint1
+at endpoint location "/endpoint1"
+via protocol HTTP binding resource self1 at "" operation createSomething to GET
+
+API provider NameHeuristicEndpointProvider21
+offers HeuristicEndpoint2
+at endpoint location "/endpoint21"
+via protocol HTTP binding resource self2 at "" operation readSomething to POST
+
+API provider NameHeuristicEndpointProvider22
+offers HeuristicEndpoint2
+at endpoint location "/endpoint22"
+via protocol HTTP binding resource self3 at "" operation readSomething to POST // ignored?
+
+API provider NameHeuristicEndpointProvider3
+offers HeuristicEndpoint3
+at endpoint location "/endpoint3"
+via protocol Java 
+
+API provider NameHeuristicEndpointProvider41
+offers HeuristicEndpoint3
+at endpoint location "/endpoint41"
+via protocol "OtherProtocol" 
+
+API provider NameHeuristicEndpointProvider42
+offers HeuristicEndpoint3
+at endpoint location "/endpoint42"
+via protocol HTTP binding resource self at "" operation putSomething to GET

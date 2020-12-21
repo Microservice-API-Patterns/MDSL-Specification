@@ -1,0 +1,54 @@
+API description SimpleHypermediaAPI 
+
+data type HALInstance1 {"someMoreILinkInformation":D<string>}
+data type HALInstance2 {"evenMoreILinkInformation":D<string>}
+
+relation type InternalStateTransferLink1 targets HypermediaDrivenEndpoint action continueProcessing input HALInstance1 // DAP (RiP)
+relation type InternalStateTransferLink2 targets HypermediaDrivenEndpoint action terminate input HALInstance2 // action: operation or free-form
+relation type ExternalStateTransferLink targets external resource at "http://map.mdsl.hateoas/elsewehere"
+
+endpoint type HypermediaDrivenEndpoint
+  serves as PROCESSING_RESOURCE
+  exposes
+    operation initiateProcess with responsibility STATE_CREATION_OPERATION
+      expecting
+        payload "in":D<string>
+      delivering
+        payload "out":D<int>
+        links 
+         "transferToStep2": InternalStateTransferLink1 
+      
+    operation continueProcessing with responsibility STATE_TRANSITION_OPERATION
+      expecting
+        payload "id2" 
+      delivering
+        payload {"statusCode":D<int>}
+        links 
+          "self": InternalStateTransferLink1
+          "finishProcessing": InternalStateTransferLink2 
+          "goElsewhere": ExternalStateTransferLink 
+                    
+// ** mapping single endpoint to two internal resources
+      
+API provider RESTLevel3Provider
+  offers HypermediaDrivenEndpoint
+  at endpoint location "http://map.mdsl.hateoas"
+  via protocol HTTP
+   static binding
+    resource Home at "/home"
+     
+      media type CustomMediaTypeRepresentationJSON as "application/vnd.step2cmt+json"
+      relation type InternalStateTransferLink1 to {ResourceForStep2, PUT, CustomMediaTypeRepresentationJSON} 
+                
+      operation initiateProcess to POST
+        accepts CustomMediaTypeRepresentationJSON 
+        replies "application/vnd.restbucks.order-payment+json" 
+    
+    resource ResourceForStep2 at "/home/{id}"
+      
+      media type ProcessTerminationInformation as "application/vnd.myHALinstance+json" 
+      relation type InternalStateTransferLink2 to {Home, PUT} // CMT not defined here for GET on "/home/{id} 
+      relation type ExternalStateTransferLink to {"SomeExternalResource", POST, ProcessTerminationInformation} 
+      
+      operation continueProcessing to PUT
+        // no accepts/replies here (link is enough)

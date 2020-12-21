@@ -34,7 +34,7 @@ public class ChannelContractValidator extends AbstractMDSLValidator {
 		for (ChannelPathWithParams channel : channels) {
 			if (!channelPaths.add(channel.getPath())) {
 				error("Duplicate channel path '" + channel.getPath() + "'", channel,
-						ApiDescriptionPackage.Literals.CHANNEL_PATH_WITH_PARAMS__PATH);
+						ApiDescriptionPackage.eINSTANCE.getChannelPathWithParams_Path()); // Literals.CHANNEL_PATH_WITH_PARAMS__PATH);
 			}
 		}
 	}
@@ -48,7 +48,7 @@ public class ChannelContractValidator extends AbstractMDSLValidator {
 		for (Channel channel : channels) {
 			if (!messageNames.add(channel.getName())) {
 				error("Duplicate channel name '" + channel.getName() + "'", channel,
-						ApiDescriptionPackage.Literals.CHANNEL__NAME);
+						ApiDescriptionPackage.eINSTANCE.getChannel_Name()); // Literals.CHANNEL__NAME);
 			}
 		}
 	}
@@ -124,7 +124,7 @@ public class ChannelContractValidator extends AbstractMDSLValidator {
 			if (channelTypes.contains(notAllowedType)) {
 				error("The '" + mainType + "' Channel '" + channel.getName() + "' can not be also of type '"
 						+ notAllowedType + "'. Consider removing this type.", channel,
-						ApiDescriptionPackage.Literals.CHANNEL_CONTRACT__TYPES, channelTypes.indexOf(notAllowedType));
+						ApiDescriptionPackage.eINSTANCE.getChannelContract_Types()); // Literals.CHANNEL_CONTRACT__TYPES, channelTypes.indexOf(notAllowedType));
 			}
 		}
 	}
@@ -139,7 +139,7 @@ public class ChannelContractValidator extends AbstractMDSLValidator {
 			if (!channelTypesSet.add(channelType)) {
 				error("The Channel '" + channel.getName() + "' already has type '" + channelType
 						+ "'. Consider removing this duplicate type.", channel,
-						ApiDescriptionPackage.Literals.CHANNEL_CONTRACT__TYPES, channelTypes.lastIndexOf(channelType));
+						ApiDescriptionPackage.eINSTANCE.getChannelContract_Types()); // Literals.CHANNEL_CONTRACT__TYPES, channelTypes.lastIndexOf(channelType));
 			}
 		}
 
@@ -171,10 +171,9 @@ public class ChannelContractValidator extends AbstractMDSLValidator {
 			if (src.getParams() == null || src.getParams().size() == 0) {
 				error("The Channel '" + channelName
 						+ "' contains parameters in the path. Consider adding the description of those using 'with paramName: type, \"Parameter description\"'",
-						src, ApiDescriptionPackage.Literals.CHANNEL_PATH_WITH_PARAMS__PATH);
+						src, ApiDescriptionPackage.eINSTANCE.getChannelPathWithParams_Path()); // Literals.CHANNEL_PATH_WITH_PARAMS__PATH);
 			}
 		}
 
 	}
-
 }

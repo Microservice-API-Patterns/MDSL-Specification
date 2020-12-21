@@ -22,7 +22,7 @@ bindings for AMQP {
 
 message broker MyMessageBroker
 exposes
-   ProtocolBindingExample
+   MyAwsomeChannel
 at location "tcp://mqtt.myapp.com:1883" 
 via protocol MQTT
 bindings {

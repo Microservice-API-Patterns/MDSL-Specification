@@ -1,0 +1,111 @@
+openapi: 3.0.1
+info:
+  title: SimpleHypermediaAPI
+  version: "1.0"
+servers:
+- url: http://map.mdsl.hateoas
+tags:
+- name: RESTLevel3Provider-Home
+  externalDocs:
+    description: The role of this endpoint, offering a HypermediaDrivenEndpoint contract,
+      is Processing Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
+- name: RESTLevel3Provider-ResourceForStep2
+  externalDocs:
+    description: The role of this endpoint, offering a HypermediaDrivenEndpoint contract,
+      is Processing Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
+paths:
+  /http://map.mdsl.hateoas/home:
+    summary: activity-oriented endpoint
+    post:
+      tags:
+      - RESTLevel3Provider-Home
+      summary: write only
+      description: This operation realizes the [State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html)
+        pattern.
+      operationId: Home-initiateProcess
+      parameters: []
+      requestBody:
+        content:
+          application/vnd.step2cmt+json:
+            schema:
+              type: object
+              properties:
+                in:
+                  type: string
+      responses:
+        "200":
+          description: initiateProcess successful execution
+          content:
+            application/vnd.restbucks.order-payment+json:
+              schema:
+                type: object
+                properties:
+                  out:
+                    type: integer
+                    format: int32
+          links:
+            transferToStep2:
+              operationId: Home-continueProcessing
+              parameters:
+                transferToStep2: HALInstance1
+                resource: ResourceForStep2
+                verb: PUT
+                cmt: CustomMediaTypeRepresentationJSON
+              description: 'Targeted operation: continueProcessing'
+  /http://map.mdsl.hateoas/home/{id}:
+    summary: activity-oriented endpoint
+    put:
+      tags:
+      - RESTLevel3Provider-ResourceForStep2
+      summary: read and write
+      description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
+        pattern.
+      operationId: ResourceForStep2-continueProcessing
+      parameters: []
+      responses:
+        "200":
+          description: continueProcessing successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    format: int32
+          links:
+            finishProcessing:
+              operationId: ResourceForStep2-terminate
+              parameters:
+                finishProcessing: HALInstance2
+                resource: Home
+                verb: PUT
+              description: 'Targeted operation: terminate'
+            goElsewhere:
+              operationId: unknownOperation
+              parameters:
+                resource: SomeExternalResource
+                verb: POST
+                cmt: ProcessTerminationInformation
+              server:
+                url: SomeExternalResource
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    HALInstance1:
+      type: object
+      properties:
+        someMoreILinkInformation:
+          type: string
+    HALInstance2:
+      type: object
+      properties:
+        evenMoreILinkInformation:
+          type: string

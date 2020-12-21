@@ -1,0 +1,124 @@
+openapi: 3.0.1
+info:
+  title: CRUDVerbAndDataTypeMappingTest
+  version: "1.0"
+servers:
+- url: https://some.sample.domain/crudApiEndpoint
+tags:
+- name: Sample_CRUD_APIProvider-Home
+  externalDocs:
+    description: The role of this endpoint, offering a SampleEntityInformationHolder
+      contract, is not specified.
+    url: ""
+paths:
+  /https://some.sample.domain/crudApiEndpoint:
+    get:
+      tags:
+      - Sample_CRUD_APIProvider-Home
+      description: unspecified operation responsibility
+      operationId: Home-get
+      parameters:
+      - name: dto2
+        in: query
+        style: deepObject
+        explode: true
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              dtoKey:
+                type: integer
+                format: int32
+                nullable: true
+              dto1Nested:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DTO1Flat'
+      responses:
+        "200":
+          description: get successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedDTO'
+    post:
+      tags:
+      - Sample_CRUD_APIProvider-Home
+      description: unspecified operation responsibility
+      operationId: Home-create
+      parameters:
+      - name: primaryIntegerKey
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: atLeastOneString
+        in: query
+        required: true
+        schema:
+          type: array
+          items:
+            minItems: 1
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: create successful execution
+          content:
+            application/json:
+              schema:
+                minItems: 1
+                type: array
+                items:
+                  $ref: '#/components/schemas/NestedDTO'
+components:
+  schemas:
+    DTO1Flat:
+      type: object
+      properties:
+        dtoKey:
+          type: integer
+          format: int32
+        dtoValue:
+          type: string
+    DTO1Array:
+      type: array
+      items:
+        type: object
+        properties:
+          dtoKey1a:
+            type: integer
+            format: int32
+          dtoValue1a:
+            type: string
+    NestedDTO:
+      type: object
+      properties:
+        dtoKey:
+          type: integer
+          format: int32
+          nullable: true
+        dto1Nested:
+          type: array
+          items:
+            $ref: '#/components/schemas/DTO1Flat'
+    DTO2WithAPL:
+      type: array
+      items:
+        type: object
+        properties:
+          a1:
+            type: integer
+            format: int32
+            nullable: true
+          a2:
+            type: string
+    TestDTO:
+      type: object
+      properties:
+        noDTOButInt:
+          type: integer
+          format: int32

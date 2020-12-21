@@ -1,6 +1,6 @@
 # AsyncMDSL extension (DSL and Eclipse plugin)
 
-*Important note*: This technology preview, contributed by Giacomo de Liberali in his master thesis project at University of Pisa, demonstrates how MDSL can be extended and used to describe channels and endpoints in [queue-based messaging](https://www.enterpriseintegrationpatterns.com/patterns/messaging/Introduction.html).
+*Important note*: This [technology preview](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview), contributed by Giacomo de Liberali in his master thesis project at University of Pisa, demonstrates how MDSL can be extended and used to describe channels and endpoints in [queue-based messaging](https://www.enterpriseintegrationpatterns.com/patterns/messaging/Introduction.html).
 
 ## Proposed language extension
 
@@ -32,7 +32,6 @@ This command will run the `async-api-generator` inside a Docker container and pu
 
 ## Known limitations
 
-* AsyncMDSL provides a syntax to handle multiple brokers with different Channels to declare. At present, the resulting AsyncAPI specification is not written to multiple files. The generated AsyncAPI specification therefore acts as if all brokers support all interfaces.
 * Using the name `Null` for data types will result in an invalid AsyncAPI document.
 * See [thesis report](https://giacomodeliberali.com/thesis/UNIPI-AsyncMDSL-MasterThesis-2020-GiacomoDeLiberali.pdf) for further information.
 

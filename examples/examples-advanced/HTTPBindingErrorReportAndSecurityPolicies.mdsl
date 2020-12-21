@@ -1,0 +1,65 @@
+API description HTTPBindingWithReportAndPolicy
+
+data type FlatParameterTree {"id":ID<string>, "md":MD<string>, "dInt": D<int>, "lString": L<string>, "dLong": D<long>, D<bool>}
+data type NestedParameterTree {"npt1":D<string>, "npt2":FlatParameterTree}
+data type FlatResponseDTR {"fr1":D<string>, "fr2":MD<string>}
+data type NestedResponseDTR {"r1":ID<string>, "r2":L<string>, FlatResponseDTR}
+data type AnotherNestedTree {"p1":D<string>, {"anotherTree":D<string>}}
+
+data type ErrorReport {"code":D<int>, "message":MD<int>}
+data type Credentials ("user":ID<string>, "password":MD<raw>)
+
+endpoint type ReportAndPolicyEnabledPortType
+  exposes
+    operation createOperation  
+      expecting
+        payload NestedParameterTree
+      delivering
+        payload FlatResponseDTR
+      protected by policy BasicAuthenticationSample
+    operation getOperation 
+      expecting
+        payload "aQueryParameter": D<string>
+      delivering
+        payload "queryResponse": NestedResponseDTR
+        reporting error ServerError "e500": MD<int>
+    operation putOperation 
+      expecting
+        payload FlatParameterTree
+      delivering
+        payload NestedResponseDTR
+        reporting error ServerError2 "e502": MD<int>
+      protected by policy BasicAuthenticationSample2
+    operation patchOperation 
+      expecting
+        // AP and APL do not work yet, NPE when looking for name:
+        headers {"customHeader1":D<string>, "customHeader2":D<string>} // no need to define standard protocol headers
+        payload FlatParameterTree
+      delivering
+        payload FlatParameterTree 
+    operation deleteOperation
+      expecting
+        payload FlatParameterTree
+      delivering
+        payload NestedResponseDTR    
+
+API provider HelloHTTPEndpointNoBinding2
+offers ReportAndPolicyEnabledPortType
+at endpoint location "/mySampleHTTPEndpoint"
+via protocol HTTP binding 
+resource Home // no relative URI here
+    // note: not all operations bound, so not all included in generated OAS
+    operation createOperation to POST
+      all elements realized as BODY parameters // global binding
+      policy BasicAuthenticationSample realized as API_KEY with Credentials "someCredentialText"
+    operation getOperation to GET
+      element "aQueryParameter" realized as QUERY parameter // individual binding
+      report ServerError realized as 500 with "SomeExtraErrorReportText"
+    operation putOperation to PUT
+      // default element bindings
+      report ServerError2 realized as 502 with "SomeExtraErrorReportText"
+      policy BasicAuthenticationSample2 realized as OAUTH_FLOW with openIdConnectUrl "http://tbc.tbc"
+    operation patchOperation to PATCH
+	  // element "customHeader1" realized as HEADER parameter // somewhat redundant
+	  // element "customHeader2" realized as HEADER parameter // somewhat redundant
+    // delete operation not bound (in this HTTP binding)
