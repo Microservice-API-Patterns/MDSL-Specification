@@ -108,7 +108,7 @@ bindings for [protocol] {
 
 - Protocol can assume one of the [supported protocols](./bindings). As the list of properties is protocol-specific, a single flat JSON object is expected as configuration.
 
-An example of a _binding_ definition can be found in [examples/AsyncMDSL/bindings.mdsl](../examples/AsyncMDSL/bindings.mdsl).
+An example of a _binding_ definition can be found in [examples/AsyncMDSL/bindings.mdsl](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/examples/asyncMDSL/bindings.mdsl).
 
 #### Channel definition example
 
