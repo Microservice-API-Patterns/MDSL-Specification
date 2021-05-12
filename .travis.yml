@@ -1,0 +1,19 @@
+language: java
+
+jdk:
+- openjdk11
+
+install: "/bin/true"
+
+jobs:
+  include:
+  - script:
+     - cd dsl-core/
+     - xvfb-run mvn clean verify -B
+  - script:
+     - cd dsl-core/
+     - xvfb-run ./gradlew clean build
+
+cache:
+  directories:
+  - $HOME/.m2
