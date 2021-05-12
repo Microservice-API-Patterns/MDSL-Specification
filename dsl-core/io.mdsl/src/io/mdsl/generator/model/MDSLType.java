@@ -27,5 +27,5 @@ public interface MDSLType {
 	 * @return name (string representation) of the type
 	 */
 	String getName();
-
+	boolean isAtomic();
 }

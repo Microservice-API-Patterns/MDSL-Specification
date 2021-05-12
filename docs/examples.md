@@ -93,6 +93,6 @@ Back to [MDSL homepage](./index).
 
 More examples in [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) and in [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) repository.
 
-*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

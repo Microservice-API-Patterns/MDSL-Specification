@@ -1,8 +1,10 @@
 ---
 title: Microservice Domain Specific Language (MDSL) to GraphQL
 author: Stefan Kapferer
-copyright: Stefan Kapferer and Olaf Zimmermann, 2020. All rights reserved.
+copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2021. All rights reserved.
 ---
+
+[Tools Overview](./../tools), [OpenAPI](./open-api), [Protocol Buffers](./protocol-buffers), [Jolie](./jolie), [Java](./java), [Freemarker templating](./freemarker), [AsyncAPI](./async-api)
 
 GraphQL Generator
 =================
@@ -578,7 +580,7 @@ That's it. This was a short introduction what you can do with the GraphQL schema
 
 Also checkout our other generators:
 
-* [Open API generator](./open-api)
+* [OpenAPI generator](./open-api)
 * [Protocol Buffers generator](./protocol-buffers)
 * [Jolie generator](./jolie)
 * [Java generator](./java)
@@ -593,6 +595,6 @@ Also checkout our other generators:
     * [Bindings](./../bindings) and [instance-level concepts](./../optionalparts). 
 * Back to [MDSL homepage](./../index).
 
-*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

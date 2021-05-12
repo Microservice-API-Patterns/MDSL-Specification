@@ -1,19 +1,22 @@
 ---
 title: Microservice Domain-Specific Language (MDSL) Homepage
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
+copyright: Olaf Zimmermann, 2019-2021. All rights reserved.
 ---
 
 
 ## TL;DR
 Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as Swagger, WSDL and <!-- gRPC --> Protocol Buffers. 
 
+> If the URI of this page is `https://socadk.github.io/MDSL/index`, you are looking at the GitHub pages of the next version (technology preview)! Please refer to [https://microservice-api-patterns.github.io/MDSL-Specification/index](https://microservice-api-patterns.github.io/MDSL-Specification/index) for the latest public open source version.
+
 Quick links: 
 
 * Documentation pages (these GitHub pages): 
     * [Endpoint Type](./servicecontract), [Data Types](./datacontract), [Provider and Client](./optionalparts), [Bindings](./bindings), [Tutorial](./tutorial), [Quick Reference](./quickreference)<!-- providing skeletons-->
+    * Technology preview: [AsyncMDSL](./async-mdsl)
 * Tools: [Overview](./tools), [CLI](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli), [update site for editor (Eclipse plugin)](./updates/)
-    * Generators: [Open API generator](./generators/open-api), [Protocol buffers generator](./generators/protocol-buffers), [Graphql generator](./generators/graphql), [Jolie generator](./generators/jolie), [Java «Modulith» generator](./generators/java), [Arbitrary textual generation with Freemarker](./generators/freemarker)
+    * Generators: [OpenAPI generator](./generators/open-api), [Protocol buffers generator](./generators/protocol-buffers), [Graphql generator](./generators/graphql), [Jolie generator](./generators/jolie), [Java «Modulith» generator](./generators/java), [Arbitrary textual generation with Freemarker](./generators/freemarker)
 * Language and tools repository (GitHub): [XText grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext), [examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) folder
 
 <!--
@@ -51,7 +54,7 @@ API client HelloWorldAPIClient
 
 `sayHello` accepts a single scalar string value `D<string>` as input. This operation returns a Data Transfer Object (DTO) called `SampleDTO` as output, which is modeled explicitly so that its specification can be reused. `SampleDTO` is specified incompletely as an identifier-data pair `{ID, D}`: the names of the two "parameters" and the type of the data value `D` have not been specified yet. In addition to the endpoint type (a.k.a. service contract) `HelloWorldEndpoint`, an API client and an API provider working with this contract are defined (on an abstract level). 
 
-Take a look at Hello World in [Swagger/Open API Specification](https://swagger.io/blog/api-development/getting-started-with-swagger-i-what-is-swagger/) in comparison. You can find such contract specification example [here](./HelloWorld.swagger.json) (admittedly, this Open API specification contains some more details about te HTTP binding of the abstract contract). 
+Take a look at Hello World in [Swagger/OpenAPI Specification](https://swagger.io/blog/api-development/getting-started-with-swagger-i-what-is-swagger/) in comparison. You can find such contract specification example [here](./HelloWorld.swagger.json) (admittedly, this OpenAPI specification contains some more details about te HTTP binding of the abstract contract). 
 <!-- could also show WSDL/XML schema here -->
 
 
@@ -64,7 +67,7 @@ A contract language for (micro-)service API design should:
     * Support partial specifications as first-class language concepts to be refined iteratively (see above example `{ID, D}`)
 * Promote *platform independence*:
     * [Microservice API Patterns (MAP)](https://microservice-api-patterns.org/) as first-class language elements annotating/decorating endpoint types, operations, and representation elements 
-    * Not bound to HTTP (unlike Swagger and its successor Open API Specification) or other protocols and message exchange formats
+    * Not bound to HTTP (unlike Swagger and its successor OpenAPI Specification) or other protocols and message exchange formats
 * Support *meet-in-the-middle* service design:
     * *Top-down* from requirements (for instance, user stories for integration scenarios), as for instance proposed as activity in the [Design Practice Repository (DPR)](https://github.com/socadk/design-practice-repository) 
     * *Bottom up* from existing systems (represented, for instance, as [DDD-style context maps](https://contextmapper.org/))
@@ -126,7 +129,7 @@ MDSL supports all [Microservice API Patterns](https://microservice-api-patterns.
 * Other responsibility patterns are represented as decorators/annotations for operation responsibilities, for instance, `COMPUTATION_FUNCTION` and `EVENT_PROCESSOR`.
 * Finally, the advanced structural representation patterns (for example, ``<<Pagination>>``) and many [quality patterns](https://microservice-api-patterns.org/patterns/quality/) appear as stereotypes annotating representation elements (for example, ``<<Embedded_Entity>>`` and ``<<Wish_List>>``).
 
-The four types of decorators/annotations and stereotypes are optional; if present, they make the API description more expressive and can be processed by tools such as API linters/contract validators, code/configuration generators, MDSL to Open API or WSDL converters (work in progress).
+The four types of decorators/annotations and stereotypes are optional; if present, they make the API description more expressive and can be processed by tools such as API linters/contract validators, code/configuration generators, MDSL to OpenAPI or WSDL converters (work in progress).
 
 <!--
 ### Tools
@@ -150,12 +153,12 @@ The four types of decorators/annotations and stereotypes are optional; if presen
 
 ### External links 
 
-* Public [Microservice API Patterns (MAP) website](https://microservice-api-patterns.org/), access to team-internal preview website available upon request (features more patterns than the public one, in intermediate draft form)
+* Public [Microservice API Patterns (MAP) website](https://microservice-api-patterns.org/), access to team-internal preview website available upon request (features more patterns than the public one, in intermediate draft form).
 * [Lakeside Mutual](https://github.com/Microservice-API-Patterns/LakesideMutual) repository, featuring [Domain-Driven Design (DDD)](https://www.ifs.hsr.ch/index.php?id=15666&L=4) and [microservices](https://www.ifs.hsr.ch/index.php?id=15266&L=4) in an insurance company scenario (JavaScript frontends and Spring Boot backends)
-* [Context Mapper](https://contextmapper.org/), a DSL for strategic DDD and rapid OOAD
+* An [end-to-end service design demo](https://medium.com/olzzio/domain-driven-service-design-with-context-mapper-and-mdsl-d5a0fc6091c2) is available on Medium also featuring [Context Mapper](https://contextmapper.org/), a DSL for strategic DDD and rapid OOAD (Context Mapper can generate MDSL). The demo takes you from a user story to a walking microservice skeleton (Spring Boot, Hipster, Heroku) in seven steps (partially automated in model transformations).
+* A [microservices and DevOps conference report](https://www.computer.org/csdl/magazine/so/2020/01/08938118/1fUSO0QBDnW) mentioning Context Mapper and MDSL.
+* Olaf Zimmermann's Blog ["The Concerned Architect"](https://ozimmer.ch/blog/), with articles on 
 
-<!-- TODO point to presentations (JUG, VSS, Modelsward, GI-AK ICWE, point at VSS report https://www.computer.org/csdl/magazine/so/2020/01/08938118/1fUSO0QBDnW -->
-
-*Copyright: [Olaf Zimmermann](https://ozimmer.ch/index.html), 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: [Olaf Zimmermann](https://ozimmer.ch/index.html), 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

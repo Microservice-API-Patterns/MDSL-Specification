@@ -253,7 +253,7 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 				.filter(pb -> pb.getParameterMapping() != null && pb.getParameterMapping().getHttp() != null
 						&& (pb.getParameterMapping().getHttp() == HTTPParameter.COOKIE || pb.getParameterMapping().getHttp() == HTTPParameter.PATH || pb.getParameterMapping().getHttp() == HTTPParameter.QUERY))
 				.collect(Collectors.toList())) {
-			warning("Known limitation in Open API (OAS) generator: We currently map the complete data structure for " + httpOperationBinding.getMethod().toString()
+			warning("Known limitation in OpenAPI (OAS) generator: We currently map the complete data structure for " + httpOperationBinding.getMethod().toString()
 					+ " operations into the BODY. Thus, this mapping will be ignored in the OAS generator.", parameterBinding,
 					ApiDescriptionPackage.Literals.HTTP_PARAMETER_BINDING__PARAMETER_MAPPING);
 		}

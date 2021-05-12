@@ -3,23 +3,25 @@
 This project contains a simple CLI to validate MDSL files and call our generators from the command line.
 
 ## Installation
-Once you built the project with Gradle (call `./gradlew clean build` in the `dsl-core` directory), the CLI is available as ZIP and TAR file in the `io.mdsl.cli/build/distributions` directory.
+Once you built the project with Gradle by calling `./gradlew clean build` in the `dsl-core` directory (or `.\gradlew clean build` on Windows), the CLI is available as ZIP and TAR file in the `io.mdsl.cli/build/distributions` directory.
 
 You can also download the CLI binaries here:
 
- * [mdsl-cli-5.0.3.tar](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases/download/v5.0.3/mdsl-cli-5.0.3.tar)
- * [mdsl-cli-5.0.3.zip](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases/download/v5.0.3/mdsl-cli-5.0.3.zip)
+ * [mdsl-cli-5.1.2.tar](https://github.com/socadk/MDSL/releases/download/v5.1.2/mdsl-cli-5.1.2.tar)
+ * [mdsl-cli-5.1.2.zip](https://github.com/socadk/MDSL/releases/download/v5.1.2/mdsl-cli-5.1.2.zip)
 
-1. Uncompress the ZIP or TAR file into the directory you want.
-2. Run the CLI by using the executable in the `bin` folder.
+1. Uncompress the ZIP or TAR file into a directory of your choice.
+2. Run the CLI by using the executable in the `bin` folder:
    * Linux/Mac users: `{dir}/bin/mdsl`
    * Windows users: `{dir}\bin\mdsl.bat`
 3. Optionally: add the extracted `bin` directory to you `PATH` variable, so that you can call the `mdsl` command from everywhere.
 
-**TODO:** Besides the local build we should provide a download of the CLI ZIP and TAR files with the next release.
+<!--
+**TODO:** In addition to the local build we should provide a download of the CLI ZIP and TAR files with the next release.
+-->
 
 ## Input / Usage
-By just calling `./mdsl` (or `mdsl.bat` in Windows), the CLI shows you the available parameters:
+When calling `./mdsl` (or `mdsl.bat` on Windows), the CLI shows you the available parameters:
 
 ```text
 usage: mdsl
@@ -27,8 +29,8 @@ usage: mdsl
                          (only used by Freemarker generator, as we cannot
                          know the file extension).
  -g,--generator <arg>    The generator you want to call. Use one of the
-                         following values: oas (Open API Specification),
-                         jolie (Jolie), text (arbitraty text file by using
+                         following values: oas (OpenAPI Specification),
+                         jolie (Jolie), text (arbitrary text file by using
                          a Freemarker template), proto (Protocol Buffers),
                          graphql (GraphQL Schemas), java (Java Modulith),
                          gen-model-json (Generator model as JSON
@@ -45,17 +47,19 @@ usage: mdsl
                          the 'generator' (-g) parameter.
 ```
 
+<!-- TODO document -s option introduced in V5.1.1 (?) -->
+
 You have to pass the parameter `-i` (`--input`) with a path to an MDSL file at least (required parameter). In this case you can just compile the MDSL file and ensure it is valid.
 
 In case you want to generate output, you have to pass `-g` and one of the generator names:
- * oas (Open API)
- * jolie (Jolie)
- * text (any textual file by using a Freemarker template)
- * proto (Protocol Buffers)
- * graphql (GraphQL schemas)
- * java (Java Modulith)
- * gen-model-json (export generator model as JSON)
- * gen-model-yaml (export generator model as YAML)
+ * ``oas` (OpenAPI)
+ * `jolie` (Jolie), which in turn also yields WSDL and XML Schema (via `jolie2wsdl` tool)
+ * `text` (any textual file by using a Freemarker template)
+ * `proto` (Protocol Buffers)
+ * `graphql` (GraphQL schemas)
+ * `java` (Java Modulith)
+ * `gen-model-json` (export generator model as JSON)
+ * `gen-model-yaml` (export generator model as YAML)
  
 The parameter `-o` is optional and allows you to specify a different output directory for the generated files. By default it generates into the execution directory.
 
@@ -72,15 +76,15 @@ The following examples show all currently supported features of the CLI.
 ./mdsl -i my-model.mdsl
 ```
 
-**Hint**: In case your model is valid and can be compiled, you get the following output:
+**Hint**: When your model is valid and can be compiled, you get the following output:
 
 ```bash
 The MDSL file '/home/user/source/MDSL/my-model.mdsl' has been compiled without errors.
 ```
 
-In case it cannot be compiled you will get an error message (exception).
+You will get an error message (exception) if it cannot be compiled.
 
-### Generate Open API Specification
+### Generate OpenAPI Specification
 
 ```bash
 ./mdsl -i my-model.mdsl -g oas
@@ -113,11 +117,13 @@ In case it cannot be compiled you will get an error message (exception).
 ### Generate Arbitrary Text File with Freemarker Template
 
 ```bash
-./mdsl -i my-model.mdsl -g text ~/source/MDSL/examples/generator-templates/FreemarkerReportDemo.md.ftl -f my-report.md
-```
+./mdsl -i my-model.mdsl -g text FreemarkerReportDemo.md.ftl -f my-report.md
+``` 
+
+Sample Freemarker templates are available in the `freemarker-examples` subfolder of the MDSL `examples`.
 
 ### Generator Model Exporters
-With the following two commands it is possible to export the generator model used in MDSL as JSON or YAML:
+Two commands make it possible to export the generator model used in MDSL as JSON or YAML:
 
 ```bash
 ./mdsl -i my-model.mdsl -g gen-model-json

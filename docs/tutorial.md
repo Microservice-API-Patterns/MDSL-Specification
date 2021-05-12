@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) Tutorial
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
+copyright: Olaf Zimmermann, 2019-2021. All rights reserved.
 ---
 
 [Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Type](./datacontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Bindings](./bindings) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
@@ -15,9 +15,9 @@ MDSL Tutorial
 
 Let us assume we want to create an [HTTP resource API](https://restful-api-design.readthedocs.io/en/latest/) that supports upload and download of spreadsheets. The structure of these sheets resembles that of the popular [CSV format](https://en.wikipedia.org/wiki/Comma-separated_values) and supporting tools. We choose a *contract-first* approach to design this API.[^1]
 
-[^1]: There are two ways to approach API design, *code first* and *contract first*. With code first, one writes an API implementation, annotates the API with the required routing and (de)serialization information and lets tools and middleware generate a contract. In contract first, one authors an interface description, for instance in Swagger/Open API Specification and then (optionally) lets tools generate client and server stubs. MDSL supports contract-first service design at present.
+[^1]: There are two ways to approach API design, *code first* and *contract first*. With code first, one writes an API implementation, annotates the API with the required routing and (de)serialization information and lets tools and middleware generate a contract. In contract first, one authors an interface description, for instance in Swagger/OpenAPI Specification and then (optionally) lets tools generate client and server stubs. MDSL supports contract-first service design at present.
 
-Unlike Swagger/Open API Specification, Microservice Domain-Specific Language (MDSL) is a technology-neutral notation; see [MDSL home page](./index) for more positioning information. 
+Unlike Swagger/OpenAPI Specification, Microservice Domain-Specific Language (MDSL) is a technology-neutral notation; see [MDSL home page](./index) for more positioning information. 
 
 ## Modeling Representation Elements 
 
@@ -226,6 +226,6 @@ In addition to MAP patterns, any string can decorate endpoints and operations; i
 * Back to [MDSL homepage](./index). 
 * [Microservice API Patterns](https://microservice-api-patterns.org/).
 
-*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

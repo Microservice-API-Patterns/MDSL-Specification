@@ -27,7 +27,7 @@ at location "tcp://mqtt.myapp.com:1883"
 via protocol MQTT
 bindings {
 	"lastWill": {
-	"qos": 2,
+		"qos": 2,
 		"retain": false
 	}
 }

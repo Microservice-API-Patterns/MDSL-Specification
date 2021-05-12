@@ -49,10 +49,10 @@ mvn clean verify
 ```
 
 ### Build Standalone Library
-You don't have to install Gradle locally, since this project uses the Gradle wrapper. Just run the following command to build the standalone artifacts:
+You don't have to install Gradle locally, since this project uses the Gradle wrapper. Just run the following command to build the standalone artifacts (no leading `./` required on Windows):
 
 ```bash
-./gradlew clean build
+./gradlew clean build # sometimes ./gradlew build is sufficient
 ```
 
 If you want to install the library in your local Maven repository, use the following command:

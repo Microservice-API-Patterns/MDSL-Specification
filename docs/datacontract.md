@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) Data Contracts
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
+copyright: Olaf Zimmermann, 2019-2021. All rights reserved.
 ---
 
 [Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Bindings](./bindings) &mdash; [Tutorial](./tutorial) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
@@ -265,6 +265,6 @@ Note that some combinations are syntactically possible at present (to simplify t
 * [Quick reference](./quickreference), [tutorial](./tutorial) and [tools](./tools)
 * Back to [MDSL homepage](./index).
 
-*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

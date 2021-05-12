@@ -399,6 +399,9 @@
 		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.GenModelYAMLExporterHandler"
 			commandId="io.mdsl.ui.handler.GenModelYAMLExporterCommand">
 		</handler>
+		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.AsyncAPIGenerationHandler"
+			commandId="io.mdsl.ui.handler.AsyncAPIGenerationCommand">
+		</handler>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<command name="Generate Text File with Freemarker Template" id="io.mdsl.ui.handler.TextFileGenerationCommand"></command>
@@ -423,6 +426,9 @@
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<command name="Export Generator Model as YAML" id="io.mdsl.ui.handler.GenModelYAMLExporterCommand"></command>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
+		<command name="Generate AsyncAPI Specification" id="io.mdsl.ui.handler.AsyncAPIGenerationCommand"></command>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution
@@ -502,6 +508,15 @@
 					</visibleWhen>
 				</command>
 				<command defaultHandler="io.mdsl.ui.handler.GenModelYAMLExporterHandler" commandId="io.mdsl.ui.handler.GenModelYAMLExporterCommand" style="push">
+					<visibleWhen checkEnabled="false">
+						<iterate>
+							<adapt type="org.eclipse.core.resources.IResource">
+								<test property="org.eclipse.core.resources.name" value="*.mdsl"/>
+							</adapt>
+						</iterate>
+					</visibleWhen>
+				</command>
+				<command defaultHandler="io.mdsl.ui.handler.AsyncAPIGenerationHandler" commandId="io.mdsl.ui.handler.AsyncAPIGenerationCommand" style="push">
 					<visibleWhen checkEnabled="false">
 						<iterate>
 							<adapt type="org.eclipse.core.resources.IResource">

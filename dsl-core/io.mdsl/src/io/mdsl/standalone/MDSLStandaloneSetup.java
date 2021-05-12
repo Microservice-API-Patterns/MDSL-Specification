@@ -25,5 +25,4 @@ public class MDSLStandaloneSetup {
 	public static MDSLStandaloneAPI getStandaloneAPI() {
 		return new MDSLStandaloneUsageHelper();
 	}
-
 }

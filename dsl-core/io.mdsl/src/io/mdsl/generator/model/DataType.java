@@ -80,4 +80,8 @@ public class DataType implements MDSLType {
 		return name.equals(dataType.name);
 	}
 
+	@Override
+	public boolean isAtomic() {
+		return false;
+	}
 }

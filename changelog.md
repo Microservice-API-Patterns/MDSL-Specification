@@ -2,6 +2,13 @@
 
 Also see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases).
 
+V5.1, March to May 2021
+
+* Freemarker template for ALPS and API Description (Markdown)
+* GitPages for AsyncMDSL
+* CLI enhancements
+* CI/CD adjustments
+
 V5.0, December 2020
 
 * Extended HTTP binding: new resource concept, media types, security policies, (error, status) reporting, HATEOAS links (technology preview)

@@ -1,0 +1,32 @@
+API description ALPSGenerationExample
+
+data type NestedGreetingDTO "greetingStruct": {"iname":ID<int>, "structMessage": GreetingDTO}
+data type GreetingDTO "greeting": {"name":ID<string>!, "message": D<string>} // ALPS does not have cardinalities (?)
+
+endpoint type CRUDEndpoint
+exposes 
+  operation createMessage with responsibility STATE_CREATION_OPERATION
+    expecting payload "cin": D<string>  
+    delivering payload "cout": GreetingDTO
+    
+  operation updateMessage with responsibility STATE_TRANSITION_OPERATION
+    expecting payload "uin": {"who":ID, "what": D<string>} // incomplete parameter
+    delivering payload "uout": GreetingDTO
+
+  operation replaceMessage with responsibility STATE_REPLACEMENT_OPERATION
+    expecting payload "rin": NestedGreetingDTO
+    delivering payload "rout": D<bool>
+  
+  operation readMessage with responsibility RETRIEVAL_OPERATION
+    expecting payload D<string> // anonymous parameter  
+    delivering payload NestedGreetingDTO // anonymous parameter  
+         
+  operation deleteMessage with responsibility STATE_DELETION_OPERATION
+    expecting payload "id": D<string>  
+    delivering payload "code": D<bool>
+
+API provider HelloWorldAPIProvider
+  offers CRUDEndpoint
+
+API client HelloWorldAPIClient
+  consumes CRUDEndpoint

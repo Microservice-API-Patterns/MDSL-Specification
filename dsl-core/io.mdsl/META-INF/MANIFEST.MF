@@ -3,7 +3,7 @@ Automatic-Module-Name: io.mdsl
 Bundle-ManifestVersion: 2
 Bundle-Name: io.mdsl
 Bundle-Vendor: MDSL Project
-Bundle-Version: 5.0.3.qualifier
+Bundle-Version: 5.1.2.qualifier
 Bundle-SymbolicName: io.mdsl; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
@@ -37,6 +37,7 @@ Export-Package: io.mdsl,
  io.mdsl.dsl,
  io.mdsl.exception,
  io.mdsl.generator,
+ io.mdsl.generator.asyncapi,
  io.mdsl.generator.model,
  io.mdsl.generator.model.converter,
  io.mdsl.generator.protobuf.converter,

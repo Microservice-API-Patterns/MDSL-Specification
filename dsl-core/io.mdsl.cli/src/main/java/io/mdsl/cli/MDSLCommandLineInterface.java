@@ -27,6 +27,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
+import org.eclipse.xtext.generator.IGenerator2;
 
 import io.mdsl.MDSLResource;
 import io.mdsl.generator.TextFileGenerator;
@@ -65,8 +66,13 @@ public class MDSLCommandLineInterface {
 			MDSLResource mdsl = readMDSLFile(inputPath);
 
 			// generate output
-			setOutputDir(cmd.getOptionValue("outputDir"));
-			generate(mdsl, cmd.getOptionValue("generator"), cmd);
+			if(cmd.hasOption("standalone")) {
+				generateInMemory(mdsl, cmd.getOptionValue("generator"), cmd);
+			}
+			else {
+				setOutputDir(cmd.getOptionValue("outputDir"));
+				generate(mdsl, cmd.getOptionValue("generator"), cmd);
+			}
 		} catch (ParseException e) {
 			System.out.println(e.getMessage());
 			printHelp(options);
@@ -105,9 +111,12 @@ public class MDSLCommandLineInterface {
 
 		// output file name (Freemarker generator only)
 		Option outputFilename = new Option("f", "outputFile", true,
-				"The name of the file that shall be generated (only used by Freemarker generator, as we cannot know the file extension).");
+				"The name of the file that shall be generated. This parameter is only used if you pass 'text' to the 'generator' (-g) parameter because the Freemarker generator does not guess any file name extension).");
 		options.addOption(outputFilename);
 
+		Option standalone = new Option("s", "standalone", false, "Create output in main memory and write it to standard output console.");
+		options.addOption(standalone);
+		
 		Option help = new Option("h", "help", false, "Prints this message.");
 		options.addOption(help);
 
@@ -165,7 +174,7 @@ public class MDSLCommandLineInterface {
 		}
 		MDSLGenerator generator = MDSLGenerator.byName(generatorName);
 
-		if (generator == MDSLGenerator.ARBITRATY_TEXT_BY_TEMPLATE) {
+		if (generator == MDSLGenerator.ARBITRARY_TEXT_BY_TEMPLATE) {
 			ensureTemplatePathIsSet(cmd.getOptionValue("template"));
 			ensureFileNameIsSet(cmd.getOptionValue("outputFile"));
 			TextFileGenerator freemarkerGen = (TextFileGenerator) generator.getGenerator();
@@ -176,6 +185,28 @@ public class MDSLCommandLineInterface {
 			api.callGenerator(resource, generator.getGenerator(), outputDir);
 		}
 		System.out.println("The output files have been generated into '" + this.outputDir + "'.");
+	}
+	
+	private void generateInMemory(MDSLResource resource, String generatorName, CommandLine cmd) {
+		if (generatorName == null) {
+			System.out.println("Use -g to pass the generator you want to call.");
+			System.exit(1);
+		}
+		MDSLGenerator generator = MDSLGenerator.byName(generatorName);
+		String result;
+
+		if (generator == MDSLGenerator.ARBITRARY_TEXT_BY_TEMPLATE) {
+			ensureTemplatePathIsSet(cmd.getOptionValue("template"));
+			TextFileGenerator freemarkerGen = (TextFileGenerator) generator.getGenerator();
+			freemarkerGen.setFreemarkerTemplateFile(new File(cmd.getOptionValue("template")));
+			// TODO main memory option (done?)
+			result = api.callGeneratorInMemory(resource, freemarkerGen);
+		} else {
+			IGenerator2 gg = generator.getGenerator();
+			result = api.callGeneratorInMemory(resource, gg);
+		}
+		System.out.println("The conversion output has been generated in main memory:");
+		System.out.println(result);
 	}
 
 	private void ensureTemplatePathIsSet(String pathToTemplate) {

@@ -1,0 +1,162 @@
+############################################################
+# Title .....: ALPS representation of alps-generator-demo.mdsl
+# Author ...: MDSL Freemarker Generator
+# Date .....: tba
+############################################################
+
+# you can generate OpenAPI and other specifications from ALPS:
+# unified -h -f <alpsfile> -t <format type> -o <outfile> (type can be o, p, s; j, a, w)
+# [nodemodulesdir]alps-unified\src\index.js -f alps-generator-demo.mdsl.alps.yaml -t o -o alps-generator-demo.mdsl.oas.yaml
+
+
+alps:
+  version: '0.1'
+  doc:
+    value: 'ALPS document for ALPSGenerationExample'
+
+  # metadata 
+  ext:
+    - type: metadata
+      name: title
+      value: 'ALPSGenerationExample'
+      tags: 'oas'
+    - type: metadata
+      name: id
+      value: http://tbd.tba.tbc
+      tags: 'oas'
+    - type: metadata
+      name: root 
+      value: http://tbd.tba.tbc
+      tags: 'oas'
+  
+  descriptor:
+    # properties
+    # - atomic/flat data elements 
+    - id: iname
+      type: semantic 
+      text: The type of the atomic parameter is int  
+    - id: name
+      type: semantic 
+      text: The type of the atomic parameter is string  
+    - id: message
+      type: semantic 
+      text: The type of the atomic parameter is string  
+    - id: cin
+      type: semantic 
+      text: The type of the atomic parameter is string  
+    - id: who
+      type: semantic 
+      text: The type of the atomic parameter is void  
+    - id: what
+      type: semantic 
+      text: The type of the atomic parameter is string  
+    - id: rout
+      type: semantic 
+      text: The type of the atomic parameter is bool  
+    - id: anonymous1
+      type: semantic 
+      text: The type of the atomic parameter is string  
+    - id: id
+      type: semantic 
+      text: The type of the atomic parameter is string  
+    - id: code
+      type: semantic 
+      text: The type of the atomic parameter is bool  
+
+    # groupings
+    # - structured/nested data elements
+    - id: NestedGreetingDTO
+      type: group
+      text: n/a 
+      descriptor:
+      - href: '#iname' # AP, name is int
+      - href: '#GreetingDTO' # PT, name is structMessage
+
+    - id: GreetingDTO
+      type: group
+      text: n/a 
+      descriptor:
+      - href: '#name' # AP, name is string
+      - href: '#message' # AP, name is string
+
+    - id: createMessageRequestDataType
+      type: group
+      text: n/a 
+      descriptor:
+      - href: '#cin' # AP, name is string
+
+    - id: updateMessageRequestDataType
+      type: group
+      text: n/a 
+      descriptor:
+      - href: '#who' # AP, name is void
+      - href: '#what' # AP, name is string
+
+    - id: ReplaceMessageResponseDataType
+      type: group
+      text: n/a 
+      descriptor:
+      - href: '#rout' # AP, name is bool
+
+    - id: readMessageRequestDataType
+      type: group
+      text: n/a 
+      descriptor:
+      - href: '#anonymous1' # AP, name is string
+
+    - id: deleteMessageRequestDataType
+      type: group
+      text: n/a 
+      descriptor:
+      - href: '#id' # AP, name is string
+
+    - id: DeleteMessageResponseDataType
+      type: group
+      text: n/a 
+      descriptor:
+      - href: '#code' # AP, name is bool
+
+
+    # actions
+    # - these are the operations
+
+    - id: createMessage
+      type: unsafe
+      tags: create
+      descriptor:
+      - href: '#createMessageRequestDataType' # parameter name: cin
+      rt: 'GreetingDTO'
+      text: STATE_CREATION_OPERATION
+
+    - id: updateMessage
+      type: unsafe
+      tags: update
+      descriptor:
+      - href: '#updateMessageRequestDataType' # parameter name: anonymousInput
+      rt: 'GreetingDTO'
+      text: STATE_TRANSITION_OPERATION
+
+    - id: replaceMessage
+      type: unknown responsibility
+      tags: unknown responsibility
+      descriptor:
+      - href: '#NestedGreetingDTO' # parameter name: rin
+      rt: 'ReplaceMessageResponseDataType'
+      text: 
+
+    - id: readMessage
+      type: safe
+      tags: read
+      descriptor:
+      - href: '#readMessageRequestDataType' # parameter name: anonymousInput
+      rt: 'NestedGreetingDTO'
+      text: RETRIEVAL_OPERATION
+
+    - id: deleteMessage
+      type: unknown responsibility
+      tags: unknown responsibility
+      descriptor:
+      - href: '#deleteMessageRequestDataType' # parameter name: id
+      rt: 'DeleteMessageResponseDataType'
+      text: 
+

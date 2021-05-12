@@ -1,22 +1,22 @@
 ---
-title: Microservice Domain Specific Language (MDSL) to Open API Specifications
+title: Microservice Domain Specific Language (MDSL) to OpenAPI Specifications
 author: Olaf Zimmermann, Stefan Kapferer
-copyright: Olaf Zimmermann, 2020. All rights reserved.
+copyright: Olaf Zimmermann, 2020-2021. All rights reserved.
 ---
 
-[Tools Overview](./../tools), [Protocol Buffers](./protocol-buffers), [GraphQL](./graphql), [Jolie](./jolie), [Java](./java), [Freemarker templating](./freemarker)
+[Tools Overview](./../tools), [Protocol Buffers](./protocol-buffers), [GraphQL](./graphql), [Jolie](./jolie), [Java](./java), [Freemarker templating](./freemarker), [AsyncAPI](./async-api)
 
-Open API Specification Generator
-================================
+OpenAPI Specification Generator
+===============================
 
-The MDSL Eclipse plugin and the CLI allow API designers to generate [Open API specifications](https://www.openapis.org/) out of MDSL service contracts. 
+The MDSL Eclipse plugin and the CLI allow API designers to generate [OpenAPI specifications](https://www.openapis.org/) out of MDSL service contracts. 
 
 ## Usage
 You can generate the OpenAPI specifications from MDSL models via the [Eclipse plugin](./../tools#eclipse-plugin) or the [CLI](./../tools#command-line-interface-cli-tools). 
 
 In Eclipse, you find the generator in the MDSL context menu:
 
-<a href="./../media/eclipse-oas-generator-context-menu.png">![Open API Specification Generator Context Menu in Eclipse](./../media/eclipse-oas-generator-context-menu.png)</a>
+<a href="./../media/eclipse-oas-generator-context-menu.png">![OpenAPI Specification Generator Context Menu in Eclipse](./../media/eclipse-oas-generator-context-menu.png)</a>
 
 The following command generates a specification in case you work with the CLI:
 
@@ -264,4 +264,4 @@ The other generators are:
     * [Data contracts (schemas)](./../datacontract). 
     * [Bindings](./../bindings) and [instance-level concepts](./../optionalparts).
 
-*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*

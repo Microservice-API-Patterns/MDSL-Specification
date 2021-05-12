@@ -58,7 +58,7 @@ Workflow {
 			
 			// not successful yet:
 			generator = {
-				generateXtendStub = true
+				generateXtendStub = false
 			}
 		}
 	}

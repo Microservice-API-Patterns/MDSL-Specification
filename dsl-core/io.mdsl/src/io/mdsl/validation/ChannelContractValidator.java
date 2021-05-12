@@ -14,6 +14,7 @@ import io.mdsl.apiDescription.Channel;
 import io.mdsl.apiDescription.ChannelContract;
 import io.mdsl.apiDescription.ChannelPathWithParams;
 import io.mdsl.apiDescription.ChannelType;
+import io.mdsl.apiDescription.DeliveryGuarantee;
 import io.mdsl.apiDescription.OneWayChannel;
 import io.mdsl.apiDescription.RequestReplyChannel;
 import io.mdsl.apiDescription.ServiceSpecification;
@@ -175,5 +176,46 @@ public class ChannelContractValidator extends AbstractMDSLValidator {
 			}
 		}
 
+	}
+	
+	@Check
+	public void checkDeliveryGuaranteeConsistency(ChannelContract channel){
+		
+		// https://github.com/socadk/MDSL/issues/65
+		// GUARANTEED_DELIVERY is only used in combination with the delivery guarantee set to AT_LEAST_ONCE or EXACTLY_ONCE
+		
+		List<ChannelType> channelTypes = channel.getTypes();
+		
+		if (channelTypes.stream().anyMatch(t -> t.getValue() == ChannelType.GUARANTEED_DELIVERY_VALUE)) {
+			
+			int deliveryGuarantee = channel.getQuality().getValue();
+			
+			// @gdl: added this warning (instead of error)
+			if(deliveryGuarantee == DeliveryGuarantee.UNKNOWN_VALUE) {
+				warning("GUARANTEED_DELIVERY channel '" + channel.getName() + "' should have a delivery guarantee of type AT_LEAST_ONCE or EXACTLY_ONCE.",
+						channel,
+						ApiDescriptionPackage.eINSTANCE.getChannelContract_Types(),
+						channelTypes.indexOf(channelTypes.stream().filter(t -> t.getValue() == ChannelType.GUARANTEED_DELIVERY_VALUE).findFirst().get()));
+			}
+			else {
+				boolean hasInconsistency  = 
+						// deliveryGuarantee != DeliveryGuarantee.UNKNOWN_VALUE && 
+						deliveryGuarantee != DeliveryGuarantee.AT_LEAST_ONCE_VALUE &&
+						deliveryGuarantee != DeliveryGuarantee.EXACTLY_ONCE_VALUE;
+
+				if(hasInconsistency) {
+					error("GUARANTEED_DELIVERY channel '" + channel.getName() + "' must have a delivery guarantee of type AT_LEAST_ONCE or EXACTLY_ONCE.",
+							channel,
+							ApiDescriptionPackage.eINSTANCE.getChannelContract_Types(),
+							channelTypes.indexOf(channelTypes.stream().filter(t -> t.getValue() == ChannelType.GUARANTEED_DELIVERY_VALUE).findFirst().get())); 
+
+					/* @gdl: tbc: is one message enough?
+				error("'" + channel.getQuality().getName() +  "' can not be assigned to a channel of type GUARANTEED_DELIVERY.",
+						channel,
+						ApiDescriptionPackage.eINSTANCE.getChannelContract_Quality());
+					 */
+				}
+			}
+		}
 	}
 }

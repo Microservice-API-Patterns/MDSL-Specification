@@ -2,9 +2,6 @@ API description DatatypesExampleAPI
 version "1.0.0"
 description "
 	A example of the available data types available in MDSL and AsyncMDSL.
-
-	More information at:
-	- [https://github.com/Microservice-API-Patterns/MDSL-Specification](https://github.com/Microservice-API-Patterns/MDSL-Specification)
 "
 
 // data type definitions

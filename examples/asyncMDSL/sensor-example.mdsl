@@ -1,0 +1,21 @@
+API description SensorExample
+version "1.0.0"
+description "IoT sensor example"
+
+data type SensorDataDTO {
+  "sensorId": ID<string>
+}
+
+channel SensorChannel
+  of type PUBLISH_SUBSCRIBE
+  delivery guarantee AT_MOST_ONCE
+  on path "sensordata"
+  accepts and produces message SensorDataMessage
+    description "Sensor data"
+  delivering
+    payload SensorDataDTO
+
+message broker SensorsBrokerMQTTProvider
+  exposes SensorChannel
+  at location "mqtt.loanbroker.com"
+  via protocol MQTT

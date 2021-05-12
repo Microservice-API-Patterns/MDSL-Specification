@@ -1,8 +1,10 @@
 ---
 title: Microservice Domain Specific Language (MDSL) to Arbitrary Text (via Freemarker Template)
 author: Stefan Kapferer
-copyright: Stefan Kapferer and Olaf Zimmermann, 2020. All rights reserved.
+copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2021. All rights reserved.
 ---
+
+[Tools Overview](./../tools), [OpenAPI](./open-api), [Protocol Buffers](./protocol-buffers), [GraphQL](./graphql), [Jolie](./jolie), [Java](./java), [AsyncAPI](./async-api)
 
 Arbitrary Text Generation with Freemarker Templates
 ===================================================
@@ -30,7 +32,7 @@ The following example illustrates what the generator can produce for an exemplar
 
 You find the complete sources (incl. generated text file) of this example [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/freemarker-example).
 
-We use the following MDSL model which was an outcome of this [blogpost](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html) to illustrate our generator outputs:
+The following MDSL model, taken from this [blogpost](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html), illustrates the generator usage:
 
 ```
 API description ReferenceManagementServiceAPI
@@ -61,7 +63,7 @@ endpoint type PaperArchiveFacade
         payload D<string>
 ```
 
-We further use the following Freemarker template to generate some exemplary output:
+Let us use the following very basic Freemarker template to generate some exemplary output from the above MDSL:
 
 ```ftl
 # Report for MDSL specification ${fileName}
@@ -75,9 +77,9 @@ The API description ${genModel.apiName} features the following endpoint types (a
 </#list>
 ```
 
-The template aims at generating a markdown report listing the available endpoints.
+The template simply generates a markdown report listing the available endpoints.
 
-Applied to the model above, the generator produces the following markdown file:
+Applied to the `ReferenceManagementServiceAPI` description above, the generator produces the following markdown file:
 
 ```markdown
 # Report for MDSL specification ReferenceManagementAPI.mdsl
@@ -89,11 +91,12 @@ The API description ReferenceManagementServiceAPI features the following endpoin
 * PaperArchiveFacade
 ```
 
-You find the complete sources (incl. generated text file) of this example [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/freemarker-example).
+You find the complete sources (incl. generated text file) of this and other examples [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/freemarker-example).
 
 The entire MDSL grammar is available as a data model to the Freemarker templating feature.  
 
-More examples of Freemarker templates can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/generator-templates).
+<!-- removed in V.511 (example folders merged):
+More examples of Freemarker templates can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/generator-templates). -->
 
 
 ## Generator Model for Freemarker Templating and Model Exports
@@ -112,7 +115,7 @@ This model can also be exported for offline processing (for instance, to feed ot
 
 # Other Generators
 Also checkout our other generators:
-* [Open API generator](./open-api)
+* [OpenAPI generator](./open-api)
 * [Protocol Buffers generator](./protocol-buffers)
 * [GraphQL generator](./graphql)
 * [Jolie generator](./jolie)
@@ -126,4 +129,4 @@ Also checkout our other generators:
     * [Bindings](./../bindings) and [instance-level concepts](./../optionalparts). 
 * Back to [MDSL homepage](./../index).
 
-*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*

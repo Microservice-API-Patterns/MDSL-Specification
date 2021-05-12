@@ -310,28 +310,37 @@ class AsyncApiGenerator extends AbstractMDSLGenerator {
 		«channel.path.compile»
 			«IF channel.publish»
 				publish:
+					«insertOperation(channel, "Publish")»
 			«ELSEIF channel.subscribe»
 				subscribe:
+					«insertOperation(channel, "Subscribe")»
 			«ELSE»
 				publish:
+					«insertOperation(channel, "Publish")»
+				subscribe:
+					«insertOperation(channel, "Subscribe")»
 			«ENDIF»
-		    description: | 
+	'''
+	
+	private def insertOperation(OneWayChannel channel, String operation) '''
+	    description: | 
 
-		    	«getValueOrDefault(channel.description, "No description specified")»
-		    	
-		    	«insertChannelQuality(channel.eContainer as ChannelContract)»
-		    	«getClausoles(channel.whereClauses)»
-		    	
-		    	One way channel (does not expect reply).
-		    	
-		    	«IF channel.acceptsAndProduces !== null»
-		    		This channel both produces **and** consumes messages.
-		    	«ENDIF»
-		    	
-		    operationId: «toCamelCase(channel.message.name)»
-		    message: 
-		    	$ref: '#/components/messages/«channel.message.name»'
-		    «insertBinding(channel.bindings, channel.protocol)»
+	    	«getValueOrDefault(channel.description, "No description specified")»
+	    	
+	    	«insertChannelQuality(channel.eContainer as ChannelContract)»
+	    	«getClausoles(channel.whereClauses)»
+	    	
+	    	One way channel (does not expect reply).
+	    	
+	    	«IF channel.acceptsAndProduces !== null»
+	    		This channel allows message publications and message consumptions.
+	    	«ENDIF»
+	    	
+	    operationId: «toCamelCase(channel.message.name)»«operation»
+	    message: 
+	    	$ref: '#/components/messages/«channel.message.name»'
+	    «insertBinding(channel.bindings, channel.protocol)»
+
 	'''
 
 	private def compile(RequestReplyChannel channel) '''

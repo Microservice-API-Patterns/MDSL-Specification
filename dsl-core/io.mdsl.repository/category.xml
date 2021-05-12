@@ -19,5 +19,5 @@
       <category name="main"/>
    </feature>
    <category-def name="main" label="Microservices Domain-Specific Language (MDSL)"/>
-   <repository-reference location="https://dl.bintray.com/contextmapper/context-mapper-osgi-bundles/updatesites/1.3.0/" enabled="true" />
+   <repository-reference location="https://contextmapper.jfrog.io/artifactory/context-mapper-osgi-bundles/updatesites/1.3.0/" enabled="true" />
 </site>

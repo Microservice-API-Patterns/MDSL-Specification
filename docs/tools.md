@@ -1,23 +1,25 @@
 ---
 title: Microservice Domain Specific Language (MDSL) Tools
 author: Olaf Zimmermann, Stefan Kapferer
-copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
+copyright: Olaf Zimmermann, 2019-2021. All rights reserved.
 ---
 
 
-[MDSL Home](./index), [OpenAPI](./generators/open-api), [Protocol Buffers](./generators/protocol-buffers), [GraphQL schema](./generators/graphql), [Jolie](./generators/jolie), [Java POJOs](./java), [Freemarker](./generators/freemarker) generators
-
+Quick Links: [MDSL Home](./index), [OpenAPI](./generators/open-api), [Protocol Buffers](./generators/protocol-buffers), [GraphQL schema](./generators/graphql), [Jolie](./generators/jolie), [Java POJOs](./java), [Freemarker](./generators/freemarker), [AsyncAPI](./generators/async-api)
 
 MDSL Tools: Users Guide
 =======================
 
 <!-- from top-level index page/readme:
+### Installation in Eclipse
+
+ * Update site: [https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
+ * The grammar can be found in the `dsl-core` project (more precisely, in the `io.mdsl./src/io.mdsl` folder of this project): [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) and [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) repository.
 
 ### Direct links into repository
 
 * [Full grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext)
 * [Examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/tree/master/examples)
-
 -->
 
 At present, two types of MDSL tools are available: 
@@ -36,7 +38,7 @@ usage: mdsl
                          (only used by Freemarker generator, as we cannot
                          know the file extension).
  -g,--generator <arg>    The generator you want to call. Use one of the
-                         following values: oas (Open API Specification),
+                         following values: oas (OpenAPI Specification),
                          jolie (Jolie), text (arbitraty text file by using
                          a Freemarker template), proto (Protocol Buffers),
                          graphql (GraphQL Schemas), gen-model-json
@@ -125,6 +127,6 @@ See [readme in this examples folder](https://github.com/Microservice-API-Pattern
     * [Bindings](./bindings) and [instance-level concepts](./optionalparts). 
 * Back to [MDSL homepage](./index).
 
-*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

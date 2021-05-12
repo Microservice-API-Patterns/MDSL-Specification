@@ -33,7 +33,7 @@ import io.mdsl.generator.TextFileGenerator;
  */
 public enum MDSLGenerator {
 
-	OPEN_API_SPEC("oas", "Open API Specification"), JOLIE("jolie", "Jolie"), ARBITRATY_TEXT_BY_TEMPLATE("text", "arbitraty text file by using a Freemarker template"),
+	OPEN_API_SPEC("oas", "OpenAPI Specification"), JOLIE("jolie", "Jolie"), ARBITRARY_TEXT_BY_TEMPLATE("text", "arbitraty text file by using a Freemarker template"),
 	PROTOCOL_BUFFERS("proto", "Protocol Buffers"), GRAPHQL("graphql", "GraphQL Schemas"), JAVA("java", "Java Modulith"),
 	GEN_MODEL_JSON_EXPORT("gen-model-json", "Generator model as JSON (exporter)"), GEN_MODEL_YAML_EXPORT("gen-model-yaml", "Generator model as YAML (exporter)");
 

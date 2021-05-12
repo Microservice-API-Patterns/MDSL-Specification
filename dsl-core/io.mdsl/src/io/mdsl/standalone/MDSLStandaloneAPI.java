@@ -16,6 +16,7 @@
 package io.mdsl.standalone;
 
 import java.io.File;
+import java.io.InputStream;
 
 import org.eclipse.xtext.generator.IGenerator2;
 
@@ -25,7 +26,7 @@ import io.mdsl.MDSLResource;
  * Interface that eases the usage of MDSL in standalone (usage as library)
  * scenario.
  * 
- * @author Stefan Kapferer
+ * @author Stefan Kapferer, socadk
  */
 public interface MDSLStandaloneAPI {
 	/**
@@ -76,7 +77,7 @@ public interface MDSLStandaloneAPI {
 
 	/**
 	 * Calls a generator that produces output (OAS, Proto, Jolie, etc.) given an
-	 * MDSL resource as input. This method allows to define the directory into which
+	 * MDSL resource as input. This method allows defining the directory into which
 	 * the output shall be generated (start with "./" and provide a directory
 	 * relative to your execution home).
 	 * 
@@ -86,4 +87,17 @@ public interface MDSLStandaloneAPI {
 	 *                  (start with "./", relative to your execution directory)
 	 */
 	void callGenerator(MDSLResource mdsl, IGenerator2 generator, String outputDir);
+	
+	/**
+	 * Calls a generator that produces output (OAS, Proto, Jolie, etc.) given an
+	 * MDSL resource as input. Returns output as string.
+	 * 
+	 * @param mdsl      the MDSL resource for which the generator shall be called
+	 * @param generator the generator that shall be called
+	 */
+	String callGeneratorInMemory(MDSLResource mdsl, IGenerator2 generator);
+
+	/*
+	MDSLResource loadMDSL(InputStream mdslStream);
+	*/
 }

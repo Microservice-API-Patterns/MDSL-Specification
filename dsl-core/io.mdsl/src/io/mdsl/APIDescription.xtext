@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 Olaf Zimmermann (a.k.a. socadk)
+ * Copyright 2018-2021 Olaf Zimmermann (a.k.a. socadk)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ grammar io.mdsl.APIDescription with org.eclipse.xtext.common.Terminals
 ---
 title: Microservices Domain Specific Language (MDSL) Grammar
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2018-2020. All rights reserved.
-version: "5.0.3 (support for REST concepts, HTTP, OAS: abstract contract and binding)"
+copyright: Olaf Zimmermann, 2018-2021. All rights reserved.
+version: "5.1.2"
 ---
 */ 
 
@@ -50,7 +50,7 @@ DomainEvent:
 ;
 
 Orchestration:
-	// TODO (M) X, O, +; actors, state transitions, just like it is done in CML
+	// TODO (M) full support for X, O, +; actors, state transitions (see CML)
 	'flow' fn+=ID ('event' event+=[DomainEvent] 'triggers' operation+=ID
 		          | 'operation' operation+=ID 'emits' event+=[DomainEvent])+  
 ;
@@ -76,7 +76,7 @@ DataContract:
 	'data' 'type' name=ID 
 	('version' svi=semanticVersioningIdentifier)? 
 	structure=ElementStructure
-	default=DefaultValue? // TODO moved here in v3; still experimental
+	default=DefaultValue? // TODO moved here in V3; still experimental
 	// OAS: https://swagger.io/specification/#runtime-expression
 ;
 
@@ -312,12 +312,12 @@ ParameterRole:
 /*
 // experimental, not documented (may disappear at any time)
 ActionCode:
-	'CREATE' | 'FULL_UPDATE' | 'PARTIAL_UPDATE' | 'DELETE' | 'GET' | 'MORE_DATA' | other=STRING // TODO IANA link types
+	'CREATE' | 'FULL_UPDATE' | 'PARTIAL_UPDATE' | 'DELETE' | 'GET' | 'MORE_DATA' | other=STRING
 ;
 */ 
 
 BasicDataType:
-	// TODO document value ranges (same as OAS? CloudEvents?)
+	// TODO specify and document value ranges (same as OAS? CloudEvents?) abstract level or binding?
  	'bool' | 'int' | 'long' | 'double' | 'string' | 'raw' | 'void' // 'record', 'map' and 'array' do not make sense here
 	;
 
@@ -334,16 +334,16 @@ EndpointContract:
 	('serves' 'as' primaryRole=ResourceRole ('and' otherRoles+=ResourceRole)* 'role'?)?
 	sp=SecurityPolicy?
 	('exposes' ops+=Operation+)? // optional because early incomplete specifications do not have to expose any operations 
-//	('emits' events+=ProduceEvent+)?
+//	('emits' events+=ProduceEvent+)? 
 //	('receives' events+=ConsumeEvent+)?
 ;
+
+// experimental event support removed again (here) 
 
 /*
 ProduceEvent:
 	'event' name=ID ('triggers' first=ID ('and'|'or') next=ID)?
 ;
-
-// TODO (tbd) how to generate API code for event emission/reception, HTTP: SSEs?
 
 ConsumeEvent:
 	'command' name=ID ('emits' first=ID ('and'|'or') next=ID)?
@@ -367,9 +367,10 @@ Operation:
 	)? // response message is optional for 'operation'
 	('transitions' 'from' from=STRING 'to' to=STRING)? // or IDs, [Refs], to be defined above? [R] OAS comment?
 	('compensated' 'by' undo=[Operation])? // experimental, could also be expressed as link relation
-	// TODO how about service contracts for Web Sockets conversations? [R, O]
 	('protected' 'by' policies=SecurityPolicies)?
 ;
+
+// TODO how would service contracts for Web Sockets conversations look like? [R, O]
 
 RelationshipLink:
 	name=STRING ':' lcref=[LinkContract]
@@ -391,12 +392,12 @@ SecurityPolicy:
 	 'policy' name=ID securityObject=ElementStructure?
 ;
 
-// EVENT_PROCESSOR is a variant of SCO, BUSINESS_ACTIVITY_PROCESSOR is a variant of STO
-// TODO implement new ones in validators and OAS generator, use/documents variants consistently
+// TODO implement new ones in validators and OAS generator, use/document variants consistently
 // new variants (required for HTTP verb mapping): STATE_REPLACEMENT_OPERATION (better: "FULL_UPDATE_OPERATION" and "PARTIAL_UPDATE_OPERATION") and STATE_DELETION_OPERATION
 OperationResponsibility: cf='COMPUTATION_FUNCTION' | sco='STATE_CREATION_OPERATION' | ro='RETRIEVAL_OPERATION' | sto='STATE_TRANSITION_OPERATION' | ep='EVENT_PROCESSOR' | bap='BUSINESS_ACTIVITY_PROCESSOR' | sro='STATE_REPLACEMENT_OPERATION' | sdo='STATE_DELETION_OPERATION' | other=STRING;
+// EVENT_PROCESSOR is a variant of SCO, BUSINESS_ACTIVITY_PROCESSOR is a variant of STO
 
-MessageExchangePattern: 'ONE_WAY' | 'REQUEST_REPLY' | 'NOTIFICATION' | STRING; // TODO add SERVER_SENT_EVENTS and gRPC 1:n, n:1, n:m?  
+MessageExchangePattern: 'ONE_WAY' | 'REQUEST_REPLY' | 'NOTIFICATION' | STRING; // TODO [O, R] add SERVER_SENT_EVENTS and gRPC 1:n, n:1, n:m?  
 	
 DataTransferRepresentation:
 	('headers' headers=ElementStructure)? 
@@ -405,7 +406,7 @@ DataTransferRepresentation:
 ;
 
 TypeSystem: 
-	'MAP_TYPE' | 'JOLIE_TYPE' | 'JSON_SCHEMA' | 'XML_SCHEMA' |'PROTOCOL_BUFFER' | 'AVRO_SCHEMA' | 'THRIFT_TYPE' | 'GRAPHQL_SDL' | 'OTHER' // TODO 
+	'MAP_TYPE' | 'JOLIE_TYPE' | 'JSON_SCHEMA' | 'XML_SCHEMA' |'PROTOCOL_BUFFER' | 'AVRO_SCHEMA' | 'THRIFT_TYPE' | 'GRAPHQL_SDL' | 'OTHER' // TODO allow a STRING here?
 ;
 
 
@@ -469,7 +470,7 @@ HTTPResourceBinding:
 ;
 
 CustomMediaType: 
-	// TODO support full RFC as enum and do more with custom MIME types (required for RML3)
+	// TODO support full RFC as enum and do more with custom MIME types (required for REST ML 3)
 	'media' 'type' name=ID 'as' value=STRING 
 ;
 
@@ -640,7 +641,7 @@ Consumption:
 	// if present, the provider reference creates a fixed binding between client and server:
 	('from' providerReference=[Provider] | 'through' gatewayReference=[Gateway])? // could also go down to endpoint level
 	('via' 'protocol'  binding+=ProtocolBinding)? // must match provider-side information (linter!)
-	// TODO requires resource binding to be specified since 5.0 (for HTTP protocol)
+	// TODO this syntax requires resource binding to be specified since V5.0 (for HTTP protocol)
 ;
 
 MessageEndpoint:

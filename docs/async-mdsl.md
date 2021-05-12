@@ -1,5 +1,5 @@
 ---
-title: Asynchronous Microservice Domain-Specific Language (AsynchMDSL)
+title: Asynchronous Microservice Domain-Specific Language (AsyncMDSL)
 author: Giacomo Di Liberali, Olaf Zimmermann
 copyright: The authors, 2020-2021.  All rights reserved.
 ---
@@ -9,7 +9,7 @@ copyright: The authors, 2020-2021.  All rights reserved.
 AsyncMDSL
 =========
 
-_Note:_ The status of the Asynchronous Microservice Domain Specific Language (AsynchMDSL), created by Giacomo Di Liberali, is [*Technology Preview*](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview.html), standing at Version 1.1 at present.
+_Note:_ The status of the Asynchronous Microservice Domain Specific Language (AsyncMDSL), created by Giacomo Di Liberali, is [*Technology Preview*](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview.html), standing at Version 1.1 at present.
 
 AsyncMDSL aims at modeling asynchronous, messaging APIs while exploiting the [design goals of core MDSL](./index). Extending core MDSL, AsyncMDSL derives its abstract syntax from the state-of-the-art patterns and concepts described in the [Enterprise Integration Patterns](https://www.enterpriseintegrationpatterns.com/) book. The language is fully specified in Giacomo Di Liberali's  [master thesis](UNIPI-AsyncMDSL-MasterThesis-2020-GiacomoDeLiberali-v1.3.pdf).
 
@@ -79,13 +79,13 @@ bindings for [protocol] {
     Invalid combinations will be notified by the API Linter that comes with the [editor and generator plugin](./generators/async-api) for ASyncMDSL.
 
 - 
-    A channel deliveryGuarantee can be any of:
+    A channel delivery guarantee can be any of:
     > UNKNOWN | AT_LEAST_ONCE | AT_MOST_ONCE | EXACTLY_ONCE
 
 #### Channel path
 
 - 
-    A path param type can assume any of teh basic data types of MDSL:
+    A path param type can assume any of the basic data types of MDSL:
     > bool | int | long | double | string
 
 #### Message
@@ -108,7 +108,7 @@ bindings for [protocol] {
 
 - Protocol can assume one of the [supported protocols](./bindings). As the list of properties is protocol-specific, a single flat JSON object is expected as configuration.
 
-An example of a _binding_ definition can be found in [examples/AsyncMDSL/bindings.mdsl](../examples/AsyncMDSL/bindings.mdsl).
+An example of a _binding_ definition can be found in [examples/AsyncMDSL/bindings.mdsl](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/examples/asyncMDSL/bindings.mdsl).
 
 #### Channel definition example
 
@@ -199,7 +199,7 @@ exposes
     > Notice that no protocol-specific validation is applied.
 
 - 
-    Security policy type. MDSL security policies are not yet fully supported. The available values are:
+    Security policy type. MDSL security policies are not fully supported yet. The available values are:
     > JWT | API_KEY 
     
     <!-- TODO OAS binding does a lot more since core MDSL 5.0, could bring some of that support here -->

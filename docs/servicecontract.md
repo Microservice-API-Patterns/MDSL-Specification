@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) Service Contracts
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2019-2020.  All rights reserved.
+copyright: Olaf Zimmermann, 2019-2021.  All rights reserved.
 ---
 
 [Home](./index) &mdash; [Data Types](./datacontract) &mdash; [Bindings](./bindings) &mdash; [Provider and Client](./optionalparts) &mdash; [Tutorial](./tutorial) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
@@ -14,7 +14,7 @@ Service Endpoint Contracts in MDSL
 
 * Creation, review and evolution of [Elaborate API Descriptions](https://microservice-api-patterns.org/patterns/foundation/APIDescription) as featured in Microservice API Patterns (MAP), in forward engineering:
   * A context-sensitive, Eclipse-based editor for MDSL, developed with [Xtext](https://www.eclipse.org/Xtext/), is available [here](./updates/)
-  * Generators for platform-specific technologies such as Open API (f.k.a. Swagger), WSDL/SOAP, gRPC  <!-- GQL: early prototype/demonstrators available (not fully tested yet) -->
+  * Generators for platform-specific technologies such as OpenAPI (f.k.a. Swagger), WSDL/SOAP, gRPC  <!-- GQL: early prototype/demonstrators available (not fully tested yet) -->
 * Reverse engineering (future work):
   * Discover contracts, clients, providers in existing systems 
   * Analysis support (metrics)
@@ -209,6 +209,6 @@ MSDL service contracts can also be mapped to GraphQL, and Avro in a straightforw
 * [Quick reference](./quickreference), [tutorial](./tutorial) and [tools](./tools)
 * Back to [MDSL homepage](./index).
 
-*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

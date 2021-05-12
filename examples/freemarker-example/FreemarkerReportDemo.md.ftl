@@ -7,3 +7,4 @@ The API description ${genModel.apiName} features the following endpoint types (a
 <#list genModel.endpoints as endpoint>
 * ${endpoint.name} 
 </#list>
+

@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) Other Concepts (Provider, Client, Gateway)
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2019-2020. All rights reserved.
+copyright: Olaf Zimmermann, 2019-2021. All rights reserved.
 ---
 
 [Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Type](./datacontract) &mdash; [Bindings](./bindings) &mdash; [Tutorial](./tutorial) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
@@ -133,6 +133,6 @@ API provider implementation SampleAPIProvider1Impl
 * [Quick reference](./quickreference), [tutorial](./tutorial) and [tools](./tools)
 * Back to [MDSL homepage](./index).
 
-*Copyright: Olaf Zimmermann, 2018-2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

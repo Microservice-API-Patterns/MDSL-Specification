@@ -61,4 +61,9 @@ public enum BasicType implements MDSLType {
 		return this.name;
 	}
 
+	@Override
+	public boolean isAtomic() {
+		return true;
+	}
+
 }

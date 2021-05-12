@@ -1,6 +1,7 @@
 package io.mdsl.generator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,6 +52,42 @@ public class TextFileGeneratorTest extends AbstractMDSLInputIntegrationTest {
 				"TestAPI specified in simple-generation-input-1.mdsl" + System.lineSeparator() + System.lineSeparator()
 						+ "endpoints:" + System.lineSeparator() + "TestEndpoint" + System.lineSeparator() + "",
 				FileUtils.readFileToString(new File(getGenerationDirectory(), "output.txt"), "UTF-8"));
+	}
+	
+	@Test
+	public void canGenerateALPSYAMLViaGenmodel() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("alps-generator-demo");
+	}
+	
+	/**
+	 * Allows testing whether a test input file ({baseFilename}.mdsl) leads to the
+	 * expected output ({baseFilename}.yaml).
+	 */
+	// TODO move to superclass and generalize (also present in OASgen)?
+	private void assertThatInputFileGeneratesExpectedOutput(String baseFilename) throws IOException {
+		
+		// given
+		Resource inputModel = getTestResource(baseFilename + ".mdsl");
+		TextFileGenerator generator = new TextFileGenerator();
+		generator.setFreemarkerTemplateFile(getTestInputFile("mdsl-to-alps-template.yaml.ftl"));
+		generator.setTargetFileName(baseFilename + ".yaml");
+
+		// when
+		JavaIoFileSystemAccess javaIoFileSystemAccess = getFileSystemAccess();
+		javaIoFileSystemAccess.setOutputPath(getGenerationDirectory().getAbsolutePath());
+		generator.doGenerate(inputModel, javaIoFileSystemAccess, new GeneratorContext());
+
+		// then
+		// assertTrue(generator.getValidationMessages().isEmpty()); // OAS specific
+		assertEquals(getTestFileContent(baseFilename + ".yaml"), getGeneratedFileContent(baseFilename + ".yaml"));
+	}
+
+	private String getTestFileContent(String fileName) throws IOException {
+		return FileUtils.readFileToString(getTestInputFile(fileName), "UTF-8");
+	}
+
+	private String getGeneratedFileContent(String fileName) throws IOException {
+		return FileUtils.readFileToString(new File(getGenerationDirectory(), fileName), "UTF-8");
 	}
 
 	@Override

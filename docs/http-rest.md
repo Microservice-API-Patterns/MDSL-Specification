@@ -134,7 +134,7 @@ Language specification pages:
 * [Data contracts (schemas)](./datacontract)
 * Other [runtime concepts](./optionalparts)
 * Other [binding concepts](./bindings)
-* [Open API generator]([OpenAPI generator](./generators/open-api))
+* [OpenAPI generator]([OpenAPI generator](./generators/open-api))
 
 *Copyright: Olaf Zimmermann, 2020-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 

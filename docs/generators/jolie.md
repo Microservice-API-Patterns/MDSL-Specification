@@ -1,8 +1,10 @@
 ---
 title: Microservice Domain Specific Language (MDSL) to Jolie Specifications
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2020. All rights reserved.
+copyright: Olaf Zimmermann, 2020-2021. All rights reserved.
 ---
+
+[Tools Overview](./../tools), [OpenAPI](./open-api), [Protocol Buffers](./protocol-buffers), [GraphQL](./graphql), [Java](./java), [Freemarker templating](./freemarker), [AsyncAPI](./async-api)
 
 Jolie Specification Generator
 =============================
@@ -154,7 +156,7 @@ The generated WSDL can then be validated and viewed online on this website: [Ana
 # Other Generators
 Also checkout our other generators:
 
-* [Open API generator](./open-api)
+* [OpenAPI generator](./open-api)
 * [Protocol Buffers generator](./protocol-buffers)
 * [GraphQL generator](./graphql)
 * [Java generator](./java)
@@ -169,4 +171,4 @@ Also checkout our other generators:
     * [Bindings](./../bindings) and [instance-level concepts](./../optionalparts). 
 * Back to [MDSL homepage](./../index).
 
-*Copyright: Olaf Zimmermann, 2020. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2020-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*

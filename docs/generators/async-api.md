@@ -294,4 +294,4 @@ Also checkout our other generators:
     * [Bindings](./../bindings) and [instance-level concepts](./../optionalparts). 
 * Back to [MDSL homepage](./../index).
 
-*Copyright: See [license information](https://github.com/socadk/MDSL/blob/master/LICENSE).*
+*Copyright: See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
