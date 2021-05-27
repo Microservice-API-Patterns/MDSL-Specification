@@ -6,6 +6,33 @@
 	<artifactId>io.mdsl.parent</artifactId>
 	<packaging>pom</packaging>
 
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>A domain-specific language to specify (micro-)service contracts, data representations and endpoints.</description>
+	<url>https://microservice-api-patterns.github.io/MDSL-Specification/</url>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>socadk</name>
+			<email>info@microservice-api-patterns.org</email>
+			<organization>Microservice-API-Patterns</organization>
+			<organizationUrl>https://github.com/Microservice-API-Patterns</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:https://github.com/Microservice-API-Patterns/MDSL-Specification.git</connection>
+		<developerConnection>scm:git:ssh://github.com:Microservice-API-Patterns/MDSL-Specification.git</developerConnection>
+		<url>https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master</url>
+ 	</scm>
+
+
 	<properties>
 		<xtextVersion>2.21.0</xtextVersion>
 		<mwe2Version>2.11.2</mwe2Version>
