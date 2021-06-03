@@ -11,47 +11,49 @@ Data Contracts and Schemas in MDSL
 
 ## Use Cases for MDSL Data Type Models
 
-MDSL aims at supporting agile modeling. Any service API exposes a published language of some kind This language contains data elements in several places:
+MDSL aims at supporting agile modeling. Any service API exposes a published language of some kind. Such published language contains data elements in several places:
 
-* Payload and headers of operations specified in an MDSL service [endpoint contract](./servicecontract)
-* Service Level Objectives (SLOs) and/or Service Level Indicators (SLIs) that are part of [Service Level Agreements (SLAs)](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ServiceLevelAgreement)
-* Data Transfer Objects (DTOs) or, more precisely, Data Transfer Representations (DTRs) 
+* Payload and headers of operations, specified in an MDSL service [endpoint contract](./servicecontract).
+* Service Level Objectives (SLOs) and/or Service Level Indicators (SLIs), being part of [Service Level Agreements (SLAs)](https://microservice-api-patterns.org/patterns/quality/quali.tyManagementAndGovernance/ServiceLevelAgreement)
+* Data Transfer Objects (DTOs) or, since we are not inside an object-oriented program here, *Data Transfer Representations (DTRs)*.
 
-<!-- TODO feature link types, event types -->
+*Note:* Versions 5.1 the MDSL grammar introduced link types and event types. These features are still under design and development; the MDSL tools do not support them yet. A first sample specification featuring event types can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/examples-advanced/AdvancedServiceContractConcepts.mdsl); please view it as a technology preview. Link types are featured in the [HTTP and REST binding](./rest-binding).
 
 ## Concepts
 
-The structure patterns from MAP form the base of the type system that is used in MDSL. *Identifier-Role-Type (IRT)* triples `"aName":D<String>`  for [Atomic Parameters](https://microservice-api-patterns.org/patterns/structure/representationElements/AtomicParameter) (only the role is mandatory):
+The structure patterns from MAP form the base of the type system that is used in MDSL. 
+
+*Identifier-Role-Type (IRT)* triples `"aName":D<String>` specify [Atomic Parameters](https://microservice-api-patterns.org/patterns/structure/representationElements/AtomicParameter) (only the role is mandatory):
     
 * The optional *identifier* `"aName"` corresponds to the variable names in programming languages and data representation languages such as JSON.
 * The *role* can be any [element stereotype](https://microservice-api-patterns.org/patterns/structure/) from MAP: `D` (data), `MD` (metadata), `ID` (identifier), `L` (link).
 * The optional *type* `<String>` is either basic (see below) or nested/structured; it also corresponds to a concept known from type systems in programming and data representation languages.
 
-Simple, yet powerful nesting is supported (as known from data representation languages such as JSON):
+Simple, yet powerful nesting is supported, realizes the Microservice API Pattern (MAP) [Parameter Tree](https://microservice-api-patterns.org/patterns/structure/representationElements/ParameterTree):
 
 * The nesting is expressed in an object- or block-like syntax: `{...{...}}`.
-* This nesting realizes the Microservice API Pattern (MAP) [Parameter Tree](https://microservice-api-patterns.org/patterns/structure/representationElements/ParameterTree).
+* This nesting syntax is similar to that in data representation languages such as JSON (and the Jolie type system).
 
-Already existing metamodels and schema languages can be used alternatively to `MAP_TYPES`. Examples are: `JSON_SCHEMA`, `XML_SCHEMA`, and `PROTOCOL_BUFFER`. 
+Already existing metamodels and schema languages can be used alternatively to `MAP_TYPES`. Examples are: `JSON_SCHEMA`, `XML_SCHEMA`, and `PROTOCOL_BUFFER`. <!-- BUFFER or BUFFERS? -->
 
 <!-- TODO (L) grammar also has `AVRO_SCHEMA` | `THRIFT_TYPE` | 'GRAPHQL_SDL' | 'OTHER' -->
 
-MDSL specifications do not have to be complete to be useful (e.g., in early stages of service design); tools are expected to check completeness, use defaults for missing parts, etc.
+*Note:* MDSL specifications do not have to be complete to be useful (e.g., in early stages of service design); tools are expected to check completeness, use defaults for missing parts, etc.
 
 ### The I in IRT: Identifiers
 
-Identifiers must be embedded in double quotes. They may contain blanks or underscores. 
+Identifiers must be embedded in double quotes`"somePayloadData"`. They may contain blanks or underscores. 
 
 ### The R in IRT: Role stereotypes for representation elements/data types
-The role within a message payload that is played/taken by a particular part of a header or payload (a representation element in MAP terminology) is the primary specification element; identifiers and data type are optional. This three-part specification (with only one mandatory part) is quite different from the identifier-type pairs typically used in programming languages. It makes it possible to create rather compact (but still incomplete) specifications during agile API modeling. <!-- talk about rationale for this modeling decision even more? --> 
+The role within a message payload that is taken by a particular part of a header or payload (a representation element in MAP terminology) is the primary specification element; identifiers and data type are optional. This three-part specification (with only one mandatory part) is a bit different from the identifier-type pairs typically used in programming languages. It makes it possible to create rather compact (but still incomplete) specifications during agile API modeling. <!-- talk about rationale for this modeling decision even more? --> 
 
 An abstract, unspecified element is represented as `P` (for parameter or payload placeholder). `P`  takes the place of the Role-Type elements in the IRT triple introduced above. 
 
 Concrete atomic type refinements of `P`, matching the [element stereotypes](https://microservice-api-patterns.org/patterns/structure/) in MAP, are: 
 
 * `Data` or `D`, representing a plain/basic data/value role. `D` corresponds to [Data Element](https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement) in MAP.
-* `Identifier` or `ID` for identifiers, MAP: [Id Element](https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement).
-* `Link` or `L` for link identifiers (which are network-accessible, e.g. URI, or URN), MAP: [Link Element](https://microservice-api-patterns.org/patterns/structure/elementStereotypes/LinkElement).
+* `Identifier` or `ID` for identifiers, corresponding to the MAP [Id Element](https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement).
+* `Link` or `L` for link identifiers (which are network-accessible, e.g. URI, or URN), in MAP: [Link Element](https://microservice-api-patterns.org/patterns/structure/elementStereotypes/LinkElement).
 * `Metadata` or `MD` representing metadata, MAP: [Metadata Element](https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement).
 
 `D<void>` may represent a generic, unspecified parameter (just like `P`).
@@ -77,13 +79,13 @@ Parameter trees and atomic parameter lists can be used to express optionality if
 ### Reuse of data type definitions (in multiple representation elements)
 
 ~~~
-dataContract:
+DataContract:
     'data' 'type' name=ID 
     ('version' svi=semanticVersioningIdentifier)? 
     structure=elementStructure;
     default=defaultValue?
 
-elementStructure: 
+ElementStructure: 
     pf=parameterForest | pt=parameterTree 
   | apl=atomicParameterList  | np=singleParameterNode;
 
@@ -159,91 +161,7 @@ Note that a parameter tree that only contains atomic parameters `{D<int>, D<stri
 
 ## Technology Mappings
 
-### JSON/JSON Schema
-
-| JSON | MDSL | Comments |
-|------|------|----------|
-| Basic JSON data types | Atomic Parameter | Base types do not match 100% |
-| Object (flat) | Parameter Tree (flat) or Atomic Parameter List | Parameter Tree preferred |
-| Object (structured) | Parameter Tree (nested) | Straightforward |
-| Array | Cardinality of `*` or `+` | Is homogeneous in MDSL/MAP |
-
-### XML Schema
-
-| XML Schema | MDSL/MAP | Comments |
-|-----|-----|----------|
-| Built-in data types | Atomic Parameter | Not the same expressiveness |
-| Sequence element (referencing built-in types) | Parameter Tree (flat) or Atomic Parameter List | Parameter Tree preferred |
-| Complex type | Parameter Tree | MDSL syntax more compact  |
-| Sequence with `maxoccurs` > 1 | Cardinality of `*` or `+` | n/a | 
-
-### gRPC and Protocol Buffers
-The MAP base types can be mapped in a straightforward manner. `AnyType` is used as default.
-
-<!--
-The base types in MDSL map to gRPC and Protocol Buffers like this: 
-
-| Protocol Buffers | MDSL | 
-|-------|------|
-| int32 | int |
-| int64 | long |
-| double | double |
-| bool | bool |
-| bytes | raw |
-
-TODO tbc (complete mapping?)
--->
-
-Parameter forests and parameter trees translate into nested *messages*.
-
-<!-- An example can be downloaded [here](./Test0APIGrpcPb.proto). -->
-
-<!--
-### GraphQL 
-
-To be continued (tbc).
--->
-
-<!--
-~~~
-type Query {
-    ping(in_dtr: String): String
-
-    sayhelloAgain(in_dtr: sayhelloAgainRequestType): sayhelloAgainResponseType 
-}
-
-type Mutation {
-
-    sayhello(in_dtr: sayhelloRequestType): sayhelloResponseType 
-
-}
-
-input sayhelloRequestType {aString: String!}
-type sayhelloResponseType {identifier1: String!}
-
-input sayhelloAgainRequestType {anInt: Int!}
-type sayhelloAgainResponseType {stringList: [String]}
-~~~
--->
-
-<!--
-### Avro
-
-| Avro | MAP | Comments |
-|-----|-----|----------|
-| Basic data types | Atomic Parameter | n/a |
-| tbc | Atomic Parameter List | n/a  |
-| tbc | Parameter Tree | n/a  |
-| tbc | Cardinality of `*` or `+` | n/a  | 
--->
-
-
-### Jolie 
-The MAP base types map to [simple data in Jolie](https://jolielang.gitbook.io/docs/basics/handling_simple_data) in a straightforward manner. 
-
-The same holds for the mapping of parameter trees to [Jolie data structures](https://jolielang.gitbook.io/docs/basics/data_structures). 
-
-An example can be downloaded [here](./HelloWorldAPIJolieInterfaceAndPort.ol). 
+See [this page](technology-mappings) for information on how MDSL data types map to their counterparts in technologies such as OpenAPI and REST, WSDL/SOAP, and gRPC.
 
 
 ## Known Limitations 

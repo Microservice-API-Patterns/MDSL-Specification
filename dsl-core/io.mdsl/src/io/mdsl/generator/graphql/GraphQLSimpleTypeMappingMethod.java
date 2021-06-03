@@ -17,7 +17,7 @@ package io.mdsl.generator.graphql;
 
 import java.util.List;
 
-import freemarker.ext.util.WrapperTemplateModel;
+// import freemarker.ext.util.WrapperTemplateModel;
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;

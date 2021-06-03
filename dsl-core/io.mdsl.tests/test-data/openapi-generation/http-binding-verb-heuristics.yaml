@@ -29,7 +29,7 @@ tags:
       is "Another Role (not in MAP)"(non-pattern role)
     url: ""
 paths:
-  /endpoint1/:
+  /self1:
     summary: general data-oriented endpoint
     get:
       tags:
@@ -66,7 +66,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericParameterP'
-  /endpoint21/:
+  /self2:
     summary: activity-oriented endpoint
     post:
       tags:
@@ -87,7 +87,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericParameterP'
-  /endpoint22/:
+  /self3:
     summary: activity-oriented endpoint
     post:
       tags:
@@ -108,8 +108,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericParameterP'
-  /endpoint42/:
+  /self:
     summary: 'main repsonsibility: "Another Role (not in MAP)"'
+    get:
+      tags:
+      - NameHeuristicEndpointProvider42-self
+      description: unspecified operation responsibility
+      operationId: self-putSomething
+      parameters:
+      - name: dataString
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: metadataString
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: intIdentifier
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: stringLink
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: putSomething successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericParameterP'
   /HeuristicEndpoint4:
     put:
       tags:

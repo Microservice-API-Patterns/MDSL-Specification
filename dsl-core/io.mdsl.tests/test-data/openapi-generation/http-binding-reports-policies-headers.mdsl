@@ -59,6 +59,6 @@ resource Home // no relative URI here
       report ServerError2 realized as 502 with "SomeExtraErrorReportText"
       policy BasicAuthenticationSample2 realized as OAUTH_FLOW with openIdConnectUrl "http://tbc.tbc"
     operation patchOperation to PATCH
-	  element "customHeader1" realized as HEADER parameter // somewhat redundant
-	  element "customHeader2" realized as HEADER parameter // somewhat redundant
+	  // element "customHeader1" realized as HEADER parameter // somewhat redundant
+	  // element "customHeader2" realized as HEADER parameter // somewhat redundant
     // delete operation not bound (in this HTTP binding)

@@ -1,4 +1,4 @@
-Microservice Domain-Specific Language (MDSL) 5.1
+Microservice Domain-Specific Language (MDSL) 5.2
 ================================================
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -76,7 +76,7 @@ If you want to contribute to MDSL, you have to clone this repo and generate the 
 
 ## Change Log
 
-The current version of the MDSL language is 5.1; the tool version is 5.1.2. This MDSL version extends service contracts with support for events, states, flows, compensation (as experimental technology previews). It also supports true REST level 3 concepts both on the abstract endpoint type level and in the redesigned bindings and comes with additional Fremarker generators (Markdown reports, ALPS).
+The current version of the MDSL language is 5.2; the tool version is 5.2.0. This MDSL version extends service contracts with support for events, states, flows, compensation (as experimental technology previews). It also supports true REST level 3 concepts both on the abstract endpoint type level and in the redesigned bindings and comes with additional Fremarker generators (Markdown reports, ALPS).
 
 See [change log](changelog.md) for an evolution history; see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases) for additional update information.
 

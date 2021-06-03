@@ -11,7 +11,7 @@ tags:
       Holder Resource pattern
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
 paths:
-  /endpoint/home:
+  /home:
     summary: general data-oriented endpoint
     get:
       tags:

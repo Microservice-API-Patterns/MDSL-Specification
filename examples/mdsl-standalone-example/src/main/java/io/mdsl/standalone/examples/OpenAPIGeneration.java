@@ -21,7 +21,7 @@ import io.mdsl.standalone.MDSLStandaloneAPI;
 import io.mdsl.standalone.MDSLStandaloneSetup;
 
 /**
- * A simple example that illustrates how to use the MDSL generators. In this case the Open API generator.
+ * A simple example that illustrates how to use the MDSL generators. In this case the OpenAPI generator.
  *
  * @author Stefan Kapferer
  */

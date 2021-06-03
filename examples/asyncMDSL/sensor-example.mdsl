@@ -1,6 +1,6 @@
 API description SensorExample
 version "1.0.0"
-description "IoT sensor example"
+overview "IoT sensor example"
 
 data type SensorDataDTO {
   "sensorId": ID<string>

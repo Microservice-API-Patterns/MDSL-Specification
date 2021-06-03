@@ -15,9 +15,14 @@
  */
 package io.mdsl.generator.model;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+
+import io.mdsl.generator.model.carving.ClusterCollection;
+import io.mdsl.generator.model.composition.OrchestrationFlow;
 
 /**
  * The root class of the MDSL generator model. This model shall ease the
@@ -32,6 +37,8 @@ public class MDSLGeneratorModel {
 	private List<Provider> providers;
 	private List<Client> clients;
 	private List<ProviderImplementation> providerImplementations;
+	private LinkedList<OrchestrationFlow> orchestrationFlows;
+	private List<ClusterCollection> cuts; // TODO list of collections (n heuristics)
 
 	/**
 	 * Creates a new MDSL generator model.
@@ -45,6 +52,8 @@ public class MDSLGeneratorModel {
 		this.providers = Lists.newLinkedList();
 		this.clients = Lists.newLinkedList();
 		this.providerImplementations = Lists.newLinkedList();
+		this.orchestrationFlows = Lists.newLinkedList();
+		this.cuts = new ArrayList<ClusterCollection>();
 	}
 
 	/**
@@ -100,6 +109,15 @@ public class MDSLGeneratorModel {
 	public List<ProviderImplementation> getProviderImplementations() {
 		return Lists.newLinkedList(providerImplementations);
 	}
+	
+	/**
+	 * Returns a list with all provider implementations of the represented MDSL API.
+	 * 
+	 * @return a list of all provider implementations of the MDSL API
+	 */
+	public LinkedList<OrchestrationFlow> getOrchestrationFlows() {
+		return Lists.newLinkedList(orchestrationFlows);
+	}
 
 	/**
 	 * Adds a new data type to the generator model.
@@ -147,4 +165,24 @@ public class MDSLGeneratorModel {
 		this.providerImplementations.add(providerImplementation);
 	}
 
+	public void addOrchestration(OrchestrationFlow oFlow) {
+		this.orchestrationFlows.add(oFlow);
+	}
+
+	public void addSingleClusterToCuts(ClusterCollection clusters) {
+		this.cuts.add(clusters);
+	}
+
+	public List<ClusterCollection> getCuts() {
+		return cuts;
+	}
+
+	public void addAllClustersToCuts(List<ClusterCollection> clusters) {
+		this.cuts.addAll(clusters);
+	}
+
+	public void resetOrchestrationPart() {
+		this.orchestrationFlows = Lists.newLinkedList();
+		this.cuts = new ArrayList<ClusterCollection>();
+	}
 }

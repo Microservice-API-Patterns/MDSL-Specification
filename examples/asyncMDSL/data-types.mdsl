@@ -1,8 +1,6 @@
 API description DatatypesExampleAPI
 version "1.0.0"
-description "
-	A example of the available data types available in MDSL and AsyncMDSL.
-"
+overview "A example of the available data types available in MDSL and AsyncMDSL."
 
 // data type definitions
 data type RefType P  	  

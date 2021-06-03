@@ -9,6 +9,7 @@ import org.eclipse.emf.common.util.EList;
 import io.mdsl.apiDescription.AtomicParameter;
 import io.mdsl.apiDescription.ElementStructure;
 import io.mdsl.apiDescription.EndpointContract;
+import io.mdsl.apiDescription.Event;
 import io.mdsl.apiDescription.HTTPOperationBinding;
 import io.mdsl.apiDescription.HTTPParameter;
 import io.mdsl.apiDescription.HTTPResourceBinding;
@@ -90,6 +91,13 @@ public class Endpoint2PathConverter {
 				}
 				pathItemForResource.operation(verb, convertOperation(endpointType, operation, verb, binding));
 			}
+			/*
+			// TODO work in progress (early PoC)
+			for (Event event : endpointType.getEvents()) {
+				addEventToDescription(pathItemForResource, event);
+				// pathItemForResource.operation(PathItem.HttpMethod.POST, convertEvent(endpointType, event, HttpMethod.POST, binding));
+			}
+			*/
 		}
 		else {
 			// only work with operations for which a binding exists in this resource
@@ -114,8 +122,16 @@ public class Endpoint2PathConverter {
 
 				}
 			}
+			// TODO handle bound events too (?)
 		}
 		return pathItemForResource;
+	}
+
+	private void addEventToDescription(PathItem resource, Event event) {
+		if(resource.getDescription()==null)
+			resource.setDescription("Receiving event(s): " + event.getName());
+		else
+			resource.setDescription(resource.getDescription() + ", " + event.getName());
 	}
 
 	private io.swagger.v3.oas.models.Operation convertOperation(EndpointContract endpointType, Operation mdslOperation, HttpMethod verb, HTTPResourceBinding binding) {
@@ -141,6 +157,30 @@ public class Endpoint2PathConverter {
 		List<SecurityRequirement> securityRequrementList = handleSecurity(endpointType, mdslOperation, binding);
 		if(securityRequrementList!=null)
 			securityRequrementList.forEach(requirement->operation.addSecurityItem(requirement));
+		
+		return operation;
+	}
+	
+	// TODO work in progress (early PoC)
+	private io.swagger.v3.oas.models.Operation convertEvent(EndpointContract endpointType, Event event, HttpMethod verb, HTTPResourceBinding binding) {
+		io.swagger.v3.oas.models.Operation operation = new io.swagger.v3.oas.models.Operation();
+
+		// TODO use binding 
+		
+		operation.setOperationId(event.getName() + "-events"); // resource name needed to make operationId unique in OAS
+	 	
+		// operation.setSummary(MAPLinkResolver.explainResponsibilityPattern(mdslOperation));
+		// operation.setDescription(MAPLinkResolver.provideLinktoMAPWebsite(mdslOperation));
+		List<String> tags = new ArrayList<String>();
+		Tag rtag = mdsl2OpenAPIConverter.createTag(endpointType, binding, false);
+		tags.add(rtag.getName());
+		// tags.add(endpointType.getName());
+		operation.setTags(tags);
+		
+		// TODO handleEventMessage(endpointType, event, verb, binding, operation);
+		// TODO response messages
+		
+		// TODO handle security (in grammar?)
 		
 		return operation;
 	}

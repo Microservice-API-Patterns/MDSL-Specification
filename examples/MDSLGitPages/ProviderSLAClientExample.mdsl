@@ -35,9 +35,9 @@ under conditions "See http://www.tbc.io/terms-and-conditions.html"
 provider governance AGGRESSIVE_OBSOLESCENCE
 
 API client SampleAPIClient
-consumes SomeDemoContract
-from SampleProvider
-via protocol HTTP binding resource X
+  consumes SomeDemoContract
+  from SampleAPIProvider1
+  via protocol HTTP binding resource SampleAPIProvider1Resource
 
 API gateway SampleAPIGatweway
   offers SomeDemoContract

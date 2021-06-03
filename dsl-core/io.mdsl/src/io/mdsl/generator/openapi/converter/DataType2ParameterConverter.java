@@ -4,20 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.common.util.EList;
-
 import com.google.common.collect.Lists;
 
 import io.mdsl.apiDescription.AtomicParameter;
 import io.mdsl.apiDescription.Cardinality;
 import io.mdsl.apiDescription.ElementStructure;
-import io.mdsl.apiDescription.EndpointContract;
-import io.mdsl.apiDescription.HTTPGlobalParameterBinding;
-import io.mdsl.apiDescription.HTTPOperationBinding;
 import io.mdsl.apiDescription.HTTPParameter;
-import io.mdsl.apiDescription.HTTPParameterBinding;
-// import io.mdsl.apiDescription.HTTPParameterMapping;
-import io.mdsl.apiDescription.HTTPResourceBinding;
 import io.mdsl.apiDescription.ParameterTree;
 import io.mdsl.apiDescription.PatternStereotype;
 import io.mdsl.apiDescription.RoleAndType;

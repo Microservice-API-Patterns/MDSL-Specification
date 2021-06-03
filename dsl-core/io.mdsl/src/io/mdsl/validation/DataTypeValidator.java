@@ -10,6 +10,7 @@ import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
 
 import io.mdsl.apiDescription.ApiDescriptionPackage;
+import io.mdsl.apiDescription.DataContract;
 import io.mdsl.apiDescription.GenericParameter;
 import io.mdsl.apiDescription.ParameterForest;
 import io.mdsl.apiDescription.ParameterTree;
@@ -21,7 +22,11 @@ import io.mdsl.apiDescription.RoleAndType;
  * https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 public class DataTypeValidator extends AbstractMDSLValidator {
-
+	
+	public final static String LOWER_CASE_NAME = "LOWER_CASE_NAME";
+	public final static String TYPE_MISSING = "TYPE_MISSING";
+	public final static String TYPE_INCOMPLETE = "TYPE_INCOMPLETE";
+	
 	@Override
 	public void register(EValidatorRegistrar registrar) {
 		// not needed for classes used as ComposedCheck
@@ -33,7 +38,7 @@ public class DataTypeValidator extends AbstractMDSLValidator {
 		String basicType = rat.getBtype();
 		
 		if(basicType==null || basicType.equals("")) {
-			info("Incomplete specification: No type such as <String> or <int> specified yet.", rat, ApiDescriptionPackage.eINSTANCE.getRoleAndType_Btype()); // ()Literals.ROLE_AND_TYPE__BTYPE);
+			info("Incomplete specification: No type such as <string> or <int> specified yet.", rat, ApiDescriptionPackage.eINSTANCE.getRoleAndType_Btype(), TYPE_INCOMPLETE); // ()Literals.ROLE_AND_TYPE__BTYPE);
 	    }
 		else if(basicType.equals("void")) {
 			info("Imprecise specification: <void> only makes sense as sole element of a response message; you might want to remove the empty message from the specification.", rat, ApiDescriptionPackage.eINSTANCE.getRoleAndType_Btype()); // Literals.ROLE_AND_TYPE__BTYPE);
@@ -52,11 +57,18 @@ public class DataTypeValidator extends AbstractMDSLValidator {
 	@Check
 	public void checkIncompleteTypeInformation(final GenericParameter gp) {
 		if(gp.getName() != null) {
-			warning("\"" + gp.getName() + "\" is a generic parameter. You might want to provide a full identfier-role-type triple before invoking any generator.", gp, ApiDescriptionPackage.eINSTANCE.getGenericParameter_P()); // Literals.GENERIC_PARAMETER__P);
+			warning("\"" + gp.getName() + "\" is a generic parameter. You might want to provide a full identfier-role-type triple before invoking any generator.", gp, ApiDescriptionPackage.eINSTANCE.getGenericParameter_P(), TYPE_MISSING); // Literals.GENERIC_PARAMETER__P);
 		}
 		else {
-			warning("This is a generic parameter. You might want to provide a full identfier-role-type triple. See MDSL documentation at https://microservice-api-patterns.github.io/MDSL-Specification/datacontract.", gp, ApiDescriptionPackage.eINSTANCE.getGenericParameter_P()); // Literals.GENERIC_PARAMETER__P);
+			warning("This is a generic parameter. You might want to provide a full identfier-role-type triple. See MDSL documentation at https://microservice-api-patterns.github.io/MDSL-Specification/datacontract.", gp, ApiDescriptionPackage.eINSTANCE.getGenericParameter_P(), TYPE_MISSING); // Literals.GENERIC_PARAMETER__P);
 		}
+	}
+	
+	@Check
+	public void checkInappropriateTypeName(final DataContract dc) {
+        if (!Character.isUpperCase(dc.getName().charAt(0))) {
+            warning("Data type name should start with a capital", dc, ApiDescriptionPackage.eINSTANCE.getDataContract_Name(), LOWER_CASE_NAME);
+        }
 	}
 
 	@Check

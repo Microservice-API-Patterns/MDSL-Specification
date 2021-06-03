@@ -336,7 +336,7 @@
 			</command>
 		</menuContribution>
 	</extension>
-	<!-- quickfix marker resolution generator for io.mdsl.APIDescription -->
+	<!-- quickfix marker resolution generator for io.mdsl.APIDescription (NOT WORKING YET) -->
 	<extension
 			point="org.eclipse.ui.ide.markerResolution">
 		<markerResolutionGenerator
@@ -364,8 +364,8 @@
 			</attribute>
 		</markerResolutionGenerator>
 	</extension>
-	<!-- Rename Refactoring -->
 	<extension point="org.eclipse.ui.handlers">
+	<!-- Rename Refactoring -->
 		<handler 
 			class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
 			commandId="org.eclipse.xtext.ui.refactoring.RenameElement">
@@ -375,8 +375,8 @@
 				</reference>
 			</activeWhen>
 		</handler>
-		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.TextFileGenerationHandler"
-			commandId="io.mdsl.ui.handler.TextFileGenerationCommand">
+		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.AsyncMDSLGenerationHandler"
+			commandId="io.mdsl.ui.handler.AsyncMDSLGenerationCommand">
 		</handler>
 		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.OpenAPIGenerationHandler"
 			commandId="io.mdsl.ui.handler.OpenAPIGenerationCommand">
@@ -393,6 +393,9 @@
 		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.JavaGenerationHandler"
 			commandId="io.mdsl.ui.handler.JavaGenerationCommand">
 		</handler>
+		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.TextFileGenerationHandler"
+			commandId="io.mdsl.ui.handler.TextFileGenerationCommand">
+		</handler>
 		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.GenModelJSONExporterHandler"
 			commandId="io.mdsl.ui.handler.GenModelJSONExporterCommand">
 		</handler>
@@ -402,9 +405,17 @@
 		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.AsyncAPIGenerationHandler"
 			commandId="io.mdsl.ui.handler.AsyncAPIGenerationCommand">
 		</handler>
+		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.ALPSGenerationHandler"
+			commandId="io.mdsl.ui.handler.ALPSGenerationCommand">
+		</handler>
+		<!--
+		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.MDSLRefactoringHandler"
+			commandId="io.mdsl.ui.handler.MDSLRefactoringCommand">
+		</handler>
+		-->
 	</extension>
 	<extension point="org.eclipse.ui.commands">
-		<command name="Generate Text File with Freemarker Template" id="io.mdsl.ui.handler.TextFileGenerationCommand"></command>
+		<command name="Create AsyncMDSL Specification" id="io.mdsl.ui.handler.AsyncMDSLGenerationCommand"></command>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<command name="Generate OpenAPI Specification" id="io.mdsl.ui.handler.OpenAPIGenerationCommand"></command>
@@ -422,6 +433,9 @@
 		<command name="Generate Java Modulith" id="io.mdsl.ui.handler.JavaGenerationCommand"></command>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
+		<command name="Generate Text File with Freemarker Template" id="io.mdsl.ui.handler.TextFileGenerationCommand"></command>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
 		<command name="Export Generator Model as JSON" id="io.mdsl.ui.handler.GenModelJSONExporterCommand"></command>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
@@ -430,9 +444,18 @@
 	<extension point="org.eclipse.ui.commands">
 		<command name="Generate AsyncAPI Specification" id="io.mdsl.ui.handler.AsyncAPIGenerationCommand"></command>
 	</extension>
+	<extension point="org.eclipse.ui.commands">
+		<command name="Generate ALPS Specification" id="io.mdsl.ui.handler.ALPSGenerationCommand"></command>
+	</extension>
+	<!--
+	<extension point="org.eclipse.ui.commands">
+		<command name="Refactor MDSL Specification" id="io.mdsl.ui.handler.MDSLRefactoringCommand"></command>
+	</extension>
+	-->
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution
 			locationURI="popup:#TextEditorContext?after=group.edit">
+
 			<command commandId="org.eclipse.xtext.ui.refactoring.RenameElement"
 				style="push">
 				<visibleWhen checkEnabled="false">
@@ -444,7 +467,7 @@
 		</menuContribution>
 		<menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
 			<menu id="io.mdsl.ui.menu" label="MDSL">
-				<command defaultHandler="io.mdsl.ui.handler.TextFileGenerationHandler" commandId="io.mdsl.ui.handler.TextFileGenerationCommand" style="push">
+				<command defaultHandler="io.mdsl.ui.handler.AsyncMDSLGenerationHandler" commandId="io.mdsl.ui.handler.AsyncMDSLGenerationCommand" style="push">
 					<visibleWhen checkEnabled="false">
 						<iterate>
 							<adapt type="org.eclipse.core.resources.IResource">
@@ -498,6 +521,15 @@
 						</iterate>
 					</visibleWhen>
 				</command>
+				<command defaultHandler="io.mdsl.ui.handler.TextFileGenerationHandler" commandId="io.mdsl.ui.handler.TextFileGenerationCommand" style="push">
+					<visibleWhen checkEnabled="false">
+						<iterate>
+							<adapt type="org.eclipse.core.resources.IResource">
+								<test property="org.eclipse.core.resources.name" value="*.mdsl"/>
+							</adapt>
+						</iterate>
+					</visibleWhen>
+				</command>
 				<command defaultHandler="io.mdsl.ui.handler.GenModelJSONExporterHandler" commandId="io.mdsl.ui.handler.GenModelJSONExporterCommand" style="push">
 					<visibleWhen checkEnabled="false">
 						<iterate>
@@ -525,6 +557,26 @@
 						</iterate>
 					</visibleWhen>
 				</command>
+				<command defaultHandler="io.mdsl.ui.handler.ALPSGenerationHandler" commandId="io.mdsl.ui.handler.ALPSGenerationCommand" style="push">
+					<visibleWhen checkEnabled="false">
+						<iterate>
+							<adapt type="org.eclipse.core.resources.IResource">
+								<test property="org.eclipse.core.resources.name" value="*.mdsl"/>
+							</adapt>
+						</iterate>
+					</visibleWhen>
+				</command>
+				<!--
+				<command defaultHandler="io.mdsl.ui.handler.MDSLRefactoringHandler" commandId="io.mdsl.ui.handler.MDSLRefactoringCommand" style="push">
+					<visibleWhen checkEnabled="false">
+						<iterate>
+							<adapt type="org.eclipse.core.resources.IResource">
+								<test property="org.eclipse.core.resources.name" value="*.mdsl"/>
+							</adapt>
+						</iterate>
+					</visibleWhen>
+				</command>
+				-->
 			</menu>
 		</menuContribution>
 	</extension>
@@ -581,4 +633,32 @@
             contextId="org.eclipse.xtext.ui.XtextEditorScope"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
     </extension>
+    <!-- quickfix marker resolution generator -->
+	<extension
+			point="org.eclipse.ui.ide.markerResolution">
+		<markerResolutionGenerator
+			class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="io.mdsl.ui.apidescription.check.fast">
+			<attribute
+				name="FIXABLE_KEY"
+				value="true">
+			</attribute>
+		</markerResolutionGenerator>
+		<markerResolutionGenerator
+			class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="io.mdsl.ui.apidescription.check.normal">
+			<attribute
+				name="FIXABLE_KEY"
+				value="true">
+			</attribute>
+		</markerResolutionGenerator>
+		<markerResolutionGenerator
+			class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="io.mdsl.ui.apidescription.check.expensive">
+			<attribute
+				name="FIXABLE_KEY"
+				value="true">
+			</attribute>
+		</markerResolutionGenerator>
+	</extension>
 </plugin>

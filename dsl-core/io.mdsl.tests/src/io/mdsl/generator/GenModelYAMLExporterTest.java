@@ -37,6 +37,8 @@ public class GenModelYAMLExporterTest extends AbstractMDSLInputIntegrationTest {
 				"providers: []" + System.lineSeparator() + 
 				"clients: []" + System.lineSeparator() + 
 				"providerImplementations: []" + System.lineSeparator() + 
+				"orchestrationFlows: []" + System.lineSeparator() + // new in V5.2
+				"cuts: []" + System.lineSeparator() + // new in V5.2
 				"",
 				FileUtils.readFileToString(new File(getGenerationDirectory(), "simple-generation-input-1_GeneratorModel.yaml"),
 						"UTF-8"));

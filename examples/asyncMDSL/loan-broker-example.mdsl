@@ -1,6 +1,6 @@
 API description LoanBrokerExample 
 version "1.0.0"
-description "This example models parts of an EIP scenario. See [here](https://www.enterpriseintegrationpatterns.com/patterns/messaging/SystemManagementExample.html) for more info"
+overview "This example models parts of an EIP scenario. See [here](https://www.enterpriseintegrationpatterns.com/patterns/messaging/SystemManagementExample.html) for more info"
 
 data type LoanRequestDto {
 	"customerId": ID<int>,

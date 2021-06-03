@@ -14,8 +14,8 @@ import io.mdsl.apiDescription.ApiDescriptionPackage;
 import io.mdsl.apiDescription.AsyncConsumptionNoProtocolBinding;
 import io.mdsl.apiDescription.AsyncConsumptionWithProtocolBinding;
 import io.mdsl.apiDescription.Channel;
-import io.mdsl.apiDescription.ConsumptionWhereClauses;
-import io.mdsl.apiDescription.Message;
+// import io.mdsl.apiDescription.ConsumptionWhereClauses;
+// import io.mdsl.apiDescription.Message;
 
 /**
  * This class contains custom scoping description.

@@ -1,6 +1,6 @@
 package io.mdsl.generator.protobuf.converter;
 
-import java.util.List;
+// import java.util.List;
 import java.util.Optional;
 
 import io.github.microserviceapipatterns.protobufgen.model.Message;
@@ -10,7 +10,7 @@ import io.github.microserviceapipatterns.protobufgen.model.RemoteProcedureCall;
 import io.github.microserviceapipatterns.protobufgen.model.Service;
 import io.github.microserviceapipatterns.protobufgen.model.SimpleFieldType;
 import io.mdsl.apiDescription.Cardinality;
-import io.mdsl.apiDescription.DataContract;
+// import io.mdsl.apiDescription.DataContract;
 import io.mdsl.apiDescription.ElementStructure;
 import io.mdsl.apiDescription.EndpointContract;
 import io.mdsl.apiDescription.Operation;

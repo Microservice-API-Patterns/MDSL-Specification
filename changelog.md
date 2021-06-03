@@ -2,6 +2,16 @@
 
 Also see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases).
 
+V5.2, June 2021
+
+* Grammar now support events better, API description has an overview property (for AsyncMDSL)
+* Technology previews (no tools yet): scenarios/stories; flows and events; state, compensation
+* ALPS Generator as separate menu entry (MDSL menu in plugin redesigned)
+* MVP: three quickfixes for data type completion
+* MVP of core MDSL to AsyncMDSL transformation
+* Initial draft of Xtend formatter (AP types, channels)
+* Genmodel extensions for flows
+
 V5.1, March to May 2021
 
 * Freemarker template for ALPS and API Description (Markdown)

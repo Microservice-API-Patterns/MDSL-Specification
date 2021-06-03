@@ -14,7 +14,7 @@ MDSL Tools: Users Guide
 ### Installation in Eclipse
 
  * Update site: [https://microservice-api-patterns.github.io/MDSL-Specification/updates/](https://microservice-api-patterns.github.io/MDSL-Specification/updates/)
- * The grammar can be found in the `dsl-core` project (more precisely, in the `io.mdsl./src/io.mdsl` folder of this project): [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) and [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) repository.
+ * The grammar can be found in the `dsl-core` project (more precisely, in the `io.mdsl/src/io.mdsl` folder of this project) 
 
 ### Direct links into repository
 
@@ -27,6 +27,7 @@ At present, two types of MDSL tools are available:
 * *Command Line Interface (CLI)* tools: API Linter (validation), technology-specific contract generation 
 * *Eclipse Plugin*: editor, API Linter (validation), technology-specific contract generation
 
+<!-- Web app under construction -->
 
 ## Command Line Interface (CLI) Tools
 
@@ -55,6 +56,8 @@ usage: mdsl
                          This parameter is only used if you pass 'text' to
                          the 'generator' (-g) parameter.
 ```
+
+<!-- TODO document -s option -->
 
 Please refer to the readme of the [DSL core project](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/README.md) and of the [CLI package](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli) for  more information.
 
@@ -86,6 +89,10 @@ An example that features all validators in action can be found in the examples f
 The validation of this MDSL file yields the following errors, warnings and information messages (among others):
 <a target="_blank" href="/media/api-linter-example.png">![API Linter example](/media/api-linter-example.png)</a>
 
+*News:* Starting with Version 5.2, the plugin comes with quick fixes to complete data type specifications: 
+
+* Generic parameters `P`, `nameOnly`, and `name:P`can be completed with `D<string>`
+* Incomplete atomic parameters `D`, `ID`, `L`, `MD` can be completed with `D<string>` or `D<int>`.
 
 ### Generators
 
@@ -96,7 +103,10 @@ In the MDSL Editor, you can invoke the following generators from the "MDSL" entr
 * [Generate GraphQL Schema](./generators/graphql)
 * [Generate Jolie Lang(uage) Specification](./generators/jolie)
 * [Generate Java «Moduliths» Code](./generators/java)
+* Generate [ALPS](https://datatracker.ietf.org/doc/html/draft-amundsen-richardson-foster-alps-07) specification (status: [technology preview](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview))
+* Generate AsyncMDSL specification (this actually is an in-model transformation, it does not generate a new output file)
 * [Generate Text File with Freemarker Template](./generators/freemarker)
+* Generate AsyncAPI (from AsyncMDSL). See [this page](./generators/async-api) and [readme in this examples folder](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/asyncMDSL) for further information.
 
 These generator features are also available in the CLI (see above).
 
@@ -111,12 +121,6 @@ This model can also be exported for offline processing (for instance, to feed ot
 * Export Generator Model as YAML
 
 *Note*: This feature is not yet complete, and the model API subject to change at any time. We do use it internally in the [GraphQL schema](./graphql) and [Java](./java) generators, so it has reached a certain level of maturity and test coverage. That said, it also has some known limitations; for instance, the output can be rather verbose and partially redundant (input depending, of course). 
-
-#### AsyncAPI (technology [preview](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview))
-
-This generator uses a different model management technology internally, and is run every time an MDSL file is saved. It is not available via a context menu.
-
-See [readme in this examples folder](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/asyncMDSL) for further instructions.
 
 
 # Site Navigation

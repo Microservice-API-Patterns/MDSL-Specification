@@ -49,6 +49,7 @@ javadoc {
     options.tags = [ "model", "generated", "ordered", "Inject" ]
     exclude 'io/mdsl/apiDescription/impl/**'
     exclude 'io/mdsl/serializer/**'
+    exclude 'io/mdsl/formatting2/**' // patched for V5.1.5
 }
 
 task javadocJar(type: Jar) {

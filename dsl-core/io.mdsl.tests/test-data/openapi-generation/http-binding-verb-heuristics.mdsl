@@ -114,4 +114,4 @@ via protocol "OtherProtocol"
 API provider NameHeuristicEndpointProvider42
 offers HeuristicEndpoint3
 at endpoint location "/endpoint42"
-via protocol HTTP binding resource self at "" operation createSomething to GET // ignored (ok)
+via protocol HTTP binding resource self at "" operation putSomething to GET // ignored (ok)

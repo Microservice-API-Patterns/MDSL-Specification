@@ -13,6 +13,8 @@ public class MessageExchangePatternValidator extends AbstractMDSLValidator {
 	public void register(EValidatorRegistrar registrar) {
 		// not needed for classes used as ComposedCheck
 	}
+	
+	// TODO offer quick fixes to correct errors?
 
 	@Check
 	public void validateMessagePresenenceForExchangePattern(Operation nextOp) {

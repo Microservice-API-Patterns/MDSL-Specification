@@ -237,6 +237,6 @@ Valid AsyncMDSL specifications can be mapped to [AsyncAPI](https://www.asyncapi.
 * [Quick reference](./quickreference), [tutorial](./tutorial) and [tools](./tools)
 * Back to [MDSL homepage](./index).
 
-*See [license information](https://github.com/socadk/MDSL/blob/master/LICENSE).*
+*See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

@@ -34,6 +34,10 @@ Workflow {
 			name = "io.mdsl.APIDescription"
 			fileExtensions = "mdsl"
 			
+			fragment = ui.outline.QuickOutlineFragment2 {}
+			// fragment = ui.outline.OutlineTreeProviderFragment2 {}
+			fragment = ui.quickfix.QuickfixProviderFragment2 {}
+			
 			serializer = {
 				generateStub = false
 			}
@@ -51,12 +55,16 @@ Workflow {
 				composedCheck = "io.mdsl.validation.MessageEndpointValidator"
 				composedCheck = "io.mdsl.validation.RuntimeExpressionValidator"
 			}
+			
 			junitSupport = {
 				junitVersion = "5"
 				generateStub = false
 			}
 			
-			// not successful yet:
+			formatter = {
+				generateStub = true
+			}
+			
 			generator = {
 				generateXtendStub = false
 			}

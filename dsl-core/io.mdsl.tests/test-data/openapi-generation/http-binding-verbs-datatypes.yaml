@@ -11,7 +11,7 @@ tags:
       contract, is not specified.
     url: ""
 paths:
-  /https://some.sample.domain/crudApiEndpoint:
+  /Home:
     get:
       tags:
       - Sample_CRUD_APIProvider-Home

@@ -27,7 +27,7 @@ You can import this project into your favorite IDE by using the Gradle build.
 Under [src/main/java/io/mdsl/standalone/examples](./src/main/java/io/mdsl/standalone/examples) you can find Java classes with main methods that illustrate the following use cases:
 
  * [Read an MDSL model](./src/main/java/io/mdsl/standalone/examples/ReadingMDSL.java)
- * [Generate Open API (OAS) specifications](./src/main/java/io/mdsl/standalone/examples/OpenAPIGeneration.java)
+ * [Generate OpenAPI (OAS) specifications](./src/main/java/io/mdsl/standalone/examples/OpenAPIGeneration.java)
  * [Generate Protocol Buffers (*.proto files)](./src/main/java/io/mdsl/standalone/examples/ProtocolBuffersGeneration.java)
  * [Generate Jolie](./src/main/java/io/mdsl/standalone/examples/JolieGeneration.java)
  * [Generate arbitrary text files with Freemarker templates](./src/main/java/io/mdsl/standalone/examples/FreemarkerTextGeneration.java)

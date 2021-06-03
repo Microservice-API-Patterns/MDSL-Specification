@@ -11,7 +11,7 @@ tags:
       contract, is Processing Resource pattern
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
 paths:
-  /https://some.sample.domain/mvcEndpoint:
+  /self:
     summary: activity-oriented endpoint
     put:
       tags:

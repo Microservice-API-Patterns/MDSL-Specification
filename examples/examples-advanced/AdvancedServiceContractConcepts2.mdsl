@@ -1,0 +1,49 @@
+API description AdvancedServiceConceptsPreview 
+version "5.2.0"
+overview "This service contract features error reporting, state transitions, compensation, and event emission/reception"
+
+data type SampleDTO {ID, D} // these two incomplete specifications can be quick fixed in the plugin
+data type Placeholder P // this incomplete specifications can be quick fixed in the plugin
+data type Placeholder2 "nameOnly" // this incomplete specifications can be quick fixed in the plugin
+data type Placeholder3 "name":P // this incomplete specifications can be quick fixed in the plugin
+
+event type SomethingHasHappened content {"when":D<string>, "what":D<string>}
+event type ServerSideProcessingComplete
+event type FailureMessage
+
+endpoint type HelloWorldEndpoint
+ exposes 
+  operation doSomethingOnServerSide with responsibility STATE_TRANSITION_OPERATION
+    expecting payload D<string>  
+    delivering payload SampleDTO
+    reporting error FailureMessage
+    emitting event ServerSideProcessingComplete
+    transitions from "ReadyToWork" to "Done"
+    compensated by undoSomethingOnServerSide
+  operation undoSomethingOnServerSide with responsibility STATE_TRANSITION_OPERATION
+    expecting payload D<string>  
+    delivering payload SampleDTO
+    transitions from "Done" to "ReadyToWork"
+ receives
+    event SomethingHasHappened
+  
+API provider HelloWorldAPIProvider
+  offers HelloWorldEndpoint
+
+API client HelloWorldAPIClient
+  consumes HelloWorldEndpoint
+  
+flow SampleFlow 
+flow CombinedFlow
+  event SomethingHasHappened triggers operation doSomethingOnServerSide
+  operation doSomethingOnServerSide emits event ServerSideProcessingComplete
+  
+  event FailureMessage triggers operation undoSomethingOnServerSide
+
+scenario SampleIntegrationRequirement 
+  when "AConditionArises"
+  an "API Client"
+  wants to "perform action or process data"
+  so that "business goals are met"
+  
+IPA

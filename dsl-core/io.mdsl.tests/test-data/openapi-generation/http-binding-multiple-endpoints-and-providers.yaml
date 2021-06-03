@@ -144,8 +144,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FlatParameterTree'
-  /providerEndpoint02: {}
-  /providerEndpoint03/:
+  /Home: {}
+  /:
     get:
       tags:
       - HelloHTTPEndpointNoBinding3-Home
@@ -200,7 +200,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NestedResponseDTR'
-  /providerEndpoint03/subresource1:
+  /subresource1:
     put:
       tags:
       - HelloHTTPEndpointNoBinding3-Subresource1

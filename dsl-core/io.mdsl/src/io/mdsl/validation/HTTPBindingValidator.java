@@ -20,7 +20,7 @@ import io.mdsl.apiDescription.AtomicParameter;
 import io.mdsl.apiDescription.DataTransferRepresentation;
 import io.mdsl.apiDescription.ElementStructure;
 import io.mdsl.apiDescription.EndpointContract;
-import io.mdsl.apiDescription.EndpointInstance;
+// import io.mdsl.apiDescription.EndpointInstance;
 import io.mdsl.apiDescription.EndpointList;
 import io.mdsl.apiDescription.HTTPBinding;
 import io.mdsl.apiDescription.HTTPOperationBinding;
@@ -36,7 +36,7 @@ import io.mdsl.apiDescription.StatusReport;
 import io.mdsl.apiDescription.StatusReports;
 import io.mdsl.apiDescription.TechnologyBinding;
 import io.mdsl.apiDescription.TreeNode;
-import io.mdsl.exception.MDSLException;
+// import io.mdsl.exception.MDSLException;
 
 /**
  * This class contains custom validation rules.
@@ -76,7 +76,7 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 		EList<SecurityBinding> sbl = httpOperationBinding.getSecurityBindings();
 
 		EndpointContract ec = findContract(httpOperationBinding);
-		Operation op = findOperation(ec, httpOperationBinding.getBoundOperation());
+		// Operation op = findOperation(ec, httpOperationBinding.getBoundOperation());
 
 		SecurityPolicies secPols = null;
 		for (Operation operation : ec.getOps()) {
@@ -107,7 +107,7 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 		EList<ReportBinding> rpl = httpOperationBinding.getReportBindings();
 
 		EndpointContract ec = findContract(httpOperationBinding);
-		Operation op = findOperation(ec, httpOperationBinding.getBoundOperation());
+		// Operation op = findOperation(ec, httpOperationBinding.getBoundOperation());
 
 		StatusReports responseReports=null;
 		for (Operation operation : ec.getOps()) {
@@ -148,6 +148,8 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 		return false;
 		
 	}
+	
+	// TODO offer quick fixes to correct erorrs?
 
 	private EndpointContract findContract(HTTPOperationBinding httpOperationBinding) {
 		TechnologyBinding tp = (TechnologyBinding) httpOperationBinding.eContainer().eContainer().eContainer().eContainer();

@@ -22,6 +22,7 @@ subprojects {
         apply from: "${rootDir}/gradle/maven-deployment.gradle"
         apply plugin: 'eclipse'
         apply plugin: 'jacoco'
+        apply plugin: 'signing'
 
         group = 'io.mdsl'
         version = pomXml.version
@@ -32,7 +33,60 @@ subprojects {
         configurations.all {
                 exclude group: 'asm'
         }
+	
+	/*
+	// causes my local build to fail:
+	signing {
+    		sign configurations.archives
+	}
+	*/
+
+	uploadArchives {
+		repositories {
+			mavenDeployer {
+				beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      				repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {	
+      				// needed, from https://github.com/NeuronRobotics/nrjavaserial/issues/123
+					authentication(userName: hasProperty('ossrhUsername')?ossrhUsername:'', password: hasProperty('ossrhPassword')?ossrhPassword:'')
+				}
+
+				snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+					// needed, from https://github.com/NeuronRobotics/nrjavaserial/issues/123
+					authentication(userName: hasProperty('ossrhUsername')?ossrhUsername:'', password: hasProperty('ossrhPassword')?ossrhPassword:'')
+				}
+
+
+                                pom.project {
+                                        name 'io.mdsl:io.mdsl.parent'
+                                        description 'A domain-specific language to specify (micro-)service contracts, data representations and endpoints.'
+                                        url 'https://microservice-api-patterns.github.io/MDSL-Specification/'
+
+                                        scm {
+                                                connection 'scm:git:https://github.com/Microservice-API-Patterns/MDSL-Specification.git'
+                                                developerConnection 'scm:git:ssh://github.com:Microservice-API-Patterns/MDSL-Specification.git'
+                                                url 'https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master'
+                                        }
+
+                                        licenses {
+                                                license {
+                                                        name 'The Apache License, Version 2.0'
+                                                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                                                }
+                                        }
+
+                                        developers {
+                                                developer {
+                                                        name 'socadk'
+                                                        email 'info@microservice-api-patterns.org'
+                                                }
+                                        }
+                                }
+			}
+		}
+	}
 }
+
 
 configure(subprojects.findAll {it.name != 'mdsl-cli'}) {
         apply from: "${rootDir}/gradle/source-layout.gradle"

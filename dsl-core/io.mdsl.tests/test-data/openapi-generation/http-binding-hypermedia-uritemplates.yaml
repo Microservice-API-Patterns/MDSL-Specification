@@ -16,7 +16,7 @@ tags:
       is Processing Resource pattern
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
 paths:
-  /http://map.mdsl.hateoas/home:
+  /home:
     summary: activity-oriented endpoint
     post:
       tags:
@@ -54,7 +54,7 @@ paths:
                 verb: PUT
                 cmt: CustomMediaTypeRepresentationJSON
               description: 'Targeted operation: continueProcessing'
-  /http://map.mdsl.hateoas/home/{id}:
+  /home/{id}:
     summary: activity-oriented endpoint
     put:
       tags:

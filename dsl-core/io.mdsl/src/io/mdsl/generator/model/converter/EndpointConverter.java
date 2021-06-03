@@ -27,7 +27,7 @@ import io.mdsl.apiDescription.EndpointList;
 import io.mdsl.apiDescription.JavaBinding;
 import io.mdsl.apiDescription.JavaOperationBinding;
 import io.mdsl.apiDescription.OperationResponsibility;
-import io.mdsl.apiDescription.TechnologyBinding;
+// import io.mdsl.apiDescription.TechnologyBinding;
 import io.mdsl.apiDescription.TypeReference;
 import io.mdsl.dsl.ServiceSpecificationAdapter;
 import io.mdsl.generator.AnonymousFieldNameGenerator;

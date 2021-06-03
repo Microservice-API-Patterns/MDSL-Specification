@@ -36,7 +36,7 @@ data type PersonalData <<Entity>>D
 data type Address <<Entity>>D
 data type CustomerEntity {{PersonalData}, {Address}}
 
-data type X "parameter_tree":{{D<int>}, (D<int>)}
+data type NN "parameter_tree":{{D<int>}, (D<int>)}
 
 data type CustomerWithAddressAndMoveHistory { 
     <<Entity>>"CustomerCoreData":D, 

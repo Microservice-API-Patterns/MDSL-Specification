@@ -16,7 +16,6 @@
 package io.mdsl.standalone;
 
 import java.io.File;
-import java.io.InputStream;
 
 import org.eclipse.xtext.generator.IGenerator2;
 

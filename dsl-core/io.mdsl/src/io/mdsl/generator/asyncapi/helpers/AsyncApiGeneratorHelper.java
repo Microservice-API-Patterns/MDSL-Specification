@@ -13,7 +13,7 @@ import io.mdsl.apiDescription.ParameterForest;
 import io.mdsl.apiDescription.ParameterTree;
 import io.mdsl.apiDescription.ProtocolBinding;
 import io.mdsl.apiDescription.ServiceSpecification;
-import io.mdsl.apiDescription.TechnologyBinding;
+// import io.mdsl.apiDescription.TechnologyBinding;
 import io.mdsl.apiDescription.WhereClauses;
 import io.mdsl.generator.asyncapi.models.MessageBrokerDto;
 

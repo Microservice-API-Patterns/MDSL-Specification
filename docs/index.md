@@ -16,7 +16,7 @@ Quick links:
     * [Endpoint Type](./servicecontract), [Data Types](./datacontract), [Provider and Client](./optionalparts), [Bindings](./bindings), [Tutorial](./tutorial), [Quick Reference](./quickreference)<!-- providing skeletons-->
     * Technology preview: [AsyncMDSL](./async-mdsl)
 * Tools: [Overview](./tools), [CLI](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli), [update site for editor (Eclipse plugin)](./updates/)
-    * Generators: [OpenAPI generator](./generators/open-api), [Protocol buffers generator](./generators/protocol-buffers), [Graphql generator](./generators/graphql), [Jolie generator](./generators/jolie), [Java «Modulith» generator](./generators/java), [Arbitrary textual generation with Freemarker](./generators/freemarker)
+    * Generators: [OpenAPI generator](./generators/open-api), [Protocol buffers generator](./generators/protocol-buffers), [Graphql generator](./generators/graphql), [Jolie generator](./generators/jolie), [Java "Modulith" generator](./generators/java), [Arbitrary textual generation with Freemarker](./generators/freemarker)
 * Language and tools repository (GitHub): [XText grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext), [examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) folder
 
 <!--

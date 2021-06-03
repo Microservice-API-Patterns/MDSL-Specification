@@ -3,7 +3,7 @@ Automatic-Module-Name: io.mdsl
 Bundle-ManifestVersion: 2
 Bundle-Name: io.mdsl
 Bundle-Vendor: MDSL Project
-Bundle-Version: 5.1.2.qualifier
+Bundle-Version: 5.2.2.qualifier
 Bundle-SymbolicName: io.mdsl; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
@@ -47,6 +47,11 @@ Export-Package: io.mdsl,
  io.mdsl.serializer,
  io.mdsl.services,
  io.mdsl.standalone,
- io.mdsl.validation
-Import-Package: org.apache.log4j
+ io.mdsl.validation,
+ io.mdsl.formatting2
+Import-Package: io.mdsl.formatting2,
+ org.apache.log4j,
+ org.eclipse.core.resources,
+ org.eclipse.jface.text,
+ org.eclipse.xtext.ui.editor
 Bundle-ClassPath: .

@@ -31,6 +31,8 @@ type SOAPFaultMessage {
 <#-- TODO add REST annotations for Jester, see https://github.com/jolie/jester (URI template might need other MDSL input!) -->
 
 <#list serviceSpecification.contracts as endpoint>
+<#--  check that endpoint is core MDSL endpoint and not AsynchMDSL channel: -->
+<#if endpoint.class.name == 'io.mdsl.apiDescription.impl.EndpointContractImpl'>
 // interface/endpoint role: ${endpoint.primaryRole!"undefined"}
 interface ${endpoint.name} {
 <#--  TODO also support OneWay (and other MEPs?): -->
@@ -42,6 +44,9 @@ RequestResponse:
     <#-- TODO port error reporting from Python to Java: {% if operation["errors"] %} throws {{ operation["errors"][0] }}( SOAPFaultMessage ) {% endif %} --> 
 </#list>
 }
+<#else>
+// Unsuported type of contract:  ${endpoint.name} is a ${endpoint.class.name}
+</#if>
 </#list>
 
 <#list serviceSpecification.contracts as endpoint>

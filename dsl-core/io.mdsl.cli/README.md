@@ -7,8 +7,8 @@ Once you built the project with Gradle by calling `./gradlew clean build` in the
 
 You can also download the CLI binaries here:
 
- * [mdsl-cli-5.1.2.tar](https://github.com/socadk/MDSL/releases/download/v5.1.2/mdsl-cli-5.1.2.tar)
- * [mdsl-cli-5.1.2.zip](https://github.com/socadk/MDSL/releases/download/v5.1.2/mdsl-cli-5.1.2.zip)
+ * [mdsl-cli-5.2.2.tar](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases/download/v5.2.2/mdsl-cli-5.2.2.tar)
+ * [mdsl-cli-5.2.2.zip](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases/download/v5.2.2/mdsl-cli-5.2.2.zip)
 
 1. Uncompress the ZIP or TAR file into a directory of your choice.
 2. Run the CLI by using the executable in the `bin` folder:
@@ -52,7 +52,7 @@ usage: mdsl
 You have to pass the parameter `-i` (`--input`) with a path to an MDSL file at least (required parameter). In this case you can just compile the MDSL file and ensure it is valid.
 
 In case you want to generate output, you have to pass `-g` and one of the generator names:
- * ``oas` (OpenAPI)
+ * `oas` (OpenAPI)
  * `jolie` (Jolie), which in turn also yields WSDL and XML Schema (via `jolie2wsdl` tool)
  * `text` (any textual file by using a Freemarker template)
  * `proto` (Protocol Buffers)

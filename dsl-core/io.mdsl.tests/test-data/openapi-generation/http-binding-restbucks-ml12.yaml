@@ -26,7 +26,7 @@ tags:
       is Processing Resource pattern
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
 paths:
-  /http://restbucks.com/order:
+  /RESTBucksHome:
     summary: activity-oriented endpoint
     post:
       tags:
@@ -64,7 +64,7 @@ paths:
           links:
             compensatingOperation:
               operationId: cancelOrder
-  /http://restbucks.com/order/{id}:
+  /{id}:
     summary: activity-oriented endpoint
     put:
       tags:
@@ -145,7 +145,7 @@ paths:
       required: true
       schema:
         type: string
-  /http://restbucks.com/order/payment/{id}:
+  /payment/{id}:
     summary: activity-oriented endpoint
     put:
       tags:
@@ -213,7 +213,7 @@ paths:
       required: true
       schema:
         type: string
-  /http://restbucks.com/order/receipt/{id}:
+  /receipt/{id}:
     summary: activity-oriented endpoint
     delete:
       tags:

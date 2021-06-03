@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>io.mdsl</groupId>
 		<artifactId>io.mdsl.parent</artifactId>
-		<version>5.1.2-SNAPSHOT</version>
+		<version>5.2.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>io.mdsl.cli</artifactId>
 	<packaging>jar</packaging>

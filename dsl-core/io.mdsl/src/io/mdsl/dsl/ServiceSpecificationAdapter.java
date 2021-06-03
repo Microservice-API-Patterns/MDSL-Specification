@@ -32,11 +32,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import io.mdsl.apiDescription.ChannelContract;
 import io.mdsl.apiDescription.Client;
+import io.mdsl.apiDescription.CommandTypes;
 import io.mdsl.apiDescription.DataContract;
 import io.mdsl.apiDescription.DirectionList;
-import io.mdsl.apiDescription.DomainEvent;
+import io.mdsl.apiDescription.DomainEvents;
 import io.mdsl.apiDescription.EndpointContract;
 import io.mdsl.apiDescription.Gateway;
+import io.mdsl.apiDescription.IntegrationScenario;
 import io.mdsl.apiDescription.LinkContract;
 import io.mdsl.apiDescription.MessageBroker;
 import io.mdsl.apiDescription.MessageEndpoint;
@@ -184,6 +186,7 @@ public class ServiceSpecificationAdapter implements ServiceSpecification, Servic
 		return internalSpec.getDirection();
 	}
 
+	/*
 	@Override
 	public String getDescription() {
 		return internalSpec.getDescription();
@@ -193,7 +196,8 @@ public class ServiceSpecificationAdapter implements ServiceSpecification, Servic
 	public void setDescription(String value) {
 		internalSpec.setDescription(value);
 	}
-
+*/ 
+	
 	@Override
 	public EList<DataContract> getTypes() {
 		return internalSpec.getTypes();
@@ -267,13 +271,32 @@ public class ServiceSpecificationAdapter implements ServiceSpecification, Servic
 	}
 	
 	@Override
-	public EList<DomainEvent> getEvents() {
+	public EList<DomainEvents> getEvents() {
 		return internalSpec.getEvents();
+	}
+	
+	@Override
+	public EList<CommandTypes> getCommands() {
+		return internalSpec.getCommands();
 	}
 
 	@Override
-	public EList<Orchestration> getOrchestration() {
-		return internalSpec.getOrchestration();
+	public EList<Orchestration> getOrchestrations() {
+		return internalSpec.getOrchestrations();
 	}
 
+	@Override
+	public EList<IntegrationScenario> getScenarios() {
+		return internalSpec.getScenarios();
+	}
+
+	@Override
+	public String getDescription() {
+		return internalSpec.getDescription();
+	}
+
+	@Override
+	public void setDescription(String value) {
+		internalSpec.setDescription(value);
+	}
 }

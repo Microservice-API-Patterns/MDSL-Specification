@@ -1,5 +1,6 @@
 API description ProtocolBindingExample
-description "
+
+overview "
 	An example on how to use Message Channel and Message Broker
 	protocol bindings.
 "

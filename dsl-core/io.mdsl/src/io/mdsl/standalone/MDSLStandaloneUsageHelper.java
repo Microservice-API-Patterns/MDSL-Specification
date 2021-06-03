@@ -16,12 +16,12 @@
 package io.mdsl.standalone;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+// import java.io.IOException;
+// import java.io.InputStream;
 import java.util.Map;
 // import java.util.Map.Entry;
 // import java.util.Set;
-import java.util.jar.Attributes;
+// import java.util.jar.Attributes;
 
 //import org.eclipse.emf.common.notify.Adapter;
 //import org.eclipse.emf.common.notify.AdapterFactory;
@@ -33,7 +33,7 @@ import org.eclipse.emf.common.util.URI;
 //import org.eclipse.emf.ecore.EObject;
 //import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
+// import org.eclipse.emf.ecore.resource.ResourceSet;
 // import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 // import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;

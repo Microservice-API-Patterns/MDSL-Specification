@@ -2,10 +2,10 @@ package io.mdsl.generator;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
-import org.yaml.snakeyaml.DumperOptions.FlowStyle;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
-import org.yaml.snakeyaml.nodes.Tag;
+// import org.yaml.snakeyaml.DumperOptions.FlowStyle;
+// import org.yaml.snakeyaml.Yaml;
+// import org.yaml.snakeyaml.constructor.Constructor;
+// import org.yaml.snakeyaml.nodes.Tag;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

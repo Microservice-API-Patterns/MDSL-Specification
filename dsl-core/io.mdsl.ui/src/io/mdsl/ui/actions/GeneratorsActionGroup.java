@@ -9,6 +9,7 @@ import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -54,17 +55,20 @@ public class GeneratorsActionGroup extends ActionGroup {
 
 	private int fillGeneratorMenu(IMenuManager generatorSubmenu) {
 		int added = 0;
-		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.TextFileGenerationCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.OpenAPIGenerationCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.ProtocolBuffersGenerationCommand"));
-		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.JolieGenerationCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.GraphQLGenerationCommand"));
+		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.JolieGenerationCommand")); 
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.JavaGenerationCommand"));
+		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.ALPSGenerationCommand")); // experimental
+		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.TextFileGenerationCommand"));
+		generatorSubmenu.add(new Separator());
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.GenModelJSONExporterCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.GenModelYAMLExporterCommand"));
+		generatorSubmenu.add(new Separator());
+		// added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.MDSLRefactoringCommand")); // elsewhere
+		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.AsyncMDSLGenerationCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.AsyncAPIGenerationCommand"));
-		// generatorSubmenu.add(new Separator());
-		// added += addAction(generatorSubmenu, createAction("some other generator"));
 		return added;
 	}
 

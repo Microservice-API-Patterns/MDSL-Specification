@@ -16,7 +16,6 @@ import io.mdsl.apiDescription.EndpointContract;
 import io.mdsl.apiDescription.EndpointInstance;
 import io.mdsl.apiDescription.EndpointList;
 import io.mdsl.apiDescription.HTTPBinding;
-import io.mdsl.apiDescription.HTTPParameterBinding;
 import io.mdsl.apiDescription.HTTPResourceBinding;
 import io.mdsl.apiDescription.OASSecurity;
 import io.mdsl.apiDescription.ProtocolBinding;
@@ -43,7 +42,6 @@ import io.swagger.v3.oas.models.security.OAuthFlows;
 import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityScheme.In;
-import io.swagger.v3.oas.models.security.SecurityScheme.Type;
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.tags.Tag;
 
@@ -321,14 +319,19 @@ public class MDSL2OpenAPIConverter {
 				}
 				else for(int j=0;j<bindings.size();j++) {
 					String relURI = "";
+					// TODO check that relative URI is there and makes sense (API Linter?) 
 					HTTPResourceBinding binding = bindings.get(j);
-					if(binding.getUri() != null) {
+					if(binding.getUri() != null && !binding.getUri().equals("")) {
 						if(binding.getUri().startsWith("/"))
 							relURI = binding.getUri();
 						else {
 							mdslWrapper.logWarning("Relative URI should start with '/', adding it.");
 							relURI = "/" + binding.getUri();
 						}				
+					}
+					else {
+						mdslWrapper.logWarning("HTTP binding does not have a relative URI, adding resource name " + endpointType.getName());
+						relURI = "/" + binding.getName();
 					}
 									
 					PathItem mappedEndpoint = pathsConverter.convertMetadataAndOperations(endpointType, binding);
@@ -347,7 +350,8 @@ public class MDSL2OpenAPIConverter {
 					else
 						mdslWrapper.logInformation("No URI template parameters in resource URI: " + relURI);
 						
-					paths.addPathItem(pathURI+relURI, mappedEndpoint);
+					// paths.addPathItem(pathURI+relURI, mappedEndpoint);
+					paths.addPathItem(relURI, mappedEndpoint); // fix May 26, 2021
 				}
 			}
 		}
