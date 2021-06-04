@@ -5,7 +5,7 @@ copyright: Olaf Zimmermann, 2019-2021. All rights reserved.
 ---
 
 
-Quick Links: [MDSL Home](./index), [OpenAPI](./generators/open-api), [Protocol Buffers](./generators/protocol-buffers), [GraphQL schema](./generators/graphql), [Jolie](./generators/jolie), [Java POJOs](./java), [Freemarker](./generators/freemarker), [AsyncAPI](./generators/async-api)
+Quick Links: [MDSL Home](./index), [OpenAPI](./generators/open-api), [Protocol Buffers](./generators/protocol-buffers), [GraphQL schema](./generators/graphql), [Jolie](./generators/jolie), [Java POJOs](./generators/java), [Freemarker](./generators/freemarker), [AsyncAPI](./generators/async-api)
 
 MDSL Tools: Users Guide
 =======================
