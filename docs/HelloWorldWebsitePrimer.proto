@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package HelloWorldAPI;
+
+import "google/protobuf/any.proto";
+
+message SampleDTO {
+  google.protobuf.Any anonymous1 = 1;
+  string anonymous2 = 2;
+}
+
+message sayHelloRequestMessage {
+  string in = 1;
+}
+
+service HelloWorldEndpoint {
+  rpc sayHello(sayHelloRequestMessage) returns (SampleDTO);
+}
+

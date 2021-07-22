@@ -27,7 +27,7 @@ This folder contains pointers to background information such as related projects
 ## MDSL and Context Mapper 
 
 * Zimmermann, O.: Dimensions of Successful Web API Design and Evolution: Context, Contracts, Components, Keynote, 20th International Conference on Web Engineering (ICWE), June 11, 2020. ([PDF](https://ozimmer.ch/assets/presos/ZIO-ICWEKeynoteWADEC3v10p.pdf), [blog post](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html))
-* Kapferer, S.; Zimmermann, O.: Domain-driven Service Design — Context Modeling, Model Refactoring and Contract Generation. Proc. of SummerSoC 2020 conference, Springer CCIS Volume 1310 ([PDF](https://contextmapper.org/media/SummerSoC-2020_Domain-driven-Service-Design_Authors-Copy.pdf), [Presentation]())
+* Kapferer, S.; Zimmermann, O.: Domain-driven Service Design — Context Modeling, Model Refactoring and Contract Generation. Proc. of SummerSoC 2020 conference, Springer CCIS Volume 1310 ([PDF](https://contextmapper.org/media/SummerSoC-2020_Domain-driven-Service-Design_Authors-Copy.pdf), [Presentation](https://contextmapper.org/media/Stefan-Kapferer_SummerSoC2020_presentation.pdf))
 
 <!-- plus VSS Vienna conference report by Leitner et al (Insights) -->
 

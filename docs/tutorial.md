@@ -9,7 +9,7 @@ copyright: Olaf Zimmermann, 2019-2021. All rights reserved.
 MDSL Tutorial
 =============
 
-<!-- TODO (H) feature HTTP binding, security policy, default value (V3/V4 enhancements) in this tutorial -->
+<!-- TODO (M) feature security policy, default value in this tutorial or an advanced one -->
 
 ## Getting Started
 
@@ -221,9 +221,10 @@ In addition to MAP patterns, any string can decorate endpoints and operations; i
 
 ## Links
 
-* [Quick reference skeleton](./quickreference) and [tools](./tools)
+* [MDSL homepage](./index) and [MDSL tools](./tools)
+* MDSL [Primer](./primer) and quick fix [transformations](./soad)
 * Service [endpoint contract types](./servicecontract), [data contracts (schemas)](./datacontract), [bindings](./bindings) and other [runtime language concepts](./optionalparts).
-* Back to [MDSL homepage](./index). 
+* [Quick reference skeleton](./quickreference) 
 * [Microservice API Patterns](https://microservice-api-patterns.org/).
 
 *Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*

@@ -105,27 +105,17 @@ public class MDSLStandaloneUsageHelper implements MDSLStandaloneAPI {
 	private MDSLResource createNewMDSLResource(InputStream istream) throws IOException {
 		if(istream==null) throw new IllegalArgumentException("Incoming istream is null!");
 		ResourceSet resourceSet = new ResourceSetImpl();
-		// Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
-        // Map<String, Object> m = reg.getExtensionToFactoryMap();
-		// ResourceSet resourceSet = new ResourceSetImpl();
-        // m.put("website", new XMIResourceFactoryImpl());
-        // Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		Resource resource = resourceSet.createResource(URI.createURI("http://dummy.inmemory.ext"));
 		if(resource==null) 
 			throw new IllegalArgumentException("Resource still is null.");		
         resource.load(istream, resourceSet.getLoadOptions());
 		Attributes settings = new Attributes();
 		resource.load(istream, settings);
-
-		// Attributes settings = new Attributes();
-		// Resource resource = resourceSet.createResource(uri, settings);
-		// resource.load(istream, null); // new ResourceImpl();
 		resource.getContents().add(ApiDescriptionFactory.eINSTANCE.createServiceSpecification());
 		return new MDSLResource(resource);
 	}
 	*/
 
-	// added in V5.1.1
 	@Override
 	public String callGeneratorInMemory(MDSLResource mdsl, IGenerator2 generator) {
 		String result = "n/a";

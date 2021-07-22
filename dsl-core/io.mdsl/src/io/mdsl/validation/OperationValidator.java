@@ -7,8 +7,12 @@ import io.mdsl.apiDescription.ApiDescriptionPackage;
 import io.mdsl.apiDescription.DataTransferRepresentation;
 import io.mdsl.apiDescription.Operation;
 
-public class MessageExchangePatternValidator extends AbstractMDSLValidator {
-
+public class OperationValidator extends AbstractMDSLValidator {
+	
+	public final static String NO_ERROR_REPORT = "NO_ERROR_REPORT";
+	public final static String NO_SECURITY_POLICY = "NO_SECURITY_POLICY";
+	public final static String NO_COMPENSATION = "NO_COMPENSATION";
+	
 	@Override
 	public void register(EValidatorRegistrar registrar) {
 		// not needed for classes used as ComposedCheck
@@ -51,5 +55,23 @@ public class MessageExchangePatternValidator extends AbstractMDSLValidator {
 			}
 		}
 		// TODO what about "other" STRING (warning/info)? how to distinguish from unset MEP? 
+	}
+	
+	@Check
+	public void lookForStatusReports(Operation operation) {
+		if(operation.getReports()==null)
+			info(operation.getName() + " does not define any reports to be returned", operation, ApiDescriptionPackage.eINSTANCE.getOperation_Name(), NO_ERROR_REPORT);
+	}
+	
+	@Check
+	public void lookForSecurityPolicy(Operation operation) {
+		if(operation.getPolicies()==null)
+			info(operation.getName() + " does not define any security policies to be enforced", operation, ApiDescriptionPackage.eINSTANCE.getOperation_Name(), NO_SECURITY_POLICY);
+	}
+	
+	@Check
+	public void lookForCompensation(Operation operation) {
+		if(operation.getUndo()==null)
+			info(operation.getName() + " does not define any compensating action", operation, ApiDescriptionPackage.eINSTANCE.getOperation_Name(), NO_COMPENSATION);
 	}
 }

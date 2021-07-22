@@ -22,10 +22,12 @@ MDSL Tools: Users Guide
 * [Examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/tree/master/examples)
 -->
 
-At present, two types of MDSL tools are available: 
+At present, two types of MDSL tools are available here: 
 
 * *Command Line Interface (CLI)* tools: API Linter (validation), technology-specific contract generation 
 * *Eclipse Plugin*: editor, API Linter (validation), technology-specific contract generation
+
+[Context Mapper](https://contextmapper.org/) has its own website.
 
 <!-- Web app under construction -->
 
@@ -83,16 +85,27 @@ In addition to the usual editor features such as syntax highlighting, completion
 * The constraints of the message exchange patterns such as REQUEST_REPLY, ONE_WAY and NOTIFICATION are validated (if specified). For instance, a REQUEST_REPLY must define a request and a response message by definition.
 * Some MAP pattern decorator combinations are checked and warned about (for instance, a COMPUTATION_FUNCTION in an INFORMATION_HOLDER_RESOURCE is a modeling smell).
 * The number of operations per endpoint is reported; if is likely that the endpoint cannot be mapped to OpenAPI due to a large amount of operations, the user is warned.
-<!-- TODO (v4.2) check whether there are more now -->
+* The possibility to generate an HTTP resource binding in OpenAPI is analyzed.
+
+<!-- TODO (v5.3) there are more now -->
 
 An example that features all validators in action can be found in the examples folder of the repository: [`APILinterTestAndDemo.mdsl`](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/examples/APILinterTestAndDemo.mdsl).
 The validation of this MDSL file yields the following errors, warnings and information messages (among others):
 <a target="_blank" href="/media/api-linter-example.png">![API Linter example](/media/api-linter-example.png)</a>
 
-*News:* Starting with Version 5.2, the plugin comes with quick fixes to complete data type specifications: 
+### Transformations 
 
-* Generic parameters `P`, `nameOnly`, and `name:P`can be completed with `D<string>`
+Quick fixes and menu entries support rapid service-oriented analysis and design and an "API first" approach. For instance, the plugin now comes with quick fixes to complete data type specifications: 
+
+* Generic parameters `P`, `nameOnly`, and `name:P`can be completed with `D<string>`.
 * Incomplete atomic parameters `D`, `ID`, `L`, `MD` can be completed with `D<string>` or `D<int>`.
+* Atomic parameters can be wrapped in parameter trees.
+* Key-value pairs can also be introduced.
+* Refactoring to patterns such as Pagination, Wish List, and Request Bundle (simple form) is supported.
+
+Many endpoint-level transformations are available now too, including one to create AsyncMDSL from core MDSL. A `Move Operation`refactoring is available as a menu entry as well.
+
+See [this page](soad.md) for more information on the quick fixes and transformations.
 
 ### Generators
 
@@ -102,7 +115,7 @@ In the MDSL Editor, you can invoke the following generators from the "MDSL" entr
 * [Generate Protocol Buffers Specification](./generators/protocol-buffers)
 * [Generate GraphQL Schema](./generators/graphql)
 * [Generate Jolie Lang(uage) Specification](./generators/jolie)
-* [Generate Java «Moduliths» Code](./generators/java)
+* [Generate Java "Moduliths" Code](./generators/java)
 * Generate [ALPS](https://datatracker.ietf.org/doc/html/draft-amundsen-richardson-foster-alps-07) specification (status: [technology preview](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview))
 * Generate AsyncMDSL specification (this actually is an in-model transformation, it does not generate a new output file)
 * [Generate Text File with Freemarker Template](./generators/freemarker)
@@ -125,11 +138,7 @@ This model can also be exported for offline processing (for instance, to feed ot
 
 # Site Navigation
 
-* [Quick reference](./quickreference) and [tutorial](./tutorial). 
-* Language specification: 
-    * Service [endpoint contract types](./servicecontract) and [data contracts (schemas)](./datacontract). 
-    * [Bindings](./bindings) and [instance-level concepts](./optionalparts). 
-* Back to [MDSL homepage](./index).
+[Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Type](./datacontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Bindings](./bindings) &mdash; [Tutorial](./tutorial) &mdash; [Tools](./tools)
 
 *Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 

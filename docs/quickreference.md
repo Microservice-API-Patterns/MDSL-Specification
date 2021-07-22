@@ -51,10 +51,8 @@ MAP defines the following *roles* (of endpoint types):
 > PROCESSING_RESOURCE | INFORMATION_HOLDER_RESOURCE | DATA_TRANSFER_RESOURCE | LINK_LOOKUP_RESOURCE 
 > OPERATIONAL_DATA_HOLDER | MASTER_DATA_HOLDER | REFERENCE_DATA_HOLDER
 
-And the *responsibilities* (of operations) are: 
-> COMPUTATION_FUNCTION | STATE_CREATION_OPERATION | RETRIEVAL_OPERATION |  STATE_TRANSITION_OPERATION
-
-<!--  TODO feature 2 new one if they stay: SReplO, STermO -->
+And the *responsibilities* (of operations) can be: 
+> COMPUTATION_FUNCTION | STATE_CREATION_OPERATION | RETRIEVAL_OPERATION | STATE_TRANSITION_OPERATION | STATE_REPLACEMENT_OPERATION | STATE_DELETION_OPERATION
 
 All these enum values correspond to Microservice API Patterns (MAP); go to the [pattern index](https://microservice-api-patterns.org/patterns/index) for quick access.
 
@@ -136,8 +134,9 @@ In the definition of a Parameter Tree `{...|...}` and an Atomic Parameter List `
 
 An example is `data type AnIntegerOrAString {D<int> | D<string>}`.
 
+## Operation Skeletons (in Endpoint Types)
 
-## Reporting 
+### Reporting 
 MDSL has an specific construct for error handling such as fault elements or response codes (still *experimental*):
 
 
@@ -161,22 +160,77 @@ The placeholder `[...]` resolves to a data contract (see above). The simplest on
 
 The report elements can be modeled as data types as described under [data contracts (schemas)](./datacontract). Examples are: 
 
-* `error "soapFault": SOAPFaultElement`, with a previous definition:
+* `error sampleErrorReport "soapFault": SOAPFaultElement`, with a previous definition:
 * `data type SOAPFaultElement {"code":D<int>, "string": D<string>, "actor":D<string>, "detail":D<string>}`
 
+Note that the `"soapFault":` identifier is optional.
 
-## Security Policy
-Finally, a security policy can be specified for each operation: 
+### Security Policy
+A security policy can be specified for each operation: 
 
-* `protected by policy "UserIdPassword":{"userId":ID<string>, "password":MD<string>}`
+* `protected by policy basicAuthentication "UserIdPassword":{"userId":ID<string>, "password":MD<string>}`
 
-The report elements can be modeled as data types as described under [data contracts (schemas)](./datacontract) as well.
+Note that the `"UserIdPassword":` identifier is optional.
 
+The policy elements can be modeled as data types as described under [data contracts (schemas)](./datacontract) as well.
 
-## Links
+<!-- 
+### State Transitions
 
-More on service [endpoint contract types](./servicecontract), [data contracts (schemas)](./datacontract), [bindings](./bindings) and [instance-level constructs](./optionalparts).
-[Tutorial](./tutorial) and [tools](./tools). Back to [MDSL homepage](./index). 
+TODO (M)
+-->
+
+### Compensation
+
+~~~
+endpoint type HelloWorldEndpoint
+exposes 
+  operation op1 
+    expecting payload D<string>
+    delivering payload "some_data_type":Some_data_type 
+	compensated by undoOp1
+  operation undoOp1
+    expecting payload "correlationIdentifier":D<int>  
+    delivering payload D<boolean> 
+~~~
+
+## Requirements and Integration/Testing Scenarios and Flows
+
+### Stories 
+
+~~~
+scenario ScenarioNN
+  story StoryTba
+   when "something has happened" // precondition
+   a "customer and/or integrator" // role
+   wants to "startProcess" in "location"// business activity 
+   yielding "a result" // outcome
+   so that "both actors are satisfied and profit is made" // goal 
+~~~
+ 
+
+### Orchestration/Integration Flows 
+
+<!-- TODO feature branching, forking, joining (V5.4) -->
+
+~~~
+flow FlowMM realizes ScenarioNN
+event something_has_happened triggers command startProcess
+command startProcess emits event startProcessCompleted
+~~~
+
+<!--
+
+### MOM/AsyncMDSL
+
+TODO
+-->
+
+## Site Navigation
+
+* [MDSL homepage](./index)
+* [Tutorial](./tutorial) and [tools](./tools)
+* Language specification: service [endpoint contract types](./servicecontract) and [data contracts (schemas)](./datacontract), [bindings](./bindings), [instance-level constructs](./optionalparts), [scenarios and stories](scenarios.md), [flows](flows.md)
 
 *Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 

@@ -1,4 +1,4 @@
-Microservice Domain-Specific Language (MDSL) 5.2
+Microservice Domain-Specific Language (MDSL) 5.3
 ================================================
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -41,7 +41,7 @@ These two languages can be used independently of each other; for instance, data 
 
 ## Getting Started
 
-* The [GitHub Pages for MDSL](https://microservice-api-patterns.github.io/MDSL-Specification) provide a tutorial and language reference information.<!-- * There is a [Project Wiki](https://github.com/Microservice-API-Patterns/MDSL-Specification/wiki/Getting-Started-with-MDSL), which is not populated much (yet) and not kept up to date as much as the GitHub pages. -->
+* The public [GitHub Pages for MDSL](https://microservice-api-patterns.github.io/MDSL-Specification/) provide a tutorial and language reference information.
 * There is an [Eclipse update site](https://microservice-api-patterns.github.io/MDSL-Specification/updates/) for the MDSL editor. 
 * All generators are available via a Command Line Interface (CLI); see [this readme](./dsl-core/io.mdsl.cli/README.md) and [these examples](./examples/mdsl-standalone-example).
 * Presentations featuring Context Mapper, MAP and MDSL can be found [here](https://ozimmer.ch/papers/), and an [end-to-end demo](https://medium.com/olzzio/domain-driven-service-design-with-context-mapper-and-mdsl-d5a0fc6091c2) is available on Medium.
@@ -50,7 +50,7 @@ These two languages can be used independently of each other; for instance, data 
 
 ## Language Specification 
 
-* [Overview](https://microservice-api-patterns.github.io/MDSL-Specification)
+* [Primer](https://microservice-api-patterns.github.io/MDSL-Specification/primer)
 * [Endpoint types](https://microservice-api-patterns.github.io/MDSL-Specification/servicecontract) (a.k.a. ports)
 * [Bindings](https://microservice-api-patterns.github.io/MDSL-Specification/bindings) (a.k.a. adapters)
 * [Data types](https://microservice-api-patterns.github.io/MDSL-Specification/datacontract) (a.k.a. published language)
@@ -76,7 +76,9 @@ If you want to contribute to MDSL, you have to clone this repo and generate the 
 
 ## Change Log
 
-The current version of the MDSL language is 5.2; the tool version is 5.2.2. This MDSL version extends service contracts with support for events, states, flows, compensation (as experimental technology previews). It also supports true REST level 3 concepts both on the abstract endpoint type level and in the redesigned bindings and comes with additional Fremarker generators (Markdown reports, ALPS).
+The latest version of the MDSL language MDSL version extends service contracts with support for events, states, compensation as well as integration scenarios as stories(as experimental technology previews). These concepts are featured in a number of model transformations that support rapid "API First" development.
+
+Since Version 5.2, MDSL supports true REST level 3 concepts both on the abstract endpoint type level and in the redesigned bindings and comes with additional Freemarker generators (Markdown reports, ALPS).
 
 See [change log](changelog.md) for an evolution history; see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases) for additional update information.
 

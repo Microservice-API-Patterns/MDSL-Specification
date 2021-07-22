@@ -2,7 +2,7 @@ API description AdvancedServiceConceptsPreview
 
 data type SampleDTO {ID, D}
 
-event type SomethingHasHappened content {"when":D<string>, "what":D<string>}
+event type SomethingHasHappened {"when":D<string>, "what":D<string>}
 event type ServerSideProcessingComplete
 event type FailureMessage
 
@@ -12,8 +12,8 @@ endpoint type HelloWorldEndpoint
     expecting payload D<string>  
     delivering payload SampleDTO
     reporting error FailureMessage
-    emitting event ServerSideProcessingComplete
     transitions from "ReadyToWork" to "Done"
+    emitting event ServerSideProcessingComplete
     compensated by undoSomethingOnServerSide
   operation undoSomethingOnServerSide with responsibility STATE_TRANSITION_OPERATION
     expecting payload D<string>  

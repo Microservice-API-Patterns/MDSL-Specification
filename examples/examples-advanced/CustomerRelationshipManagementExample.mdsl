@@ -15,7 +15,7 @@ API description SampleCRMScenario
 usage context PUBLIC_API for FRONTEND_INTEGRATION and BACKEND_INTEGRATION
 
 endpoint type CustomerManagementContract
-  serves as INFORMATION_HOLDER_RESOURCE and TRANSFER_RESOURCE
+  serves as INFORMATION_HOLDER_RESOURCE and DATA_TRANSFER_RESOURCE
   exposes 
   	operation lookupSingleCustomer 
 	  with responsibility RETRIEVAL_OPERATION 
@@ -44,7 +44,7 @@ endpoint type CustomerManagementContract
 
 // copy pasted and comments removed (for screenshot):
 endpoint type CustomerManagementContractPlain  
-  serves as INFORMATION_HOLDER_RESOURCE and TRANSFER_RESOURCE
+  serves as INFORMATION_HOLDER_RESOURCE and DATA_TRANSFER_RESOURCE
   exposes 
   	operation lookupSingleCustomer 
 	  with responsibility RETRIEVAL_OPERATION 
@@ -73,7 +73,7 @@ endpoint type CustomerManagementContractPlain
 		
 
 endpoint type CustomerManagementContract2 
-  serves as INFORMATION_HOLDER_RESOURCE and TRANSFER_RESOURCE // endpoint serves as. not CT
+  serves as INFORMATION_HOLDER_RESOURCE and DATA_TRANSFER_RESOURCE // endpoint serves as. not CT
   exposes 
   	operation lookupSingleCustomer 
 	  with responsibility RETRIEVAL_OPERATION 

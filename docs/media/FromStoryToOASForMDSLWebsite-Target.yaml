@@ -1,0 +1,267 @@
+openapi: 3.0.1
+info:
+  title: SoadDemo
+  version: "1.0"
+servers:
+- url: http://localhost:8080
+tags:
+- name: SampleIntegrationScenarioRealizationEndpointProvider-Home
+  externalDocs:
+    description: The role of this endpoint, offering a SampleIntegrationScenarioRealizationEndpoint
+      contract, is Information Holder Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
+- name: SampleIntegrationScenarioRealizationEndpointProvider-SplitResource2
+  externalDocs:
+    description: The role of this endpoint, offering a SampleIntegrationScenarioRealizationEndpoint
+      contract, is Information Holder Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
+- name: SampleIntegrationScenarioRealizationEndpointProvider-SplitResource3
+  externalDocs:
+    description: The role of this endpoint, offering a SampleIntegrationScenarioRealizationEndpoint
+      contract, is Information Holder Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
+paths:
+  /Home:
+    summary: general data-oriented endpoint
+    get:
+      tags:
+      - SampleIntegrationScenarioRealizationEndpointProvider-Home
+      summary: read only
+      description: This operation realizes the [Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html)
+        pattern.
+      operationId: Home-readSomeBusinessObject
+      parameters:
+      - name: queryFilter
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: readSomeBusinessObject successful execution
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SomeBusinessObjectDTO'
+    put:
+      tags:
+      - SampleIntegrationScenarioRealizationEndpointProvider-Home
+      summary: write only
+      description: This operation realizes the [State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html)
+        pattern.
+      operationId: Home-createSomeBusinessObject
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SomeBusinessObjectDTO'
+      responses:
+        "200":
+          description: createSomeBusinessObject successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  successFlag:
+                    type: string
+    post:
+      tags:
+      - SampleIntegrationScenarioRealizationEndpointProvider-Home
+      description: unspecified operation responsibility
+      operationId: Home-doSomething
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                location:
+                  type: string
+                actor:
+                  type: string
+      responses:
+        "200":
+          description: doSomething successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      tags:
+      - SampleIntegrationScenarioRealizationEndpointProvider-Home
+      summary: ""
+      description: unspecified operation responsibility
+      operationId: Home-deleteSomeBusinessObject
+      parameters:
+      - name: resourceId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: deleteSomeBusinessObject successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  successFlag:
+                    type: boolean
+  /SplitResource2:
+    summary: general data-oriented endpoint
+    get:
+      tags:
+      - SampleIntegrationScenarioRealizationEndpointProvider-SplitResource2
+      summary: read only
+      description: This operation realizes the [Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html)
+        pattern.
+      operationId: SplitResource2-findAll
+      parameters: []
+      responses:
+        "200":
+          description: findAll successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+      - SampleIntegrationScenarioRealizationEndpointProvider-SplitResource2
+      summary: read and write
+      description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
+        pattern.
+      operationId: SplitResource2-updateSomeBusinessObject
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SomeBusinessObjectDTO'
+      responses:
+        "200":
+          description: updateSomeBusinessObject successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SomeBusinessObjectDTO'
+  /SplitResource3:
+    summary: general data-oriented endpoint
+    get:
+      tags:
+      - SampleIntegrationScenarioRealizationEndpointProvider-SplitResource3
+      summary: read only
+      description: This operation realizes the [Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html)
+        pattern.
+      operationId: SplitResource3-findById
+      parameters: []
+      responses:
+        "200":
+          description: findById successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+  /SampleIntegrationScenarioFlowEndpoint:
+    summary: activity-oriented endpoint
+    get:
+      tags:
+      - SampleIntegrationScenarioFlowEndpoint
+      summary: read only
+      description: This operation realizes the [Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html)
+        pattern.
+      operationId: getResourceState
+      parameters: []
+      responses:
+        "200":
+          description: getResourceState successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      tags:
+      - SampleIntegrationScenarioFlowEndpoint
+      summary: ""
+      description: unspecified operation responsibility
+      operationId: updateResourceState
+      parameters: []
+      responses:
+        "200":
+          description: updateResourceState successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+      - SampleIntegrationScenarioFlowEndpoint
+      summary: POST
+      description: POST
+      operationId: initializeResource
+      parameters: []
+      responses:
+        "200":
+          description: initializeResource successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      tags:
+      - SampleIntegrationScenarioFlowEndpoint
+      summary: ""
+      description: unspecified operation responsibility
+      operationId: deleteResourceState
+      parameters: []
+      responses:
+        "200":
+          description: deleteResourceState successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+    patch:
+      tags:
+      - SampleIntegrationScenarioFlowEndpoint
+      summary: read and write
+      description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
+        pattern.
+      operationId: doSomething
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                doSomethinglocationRequestBody:
+                  type: string
+                desiredElements:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        "200":
+          description: doSomething successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  doSomethinglocationResponseBody:
+                    type: string
+components:
+  schemas:
+    SomeBusinessObjectDTO:
+      type: object
+      properties:
+        someBusinessObject:
+          type: string

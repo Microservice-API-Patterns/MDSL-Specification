@@ -408,11 +408,9 @@
 		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.ALPSGenerationHandler"
 			commandId="io.mdsl.ui.handler.ALPSGenerationCommand">
 		</handler>
-		<!--
-		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.MDSLRefactoringHandler"
+		<handler class="io.mdsl.ui.APIDescriptionExecutableExtensionFactory:io.mdsl.ui.handler.QDARTransformationHandler"
 			commandId="io.mdsl.ui.handler.MDSLRefactoringCommand">
 		</handler>
-		-->
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<command name="Create AsyncMDSL Specification" id="io.mdsl.ui.handler.AsyncMDSLGenerationCommand"></command>
@@ -447,11 +445,9 @@
 	<extension point="org.eclipse.ui.commands">
 		<command name="Generate ALPS Specification" id="io.mdsl.ui.handler.ALPSGenerationCommand"></command>
 	</extension>
-	<!--
 	<extension point="org.eclipse.ui.commands">
-		<command name="Refactor MDSL Specification" id="io.mdsl.ui.handler.MDSLRefactoringCommand"></command>
+		<command name="Move Operation/Extract Endpoint" id="io.mdsl.ui.handler.MDSLRefactoringCommand"></command>
 	</extension>
-	-->
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution
 			locationURI="popup:#TextEditorContext?after=group.edit">
@@ -566,7 +562,6 @@
 						</iterate>
 					</visibleWhen>
 				</command>
-				<!--
 				<command defaultHandler="io.mdsl.ui.handler.MDSLRefactoringHandler" commandId="io.mdsl.ui.handler.MDSLRefactoringCommand" style="push">
 					<visibleWhen checkEnabled="false">
 						<iterate>
@@ -576,7 +571,6 @@
 						</iterate>
 					</visibleWhen>
 				</command>
-				-->
 			</menu>
 		</menuContribution>
 	</extension>
@@ -661,4 +655,36 @@
 			</attribute>
 		</markerResolutionGenerator>
 	</extension>
+
+<!-- Interface Refactorings (tbd) -->
+	<extension
+		point="org.eclipse.ui.commands">
+		<command
+			id="io.mdsl.ui.refactoring.AnalyzeSelectedEndpointContract"
+			name="Analyze selected endpoint contract (MDSL)">
+		</command>
+	</extension>
+	<extension
+		point="org.eclipse.ui.handlers">
+		<handler 
+			class="io.mdsl.ui.handler.refactoring.AnalyzeSelectedEndpointContract"
+			commandId="io.mdsl.ui.refactoring.AnalyzeSelectedEndpointContract">
+			<activeWhen>
+				<reference
+					definitionId="io.mdsl.APIDescription.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution locationURI="popup:io.mdsl.APIDescription.EditorContext?after=io.mdsl.ui.generator.menu">
+		   <menu label="API Refactoring Analysis (Metrics)">
+		      <command
+		            commandId="io.mdsl.ui.refactoring.AnalyzeSelectedEndpointContract"
+		            label="Analyze selected endpoint contract (MDSL)"
+		            style="push">
+		      </command>
+		   </menu>
+		</menuContribution>
+	</extension>	
 </plugin>

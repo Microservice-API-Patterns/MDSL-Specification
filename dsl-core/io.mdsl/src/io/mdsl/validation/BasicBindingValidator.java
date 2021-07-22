@@ -56,9 +56,9 @@ public class BasicBindingValidator extends AbstractMDSLValidator {
 						TechnologyBinding techBinding = techBindings.get(i);
 						ProtocolBinding protBinding = techBinding.getProtBinding();
 						if (protBinding.getHttp() != null) {
-							checkHTTPBinding(specRoot, provider.getName(), endpoint.getName(), protBinding.getHttp());
+							checkHTTPBinding(specRoot, provider.getName(), endpoint.getLocation(), protBinding.getHttp());
 						} else if (protBinding.getJava() != null) {
-							checkJavaBinding(specRoot, provider.getName(), endpoint.getName(), protBinding.getJava());
+							checkJavaBinding(specRoot, provider.getName(), endpoint.getLocation(), protBinding.getJava());
 						} else if (protBinding.getGrpc() != null) {
 							; // info("Specification includes a provider endpoint binding of type gRPC", protBinding, ApiDescriptionPackage.eINSTANCE.getProtocolBinding_Grpc()); // // Literals.PROTOCOL_BINDING__GRPC);
 						} else if (protBinding.getOther() != null) {

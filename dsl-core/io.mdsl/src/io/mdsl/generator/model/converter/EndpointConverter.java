@@ -39,6 +39,7 @@ import io.mdsl.generator.model.MDSLGeneratorModel;
 import io.mdsl.generator.model.Operation;
 import io.mdsl.generator.model.OperationParameter;
 import io.mdsl.generator.model.ProtocolBinding;
+import io.mdsl.generator.model.StateTransition;
 
 /**
  * Converts MDSL endpoints (AST model) into endpoints of our generator model.
@@ -61,8 +62,36 @@ public class EndpointConverter {
 		endpoint.setProtocolBinding(createProtocolBindingIfAvailable(mdslEndpoint.getName()));
 		for (io.mdsl.apiDescription.Operation operation : mdslEndpoint.getOps()) {
 			endpoint.addOperation(convertOperation(operation));
+			StateTransition transition = convertStateTransitionAndAddStates(endpoint, operation);
+			if(transition!=null)
+				endpoint.addStateTransition(transition);
 		}
+		// System.out.println("Endpoint now has " + endpoint.getStates().size() + " states and " + endpoint.getTransitions().size() + " transitions");
 		return endpoint;
+	}
+
+	private StateTransition convertStateTransitionAndAddStates(EndpointContract endpoint, io.mdsl.apiDescription.Operation operation) {
+		StateTransition transition = new StateTransition();
+		io.mdsl.apiDescription.StateTransition st = operation.getSt();
+		
+		// conservative approach for now (two single values, must not be null):
+		if(st==null||st.getFrom()==null || st.getTo()==null)
+			return null;
+		
+		if(!endpoint.getStates().contains(st.getFrom())) {
+			endpoint.addState(st.getFrom());
+		}
+		transition.setFrom(st.getFrom());
+		
+		if(!endpoint.getStates().contains(st.getTo())) {
+			endpoint.addState(st.getTo());
+		}
+		transition.setTo(st.getTo());
+		
+		// System.out.println("Endpoint model now has states: " + endpoint.getStates().size());
+		
+		transition.setName(operation.getName());
+		return transition;
 	}
 
 	private Operation convertOperation(io.mdsl.apiDescription.Operation operation) {
@@ -70,8 +99,7 @@ public class EndpointConverter {
 		String inputName = "anonymousInput";
 		DataType output = null;
 		if (operation.getRequestMessage() != null) {
-			// handle references specially: in this case we can assume the message as
-			// already been created
+			// handle references specially: in this case we can assume the message as already created
 			if (operation.getRequestMessage().getPayload().getNp() != null && operation.getRequestMessage().getPayload().getNp().getTr() != null) {
 				TypeReference ref = operation.getRequestMessage().getPayload().getNp().getTr();
 				if (ref.getName() != null && !"".equals(ref.getName()))
@@ -86,8 +114,7 @@ public class EndpointConverter {
 			}
 		}
 		if (operation.getResponseMessage() != null) {
-			// handle references specially: in this case we can assume the message as
-			// already been created
+			// handle references specially: in this case we can assume the message as already created
 			if (operation.getResponseMessage().getPayload().getNp() != null && operation.getResponseMessage().getPayload().getNp().getTr() != null) {
 				TypeReference ref = operation.getResponseMessage().getPayload().getNp().getTr();
 				output = wrapDataTypeIntoListTypeIfNecessary(getExistingDataTypeOrCreateEmpty(ref.getDcref().getName()), ref.getCard());
@@ -110,7 +137,7 @@ public class EndpointConverter {
 			genModelOperation.addParameter(parameter);
 		}
 		genModelOperation.setResponsibility(getOperationResponsibility(operation.getResponsibility()));
-
+		
 		return genModelOperation;
 	}
 

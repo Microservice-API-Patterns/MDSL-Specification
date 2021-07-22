@@ -1,0 +1,21 @@
+API description HelloWorldAPI
+
+data type SampleDTO {ID, D<string>}
+
+endpoint type HelloWorldEndpoint
+exposes 
+  operation sayHello 
+    expecting payload "in": D<string>  
+    delivering payload SampleDTO
+
+API provider HelloWorldAPIProvider
+  offers HelloWorldEndpoint 
+  at endpoint location "http://localhost:8000" 
+  via protocol HTTP 
+    binding resource HomeResource at "/"
+      operation sayHello to POST 
+  
+API client HelloWorldAPIClient
+  consumes HelloWorldEndpoint 
+  from HelloWorldAPIProvider
+  via protocol HTTP

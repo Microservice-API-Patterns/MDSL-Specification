@@ -6,6 +6,7 @@ copyright: Olaf Zimmermann, 2019. All rights reserved.
 
 [Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Type](./datacontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Bindings](./bindings) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
 
+<!-- TODO (H) update for 5.3 and merge/align with primer? -->
 
 MDSL Examples
 =============
@@ -75,23 +76,23 @@ data type SomeFlatRecord (D<string>, D<int>, D<bool>)
 data type ChoiceDemo {"optionA":D | "optionB":D} // not implemented in tools yet
 ~~~
 
-## More Examples 
+More examples can be found in in the [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) <!-- and in the [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) --> MDSL repository.
 
-Can be found in the repo. 
-
-<!-- TODO feture RESTBucks here -->
+<!-- TODO (M) feature RESTBucks here -->
 
 ## Links
 
-[Quick reference skeletons](./quickreference). 
 
-More on service [endpoint contract types](./servicecontract) and [data contracts (schemas)](./datacontract). 
-
-Optional [Instance-level language constructs](./optionalparts).
-
-Back to [MDSL homepage](./index). 
-
-More examples in [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) and in [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) repository.
+* API usage [scenarios and stories](scenarios.md) (experimental)
+* Orchestration [flows](flows.md) (experimental)
+* Service [endpoint contract types](./servicecontract)
+* [Data contracts (schemas)](./datacontract)
+* [Bindings](./bindings)
+* Optional [language elements on the instance level (provider, client, gateway)](./optionalparts)
+* [Tutorial](./tutorial), another [example](./examples)
+* [Quick reference](./quickreference)
+* [Tool information (CLI, editor/linter)](./tools)
+* [SOAD transformations](./soad)
 
 *Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 

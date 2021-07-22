@@ -32,40 +32,42 @@ The contract syntax (grammar) of MDSL is inspired by the API domain model from M
 
 [^99]: This domain model is published in Section 3 of the [EuroPLoP 2019 paper on Patterns for API Evolution from the MAP team](http://eprints.cs.univie.ac.at/6082/1/WADE-EuroPlop2019Paper.pdf).
 
+<!-- TODO V5.3: update with new grammar parts -->
+
 ~~~
 ServiceSpecification: 
 	'API' 'description' name=ID
-	('usage' 'context' visibility=visibility 
-	    'for' direction+=directionList)?
-	types+=dataContract*
-	contracts+=endpointContract+
-	providers+=provider*
-	clients+=client*
-	gateways+=gateway*
+	('usage' 'context' visibility=Visibility 
+	    'for' direction+=DirectionList)?
+	types+=GataContract*
+	contracts+=EndpointContract+
+	providers+=Provider*
+	clients+=Client*
+	gateways+=Gateway*
 	('IPA')?;
 
 EndpointContract:
 	'endpoint' 'type' name=ID 
-	('version' svi=semanticVersioningIdentifier)? 
+	('version' svi=SemanticVersioningIdentifier)? 
 	('serves' 'as' primaryRole=ResourceRole 
 	    ('and' otherRoles+=ResourceRole)* 'role'?)? 
-	('identified' 'by' pathParameters=elementStructure)? 
+	('identified' 'by' pathParameters=ElementStructure)? 
 	('exposes' ops+=operation+)?;
 
 Operation:
 	'operation' name=ID
-	('version' svi=semanticVersioningIdentifier)?
-	('with' 'responsibility' respos=operationResponsibility)?
+	('version' svi=SemanticVersioningIdentifier)?
+	('with' 'responsibility' respos=OperationResponsibility)?
 	('in'  mep=messageExchangePattern 'conversation')?  
-	'expecting' requestMessage=dataTransferRepresentation
-	('delivering' responseMessage=dataTransferRepresentation
-		('reporting' reportData=statusReport)? // optional
+	'expecting' requestMessage=DataTransferRepresentation
+	('delivering' responseMessage=DataTransferRepresentation
+		('reporting' reportData=StatusReport)? // optional
 	)?;
 
 DataTransferRepresentation:
-	('headers' headers=elementStructure)? 
-	'payload' payload=elementStructure
-	('structured' 'as' ts=typeSystem)?;
+	('headers' headers=ElementStructure)? 
+	'payload' payload=ElementStructure
+	('structured' 'as' ts=TypeSystem)?;
 ~~~
 
 The notation used above is the [grammar language of Xtext](https://www.eclipse.org/Xtext/documentation/301_grammarlanguage.html) (which is close to that of antlr4). The full MSDL grammar can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext).
@@ -169,10 +171,10 @@ See [this page](technology-mappings) for information on how MDSL maps to OpenAPI
 # Site Navigation
 
 * Language specification: 
-    * Service [endpoint contract types](./servicecontract) (this page) and [data contracts (schemas)](./datacontract). 
-    * [Bindings](./bindings) and [instance-level concepts](./optionalparts).
+    * Service [endpoint contract types](./servicecontract) (this page) and [data contracts (schemas)](./datacontract)
+    * [Bindings](./bindings) and [instance-level concepts](./optionalparts)
 * [Quick reference](./quickreference), [tutorial](./tutorial) and [tools](./tools)
-* Back to [MDSL homepage](./index).
+* Back to [MDSL homepage](./index)
 
 *Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 

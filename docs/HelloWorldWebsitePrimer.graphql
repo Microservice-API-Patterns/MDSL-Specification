@@ -1,0 +1,33 @@
+# GraphQL generated for endpoint HelloWorldEndpoint of HelloWorldAPI
+
+
+input SampleDTOInput {
+	anonymous1: VoidResponse!
+	anonymous2: String!
+}
+input sayHelloRequestDataTypeInput {
+	in: String!
+}
+type SampleDTOOutput {
+	anonymous1: VoidResponse!
+	anonymous2: String!
+}
+type sayHelloRequestDataTypeOutput {
+	in: String!
+}
+
+
+type Mutation {
+	sayHello(
+		in: sayHelloRequestDataTypeInput
+	): SampleDTOOutput
+}
+
+schema {
+	
+	mutation: Mutation
+}
+
+# additional scalars for types in MDSL
+scalar Raw
+scalar VoidResponse

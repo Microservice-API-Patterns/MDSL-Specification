@@ -17,6 +17,8 @@ import io.mdsl.apiDescription.ChannelContract;
 import io.mdsl.apiDescription.ChannelPathWithParams;
 import io.mdsl.apiDescription.DataTransferRepresentation;
 import io.mdsl.apiDescription.EndpointContract;
+import io.mdsl.apiDescription.Message;
+import io.mdsl.apiDescription.OneWayChannel;
 import io.mdsl.apiDescription.Operation;
 import io.mdsl.apiDescription.Payload;
 import io.mdsl.apiDescription.ReplyChannel;
@@ -26,31 +28,22 @@ import io.mdsl.apiDescription.ServiceSpecification;
 import io.mdsl.dsl.ServiceSpecificationAdapter;
 import io.mdsl.exception.MDSLException;
 
-// TODO rename and move operation refactoring in stake branch have utility code from CM
-// (to find out about selected EObject etc.)
-
 public class AsyncMDSLGenerator extends AbstractMDSLGenerator {
 	@Override
 	public void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		try {
-			// EObject selectedObject = getSelectedElement();
-			// check that selected object is an operation, cast, get its name  
-			// if(selectedObject!=null && selectedObject.getClass() == io.mdsl.apiDescription.impl.OperationImpl.class)
-			//	opName = ((io.mdsl.apiDescription.impl.OperationImpl) selectedObject).getName();
-			// else
-			//	throw new MDSLException("Can't refactor: no operation selected.");
-
 			MDSLResource sourceSpec = new MDSLResource(resource);
 			addChannels(sourceSpec);
 
-			// TODO (H) format properly, looks poor after "save"
-			// requires additional class/Xtend code 
+			// formatting is required, defaults looks poor after "save"; this requires additional class/Xtend code 
 			// https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#formatting
 			// https://github.com/ContextMapper/context-mapper-dsl/blob/master/org.contextmapper.dsl/src/org/contextmapper/tactic/dsl/formatting2/TacticDDDLanguageFormatter.xtend
-			// this causes entire spec to go to single line:
+			sourceSpec.save(null);
+			
+			// this caused entire spec. to go to single line before formatter was introduced:
 			// SaveOptions options = SaveOptions.newBuilder().format().getOptions();
 			// targetSpec.save(options.toOptionsMap());
-			sourceSpec.save(null);
+
 		} catch (IOException e) {
 			e.printStackTrace(System.err);
 			throw new MDSLException("Could not save transformed MDSL " + resource.getURI(), e);
@@ -63,7 +56,7 @@ public class AsyncMDSLGenerator extends AbstractMDSLGenerator {
 			transformEndpointTypeIntoAsyncMDSLChannel(mdslSpecification, endpointType);
 		}
 		
-		// TODO (same or separate transformation): also generate broker and clients
+		// TODO (same or separate transformation): also generate broker and endpoints from providers and clients; tbd: gateway? 
 	}
 
 	private void transformEndpointTypeIntoAsyncMDSLChannel(ServiceSpecification mdslSpecification,
@@ -75,45 +68,93 @@ public class AsyncMDSLGenerator extends AbstractMDSLGenerator {
 			DataTransferRepresentation outDtr = operation.getResponseMessage();
 			// TODO check that both messages are there, generate OneWayChannel if not
 			
-			// have to copy these (best EMF/XText way chosen?)
-			DataTransferRepresentation inDtrClone = EcoreUtil.copy(inDtr);
-			DataTransferRepresentation outDtrClone = EcoreUtil.copy(outDtr);
+			// TODO also work with headers (not just payload); security and error reporting tbd
 			
-			// TODO also work with headers (not just payload); what about security and error reporting?
-			ChannelContract channelContractType = ApiDescriptionFactory.eINSTANCE.createChannelContract();
-			channelContractType.setName(endpointType.getName() + "_" + operation.getName() /* + "Channel" */);
-			RequestReplyChannel rrChannel = ApiDescriptionFactory.eINSTANCE.createRequestReplyChannel();
-			setRequestChannel(rrChannel, operation.getName(), inDtrClone);
-			setReplyChannel(rrChannel, operation.getName(), outDtrClone);
-			channelContractType.setConversationType(rrChannel);
+			String suggestedName = endpointType.getName() + "_" + operation.getName() /* + "Channel" */;
+			
+			ChannelContract channelContractType = null;
+			if(inDtr!=null && outDtr!=null) {
+				// we have to copy the two DTRs as the original ones stay in operation:
+				DataTransferRepresentation inDtrClone = EcoreUtil.copy(inDtr);
+				DataTransferRepresentation outDtrClone = EcoreUtil.copy(outDtr);
+				channelContractType = createRequestReplyChannel(suggestedName, operation, inDtrClone, outDtrClone);
+			}
+			else if(inDtr!=null){
+				// we have to copy the two DTRs as the original ones stay in operation:
+				DataTransferRepresentation inDtrClone = EcoreUtil.copy(inDtr);
+				channelContractType = createOneWayChannel(suggestedName, operation, inDtrClone);
+			}
+			else { 
+				throw new IllegalArgumentException("Operation " + operation.getName() + "in endpoint type " + endpointType.getName() + " does not have a request message.");
+			}
 			
 			// TODO check that no channel/operation of same name exists already
 			mdslSpecification.getContracts().add(channelContractType);
 		}
 	}
 
-	private void setRequestChannel(RequestReplyChannel rrChannel, String name, DataTransferRepresentation payload) {
-		RequestChannel reqCh = ApiDescriptionFactory.eINSTANCE.createRequestChannel();
-		reqCh.setName(name + "RequestChannel");
-		reqCh.setPath(createPath(name + "RequestChannel"));
-		if(payload!=null) 
-			reqCh.setPayload(createPayload(payload)); 
+	private ChannelContract createOneWayChannel(String suggestedName, Operation operation, DataTransferRepresentation inDtrClone) {
+		ChannelContract channelContractType = ApiDescriptionFactory.eINSTANCE.createChannelContract();
+		channelContractType.setName(suggestedName);
+		
+		OneWayChannel owChannel = ApiDescriptionFactory.eINSTANCE.createOneWayChannel();
+		
+		owChannel.setDescription("One way channel for " + suggestedName);
+		owChannel.setPath(createPath(suggestedName + "OneWayChannel"));
+		String accAndProd = "'accepts' 'and' 'produces'"; // ignored (grammar bug?)
+		owChannel.setAcceptsAndProduces(accAndProd);
+		owChannel.setMessage(createMessage(suggestedName + "Message", inDtrClone));
+		
+		channelContractType.setConversationType(owChannel);
+		
+		return channelContractType;
+	}
+
+	private ChannelContract createRequestReplyChannel(String suggestedName, Operation operation, DataTransferRepresentation inDtrClone, DataTransferRepresentation outDtrClone) {
+		ChannelContract channelContractType = ApiDescriptionFactory.eINSTANCE.createChannelContract();
+		channelContractType.setName(suggestedName);
+		
+		RequestReplyChannel rrChannel = ApiDescriptionFactory.eINSTANCE.createRequestReplyChannel();
+		setRequestChannel(rrChannel, operation.getName(), inDtrClone);
+		setReplyChannel(rrChannel, operation.getName(), outDtrClone);
+		channelContractType.setConversationType(rrChannel);
+		
+		return channelContractType;
+	}
+
+	private void setRequestChannel(RequestReplyChannel rrChannel, String name, DataTransferRepresentation requestMessage) {
+		if(requestMessage!=null) {
+			RequestChannel reqCh = ApiDescriptionFactory.eINSTANCE.createRequestChannel();
+			// TODO check that names are unique (entire specification?)
+			reqCh.setName(name + "RequestChannel");
+			reqCh.setPath(createPath(name + "RequestChannel"));
+			reqCh.setPayload(createPayload(requestMessage)); 
+			rrChannel.setRequest(reqCh);
+		}
 		else
-			throw new MDSLException(name + " seems to have an empty request payload, which is not yet supported.");
-		rrChannel.setRequest(reqCh);
+			throw new MDSLException(name + " seems to have an empty request payload.");
+	}
+		
+	private void setReplyChannel(RequestReplyChannel rrChannel, String name, DataTransferRepresentation responseMessage) {
+		if(responseMessage!=null) {
+			ReplyChannel replCh = ApiDescriptionFactory.eINSTANCE.createReplyChannel();
+			// TODO check that names are unique (entire specification?)
+			replCh.setName(name + "ReplyChannel");
+			replCh.setPath(createPath(name + "ReplyChannel"));
+			replCh.setPayload(createPayload(responseMessage)); 
+			rrChannel.setReply(replCh);
+		}
+		else
+			throw new MDSLException(name + " seems to have an empty response payload.");
+
 	}
 	
-	// TODO merge these two methods 
-	
-	private void setReplyChannel(RequestReplyChannel rrChannel, String name, DataTransferRepresentation payload) {
-		ReplyChannel replCh = ApiDescriptionFactory.eINSTANCE.createReplyChannel();
-		replCh.setName(name + "ReplyChannel");
-		replCh.setPath(createPath(name + "ReplyChannel"));
-		if(payload!=null) 
-			replCh.setPayload(createPayload(payload)); 
-		else
-			throw new MDSLException(name + " seems to have an empty response payload, which is not yet supported.");
-		rrChannel.setReply(replCh);
+	private Message createMessage(String name, DataTransferRepresentation messagePayload) {
+		Message result = ApiDescriptionFactory.eINSTANCE.createMessage(); 
+		result.setName(name);
+		result.setPayload(createPayload(messagePayload));
+		result.setDeliveringPayload(true);
+		return result;
 	}
 	
 	private Payload createPayload(DataTransferRepresentation payload) {
@@ -133,7 +174,7 @@ public class AsyncMDSLGenerator extends AbstractMDSLGenerator {
 	protected void generateFromServiceSpecification(ServiceSpecification mdslSpecification, IFileSystemAccess2 fsa,
 		org.eclipse.emf.common.util.URI inputFileURI) {
 		for (EndpointContract endpointType : new ServiceSpecificationAdapter(mdslSpecification).getEndpointContracts()) {
-			System.out.println("About to add a p2p channel definition for endpoint type (in doGenerate)" + endpointType.getName());
+			; // System.out.println("About to add a p2p channel definition for endpoint type (in doGenerate)" + endpointType.getName());
 		}
 	}
 }

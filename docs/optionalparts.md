@@ -13,6 +13,19 @@ Runtime Language Concepts: API Provider, API Client, API Gateway
 
 The language concepts described here can be used for context mapping, deployment modeling, and code generation (e.g., walking provider skeletons, test clients). Unlike endpoint types and data contracts, they play on the "instance" rather than the "class" level (just like ports in WSDL are instances of port types).
 
+We assume this simple contract to exist (note that this example also feature the optional, global `overview` description): 
+
+~~~
+API description HelloWorldDemoAPI
+overview "Demonstrating optional/runtime concepts"
+
+endpoint type SomeDemoContract
+exposes 
+  operation sayHello 
+    expecting payload D<string>  
+    delivering payload D<int>
+~~~
+
 ## API Provider
 
 An API provider exposes one or more endpoint contracts at an address that understands a particular platform-specific protocol:
@@ -21,7 +34,7 @@ An API provider exposes one or more endpoint contracts at an address that unders
 API provider sampleProvider
 offers SomeDemoContract
 at endpoint location "http://www.tbc.io:80/path/subpath"
-via protocol HTTP // or other supported protocol
+via protocol HTTP binding resource Home // or other supported protocol
 under conditions "See http://www.tbc.io/terms-and-conditions.html"
 provider governance AGGRESSIVE_OBSOLESCENCE
 ~~~
@@ -75,7 +88,7 @@ The consumers of endpoint contracts (API clients) are modeled according to the f
 API client SampleAPIClient
   consumes SomeDemoContract
   from SampleAPIProvider1
-  via protocol HTTP binding resource SampleAPIProvider1Resource
+  via protocol HTTP 
 ~~~
 
 Clients merely have to decide which APIs to consume and which protocol to use to do so.

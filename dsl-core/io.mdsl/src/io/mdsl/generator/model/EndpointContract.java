@@ -28,6 +28,10 @@ public class EndpointContract {
 	private String name;
 	private List<Operation> operations;
 	private ProtocolBinding protocolBinding;
+	
+	// could group these two into one class:
+	private List<String> states;	
+	private List<StateTransition> transitions;
 
 	/**
 	 * Creates a new endpoint contract.
@@ -38,6 +42,8 @@ public class EndpointContract {
 		this.name = name;
 		this.operations = Lists.newLinkedList();
 		this.protocolBinding = new UndefinedProtocol();
+		this.states = Lists.newLinkedList();
+		this.transitions = Lists.newLinkedList();
 	}
 
 	/**
@@ -85,6 +91,42 @@ public class EndpointContract {
 	 */
 	public ProtocolBinding getProtocolBinding() {
 		return protocolBinding;
+	}
+	
+	/**
+	 * Gets the list of states in the given endpoint.
+	 * 
+	 * @return a list of states in the given endpoint
+	 */
+	public List<String> getStates() {
+		return Lists.newLinkedList(states);
+	}
+
+	/**
+	 * Adds a state to the represented endpoint.
+	 * 
+	 * @param state the state that shall be added to the endpoint
+	 */
+	public void addState(String state) {
+		this.states.add(state);
+	}
+
+	/**
+	 * Gets the list of transitions in the given endpoint.
+	 * 
+	 * @return a list of transitions in the given endpoint
+	 */
+	public List<StateTransition> getTransitions() {
+		return Lists.newLinkedList(transitions);
+	}
+
+	/**
+	 * Adds a transition to the represented endpoint.
+	 * 
+	 * @param transition the operation that shall be added to the endpoint
+	 */
+	public void addStateTransition(StateTransition transition) {
+		this.transitions.add(transition);
 	}
 
 }

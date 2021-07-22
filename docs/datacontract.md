@@ -66,9 +66,7 @@ The role stereotypes can be combined with the following base types to yield prec
 
 #### Complex Types
 
-See explanations above (under "simple, yet powerful nesting is supported"). 
-
-<!-- TODO (M): the "quick reference" cheat sheet that used to be in grammar/examples in V2 would fit here -->
+See explanations above (under "simple, yet powerful nesting is supported"), as well as [Quick Reference](./quickreference).
 
 ### Collections and optionality 
 
@@ -81,21 +79,21 @@ Parameter trees and atomic parameter lists can be used to express optionality if
 ~~~
 DataContract:
     'data' 'type' name=ID 
-    ('version' svi=semanticVersioningIdentifier)? 
-    structure=elementStructure;
-    default=defaultValue?
+    ('version' svi=SemanticVersioningIdentifier)? 
+    structure=ElementStructure;
+    default=DefaultValue?
 
 ElementStructure: 
-    pf=parameterForest | pt=parameterTree 
-  | apl=atomicParameterList  | np=singleParameterNode;
+    pf=ParameterForest | pt=ParameterTree 
+  | apl=AtomicParameterList | np=SingleParameterNode;
 
 [...]
 
 TreeNode:
-    spn=singleParameterNode | apl=atomicParameterList | pt=parameterTree;
+    spn=SingleParameterNode | apl=AtomicParameterList | pt=ParameterTree;
 
 SingleParameterNode: 
-    genP=genericParameter | atomP=atomicParameter | tr=typeReference;
+    genP=GenericParameter | atomP=AtomicParameter | tr=TypeReference;
 ~~~
 
 The semantic versioning identifier `svi` is a simple `STRING`; at present, the entire API as well as data types, endpoints and operations can be versioned. 
@@ -152,11 +150,11 @@ data type CustomerWithAddressAndMoveHistory {
 
 Note that a parameter tree that only contains atomic parameters `{D<int>, D<string>}` can also be modeled as an Atomic Parameter List `(D<int>, D<string>)`. It is recommended to prefer the Parameter Tree syntax over that of the Atomic Parameter List (to promote information hiding and defer detailed modeling decisions until the last/most responsible moment). `<<Entity>>` is a patttern stereotype (see section "Outlook: MAP Decorators" of the [CSV tutorial](./tutorial) for explanations).
 
-<!-- TODO (H): * feature choice '|' -->
+<!-- TODO (H): * feature choice '|' when supported in all tools -->
 
 <!-- TODO feature CSV in new Tutorial "sheets": ["rows":{"columnCells":{Data|Formula}*}*] // title row is different? -->
 
-<!-- TODO model this in JSON Schema and XML Schema (and/or Avro?) -->
+<!-- TODO model this in JSON Schema, XML Schema (and/or Avro?) -->
 
 
 ## Technology Mappings

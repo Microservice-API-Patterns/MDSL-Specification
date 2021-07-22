@@ -1,15 +1,18 @@
 API description AdvancedServiceConceptsPreview 
-version "5.2.0"
+version "5.3"
 overview "This service contract features error reporting, state transitions, compensation, and event emission/reception"
 
+data type SampleDTOOpaque "location":P // not specified here but in an external JSON Schema
 data type SampleDTO {ID, D} // these two incomplete specifications can be quick fixed in the plugin
 data type Placeholder P // this incomplete specifications can be quick fixed in the plugin
 data type Placeholder2 "nameOnly" // this incomplete specifications can be quick fixed in the plugin
 data type Placeholder3 "name":P // this incomplete specifications can be quick fixed in the plugin
 
-event type SomethingHasHappened content {"when":D<string>, "what":D<string>}
+event type SomethingHasHappened {"when":D<string>, "what":D<string>}
 event type ServerSideProcessingComplete
 event type FailureMessage
+
+command type doSomethingOnServerSide, undoSomethingOnServerSide
 
 endpoint type HelloWorldEndpoint
  exposes 
@@ -17,12 +20,12 @@ endpoint type HelloWorldEndpoint
     expecting payload D<string>  
     delivering payload SampleDTO
     reporting error FailureMessage
-    emitting event ServerSideProcessingComplete
     transitions from "ReadyToWork" to "Done"
+    emitting event ServerSideProcessingComplete
     compensated by undoSomethingOnServerSide
   operation undoSomethingOnServerSide with responsibility STATE_TRANSITION_OPERATION
     expecting payload D<string>  
-    delivering payload SampleDTO
+    delivering payload SampleDTOOpaque structured as JSON_SCHEMA
     transitions from "Done" to "ReadyToWork"
  receives
     event SomethingHasHappened
@@ -35,10 +38,10 @@ API client HelloWorldAPIClient
   
 flow SampleFlow 
 flow CombinedFlow
-  event SomethingHasHappened triggers operation doSomethingOnServerSide
-  operation doSomethingOnServerSide emits event ServerSideProcessingComplete
+  event SomethingHasHappened triggers command doSomethingOnServerSide
+  command doSomethingOnServerSide emits event ServerSideProcessingComplete
   
-  event FailureMessage triggers operation undoSomethingOnServerSide
+  event FailureMessage triggers command undoSomethingOnServerSide
 
 scenario SampleIntegrationRequirement 
   when "AConditionArises"

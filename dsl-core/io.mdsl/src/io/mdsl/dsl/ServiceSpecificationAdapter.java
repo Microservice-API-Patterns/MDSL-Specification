@@ -35,7 +35,7 @@ import io.mdsl.apiDescription.Client;
 import io.mdsl.apiDescription.CommandTypes;
 import io.mdsl.apiDescription.DataContract;
 import io.mdsl.apiDescription.DirectionList;
-import io.mdsl.apiDescription.DomainEvents;
+import io.mdsl.apiDescription.EventTypes;
 import io.mdsl.apiDescription.EndpointContract;
 import io.mdsl.apiDescription.Gateway;
 import io.mdsl.apiDescription.IntegrationScenario;
@@ -271,7 +271,7 @@ public class ServiceSpecificationAdapter implements ServiceSpecification, Servic
 	}
 	
 	@Override
-	public EList<DomainEvents> getEvents() {
+	public EList<EventTypes> getEvents() {
 		return internalSpec.getEvents();
 	}
 	

@@ -53,6 +53,11 @@ import io.swagger.v3.oas.models.tags.Tag;
 public class Endpoint2PathConverter {
 	
 	// TODO (tbd) set OAS version in generated file to 3.0.3
+	
+	// TODO (H): when several endpoints and their resource bindings use same URI path, 
+	// only the last one makes it into OAS (data structure? put -> add)
+	
+	// TODO (H): VoidSchema to be ignored, validates in OAS but causes later tools to fail
 
 	// private static final String DEFAULT_MEDIA_TYPE = "application/json"; 
 	private static final String DEFAULT_RESPONSE_NAME = "200";
@@ -127,12 +132,15 @@ public class Endpoint2PathConverter {
 		return pathItemForResource;
 	}
 
+	/*
 	private void addEventToDescription(PathItem resource, Event event) {
-		if(resource.getDescription()==null)
-			resource.setDescription("Receiving event(s): " + event.getName());
-		else
-			resource.setDescription(resource.getDescription() + ", " + event.getName());
+		// TODO decide how to map event reception (if at all)
+		// if(resource.getDescription()==null)
+			// resource.setDescription("Receiving event(s): " + event.getName());
+		// else
+			// resource.setDescription(resource.getDescription() + ", " + event.getName());
 	}
+	*/
 
 	private io.swagger.v3.oas.models.Operation convertOperation(EndpointContract endpointType, Operation mdslOperation, HttpMethod verb, HTTPResourceBinding binding) {
 		io.swagger.v3.oas.models.Operation operation = new io.swagger.v3.oas.models.Operation();
@@ -161,13 +169,15 @@ public class Endpoint2PathConverter {
 		return operation;
 	}
 	
+	/*
 	// TODO work in progress (early PoC)
 	private io.swagger.v3.oas.models.Operation convertEvent(EndpointContract endpointType, Event event, HttpMethod verb, HTTPResourceBinding binding) {
 		io.swagger.v3.oas.models.Operation operation = new io.swagger.v3.oas.models.Operation();
 
 		// TODO use binding 
 		
-		operation.setOperationId(event.getName() + "-events"); // resource name needed to make operationId unique in OAS
+		// no longer working after grammar change:
+		// operation.setOperationId(event.getName() + "-events"); // resource name needed to make operationId unique in OAS
 	 	
 		// operation.setSummary(MAPLinkResolver.explainResponsibilityPattern(mdslOperation));
 		// operation.setDescription(MAPLinkResolver.provideLinktoMAPWebsite(mdslOperation));
@@ -184,12 +194,15 @@ public class Endpoint2PathConverter {
 		
 		return operation;
 	}
+	*/
 
 	private void handleHeaders(EndpointContract endpointType, Operation mdslOperation, HttpMethod verb,
 			HTTPResourceBinding binding, io.swagger.v3.oas.models.Operation operation, List<Parameter> parameterList) {
 		ElementStructure headers = mdslOperation.getRequestMessage().getHeaders();
 		if(headers==null)
 			return;
+		
+		// TODO JWT as a special case? 
 	
 		convertSingleRepresentationElement(endpointType, mdslOperation, verb, binding, operation, 
 				HTTPParameter.HEADER, parameterList, headers, null); // ignoring any binding info 
@@ -271,7 +284,6 @@ public class Endpoint2PathConverter {
 				}
 				
 				// TODO (H) does this replace the previous body elements? only useful for globally bound operations right now. need an addToRequestBody helper! 
-				// mdslWrapper.logInformation("[NYI] Add this parameter to body: " + nextParameter.getRat().getName());
 				operation.requestBody(createRequestBody(mdslOperation.getRequestMessage().getPayload(), mediaTypes));
 			}
 			else {

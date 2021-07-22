@@ -1,0 +1,45 @@
+openapi: 3.0.1
+info:
+  title: HelloWorldAPI
+  version: "1.0"
+servers:
+- url: http://localhost:8000
+tags:
+- name: HelloWorldAPIProvider-HomeResource
+  externalDocs:
+    description: The role of this endpoint, offering a HelloWorldEndpoint contract,
+      is not specified.
+    url: ""
+paths:
+  /:
+    post:
+      tags:
+      - HelloWorldAPIProvider-HomeResource
+      description: unspecified operation responsibility
+      operationId: HomeResource-sayHello
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in:
+                  type: string
+      responses:
+        "200":
+          description: sayHello successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SampleDTO'
+components:
+  schemas:
+    SampleDTO:
+      type: object
+      properties:
+        anonymous1:
+          type: string
+          format: uuid
+        anonymous2:
+          type: string

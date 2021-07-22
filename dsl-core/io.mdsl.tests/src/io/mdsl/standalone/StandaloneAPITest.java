@@ -66,8 +66,13 @@ public class StandaloneAPITest {
 
 		// then
 		assertTrue(file.exists());
-		assertEquals("API description TestMDSLSpec endpoint type TestEndpoint",
-				FileUtils.readFileToString(file, Charset.forName("UTF-8")));
+		assertEquals("API description TestMDSLSpec",
+				// FileUtils.readFileToString(file, Charset.forName("UTF-8")));
+				FileUtils.readLines(file, Charset.forName("UTF-8")).get(0));
+		// note: Line 1 is empty (due to Formatter)
+		assertEquals("endpoint type TestEndpoint",
+				// FileUtils.readFileToString(file, Charset.forName("UTF-8"))); // FAILS
+				FileUtils.readLines(file, Charset.forName("UTF-8")).get(2)); 
 	}
 
 	@Test
@@ -88,8 +93,13 @@ public class StandaloneAPITest {
 
 		// then
 		assertTrue(file.exists());
-		assertEquals("API description TestMDSLSpec endpoint type TestEndpoint",
-				FileUtils.readFileToString(file, Charset.forName("UTF-8")));
+		assertEquals("API description TestMDSLSpec",
+				// FileUtils.readFileToString(file, Charset.forName("UTF-8"))); // FAILS
+				FileUtils.readLines(file, Charset.forName("UTF-8")).get(0)); 
+		// note: Line 1 is empty (due to Formatter)
+		assertEquals("endpoint type TestEndpoint",
+				// FileUtils.readFileToString(file, Charset.forName("UTF-8"))); // FAILS
+				FileUtils.readLines(file, Charset.forName("UTF-8")).get(2)); 
 	}
 
 	@Test

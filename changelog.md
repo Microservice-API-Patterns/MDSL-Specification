@@ -1,6 +1,21 @@
 ## MDSL change log (and release notes)
 
-Also see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases).
+V5.3
+
+* Additional features and consistency cleanup in orchestration flow and story/scenario grammar
+* Corresponding tool support in 20+ quick fix transformations
+* Selected transformations also available in standalone API and CLI
+
+V5.2.9, June 2021
+
+* API client no longer needs an HTTP resource binding
+* `content` keyword removed from event types and command types 
+* HTP binding validation disabled in gateway `Gate`s 
+* Many quick fixes to support rapid SOAD and API refactoring to MAP
+* Demo of two menu-level refactorings: Move Operation/Extract Endpoint and Add MAP Decorator
+
+* Grammar makes endpoint type optional
+* Type system can be `OTHER` or `AnyCustomString`
 
 V5.2, June 2021
 
@@ -159,3 +174,5 @@ V0.93b, May 10, 2019 (experimental):
 
 * Only `V<int>` supported as parameter role/type pair, `Value<int>` removed to avoid confusion with `<<stereotypes>>`
 * `<<Identifier>>` and `<<Link>>` and `<<Metadata>>` now available as pattern stereotypes (`<<Entity>>` was supported already)
+
+Also see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases).

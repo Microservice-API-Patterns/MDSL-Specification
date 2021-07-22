@@ -66,9 +66,11 @@ public class GeneratorsActionGroup extends ActionGroup {
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.GenModelJSONExporterCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.GenModelYAMLExporterCommand"));
 		generatorSubmenu.add(new Separator());
-		// added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.MDSLRefactoringCommand")); // elsewhere
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.AsyncMDSLGenerationCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.AsyncAPIGenerationCommand"));
+		generatorSubmenu.add(new Separator());
+		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.MDSLRefactoringCommand")); // elsewhere
+		// TODO add new API analysis/refactoring menu (if it stays)
 		return added;
 	}
 

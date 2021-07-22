@@ -238,10 +238,8 @@ public class DataType2SchemaConverter {
 			return new StringSchema();
 		case "raw":
 			return new BinarySchema();
-		// new in v5.0.3:
 		case "void": {
-			// TODO (tbd) warn about this?
-			return new StringSchema();
+			return new VoidSchema(); // fixed Feb 8/June 30, 2021
 		}
 		default:
 			// TODO (tbd) warn about this?

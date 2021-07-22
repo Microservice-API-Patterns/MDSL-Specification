@@ -1,5 +1,7 @@
 package io.mdsl.generator.openapi.converter;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -76,7 +78,9 @@ public class MDSL2OpenAPIConverter {
 	 */
 	public OpenAPI convert() {
 		OpenAPI oas = new OpenAPI();
+		// timestamp gen temporarily disabled, breaks build:
 		oas.setInfo(new Info().title(mdslSpecification.getName()).version(getAPIVersion()));
+		// oas.setInfo(new Info().title(mdslSpecification.getName()).version(getAPIVersion()).extensions(Map.of("x-generated-on", getCurrentLocalDateTimeStamp())));		
 		// TODO add foundation MAPs if present: Visibility, Direction
 		
 		// this start the main action:
@@ -101,6 +105,10 @@ public class MDSL2OpenAPIConverter {
 	
 	private String getAPIVersion() {
 		return mdslSpecification.getSvi() != null && !"".equals(mdslSpecification.getSvi()) ? mdslSpecification.getSvi() : DEFAULT_VERSION;
+	}
+	
+	public String getCurrentLocalDateTimeStamp() {
+		return LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 	}
 	
 	private List<Tag> createTagsViaEndpointInstanceAndItsResources() {
@@ -289,12 +297,12 @@ public class MDSL2OpenAPIConverter {
 				Parameter pp = null;
 				String pathURI;
 				
-				Server server = new Server().url(endpointInstanceList.get(i).getName());
+				Server server = new Server().url(endpointInstanceList.get(i).getLocation());
 				this.servers.add(server);
 				
-				if(endpointInstanceList.get(i).getName().startsWith("/")) {
-					mdslWrapper.logInformation("Next endpoint instance: " + endpointInstanceList.get(i).getName());
-					pathURI = endpointInstanceList.get(i).getName();
+				if(endpointInstanceList.get(i).getLocation().startsWith("/")) {
+					mdslWrapper.logInformation("Next endpoint instance: " + endpointInstanceList.get(i).getLocation());
+					pathURI = endpointInstanceList.get(i).getLocation();
 					
 					// TODO (tbd) support templates here too? (done on resource level at present)
 					List<String> templates = URITemplateHelper.findTemplateParameters(pathURI);
@@ -306,7 +314,7 @@ public class MDSL2OpenAPIConverter {
 				}	 
 				else {
 					mdslWrapper.logWarning("Endpoint instance location should start with '/', added.");
-					pathURI = "/" + endpointInstanceList.get(i).getName(); 
+					pathURI = "/" + endpointInstanceList.get(i).getLocation(); 
 				}
 				 
 				// pathURI = convertPathParameters(pathURI, endpointInstanceList.get(i)); // old code

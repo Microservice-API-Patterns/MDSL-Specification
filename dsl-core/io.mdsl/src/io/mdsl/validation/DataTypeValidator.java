@@ -10,11 +10,18 @@ import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
 
 import io.mdsl.apiDescription.ApiDescriptionPackage;
+import io.mdsl.apiDescription.AtomicParameter;
+import io.mdsl.apiDescription.AtomicParameterList;
 import io.mdsl.apiDescription.DataContract;
+import io.mdsl.apiDescription.DataTransferRepresentation;
+import io.mdsl.apiDescription.ElementStructure;
 import io.mdsl.apiDescription.GenericParameter;
 import io.mdsl.apiDescription.ParameterForest;
 import io.mdsl.apiDescription.ParameterTree;
+import io.mdsl.apiDescription.PatternStereotype;
 import io.mdsl.apiDescription.RoleAndType;
+import io.mdsl.apiDescription.SingleParameterNode;
+import io.mdsl.exception.MDSLException;
 /**
  * This class contains custom validation rules.
  *
@@ -25,7 +32,15 @@ public class DataTypeValidator extends AbstractMDSLValidator {
 	
 	public final static String LOWER_CASE_NAME = "LOWER_CASE_NAME";
 	public final static String TYPE_MISSING = "TYPE_MISSING";
+	public final static String TYPE_FLAT = "TYPE_FLAT";
+	public final static String APL_FOUND = "APL_FOUND";
+	public final static String AP_FOUND = "AP_FOUND";
+	public final static String INLINED_TYPE_FOUND = "INLINED_TYPE_FOUND";
 	public final static String TYPE_INCOMPLETE = "TYPE_INCOMPLETE";
+	public final static String DECORATION_MISSING = "DECORATION_MISSING";
+	public final static String PAGINATION_DECORATED = "PAGINATION_DECORATED";
+	public final static String WISH_LIST_DECORATED = "WISH_LIST_DECORATED";
+	public final static String REQUEST_BUNDLE_DECORATED = "REQUEST_BUNDLE_DECORATED";
 	
 	@Override
 	public void register(EValidatorRegistrar registrar) {
@@ -53,6 +68,27 @@ public class DataTypeValidator extends AbstractMDSLValidator {
 			warning("The role-type combination MD<raw> is somewhat unusual. Use MD<string> instead?", rat, ApiDescriptionPackage.eINSTANCE.getRoleAndType_Btype()); // Literals.ROLE_AND_TYPE__BTYPE);
 	    }
 	}
+	
+	@Check
+	public void reportAtomicParameterList(final AtomicParameterList apl) {
+		if(apl.getName() != null) {
+			info("\"" + apl.getName() + "\" is an atomic parameter list. You might want to introduce a DTO parameter tree instead.", apl, ApiDescriptionPackage.eINSTANCE.getAtomicParameterList_Name(), APL_FOUND);
+		}
+		else {
+			warning("This is an atomic parameter list. You might want to introduce a DTO parameter tree instead.", apl, ApiDescriptionPackage.eINSTANCE.getAtomicParameterList_First(), APL_FOUND);
+		}
+	}
+	
+	@Check
+	public void reportAtomicParameter(final AtomicParameter ap) {
+		// RaT can not be be null accoridng to grammar
+		if(ap.getRat().getName() != null) {
+			info("\"" + ap.getRat().getName() + "\" is an atomic parameter. Do you want to wrap it in a DTO parameter tree?", ap, ApiDescriptionPackage.eINSTANCE.getAtomicParameter_Rat(), AP_FOUND);
+		}
+		else {
+			info("This is an atomic parameter. Do you want to wrap it in a DTO parameter tree?", ap, ApiDescriptionPackage.eINSTANCE.getAtomicParameter_Rat(), AP_FOUND);
+		}
+	}
 
 	@Check
 	public void checkIncompleteTypeInformation(final GenericParameter gp) {
@@ -68,7 +104,77 @@ public class DataTypeValidator extends AbstractMDSLValidator {
 	public void checkInappropriateTypeName(final DataContract dc) {
         if (!Character.isUpperCase(dc.getName().charAt(0))) {
             warning("Data type name should start with a capital", dc, ApiDescriptionPackage.eINSTANCE.getDataContract_Name(), LOWER_CASE_NAME);
-        }
+        } 
+	}
+	
+	@Check
+	public void reportTypeOfPayload(final DataTransferRepresentation dtr) {
+		// TODO same for headers
+		if(dtr.getPayload()!=null) {
+			ElementStructure es = dtr.getPayload();
+			if(es.getNp()!=null) {
+				SingleParameterNode spn = es.getNp();
+				if(spn.getAtomP()!=null) {
+					info("Inlined/embedded data type definition", dtr, ApiDescriptionPackage.eINSTANCE.getDataTransferRepresentation_Payload(), INLINED_TYPE_FOUND);
+				}
+				// enP and APL should/must be completed first and then externalized
+			}
+			else if(es.getPt()!=null) {
+				ParameterTree pt = es.getPt();
+				info("Inlined/embedded data type definition", dtr, ApiDescriptionPackage.eINSTANCE.getDataTransferRepresentation_Payload(), INLINED_TYPE_FOUND);
+			}
+		}
+	}
+	
+	@Check
+	public void mapDecoratorUse(final ElementStructure es) {
+		if(es.getPt()!=null) {
+			ParameterTree pt = es.getPt();
+			if(pt.getClassifier()==null) 
+				info("Data element not decorated/classified with a stereotype", pt, ApiDescriptionPackage.eINSTANCE.getParameterTree_Name(), DECORATION_MISSING);
+			else if(getClassifierText(pt.getClassifier()).equals("Pagination")) {
+				// TODO check whether Pagination MD is already there; do not offer quick fix if so
+				info("Data element decorated with MAP Pagination", es, ApiDescriptionPackage.eINSTANCE.getElementStructure_Pt(), PAGINATION_DECORATED);
+			}
+			else if(getClassifierText(pt.getClassifier()).equals("Wish_List")) {
+				info("Data element decorated with MAP Wish List", es, ApiDescriptionPackage.eINSTANCE.getElementStructure_Pt(), WISH_LIST_DECORATED);
+			}
+			else if(getClassifierText(pt.getClassifier()).equals("Request_Bundle")) {
+				// TODO check whether bundle structure is already there; do not offer quick fix if so
+				info("Data element decorated with MAP Request Bundle", es, ApiDescriptionPackage.eINSTANCE.getElementStructure_Pt(), REQUEST_BUNDLE_DECORATED);
+			}
+			// TODO implement something similar for some other MAP decorators (see IRC backlog): embed entity, inline information holder (or full xform)
+			else {
+				// info("Data element decorated with " + getClassifierText(pt.getClassifier()), pt, ApiDescriptionPackage.eINSTANCE.getParameterTree_Name());
+			}
+		}
+		else if(es.getNp()!=null) {
+			SingleParameterNode spn = es.getNp();
+			if(spn.getAtomP()!=null && spn.getAtomP().getClassifier()==null) {
+				info("Data element not decorated/classified with a stereotype", spn.getAtomP(), ApiDescriptionPackage.eINSTANCE.getAtomicParameter_Rat(), DECORATION_MISSING);
+			} else if(spn.getAtomP()!=null && getClassifierText(spn.getAtomP().getClassifier()).equals("Request_Bundle")) {
+				// TODO check whether Pagination MD is already there; do not offer quick fix if so
+				info("Data element decorated with MAP Request Bundle", es, ApiDescriptionPackage.eINSTANCE.getElementStructure_Np(), REQUEST_BUNDLE_DECORATED);
+			}
+			// at present, AddPagination only works when applied to inlined types, so not reporting type reference usage here:
+			// else if(spn.getTr()!=null && spn.getTr().getClassifier()==null) {
+			//	info("Data element not decorated/classified with a stereotype", spn.getTr(), ApiDescriptionPackage.eINSTANCE.getTypeReference_Name(), DECORATION_MISSING);
+			// }
+		}
+		else {
+			// System.out.println("Element structure not a PT or AP"); // must be APL or PF (unsupported here at present)
+		}
+	}
+		
+	private String getClassifierText(PatternStereotype ps) {
+		if(ps.getEip()!=null)
+			return ps.getEip();
+		else if(ps.getPattern()!=null)
+			return ps.getPattern();
+		else if(ps.getName()!=null) 
+			return ps.getName();
+		else 
+			throw new MDSLException("Unknown classifier type.");
 	}
 
 	@Check
@@ -80,10 +186,9 @@ public class DataTypeValidator extends AbstractMDSLValidator {
 		for (ParameterTree pt : trees) {
 			if (pt.getName() != null) {
 				// parameterForest is considered like a tuple
-				info("ParameterForest are like tuples. Tuple items names are ignored.",
+				info("ParameterForest are like tuples. Tuple item names are ignored.",
 						pt, ApiDescriptionPackage.eINSTANCE.getParameterTree_Name()); //  Literals.PARAMETER_TREE__NAME);
 			}
 		}
-
 	}
 }

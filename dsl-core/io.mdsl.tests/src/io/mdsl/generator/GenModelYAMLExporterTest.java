@@ -34,6 +34,8 @@ public class GenModelYAMLExporterTest extends AbstractMDSLInputIntegrationTest {
 				"  operations: []" + System.lineSeparator() +
 				"  protocolBinding:" + System.lineSeparator() +
 				"    protocolName: \"Undefined\"" + System.lineSeparator() +
+				"  states: []" + System.lineSeparator() +
+				"  transitions: []" + System.lineSeparator() +
 				"providers: []" + System.lineSeparator() + 
 				"clients: []" + System.lineSeparator() + 
 				"providerImplementations: []" + System.lineSeparator() + 

@@ -20,6 +20,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import io.mdsl.apiDescription.DataContract;
+import io.mdsl.apiDescription.Orchestration;
 import io.mdsl.apiDescription.ServiceSpecification;
 import io.mdsl.dsl.ServiceSpecificationAdapter;
 import io.mdsl.generator.model.Client;
@@ -28,6 +29,8 @@ import io.mdsl.generator.model.EndpointContract;
 import io.mdsl.generator.model.MDSLGeneratorModel;
 import io.mdsl.generator.model.Provider;
 import io.mdsl.generator.model.ProviderImplementation;
+import io.mdsl.generator.model.carving.ClusterCollection;
+import io.mdsl.generator.model.composition.OrchestrationFlow;
 
 /**
  * Converts MDSL (AST model) into our simpler generator model.
@@ -41,6 +44,7 @@ public class MDSL2GeneratorModelConverter {
 	private ProviderConverter providerConverter;
 	private ClientConverter clientConverter;
 	private ProviderImplementationConverter providerImplementationConverter;
+	private OrchestrationConverter orchestrationConverter;
 	private MDSLGeneratorModel genModel;
 
 	public MDSL2GeneratorModelConverter(ServiceSpecification serviceSpecification) {
@@ -51,6 +55,7 @@ public class MDSL2GeneratorModelConverter {
 		this.providerConverter = new ProviderConverter(genModel);
 		this.providerImplementationConverter = new ProviderImplementationConverter(genModel);
 		this.clientConverter = new ClientConverter(genModel);
+		this.orchestrationConverter = new OrchestrationConverter(genModel);
 	}
 
 	/**
@@ -63,7 +68,7 @@ public class MDSL2GeneratorModelConverter {
 		// convert data types
 		for (DataType dataType : convertDataTypes(serviceSpecification.getTypes()))
 			genModel.addDataType(dataType);
-
+  
 		// convert endpoints
 		for (EndpointContract endpoint : convertEndpoints(serviceSpecification.getEndpointContracts()))
 			genModel.addEndpoint(endpoint);
@@ -79,8 +84,25 @@ public class MDSL2GeneratorModelConverter {
 		// convert provider implementations
 		for (ProviderImplementation providerImpl : convertProviderImplementations(serviceSpecification.getRealizations()))
 			genModel.addProviderImplementation(providerImpl);
+		
+		// convert orchestration flows
+		for (OrchestrationFlow oFlow : convertOrchestrationFlows(serviceSpecification.getOrchestrations())) {
+			genModel.addOrchestration(oFlow);
+		}
+		List<ClusterCollection> clusters = OrchestrationConverter.postprocessFlowConversions();
+		genModel.addAllClustersToCuts(clusters);
 
 		return genModel;
+	}
+	
+	// note: retrofit from stalled MDSL folder (V5.1) on June 11, 21
+	
+	private List<OrchestrationFlow> convertOrchestrationFlows(List<Orchestration> orchestrations) {
+		List<OrchestrationFlow> oFlows = Lists.newLinkedList();
+		for (Orchestration oFlow : orchestrations) {
+			oFlows.add(orchestrationConverter.convert(oFlow));
+		}
+		return oFlows;
 	}
 
 	private List<DataType> convertDataTypes(List<DataContract> contracts) {

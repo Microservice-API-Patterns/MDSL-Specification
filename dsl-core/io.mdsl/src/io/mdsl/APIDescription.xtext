@@ -18,10 +18,10 @@ grammar io.mdsl.APIDescription with org.eclipse.xtext.common.Terminals
 
 /*  
 ---
-title: Microservices Domain Specific Language (MDSL) Grammar
+title: Microservices Domain Specific Language (MDSL) Language Specification
 author: Olaf Zimmermann
 copyright: Olaf Zimmermann, 2018-2021. All rights reserved.
-version: "5.2"
+version: "5.3.3: scenarios and flows; states and compensation; events"
 ---
 */ 
 
@@ -31,21 +31,20 @@ ServiceSpecification hidden(WS, ML_COMMENT, SL_COMMENT):
 	'API' 'description' name=ID
     ('version' svi=SemanticVersioningIdentifier)?  
     ('usage' 'context' reach=Visibility 'for' direction+=DirectionList)?
-	('overview' description=STRING)? // TODO document, changed keyword (has been 'description' since V4.1, AsyncMDSL tools/examples use it)
+	('overview' description=STRING)? 
     types+=DataContract*
-    links+=LinkContract*
-    events+=DomainEvents*
-    commands+=CommandTypes*
-    // TODO make contract optional too (if stories and flows stay): from '+' to '*'
-	contracts+=(EndpointContract | ChannelContract)+ // AsyncMDSL extension	
+    links+=LinkContract* // under validation
+    events+=EventTypes* // experimental preview 
+    commands+=CommandTypes* // experimental preview
+	contracts+=(EndpointContract|ChannelContract)* // ChannelContract: AsyncMDSL extension	
 	slas+=SLATemplate*
-	providers+=(Provider | MessageBroker)* // AsyncMDSL extension
-	clients+=(Client | MessageEndpoint)* // AsyncMDSL extension
-	gateways+=Gateway*
-	orchestrations+=Orchestration* // experimental
-	realizations+=ProviderImplementation* // experimental
-	scenarios+=IntegrationScenario* // experimental
-	('IPA')? // IPA is the inversion of API; optional
+	providers+=(Provider|MessageBroker)* // AsyncMDSL extension
+	clients+=(Client|MessageEndpoint)* // AsyncMDSL extension
+	gateways+=Gateway* // experimental preview (still) 
+	orchestrations+=Orchestration* // experimental preview
+	realizations+=ProviderImplementation* // under validation
+	scenarios+=IntegrationScenario* // experimental preview
+	('IPA')? // IPA is the inversion of API; optional preview
 ;
 
 // ** This MDSL grammar defines several sub-languages (orthogonal to each other): 
@@ -64,6 +63,7 @@ DirectionList:
 
 Direction: 'FRONTEND_INTEGRATION' | 'BACKEND_INTEGRATION' | STRING;
 
+SemanticVersioningIdentifier: STRING; // format could be checked by API linters
 
 // *** Part A: data contract/types 
 
@@ -71,11 +71,11 @@ DataContract:
 	'data' 'type' name=ID 
 	('version' svi=SemanticVersioningIdentifier)? 
 	structure=ElementStructure
-	default=DefaultValue? // TODO moved here in V3; still experimental
+	default=DefaultValue? // TODO moved here in V3; still an experimental preview
 	// OAS: https://swagger.io/specification/#runtime-expression
 ;
 
-// rule name should also be "Relation Type": a relation is a typed link in context!
+// note: rule name could also be "RelationType": a relation is a typed link in context
 LinkContract:
 	'relation' 'type' name=ID // this is the type info
 	('version' svi=SemanticVersioningIdentifier)? 
@@ -84,13 +84,13 @@ LinkContract:
 	 // HTTP Verb and MediaType added in HTTP binding for now
 ;
 
-
-DomainEvents:
-	'event' 'type' events+=DomainEvent (',' events+=DomainEvent)*
+EventTypes: 
+	'event' 'type' events+=EventType (',' events+=EventType)*
 ;
 
-DomainEvent:
-	name=ID ('content' content=ElementStructure)?
+EventType:  
+	name=ID (/*'content'*/ content=ElementStructure)? // the domain data reported, part of published language
+	('version' svi=SemanticVersioningIdentifier)? // TODO test, document
 ;
 
 CommandTypes:
@@ -98,9 +98,8 @@ CommandTypes:
 ;
 
 CommandType:
-	name=ID ('content' content=ElementStructure)? 
-	    ('delegates' 'to' operation=ID 'in' endpoint=[EndpointContract])?
-	    // TODO warn if data types/element structures of content and referenced operation do not match (in linter)
+	name=ID (/*'content'*/ subject=ElementStructure)? // the in/out data or the business object/item processed
+	('version' svi=SemanticVersioningIdentifier)? // TODO test, document
 ;
 
 
@@ -115,13 +114,217 @@ ParameterForest:
 	'[' ptl=ParameterTreeList ']' 
 	;
 
+
+ 
+// Common parts:
+
+ParameterTreeList:
+	first=ParameterTree (';' next+=ParameterTree)*
+;
+
+ParameterTree:
+	classifier=PatternStereotype? 
+	(name=STRING':')?
+	'{' 
+	  first=TreeNode ((','|'|') nexttn+=TreeNode)* 
+	'}' 
+	card=Cardinality? 
+;
+
+TreeNode:
+	pn=SingleParameterNode | apl=AtomicParameterList | children=ParameterTree
+;
+
+SingleParameterNode: 
+	// Markdown-ish syntax for link reference was experimental, R<> caused problems earlier 
+	genP=GenericParameter | atomP=AtomicParameter | tr=TypeReference // | lr=LinkReference
+;
+
+GenericParameter: 
+	name=STRING // this makes it possible to only have a name/id, but no role (yet)
+	| p='P' // unspecified, P stands for 'Parameter' or 'PayloadPart' or 'Placeholder'
+	| name=STRING ":" 'P' // this option is not documented and tested much; could deprecate
+;
+
+/*
+// experimental, causes compatibility issues (dcref in TypeReference rule might be null)
+LinkTypeReference:
+	'[' lcref=[LinkContract] ']' 
+;
+*/ 
+
+TypeReference: 
+	classifier=PatternStereotype? 
+	(name=STRING':')? (dcref=[DataContract] /* lref=LinkTypeReference */)
+	card=Cardinality?
+;
+
+AtomicParameterList:
+	classifier=PatternStereotype? 
+	(name=STRING':')? 
+	'(' first=AtomicParameter ((','|'|') nextap+=AtomicParameter)* ')' 
+	card=Cardinality? 	
+;
+
+AtomicParameter: 
+	classifier=PatternStereotype? 
+	rat=RoleAndType
+	card=Cardinality?
+;
+
+RoleAndType: 
+	// experimental  |'->' ec=[EndpointContract] taken out again
+    (name=STRING':')? role=ParameterRole ('<'btype=BasicDataType'>' )? 
+;
+
+
+DefaultValue:
+	'default' 'is' default=STRING // TODO tbd: do we need more here? e.g. an expression language
+;
+
+PatternStereotype:
+    '<<' (pattern=MapPattern | eip=EipPattern | name=ID) '>>' 
+;
+
+EipPattern:
+	'Command_Message' | 'Document_Message' | 'Event_Message'
+;
+
+MapPattern:
+	'API_Key' | 'Context_Representation' | 'Error_Report' | 'Request_Bundle' | 'Request_Condition' | 'Wish_List' | 'Wish_Template' 
+	| 'Embedded_Entity' | 'Linked_Information_Holder' | 'Annotated_Parameter_Collection' | 'Pagination' 
+	| 'Data_Element' | 'Identifier_Element' | 'Link_Element' | 'Metadata_Element'  | 'Control_Metadata' | 'Aggregated_Metadata' | 'Provenance_Metadata' 
+	| STRING   
+;
+
+ParameterRole:
+	  'D' // (Atomic) Data Value, Entity or Value Object from DDD
+	| 'MD' // // e.g. in Annotated Parameter Collection: {MD,(MD,D),(MD,D),...}
+	| 'ID' // Identifier (globally or locally unique, not network accessible
+	| 'L' // e.g. URI. Linked Information Holder: {(ID,D1,..,DN,L} for HATEOAS, e.g. "nextPage":Link<Customer>* 
+	| 'Data'
+	| 'Metadata'
+	| 'Identifier'
+	| 'Link' 
+//	| ActionCode
+;
+
+/*
+// experimental, not documented (may disappear at any time)
+ActionCode:
+	'CREATE' | 'FULL_UPDATE' | 'PARTIAL_UPDATE' | 'DELETE' | 'GET' | 'MORE_DATA' | other=STRING
+;
+*/ 
+
+BasicDataType:
+	// TODO specify and document value ranges (same as OAS? CloudEvents?) abstract level or binding?
+ 	'bool' | 'int' | 'long' | 'double' | 'string' | 'raw' | 'void' // 'record', 'map' and 'array' do not make sense here; TODO how about 'date'?
+	;
+
+Cardinality:
+	zeroOrOne='?' | zeroOrMore='*' | atLeastOne='+' | exactlyOne='!'
+;
+
+
+// *** Part B: service endpoint contracts (with operations)
+
+EndpointContract:
+	'endpoint' 'type' name=ID 
+	('version' svi=SemanticVersioningIdentifier)? 
+	// TODO (M) support multiple ('+= ...*')? 
+	('supports' ('flow' flow=[Orchestration]|'scenario'scenario=[IntegrationScenario]))? // TODO could go from '?' to '*' here
+	('serves' 'as' primaryRole=ResourceRole ('and' otherRoles+=ResourceRole)* 'role'?)?
+	sp=SecurityPolicy?
+	('exposes' ops+=Operation+)? // optional because early incomplete specifications do not have to expose any operations 
+	// ('emits' events+=Event+)? // done on operation level (TODO tbd: add here too?)
+	('receives' events+=Event+)? // experimental in V5.1
+;
+
+// TODO (done) added stereotypes for 'STATEFUL_PROCESSING_RESOURCE' (CFs only?) and 'STATELESS_PROCESSING_RESOURCE', VALIDATION_RESOURCE and taken out two old MAP names T_R and L_R
+ResourceRole: 'PROCESSING_RESOURCE' | 'INFORMATION_HOLDER_RESOURCE' | 'OPERATIONAL_DATA_HOLDER' | 'MASTER_DATA_HOLDER' | 'REFERENCE_DATA_HOLDER' /* | 'TRANSFER_RESOURCE' | 'LOOKUP_RESOURCE' */ | 'DATA_TRANSFER_RESOURCE' | 'LINK_LOOKUP_RESOURCE' | 'STATEFUL_PROCESSING_RESOURCE' | 'STATELESS_PROCESSING_RESOURCE' | 'VALIDATION_RESOURCE' | STRING;
+
+Event: 
+	'event'
+	type=[EventType]
+	('version' svi=SemanticVersioningIdentifier)?
+;
+ 
+// TODO tbd/tbc how would service contracts for Web Sockets conversations look like? [R, O]
+
+Operation:
+	'operation' 
+	name=ID 
+	('version' svi=SemanticVersioningIdentifier)?
+	('with' 'responsibility' responsibility=OperationResponsibility)? 
+	// TODO add ('supporting' stakeholder=STRING // for actor from story
+	('in'  mep=MessageExchangePattern 'conversation')? 
+	('expecting' requestMessage=DataTransferRepresentation)? // request message is optional
+	('delivering' responseMessage=DataTransferRepresentation 
+	  ('links' relations+=RelationshipLink+)? // optional within 'delivering'
+	  ('reporting' reports=StatusReports)? // optional within 'delivering'
+	)? // response message is optional 
+	('transitions' st=StateTransition)? // or IDs, [Refs], to be defined above? [R] export as OpenAPI comment?
+	('emitting' events+=Event+)? // or 'publishing'? 'sending'? `producing`?
+	('compensated' 'by' undo=[Operation])? // could also be expressed as link relation
+	('protected' 'by' policies=SecurityPolicies)?
+;
+
+// TODO tbd/tbc CML is more expressive here, see https://contextmapper.org/docs/aggregate/
+// methods can define read, read-write, etc. (done via MAP role decorators here); state machine is on Aggregate level in CML
+StateTransition:
+	'from' from=STRING 'to' to=STRING
+;
+
+RelationshipLink:
+	name=STRING ':' lcref=[LinkContract]
+;
+
+StatusReports:
+	reportList+=StatusReport+
+;
+
+StatusReport:
+	('status' | 'error' | 'analytics') name=ID reportData=ElementStructure?
+;
+
+SecurityPolicies:
+	policyList+=SecurityPolicy+
+;
+
+SecurityPolicy: 
+	 'policy' name=ID securityObject=ElementStructure?
+;
+
+// TODO implement new ones in validators and OAS generator, use/document variants consistently, document them (updated keywords in V5.3)
+// new variants (required for HTTP verb mapping): STATE_REPLACEMENT_OPERATION and STATE_DELETION_OPERATION (better: "FULL_UPDATE_OPERATION" and "PARTIAL_UPDATE_OPERATION"?) and STATE_DELETION_OPERATION
+OperationResponsibility: cf='COMPUTATION_FUNCTION' | sco='STATE_CREATION_OPERATION' | ro='RETRIEVAL_OPERATION' | sto='STATE_TRANSITION_OPERATION' | ep='EVENT_PROCESSOR' | bap='BUSINESS_ACTIVITY_PROCESSOR' | sro='STATE_REPLACEMENT_OPERATION' | sdo='STATE_DELETION_OPERATION' | other=STRING;
+// EVENT_PROCESSOR is a variant of SCO, BUSINESS_ACTIVITY_PROCESSOR is a variant of STO
+
+MessageExchangePattern: 'ONE_WAY' | 'REQUEST_REPLY' | 'NOTIFICATION' | STRING; // TODO [O, R] add SERVER_SENT_EVENTS and gRPC 1:n, n:1, n:m streaming?  
+	
+DataTransferRepresentation:
+	('headers' headers=ElementStructure)? 
+	'payload' payload=ElementStructure // this could be an embedded XSD or JSON Schema (or an external one referenced via URI, see V4.x bindings)
+	('structured' 'as' ts=TypeSystem)? 
+;
+
+TypeSystem: 
+	'MAP_TYPE' | 'JOLIE_TYPE' | 'JSON_SCHEMA' | 'XML_SCHEMA' |'PROTOCOL_BUFFER' | 'AVRO_SCHEMA' | 'THRIFT_TYPE' | 'GRAPHQL_SDL' | 'OTHER' | STRING 
+;
+
 // AsyncMDSL extensions: 
 
+// TODO add flow/scenario link (see endpoint contract)?
 ChannelContract:
 	'channel' name=ID
+	// not yet:	('supports' ('flow' flow=[Orchestration]|'scenario'scenario=[IntegrationScenario]))? // TODO could go from '?' to '*' here
 	('of' 'type' types+=ChannelType (',' types+=ChannelType)*)?
 	('delivery' 'guarantee' quality=DeliveryGuarantee)?
 	conversationType=(RequestReplyChannel|OneWayChannel) // TODO a channel should be able to transfer messages of multiple (data) types
+;
+
+enum ChannelType:
+	POINT_TO_POINT | PUBLISH_SUBSCRIBE | DATA_TYPE | INVALID_MESSAGE | DEAD_LETTER | GUARANTEED_DELIVERY
 ;
 
 // Xtext initializes 'quality' using the first value of this enum,
@@ -186,6 +389,7 @@ Payload:
 	('as' messageType=MessageType)?
 ;
 
+// TODO tbd/tbc acceptsAndProduces= (now) or acceptsAndProduces?= (see other options)?
 OneWayChannel:
 	(('description' description=STRING)? &
 	'on' path=ChannelPathWithParams)
@@ -226,209 +430,11 @@ enum MessageType:
 	COMMAND_MESSAGE | EVENT_MESSAGE | DOCUMENT_MESSAGE
 ;
 
-enum ChannelType:
-	POINT_TO_POINT | PUBLISH_SUBSCRIBE | DATA_TYPE | INVALID_MESSAGE | DEAD_LETTER | GUARANTEED_DELIVERY
-;
- 
-// Common parts:
-
-ParameterTreeList:
-	first=ParameterTree (';' next+=ParameterTree)*
-;
-
-ParameterTree:
-	classifier=PatternStereotype? 
-	(name=STRING':')?
-	'{' 
-	  first=TreeNode ((','|'|') nexttn+=TreeNode)* 
-	'}' 
-	card=Cardinality? 
-;
-
-TreeNode:
-	pn=SingleParameterNode | apl=AtomicParameterList | children=ParameterTree
-;
-
-SingleParameterNode: 
-	// Markdown-ish syntax for link reference is experimental, R<> caused problems earlier 
-	genP=GenericParameter | atomP=AtomicParameter | tr=TypeReference // | lr=LinkReference
-;
-
-GenericParameter: 
-	name=STRING // this makes it possible to only have a name/id, but no role (yet)
-	| p='P' // unspecified, P stands for 'Parameter' or 'PayloadPart' or 'Placeholder'
-	| name=STRING ":" 'P' // TODO this option is not documented and tested much; deprecate?
-;
-
-// experimental, causes compatibility issues (dcref in TypeReference rule might be null)
-LinkTypeReference:
-	'[' lcref=[LinkContract] ']' 
-;
-
-TypeReference: 
-	classifier=PatternStereotype? 
-	(name=STRING':')? (dcref=[DataContract] /* lref=LinkTypeReference */)
-	card=Cardinality?
-;
-
-AtomicParameterList:
-	classifier=PatternStereotype? 
-	(name=STRING':')? 
-	'(' first=AtomicParameter ((','|'|') nextap+=AtomicParameter)* ')' 
-	card=Cardinality? 	
-;
-
-AtomicParameter: 
-	classifier=PatternStereotype? 
-	rat=RoleAndType
-	card=Cardinality?
-;
-
-RoleAndType: 
-	// experimental  |'->' ec=[EndpointContract] taken out again
-    (name=STRING':')? role=ParameterRole ('<'btype=BasicDataType'>' )? 
-;
-
-
-DefaultValue:
-	'default' 'is' default=STRING // TODO tbd: do we need more here?
-;
-
-PatternStereotype:
-    '<<' (pattern=MapPattern | eip=EipPattern | name=ID) '>>' 
-;
-
-EipPattern:
-	// added in Version 3.1.1:
-	'Command_Message' | 'Document_Message' | 'Event_Message'
-;
-
-MapPattern:
-	'API_Key' | 'Context_Representation' | 'Error_Report' | 'Request_Bundle' | 'Request_Condition' | 'Wish_List' | 'Wish_Template' 
-	| 'Embedded_Entity' | 'Linked_Information_Holder' | 'Annotated_Parameter_Collection' | 'Pagination' 
-	| 'Data_Element' | 'Identifier_Element' | 'Link_Element' | 'Metadata_Element'  | 'Control_Metadata' | 'Aggregated_Metadata' | 'Provenance_Metadata' 
-	| STRING   
-;
-
-ParameterRole:
-	  'D' // (Atomic) Data Value, Entity or Value Object from DDD
-	| 'MD' // // e.g. in Annotated Parameter Collection: {MD,(MD,D),(MD,D),...}
-	| 'ID' // Identifier (globally or locally unique, not network accessible
-	| 'L' // e.g. URI. Linked Information Holder: {(ID,D1,..,DN,L} for HATEOAS, e.g. "nextPage":Link<Customer>* 
-	| 'Data'
-	| 'Metadata'
-	| 'Identifier'
-	| 'Link' 
-//	| ActionCode
-;
-
-/*
-// experimental, not documented (may disappear at any time)
-ActionCode:
-	'CREATE' | 'FULL_UPDATE' | 'PARTIAL_UPDATE' | 'DELETE' | 'GET' | 'MORE_DATA' | other=STRING
-;
-*/ 
-
-BasicDataType:
-	// TODO specify and document value ranges (same as OAS? CloudEvents?) abstract level or binding?
- 	'bool' | 'int' | 'long' | 'double' | 'string' | 'raw' | 'void' // 'record', 'map' and 'array' do not make sense here
-	;
-
-Cardinality:
-	zeroOrOne='?' | zeroOrMore='*' | atLeastOne='+' | exactlyOne='!'
-;
-
-
-// *** Part B: service endpoint contracts (with operations)
-
-EndpointContract:
-	'endpoint' 'type' name=ID 
-	('version' svi=SemanticVersioningIdentifier)? 
-	('serves' 'as' primaryRole=ResourceRole ('and' otherRoles+=ResourceRole)* 'role'?)?
-	sp=SecurityPolicy?
-	('exposes' ops+=Operation+)? // optional because early incomplete specifications do not have to expose any operations 
-//	('emits' events+=Event+)? // done on operation level now (TODO tbd: bring back?)
-	('receives' events+=Event+)? // experimental in V5.1
-;
-
-Event: 
-	'event'
-	name=ID (type=[DomainEvent] /* | eventData=ElementStructure */)? // taken out Feb 10, 2021
-	('version' svi=SemanticVersioningIdentifier)?
-;
- 
-
-// changed to upper case in V5.1 (branch core/language-extensions), TODO check/test code and doc pages
-SemanticVersioningIdentifier: STRING; // format to be checked by API linters
-
-ResourceRole: 'PROCESSING_RESOURCE' | 'INFORMATION_HOLDER_RESOURCE' | 'OPERATIONAL_DATA_HOLDER' | 'MASTER_DATA_HOLDER' | 'REFERENCE_DATA_HOLDER' | 'TRANSFER_RESOURCE' | 'LOOKUP_RESOURCE' | 'DATA_TRANSFER_RESOURCE' | 'LINK_LOOKUP_RESOURCE'  | STRING;
-
-Operation:
-	'operation' 
-	name=ID 
-	('version' svi=SemanticVersioningIdentifier)?
-	('with' 'responsibility' responsibility=OperationResponsibility)? 
-	('in'  mep=MessageExchangePattern 'conversation')? 
-	('expecting' requestMessage=DataTransferRepresentation)? // request message is optional
-	('delivering' responseMessage=DataTransferRepresentation 
-	  ('links' relations+=RelationshipLink+)?
-	  ('reporting' reports=StatusReports)? // optional within 'delivering'
-	)? // response message is optional for 'operation'
-	('emitting' events+=Event+)? // 'publishing'? 'sending'? `producing`?
-	('transitions' st=StateTransition)? // or IDs, [Refs], to be defined above? [R] OAS comment?
-	('compensated' 'by' undo=[Operation])? // experimental, could also be expressed as link relation
-	('protected' 'by' policies=SecurityPolicies)?
-;
-
-// TODO how would service contracts for Web Sockets conversations look like? [R, O]
-
-// TODO tbd/tbc CML is more expressive here
-StateTransition:
-	'from' from=STRING 'to' to=STRING
-;
-
-RelationshipLink:
-	name=STRING ':' lcref=[LinkContract]
-;
-
-StatusReports:
-	reportList+=StatusReport+
-;
-
-StatusReport:
-	('status' | 'error' | 'analytics') name=ID reportData=ElementStructure?
-;
-
-SecurityPolicies:
-	policyList+=SecurityPolicy+
-;
-
-SecurityPolicy: 
-	 'policy' name=ID securityObject=ElementStructure?
-;
-
-// TODO implement new ones in validators and OAS generator, use/document variants consistently
-// new variants (required for HTTP verb mapping): STATE_REPLACEMENT_OPERATION (better: "FULL_UPDATE_OPERATION" and "PARTIAL_UPDATE_OPERATION") and STATE_DELETION_OPERATION
-OperationResponsibility: cf='COMPUTATION_FUNCTION' | sco='STATE_CREATION_OPERATION' | ro='RETRIEVAL_OPERATION' | sto='STATE_TRANSITION_OPERATION' | ep='EVENT_PROCESSOR' | bap='BUSINESS_ACTIVITY_PROCESSOR' | sro='STATE_REPLACEMENT_OPERATION' | sdo='STATE_DELETION_OPERATION' | other=STRING;
-// EVENT_PROCESSOR is a variant of SCO, BUSINESS_ACTIVITY_PROCESSOR is a variant of STO
-
-MessageExchangePattern: 'ONE_WAY' | 'REQUEST_REPLY' | 'NOTIFICATION' | STRING; // TODO [O, R] add SERVER_SENT_EVENTS and gRPC 1:n, n:1, n:m?  
-	
-DataTransferRepresentation:
-	('headers' headers=ElementStructure)? 
-	'payload' payload=ElementStructure // this could be an embedded XSD or JSON Schema (or an external one referenced via URI, see V4.x bindings)
-	('structured' 'as' ts=TypeSystem)? 
-;
-
-TypeSystem: 
-	'MAP_TYPE' | 'JOLIE_TYPE' | 'JSON_SCHEMA' | 'XML_SCHEMA' |'PROTOCOL_BUFFER' | 'AVRO_SCHEMA' | 'THRIFT_TYPE' | 'GRAPHQL_SDL' | 'OTHER' // TODO allow a STRING here?
-;
-
 
 // *** C.1: provider/endpoint part 
 
 Provider:
-	(ap= 'API' 'provider' ) // | ms= 'Message' 'sender' (MOM support was experimental)
+	'API' 'provider' // | ms= 'Message' 'sender' (MOM support was experimental)
 	name=ID
 	('version' svi=SemanticVersioningIdentifier)? 
 	// ('contained' 'in' parent=[Provider])? // removed implement this "subresourcing" (OAS has it), superseeded by new binding
@@ -443,7 +449,7 @@ EndpointList:
 ;
 
 EndpointInstance: 
-	'at' 'endpoint' 'location' name=STRING
+	'at' 'endpoint' 'location' location=STRING // TODO try to rename: "name" triggers XText uniqueness check, not desired here (?) 
 	pb+=TechnologyBinding+ // changed from * to + on Dec 12, 2020 (documentation TODO)
 	('with' 'endpoint' sla=SLA)? // SLA is optional
 	('endpoint' 'governance'  evolStrat=EvolutionStrategy)?
@@ -480,12 +486,12 @@ HTTPBinding:
 ;
 
 HTTPResourceBinding:
-	// TODO make resource name=ID optional? need to check tools carefully (used in binding)
+	// decided not make resource name=ID ... optional (used in binding)
     'resource' name=ID ('at' uri=STRING)? (tB+=HTTPTypeBinding* opsB+=HTTPOperationBinding+)?
 ;
 
 CustomMediaType: 
-	// TODO support full RFC as enum and do more with custom MIME types (required for REST ML 3)
+	// TODO support full RFC as enum and do more with custom MIME types (required for REST maturity level 3)
 	'media' 'type' name=ID 'as' value=STRING 
 ;
 
@@ -493,14 +499,14 @@ HTTPTypeBinding:
 	CustomMediaType
 	| 'data' 'type' dt=[DataContract] 'to' (mt+=[CustomMediaType] | smt+=StandardMediaType)+
 	| 'relation' 'type' lt=[LinkContract] 'to' hml=HypermediaLink 
-	// TODO (tbd) anything to be bound for event types (new feature)? 
+	// TODO (tbd) anything to be bound for event types and command types (new features in V5.3)? 
 ;
 
 StandardMediaType:
 	ianaName=STRING // link types vs. MIME types
 ;
 
-HypermediaLink: // this is the DAP [C] from "REST in Practice" 
+HypermediaLink: // this is the DAP concept from "REST in Practice" 
 	// TODO use or reference JSON-LS or HAL or IANA or ALPS or ...?
 	'{' (local=[HTTPResourceBinding]|external=STRING) (',' verb=HTTPVerb (',' cmt=[CustomMediaType])?)? '}'
 ;
@@ -559,7 +565,7 @@ JavaParameterBinding:
 	'element' (boundParameter=ID|any='*') 'realized' 'as' pm=JavaParameter 'type' // HTTP has more here
 ;
 
-enum JavaParameter: byte | short | int | long | float | double | boolean | char | String; // String needed? 
+enum JavaParameter: byte | short | int | long | float | double | boolean | char | String; // TODO String needed? or object/DTO required?
 
 
 GRPCBinding:
@@ -609,7 +615,8 @@ RateLimit:
 	'rate' 'limit' (none='NONE' | "MAX_CALLS" callRate=SimpleMeasurement | "DATA_QUOTA" dataRate=SimpleMeasurement) "within" interval=SimpleMeasurement// note: just a PoC/demo, can be modeled much better (see pattern/books)	
 ;
 
-enum SLAType : NONE  | IMPLICIT | INFORMAL | QUALITATIVE | QUANTITATIVE
+enum SLAType: 
+	NONE  | IMPLICIT | INFORMAL | QUALITATIVE | QUANTITATIVE
 ;
 
 SLO:
@@ -655,8 +662,12 @@ Consumption:
 	'consumes' contract=[EndpointContract]
 	// if present, the provider reference creates a fixed binding between client and server:
 	('from' providerReference=[Provider] | 'through' gatewayReference=[Gateway])? // could also go down to endpoint level
-	('via' 'protocol'  binding+=ProtocolBinding)? // must match provider-side information (linter!)
-	// TODO this syntax requires resource binding to be specified since V5.0 (for HTTP protocol)
+	('via' 'protocol'  binding+=ClientBinding)? // must match provider-side information (linter!)
+	// old syntax required resource binding to be specified since V5.0 (for HTTP protocol); this is fixed now (in slightly incompatible way)
+;
+
+ClientBinding:
+    http='HTTP' | grpc='gRPC' | java='Java' | OtherBinding // TODO add more precision, e.g. implementation info such as Feign?
 ;
 
 MessageEndpoint:
@@ -672,7 +683,7 @@ MessageEndpoint:
 ;
 
 enum MessageEndpointType:
-	TRANSACTIONAL_CLIENT | POLLING_CONSUMER | EVENT_DRIVEN_CONSUMER | IDEMPOTENT_RECEIVER | MESSAGING_GATEWAY | MESSAGING_MAPPER | COMPETEING_CONSUMER | MESSAGE_DISPATCHER | SELECTIVE_CONSUMER | DURABLE_SUBSCRIBER | SERRVICE_ACTIVATOR
+	TRANSACTIONAL_CLIENT | POLLING_CONSUMER | EVENT_DRIVEN_CONSUMER | IDEMPOTENT_RECEIVER | MESSAGING_GATEWAY | MESSAGING_MAPPER | COMPETEING_CONSUMER | MESSAGE_DISPATCHER | SELECTIVE_CONSUMER | DURABLE_SUBSCRIBER | SERVICE_ACTIVATOR // typo fixed, TODO test
 ;
 
 AsyncConsumptionFromBroker:
@@ -684,6 +695,7 @@ AsyncConsumptionFromBroker:
 // this rule is actually used, [reference] in next two rules:
 Channel:
 	ChannelContract | RequestChannel | ReplyChannel
+	// TODO (M) change to cc=ChannelContract | reqc=RequestChannel | repc=ReplyChannel (impact on Xtend?)
 ;
 
 AsyncConsumptionNoProtocolBinding:
@@ -697,13 +709,11 @@ AsyncConsumptionWithProtocolBinding:
 	(binding+=ProtocolBinding)?
 ;
 
-
 WhereConstruct:
 	{WhereConstruct} 'where' 
 	(whereClauses+=ConsumptionWhereClauses (',' whereClauses+=ConsumptionWhereClauses)*)?
 		((',')? 'all' 'subscriptions' 'are' 'durable')?
 ;
-
 
 ConsumptionWhereClauses:
 		'consumed' 'if' leftExp=STRING op=BinaryOperator rightExpr=IfExpr
@@ -721,20 +731,19 @@ BinaryOperator:
 Gateway:
 	('API' 'gateway' ) name=ID // | 'Message' 'broker' removed, was experimental
 	('version' svi=SemanticVersioningIdentifier)? 
-	gateList+=Gate+
-	('evolution' 'governance'  evolStrat=EvolutionStrategy)?
+	gateList+=Gate+ // TODO need to implement validators (and adjust existing HTTP binding one)
+	('evolution' 'governance' evolStrat=EvolutionStrategy)?
 ;
 
 Gate:
 	( 'offers' )  upstreamContract+=[EndpointContract]+ // | 'publishes' removed, was experimental
 	endpoints+=EndpointInstance+ 
-
-     cons+=Consumption
-     ('mediates' dts+=DataTransformation)*
+    cons+=Consumption
+    ('mediates' dts+=DataTransformation)*
 ;
 
 DataTransformation:
-	'from' indc=[DataContract] 'to' outdc=[DataContract]
+	'from' indc=[DataContract] 'to' outdc=[DataContract] // TODO (V5.3, V6.0): add implementation hook/exit/callback info?
 ;
 
 
@@ -749,6 +758,9 @@ ProviderImplementation:
 	| 'with' 'binding' downstreamBinding=[Provider])? // reference to Java protocol binding (optional)
 ;
 
+// TODO add Data Transformation here (an API implementation may have data model that differs from that of API)
+// it can be seen as a gateway from HTTP to local Java so might not need this grammar part at all (tbd) 
+
 enum ImplementationTechnology: PlainJava /* | SpringMVC | vlingo */ | STRING
 ;	
 
@@ -756,47 +768,140 @@ enum ImplementationTechnology: PlainJava /* | SpringMVC | vlingo */ | STRING
 // *** D: Service Orchestration (Events, Commands) and Integration Stories
 
 IntegrationScenario:
-	"scenario" name=ID (stories+=IntegrationStory)*
+	'scenario' name=ID ('type' type=ScenarioType)? stories+=IntegrationStory* // TODO could add related+=RelatedScenarios*
+ ;
+
+enum ScenarioType:
+	BUSINESS_API | FRONTEND_INTEGRATION_SCENARIO | BACKEND_INTEGRATION_SCENARIO // tbd others?
 ;
 
 IntegrationStory:
-	('when' condition=STRING)?
+	('story' name=ID ('type' type=StoryType)? related+=RelatedStories*)? // for compatibility
+	('when' condition=STRING)? 
 	('a'|'an'|'the') (client=STRING | 'API' 'client') // location, description? 
-	'wants' 'to' action=STRING // TODO tbd: add steps here, that reference commands?
-	('so' 'that' goal=STRING)?
+	// action can become command detail (data?)
+	'wants' 'to' action=Action on+=StoryObject* // TODO add attributes and relations too (see CML)?
+	('yielding' outcome=STRING)? // postcondition 
+	('so' 'that' goal=STRING)? // business impact/effect
 ;
 
-// copied and adapted from CML grammar at https://github.com/ContextMapper/context-mapper-dsl/blob/master/org.contextmapper.dsl/src/org/contextmapper/dsl/ContextMappingDSL.xtext
+Action:
+	plainAction=STRING | keyword=ActionKeyword ('a'|'an'|'the')? target=STRING // TODO could try '*' here (CRUD in single story)
+;
+
+// experimental:
+enum ActionKeyword:
+	CRUD | CQRS // TODO tbd, add something for MAP stories, e.g. DTR, LLR? 
+	// most keywords break operation naming - if present, operations can't be called create etc. (tests fail too)
+	// create | read | update | delete | search | lookup | replace | add | remove 
+;
+
+// TODO 5.3.1: add 'on' and 'from'
+StoryObject:
+	('with'|'against'|'for'|'at'|'in'|'to')? ('a'|'an'|'the')? object=STRING // more=StoryObject 
+;
+
+enum StoryType:
+	USER_STORY | JOB_STORY | TEST_CASE | API_MOCK // analysis vs. design? 
+;
+
+RelatedStories:
+	'follows' related+=[IntegrationStory] | 'alternative' 'to' related+=[IntegrationStory] | 'parallel' 'to' related+=[IntegrationStory]
+;
+
+// flow syntax adapted from CML grammar at https://github.com/ContextMapper/context-mapper-dsl/blob/master/org.contextmapper.dsl/src/org/contextmapper/dsl/ContextMappingDSL.xtext
 
 Orchestration:
-	"flow" name=ID ('realizes' scenario=[IntegrationScenario])? steps+=FlowStep*
+	'flow' name=ID ('realizes' scenario=[IntegrationScenario])? ('type' type=FlowType)? 
+	steps+=FlowStep* 
+	flowBinding=OrchestrationBinding?
+;
+
+enum FlowType: 
+	APPLICATION_FLOW  | INTEGRATION_FLOW /* EIP */ | SERVICE_ORCHESTRATION | API_CALL_SEQUENCING /* conversation in MAP */ | EVENT_SOURCING
+;
+
+// experimental flow binding (not from CML):
+ 
+OrchestrationBinding:
+	'binding' /* 'flow' */ 'to' (eptb+=EndpointTypeBinding|cb+=ChannelBinding)+
+	('implemented' 'as' ft=FlowTechnology)? // TODO add detailed information required for code generation, e.g., Aggregator timeouts in Camel
+;
+
+EndpointTypeBinding:
+	'endpoint' 'type' epcs+=[EndpointContract] stepBindings+=StepToEndpointBinding* ('provider' provider=[Provider])? // and/or ('client' client=[Client])? or Gateway?
+;
+
+ChannelBinding:
+	'channel' 'type' channels+=[ChannelContract] stepBindings+=StepToChannelBinding* ('provider' provider=[MessageBroker])? // TODO test; add MessageEndpoint too?
+;
+
+FlowTechnology:
+	'APACHE_CAMEL_ROUTE' | 'SPRING_INTEGRATION_FLOW' | 'BPMN_PROCESS' | 'BPEL_PROCESS' | 'YET_ANOTHER_FLOW_LANGUAGE' | 'PLAIN_PROGRAMMING' | STRING // TODO test (do I get to the strings this way, prefixes needed?)
+;
+
+StepToEndpointBinding:
+	eob=EventToOperationBinding | cob=CommandToOperationBinding // tbd: e.g. Feign or JAX-RS as impl. tech.?
+;
+
+StepToChannelBinding:
+	emb=EventToMessageBinding | cmb=CommandToMessageBinding // tbd: e.g. Feign or JAX-RS as impl. tech.?
+;
+
+EventToOperationBinding:
+	'event' event=[EventType] 'to' 'operation' operation=ID // TODO validate ID in linter
+	('with' 'mediation' dt=DataTransformation)? // TODO experimental: test, document
+;
+
+CommandToOperationBinding:
+	'command' command=[CommandType] 'to' 'operation' operation=ID // TODO validate ID in linter
+	('with' 'mediation' dt=DataTransformation)? // TODO experimental: test, document
+;
+
+EventToMessageBinding:
+	'event' event=[EventType] 'to' 'message' requesReplyChannelMessage=ID // AsyncMDSL: [Message] not possible
+	// TODO mediation? could be separate channel/filter/channel config. with ContentFilter, etc. (EIPs)
+;
+
+CommandToMessageBinding:
+	'command' command=[CommandType] 'to' 'message' oneWayChannelMsg=ID // AsyncMDSL: [Message] not possible
+	// TODO mediation? could be separate channel/filter/channel config. with ContentFilter, etc. (EIPs)
 ;
 	
-ServiceOperation: (typeref=ID '.')? opref=ID; // can't reference [operations], regrettably
+// ServiceOperation: (typeref=ID '.')? opref=ID; // can't reference [operations], regrettably
 
 FlowStep:
 	depStep=DomainEventProductionStep | cisStep=CommandInvokationStep | eceStep=CombinedInvocationStep
 ;
+
+// TODO add <<EIP>> decorators, for instance for Aggregation strategy and wait behavior
 
 CombinedInvocationStep:
 	cisStep=CommandInvokationStep ('emits'|'emit') ('event'|'events') eventProduction=EventProduction
 ;
 
 DomainEventProductionStep:
-	action=EitherCommandOrOperation ('delegates' 'to' aggregate=[EndpointContract] ('[' stateTransition=StateTransition ']')?)?  ('emits'|'emit') ('event'|'events') eventProduction=EventProduction
+	// this corresponds to app flow state transitions in CML, see https://contextmapper.org/docs/application-and-process-layer/
+	// simplified not to break SOAD refinement flow, renamed aggregate=[EndpointContract] to contractAndOperation=[EndpointContract]
+	action=EitherCommandOrOperation /* ('delegates' 'to' contractAndOperation=[EndpointContract] ('[' stateTransition=StateTransition ']')?)?  */ ('emits'|'emit') ('event'|'events') eventProduction=EventProduction
 ;
 
 // no OR, no XOR here (not needed/wanted):
 CommandInvokationStep:
-	('event'|'events') events+=[DomainEvent] (('+' | 'and' )  events+=[DomainEvent])* ('triggers'|'trigger') action=EitherCommandOrOperationInvokation
+	('event'|'events') events+=[EventType] (('+' | 'and' ) events+=[EventType])* ('triggers'|'trigger') action=EitherCommandOrOperationInvokation
 ;
 
+// no AND, OR, no XOR here (not needed/wanted? check CML)
 EitherCommandOrOperation:
-	('command' command=[CommandType] | 'operation' operation=ServiceOperation) ('[' 'initiated' 'by' actor=STRING ']')?
+	('command' command=[CommandType] /* | 'operation' operation=ServiceOperation */) ('[' 'initiated' 'by' actor=STRING ']')?
 ;
 
 EitherCommandOrOperationInvokation:
-	ci=CommandInvokation | oi=OperationInvokation
+	ci=CommandInvokation | spi=SubProcessInvocation /* | oi=OperationInvokation */ // taken out (from CML)
+;
+
+SubProcessInvocation:
+	'flow' subprocess=[Orchestration] // TODO test
 ;
 
 CommandInvokation:
@@ -819,45 +924,26 @@ InclusiveAlternativeCommandInvokation:
 	commands+=[CommandType] (('O' | 'o' | 'or' ) commands+=[CommandType])+
 ;
 
-OperationInvokation:
-	('operation'|'operations') (soi=SingleOperationInvokation | coi=ConcurrentOperationInvokation | eaoi=ExclusiveAlternativeOperationInvokation | iaoi=InclusiveAlternativeOperationInvokation)
-;
-
-SingleOperationInvokation:
-	operations+=ServiceOperation // TODO need to identify endpoint type and operation in it
-;
-
-ConcurrentOperationInvokation:
-	operations+=ServiceOperation (('+' | 'and' ) operations+=ServiceOperation)+
-;
-
-ExclusiveAlternativeOperationInvokation:
-	operations+=ServiceOperation (('X' | 'x' | 'alternatively' ) operations+=ServiceOperation)+
-;
-
-InclusiveAlternativeOperationInvokation:
-	operations+=ServiceOperation (('O' | 'o' | 'or') operations+=ServiceOperation)+
-;
+// operation related rules from CML removed
 
 EventProduction:
 	sep=SingleEventProduction | mep=MultipleEventProduction | eaep=ExclusiveAlternativeEventProduction | iaep=InclusiveAlternativeEventProduction
 ;
 
 SingleEventProduction:
-	events+=[DomainEvent]
+	events+=[EventType]
 ;
 
 MultipleEventProduction:
-	events+=[DomainEvent] (('+' | 'and' ) events+=[DomainEvent])+
+	events+=[EventType] (('+' | 'and' ) events+=[EventType])+
 ;
 
 ExclusiveAlternativeEventProduction:
-	events+=[DomainEvent] (('X' | 'x' | 'alternatively') events+=[DomainEvent])+
+	events+=[EventType] (('X' | 'x' | 'alternatively') events+=[EventType])+
 ;
 
 InclusiveAlternativeEventProduction:
-	events+=[DomainEvent] (('O' | 'o' | 'or') events+=[DomainEvent])+
+	events+=[EventType] (('O' | 'o' | 'or') events+=[EventType])+
 ;
-// end of CML grammar copy and adoption
 
 // ** End of MDSL grammar 

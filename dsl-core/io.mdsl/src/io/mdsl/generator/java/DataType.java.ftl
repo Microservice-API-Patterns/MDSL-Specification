@@ -16,6 +16,7 @@ import java.util.List;
  * TODO: You can fix this by providing a corresponding name in the MDSL contract (regenerate) or rename the class right here (use rename refactoring).
 </#if>
  */
+// TODO put Lombok annotations here (optionally/alternatively, can go to separate template)
 public class ${mapType(dataType.name)} {
 
 	<#if !dataType.fields?has_content>
