@@ -37,7 +37,7 @@ provider governance AGGRESSIVE_OBSOLESCENCE
 API client SampleAPIClient
   consumes SomeDemoContract
   from SampleAPIProvider1
-  via protocol HTTP binding resource SampleAPIProvider1Resource
+  via protocol HTTP 
 
 API gateway SampleAPIGatweway
   offers SomeDemoContract
