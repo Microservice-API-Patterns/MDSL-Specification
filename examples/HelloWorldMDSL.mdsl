@@ -8,9 +8,11 @@ exposes
     expecting payload D<string>  
     delivering payload SampleDTO 
 
-API provider HelloWorldAPIProvider1
-offers HelloWorldEndpoint
-
+API provider HelloWorldAPIProvider
+  offers HelloWorldEndpoint at endpoint location "http://localhost:8080"
+  via protocol HTTP 
+  binding resource Home at "/hello"
+    operation sayHello to POST
 
 API client HelloWorldAPIClient1
 consumes HelloWorldEndpoint

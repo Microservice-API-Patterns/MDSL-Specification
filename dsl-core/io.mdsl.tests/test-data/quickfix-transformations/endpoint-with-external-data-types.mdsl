@@ -1,0 +1,22 @@
+API description QuickFixTransformationTestAPI
+version "Since version 5.4.2"
+overview "Testing the SOAD transformations and API refactorings"
+
+data type TestType1 P
+data type TestType2 "idOnly"
+data type TestType3 "id":P
+data type TestType4 D
+data type TestType5 Link<string>
+
+data type SampleBusinessObjectDTO {"sampleBusinessObject":D}
+data type SampleContextRepresentation {"sessionId":ID<int>, "qosQualifier":MD<string>}
+
+endpoint type Sample_Scenario_1RealizationEndpoint 
+  exposes
+    operation doSomething1 expecting payload TestType1 delivering payload TestType2
+    operation doSomething2 expecting payload TestType3 delivering payload TestType4
+    operation doSomething3 expecting payload "inp": TestType5 delivering payload "outp": SampleBusinessObjectDTO
+    operation doSomething4 expecting payload {TestType1 , TestType2} delivering payload {TestType3 , TestType4}
+    
+    operation doSomethingInContext expecting payload {"p1":TestType1 , "p2": TestType2*} delivering "outp": SampleBusinessObjectDTO
+

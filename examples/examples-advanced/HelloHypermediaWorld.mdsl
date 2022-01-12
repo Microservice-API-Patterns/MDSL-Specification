@@ -51,7 +51,7 @@ API provider RESTLevel3Provider
         accepts CustomMediaTypeRepresentationJSON 
         replies "application/vnd.restbucks.order-payment+json" 
     
-    resource ResourceForStep2 at "/home/{id}"
+    resource ResourceForStep2 at "/home/{id2}"
       
       media type ProcessTerminationInformation as "application/vnd.myHALinstance+json" 
       relation type InternalStateTransferLink2 to {Home, PUT} // CMT not defined here for GET on "/home/{id} 

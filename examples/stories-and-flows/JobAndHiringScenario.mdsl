@@ -1,0 +1,18 @@
+API description AllStoryOptions
+
+scenario JobPortalMatchmaking
+  story Interview
+   when "a job candidate is found"
+    a "HR consultant" // role
+    wants to "startInterviewProcess" at "LocationSet" // business activity 
+    yielding "an employment contract"
+    so that "company can grow" // goal 
+    
+  story JobOffer
+    a "department head" // role
+    wants to CRUD "JobOffer" with "positionName" and "jobResponsibilities" and "expectedSkills" and "offeredSalary"
+    
+  story Candidate
+    a "candidate" // role
+    wants to CQRS "JobOffer"
+    so that "they find a new job"

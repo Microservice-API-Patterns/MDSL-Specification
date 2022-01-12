@@ -22,7 +22,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import io.mdsl.generator.model.carving.ClusterCollection;
-import io.mdsl.generator.model.composition.OrchestrationFlow;
+import io.mdsl.generator.model.composition.Flow;
 
 /**
  * The root class of the MDSL generator model. This model shall ease the
@@ -37,7 +37,7 @@ public class MDSLGeneratorModel {
 	private List<Provider> providers;
 	private List<Client> clients;
 	private List<ProviderImplementation> providerImplementations;
-	private LinkedList<OrchestrationFlow> orchestrationFlows;
+	private LinkedList<Flow> orchestrationFlows;
 	private List<ClusterCollection> cuts; // TODO list of collections (n heuristics)
 
 	/**
@@ -115,7 +115,7 @@ public class MDSLGeneratorModel {
 	 * 
 	 * @return a list of all provider implementations of the MDSL API
 	 */
-	public LinkedList<OrchestrationFlow> getOrchestrationFlows() {
+	public LinkedList<Flow> getOrchestrationFlows() {
 		return Lists.newLinkedList(orchestrationFlows);
 	}
 
@@ -165,7 +165,7 @@ public class MDSLGeneratorModel {
 		this.providerImplementations.add(providerImplementation);
 	}
 
-	public void addOrchestration(OrchestrationFlow oFlow) {
+	public void addOrchestration(Flow oFlow) {
 		this.orchestrationFlows.add(oFlow);
 	}
 

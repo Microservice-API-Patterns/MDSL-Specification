@@ -1,0 +1,31 @@
+API description MAPRoleAndResponsibilityTransformationTest
+version "MDSL 5.4 (and up)"
+
+endpoint type Test_Endpoint1 serves as PROCESSING_RESOURCE
+
+endpoint type Test_Endpoint2 serves as INFORMATION_HOLDER_RESOURCE
+
+endpoint type Test_Endpoint3 serves as OPERATIONAL_DATA_HOLDER and MUTABLE_COLLECTION_RESOURCE
+
+endpoint type Test_Endpoint4 serves as MASTER_DATA_HOLDER and COLLECTION_RESOURCE
+
+endpoint type Test_Endpoint5 serves as REFERENCE_DATA_HOLDER
+
+endpoint type Test_Endpoint6 serves as DATA_TRANSFER_RESOURCE
+
+endpoint type Test_Endpoint7 serves as LINK_LOOKUP_RESOURCE
+
+endpoint type Test_Endpoint8 serves as VALIDATION_RESOURCE
+
+endpoint type Test_Endpoint9 serves as TRANSFORMATION_RESOURCE
+
+endpoint type Test_Endpoint10 serves as STATELESS_PROCESSING_RESOURCE // not a MAP
+
+endpoint type Test_Endpoint11 serves as STATEFUL_PROCESSING_RESOURCE
+
+endpoint type Test_Endpoint12 serves as "SOME_OTHER_RESOURCE" // not a MAP
+
+// TODO test an endpoint that has all role decorators
+
+
+

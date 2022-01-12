@@ -1,0 +1,24 @@
+API description FlowTest3b
+version "MDSL 5.4 (and up)"
+overview "http://www.workflowpatterns.com/patterns/control/basic/wcp4.php and http://www.workflowpatterns.com/patterns/control/basic/wcp5.php"
+
+event type FlowInitiated
+event type FlowStep1CompletedOutcomeA, FlowStep1CompletedOutcomeB, FlowStep2Completed, FlowStep3Completed
+event type FlowTerminated
+
+command type FlowStep1
+command type FlowStep2
+command type FlowStep3
+command type FlowStep4
+
+flow InclusiveChoiceWithAndMerge type SERVICE_ORCHESTRATION
+
+  event FlowInitiated triggers command FlowStep1
+  command FlowStep1 emits event FlowStep1CompletedOutcomeA xor FlowStep1CompletedOutcomeB
+  event FlowStep1CompletedOutcomeA triggers command FlowStep2 
+  event FlowStep1CompletedOutcomeB triggers command FlowStep3 
+  command FlowStep2 emits event FlowStep2Completed
+  command FlowStep3 emits event FlowStep3Completed
+  // TODO provide aggregation strategy "first come first serve" in Aggregator class (see EIP, Camel doc.)
+  event FlowStep2Completed and FlowStep3Completed  trigger command FlowStep4
+  command FlowStep4 emits event FlowTerminated

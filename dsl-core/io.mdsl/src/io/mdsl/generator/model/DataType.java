@@ -17,6 +17,7 @@ package io.mdsl.generator.model;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
 
 import com.google.common.collect.Lists;
 
@@ -27,6 +28,10 @@ public class DataType implements MDSLType {
 
 	private String name;
 	private List<DataTypeField> fields;
+	// TODO v55 role (basic types) and element stereotype (all types)
+
+	private String version = "N/A";
+	private String defaultValue;
 
 	/**
 	 * Creates a new data type.
@@ -82,6 +87,53 @@ public class DataType implements MDSLType {
 
 	@Override
 	public boolean isAtomic() {
+		if(fields.size()>1) {
+			return false;
+		}
+		
+		if(fields.get(0).getType() instanceof BasicType) {
+			return true;
+		}
+		
 		return false;
+	}
+	
+	@Override 
+	public String sampleJSONWithEscapedQuotes(int levelOfDetail) {
+		String result = this.sampleJSON(levelOfDetail);
+		return result.toString().replaceAll("\"", Matcher.quoteReplacement("\\\""));
+	}
+
+	@Override
+	public String sampleJSON(int levelOfDetail) {
+		/*
+		if(this.defaultValue!=null&&!this.defaultValue.equals("")) {
+			// not checked for correctness, not mapped from abstract MDSL to JSON yet
+			return this.defaultValue;
+		}
+		*/
+		
+		StringBuffer result = new StringBuffer(/*'"' + name + "\": */ "{ ");
+		result.append("\"_version\": \"" + getVersion() + "\"");
+		// TODO better solution for comma separation, full loop
+		fields.forEach(field->result.append(field.sampleJSON(levelOfDetail))); 
+		result.append("}");
+		return result.toString();
+	}
+	
+	public String getVersion() {
+		return this.version;
+	}
+	
+	public String getDefaultValue() {
+		return this.defaultValue;
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	public void setVersion(String svi) {
+		this.version = svi;
 	}
 }

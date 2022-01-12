@@ -1,6 +1,7 @@
 API description TestAPI
 
 data type Test P
+data type VoidType MD<void>
 
 endpoint type TestEndpoint
   serves as INFORMATION_HOLDER_RESOURCE
@@ -11,4 +12,13 @@ endpoint type TestEndpoint
       delivering
         payload Test
 
+endpoint type TestEndpoint2
+  serves as PROCESSING_RESOURCE
+  exposes
+    operation testVoidSignature
+      expecting
+        payload "attr1":D<void>
+      delivering
+        payload VoidType
+        
 IPA

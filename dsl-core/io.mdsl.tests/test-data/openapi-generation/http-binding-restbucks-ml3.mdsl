@@ -44,7 +44,7 @@ endpoint type OrderManagementEndpoint
       delivering
         payload "oid": ID<int> // the unique identifier of the order (for further processing) 
         links 
-         "payment": PaymentLinkRelation // PaymentLink // DAP here: payment resource next
+         "Payment": PaymentLinkRelation // PaymentLink // DAP here: payment resource next
          "extPayment": ExternalPaymentLinkRelation
         reporting 
           status rep1

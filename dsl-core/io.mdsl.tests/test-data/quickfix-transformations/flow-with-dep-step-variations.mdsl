@@ -1,0 +1,21 @@
+API description FlowMergeTest
+
+event type e1, e2, e3, e4
+command type c1, c2
+
+flow TestFlow1
+  command c1 emits event e1  
+  command c2 emits event e2
+  command c1 emits event e3 x e1
+  command c1 emits event e4
+  event e3 triggers command c1 
+  
+flow TestFlow2
+  event e3 triggers command c1 
+  command c1 emits event e1  
+  command c2 emits event e2
+  command c1 emits event e3 x e1
+  command c1 emits event e1
+  event e3 triggers command c1 
+
+

@@ -1,179 +1,145 @@
 package io.mdsl.transformations;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.xtext.EcoreUtil2;
+import org.apache.commons.lang.WordUtils;
 
-import io.mdsl.apiDescription.ApiDescriptionFactory;
-import io.mdsl.apiDescription.AtomicParameter;
-import io.mdsl.apiDescription.Cardinality;
-import io.mdsl.apiDescription.ElementStructure;
-import io.mdsl.apiDescription.EventType;
-import io.mdsl.apiDescription.GenericParameter;
-import io.mdsl.apiDescription.RoleAndType;
+import io.mdsl.apiDescription.DataContract;
 import io.mdsl.apiDescription.ServiceSpecification;
 import io.mdsl.apiDescription.SingleParameterNode;
 import io.mdsl.apiDescription.TreeNode;
 
 public class DataTypeTransformationHelpers {
-	public static EventType addEventTypeIfNotPresent(ServiceSpecification ss, String suggestedName) {
+	static final String VOID = "void";
+	static final String DOUBLE = "double";
+	static final String LONG = "long";
+	static final String RAW = "raw";
+	static final String BOOL = "bool";
+	static final String STRING = "string";
+	static final String INT = "int";
+
+	static final String ID_ROLE = "ID";
+	final static String METADATA_ROLE = "MD";
+	static final String DATA_ROLE = "D";
+	static final String LINK_ROLE = "L";
 	
-		for(EventType exEv : EcoreUtil2.eAllOfType(ss, EventType.class)) {
-			if(exEv.getName().equals(suggestedName))
-				TransformationHelpers.reportError(suggestedName + " already exists as a domain event. Please rename the triggering flow.");
-		}
-		
-		EventType de = ApiDescriptionFactory.eINSTANCE.createEventType();
-		de.setName(suggestedName);
-		AtomicParameter flag = DataTypeTransformationHelpers.createMetadataParameter("eventDetails", "string");
-		// could also add other event data
-		de.setContent(DataTypeTransformationHelpers.wrapAtomicParameterAsElementStructure(flag));
-		
-		return de;
-	}
-
-	public static ElementStructure wrapGenericParameterNodeAsElementStructure(GenericParameter genP) {
-		SingleParameterNode spn = ApiDescriptionFactory.eINSTANCE.createSingleParameterNode();
-		spn.setGenP(genP);
-		ElementStructure es =  ApiDescriptionFactory.eINSTANCE.createElementStructure();
-		es.setNp(spn);
-		return es;
-	}
-
-	public static ElementStructure wrapAtomicParameterAsElementStructure(AtomicParameter ap) {
-		// TODO refactor?
-		SingleParameterNode spn = ApiDescriptionFactory.eINSTANCE.createSingleParameterNode();
-		spn.setAtomP(ap);
-		ElementStructure es =  ApiDescriptionFactory.eINSTANCE.createElementStructure();
-		es.setNp(spn);
-		return es;
-	}
-
-	public static TreeNode wrapAtomicParameterAsTreeNode(AtomicParameter ap) {
-		TreeNode result = ApiDescriptionFactory.eINSTANCE.createTreeNode();
-		SingleParameterNode spn = ApiDescriptionFactory.eINSTANCE.createSingleParameterNode();
-		spn.setAtomP(ap);
-		result.setPn(spn);
-		return result;
-	}
-
-	public static GenericParameter createGenericParameter(String name) {
-		GenericParameter genP = ApiDescriptionFactory.eINSTANCE.createGenericParameter();
-		genP.setName(name);
-		return genP;
-	}
-
-	public static AtomicParameter createAtomicDataParameter(String name, String dataType) {
-		RoleAndType newRaT = ApiDescriptionFactory.eINSTANCE.createRoleAndType();
-		newRaT.setName(name);
-		newRaT.setRole("D");
-		if(dataType!=null) {
-			if(!isValid(dataType)) 
-				TransformationHelpers.reportError("Can't use " + dataType + " as type of " + name + ": not a valid MDSL base type.");
-			else 
-				newRaT.setBtype(dataType);
-		}
-		AtomicParameter ap = ApiDescriptionFactory.eINSTANCE.createAtomicParameter();
-		ap.setRat(newRaT);
-		return ap;
-	}
-
-	public static AtomicParameter createMetadataParameter(String name, String dataType) {
-		// TODO see createDataParameter
-		if(!isValid(dataType)) {
-			TransformationHelpers.reportError("Can't use " + dataType + " as type of " + name + ": not a valid MDSL base type.");
-		}
-		RoleAndType newRaT = ApiDescriptionFactory.eINSTANCE.createRoleAndType();
-		newRaT.setName(name);
-		newRaT.setRole("MD");
-		newRaT.setBtype(dataType); 
-		AtomicParameter ap = ApiDescriptionFactory.eINSTANCE.createAtomicParameter();
-		ap.setRat(newRaT);
-		return ap;
-	}
-
-	public static AtomicParameter createLinkParameter(String name) {
-		RoleAndType newRaT = ApiDescriptionFactory.eINSTANCE.createRoleAndType();
-		newRaT.setName(name);
-		newRaT.setRole("L");
-		newRaT.setBtype("string"); // we do not have string ranges yet ([O] Spring SPeL?)
-		AtomicParameter ap = ApiDescriptionFactory.eINSTANCE.createAtomicParameter();
-		ap.setRat(newRaT);
-		return ap;
-	}
-
-	public static TreeNode turnAtomicParameterIntoTreeNode(AtomicParameter ap) {
-		SingleParameterNode spn = ApiDescriptionFactory.eINSTANCE.createSingleParameterNode();
-		spn.setAtomP(EcoreUtil.copy(ap));
-		TreeNode tn = ApiDescriptionFactory.eINSTANCE.createTreeNode();
-		tn.setPn(spn);
-		return tn;
-	}
-
-	public static boolean isValid(String dataType) {
-		if(dataType==null)
+	static final String ANONYMOUS_ID = "anonymousNode";
+	static final String ANONYMOUS = "anonymous";
+	static final String ANONYMOUS_TYPE = "AnonymousTypeReference";
+	static final String DTO_SUFFIX = "DTO";
+	
+	static boolean isValidTypeRole(String role) {
+		if (role == null) {
+			// generic parameters (P, "idOnly", D) do not have a type:
 			return false;
-		if(dataType.equals("int"))
+		}
+		if (role.equals(DATA_ROLE)||role.equals(METADATA_ROLE)||role.equals(ID_ROLE)||role.equals(LINK_ROLE)) {
 			return true;
-		if(dataType.equals("string"))
-			return true;
-		if(dataType.equals("bool"))
-			return true;
-		if(dataType.equals("raw"))
-			return true;
-		if(dataType.equals("long"))
-			return true;
-		if(dataType.equals("double"))
-			return true;
-		if(dataType.equals("void"))
-			return true;
+		}
 		return false;
 	}
-	
-	public static void setCardinality(ElementStructure pl, Cardinality card) {
-		if(pl.getPt()!=null) {
-			pl.getPt().setCard(card);
+
+	static boolean isValidBaseType(String dataType) {
+		if (dataType == null || dataType.equals("")) {
+			// type information is optional, so can be absent
+			return true;
 		}
-		if(pl.getApl()!=null) {
-			pl.getApl().setCard(card);
+		if (dataType.equals(INT)) {
+			return true;
 		}
-		if(pl.getNp()!=null) {
-			SingleParameterNode spn = pl.getNp();
-			if(spn.getAtomP()!=null) {
-				spn.getAtomP().setCard(card);
+		if (dataType.equals(STRING)) {
+			return true;
+		}
+		if (dataType.equals(BOOL)) {
+			return true;
+		}
+		if (dataType.equals(RAW)) {
+			return true;
+		}
+		if (dataType.equals(LONG)) {
+			return true;
+		}
+		if (dataType.equals(DOUBLE)) {
+			return true;
+		}
+		if (dataType.equals(VOID)) {
+			return true;
+		}
+		return false;
+	}
+
+	static boolean addIfNotPresent(ServiceSpecification ss, DataContract dt) {
+		for (DataContract type : ss.getTypes()) {
+			if (type.getName().equals(dt.getName())) {
+				return false;
 			}
-			if(spn.getTr()!=null) {
-				spn.getTr().setCard(card);
-			}
-			if(spn.getGenP()!=null)
-				; // no action required
 		}
-		// does PF have a cardinality? all cases caught?
-	}
-
-	public static RoleAndType createRoleAndType(String name, String role, String type) {
-		RoleAndType rat = ApiDescriptionFactory.eINSTANCE.createRoleAndType();
-		rat.setName(name);
-		rat.setRole(role);
-		rat.setBtype(type);
-		return rat;
-	}
-
-	// ** misc helpers
-	
-	public static String replaceSpacesWithUnderscores(String name) {
-		return name.replace(" ", "_");
+		// not found, so can be added:
+		ss.getTypes().add(dt);
+		return true;
 	}
 	
-	public static String decapitalizeName(String name) {
-		// not the most convenient way to decapitalize the start of the name string:
-		String c1 = name.substring(0, 1).toLowerCase();
-		c1 += name.substring(1,name.length());
-		return c1;
-	}	
+	// ** naming related
 
-	public static String capitalizeName(String name) {
-		String c1 = name.substring(0, 1).toUpperCase();
-		c1 += name.substring(1,name.length());
-		return c1;
-	}
+		public static String nameOf(TreeNode tn) {
+			String result = null;
+			if (tn.getPn() != null) {
+				result = nameOf(tn.getPn());
+			} else if (tn.getApl() != null) {
+				result = tn.getApl().getName();
+			} else if (tn.getChildren() != null) {
+				result = tn.getChildren().getName();
+			}
+
+			if (result == null || result.isEmpty()) {
+				result = ANONYMOUS_ID; // will cause validation error (binding level)
+			}
+
+			return result;
+		}
+
+		public static String nameForElement(String name, String prefix) {
+			if (name == null || name.isEmpty()) {
+				return null;
+			} else {
+				return prefix + capitalizeName(name);
+			}
+		}
+
+		public static String nameOf(SingleParameterNode spn) {
+			String result = null;
+			if (spn.getAtomP() != null) {
+				result = spn.getAtomP().getRat().getName();
+			} else if (spn.getGenP() != null) {
+				result = spn.getGenP().getName();
+			} else if (spn.getTr() != null) {
+				result = spn.getTr().getName();
+			}
+
+			if (result == null || result.isEmpty()) {
+				result = ANONYMOUS_ID; // will cause validation error (binding level)
+			}
+
+			return result;
+		}
+
+		public static String replaceSpacesWithUnderscores(String name) {
+			return name.replace(" ", "_");
+		}
+
+		public static String decapitalizeName(String name) {
+			return WordUtils.uncapitalize(name);
+			/*
+			String c1 = name.substring(0, 1).toLowerCase();
+			c1 += name.substring(1);
+			return c1;
+			*/
+		}
+
+		public static String capitalizeName(String name) {
+			return WordUtils.capitalize(name);
+			/*
+			String c1 = name.substring(0, 1).toUpperCase();
+			c1 += name.substring(1);
+			return c1;
+			*/
+		}
 }

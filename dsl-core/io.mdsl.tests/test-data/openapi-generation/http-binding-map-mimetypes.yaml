@@ -1,14 +1,14 @@
 openapi: 3.0.1
 info:
   title: MAPDecoratorAndMIMETest
+  description: PUBLIC_API FRONTEND_INTEGRATION
   version: "1.0"
 servers:
 - url: https://some.sample.domain/mvcEndpoint
 tags:
 - name: FlexibleAndAdaptiveAPIProvider-self
   externalDocs:
-    description: The role of this endpoint, offering a MultiRepresentationResource
-      contract, is Processing Resource pattern
+    description: MultiRepresentationResource contract, Processing Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
 paths:
   /self:
@@ -16,11 +16,9 @@ paths:
     put:
       tags:
       - FlexibleAndAdaptiveAPIProvider-self
-      summary: write only
-      description: This operation realizes the [State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html)
-        pattern.
+      summary: testOperation1 (write only method)
+      description: '[State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html).'
       operationId: self-testOperation1
-      parameters: []
       requestBody:
         content:
           application/xml:
@@ -46,11 +44,9 @@ paths:
     post:
       tags:
       - FlexibleAndAdaptiveAPIProvider-self
-      summary: read only
-      description: This operation realizes the [Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html)
-        pattern.
+      summary: testOperation2 (read only method)
+      description: '[Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html).'
       operationId: self-testOperation2
-      parameters: []
       requestBody:
         content:
           vnd.application/json:
@@ -59,6 +55,8 @@ paths:
               properties:
                 expecting:
                   type: integer
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
                   format: int32
           vnd.application/xml:
             schema:
@@ -66,6 +64,8 @@ paths:
               properties:
                 expecting:
                   type: integer
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
                   format: int32
       responses:
         "200":
@@ -74,9 +74,17 @@ paths:
             vnd.application/xml:
               schema:
                 type: object
+                properties:
+                  deliveringSomeData:
+                    type: string
+                    description: Generic parameter
             plain/text:
               schema:
                 type: object
+                properties:
+                  deliveringSomeData:
+                    type: string
+                    description: Generic parameter
 components:
   schemas:
     SampleDTOType:
@@ -84,10 +92,14 @@ components:
       properties:
         data:
           type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
           format: int32
           nullable: true
         formats:
           minItems: 1
           type: array
+          description: <<Wish_List>> <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
           items:
             type: string

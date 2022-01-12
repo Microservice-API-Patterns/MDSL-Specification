@@ -1,0 +1,71 @@
+API description HTTPVerbAndDataTypeMappingTest2 
+usage context PUBLIC_API for FRONTEND_INTEGRATION and BACKEND_INTEGRATION
+overview "API Test Case: HTTPVerbAndDataTypeMappingTest"
+
+data type FlatDTO "fDto": {"idKey":ID<int>, "sampleValue":D<string>+}
+data type NestedDTO "nDto": {"mdKey":MD<int>?, "innerDTO":FlatDTO*}
+
+// operations are representative for CRUD and MAP; all HTTP mapping cases covered (POST/PUT/PATCH vs. GET/DELETE) 
+// method signatures always identical in each file, but get more complex from test to test
+// this file: two provider bindings, one with global per operation parameter bindings, one with individual ones
+// TODO add more cardinalities
+
+endpoint type SampleEntityInformationHolder serves as MASTER_DATA_HOLDER
+  exposes
+    operation testInlinedParameters with responsibility STATE_CREATION_OPERATION
+      expecting
+        payload "requestMessage": {"primaryIntegerKey":ID<int>, "atLeastOneString":D<string>+} 
+      delivering
+        payload "responseMessage": {"mdKey":MD<int>?, "innerDTO":FlatDTO*}
+        
+    operation testExtractedParameters with responsibility STATE_TRANSITION_OPERATION
+      expecting
+        payload "requestMessageWithTypeReference": FlatDTO 
+      delivering
+        payload "responseMessageWithTypeReference": NestedDTO
+    
+    operation getInlinedParameters 
+      expecting
+        payload "requestMessage": {"primaryIntegerKey":ID<int>, "atLeastOneString":D<string>+} 
+      delivering
+        payload "responseMessage": {"mdKey":MD<int>?, "innerDTO":FlatDTO*}
+        
+    operation deleteExtractedParameters 
+      expecting
+        payload "requestMessageWithTypeReference": FlatDTO 
+      delivering
+        payload "primaryIntegerKey": NestedDTO
+
+/*
+// causes OAS validation errors (in online tool) because PATH bindings are not done consistently:
+API provider SampleEntityInformationHolderProvider1 offers SampleEntityInformationHolder at endpoint location "http://localhost:8080"
+	via protocol HTTP binding
+	resource SampleEntityInformationHolderHome at "/sampleEntityInformationHolderHome/{id}"
+		operation testInlinedParameters to PUT all elements realized as PATH parameters
+		operation testExtractedParameters to POST all elements realized as BODY parameters
+		operation getInlinedParameters to GET // all elements realized as QUERY parameters
+		operation deleteExtractedParameters to DELETE all elements realized as PATH parameters
+*/
+API provider SampleEntityInformationHolderProvider1 offers SampleEntityInformationHolder at endpoint location "http://localhost:8080"
+	via protocol HTTP binding
+	resource SampleEntityInformationHolderHome at "/sampleEntityInformationHolderHome"
+		operation testInlinedParameters to POST all elements realized as QUERY parameters
+		operation testExtractedParameters to PATCH all elements realized as BODY parameters
+		operation getInlinedParameters to GET // all elements realized as QUERY parameters
+		operation deleteExtractedParameters to DELETE all elements realized as COOKIE parameters
+
+// if both bindings are present, OAS does not validate (operationId not unique); fixed test data
+API provider SampleEntityInformationHolderProvider2 offers SampleEntityInformationHolder at endpoint location "http://localhost:8080"
+	via protocol HTTP binding
+	resource SampleEntityInformationHolderHome2 at "/sampleEntityInformationHolderHome2"
+		operation testExtractedParameters to POST 
+			element "requestMessageWithTypeReference" realized as BODY parameter
+	resource SampleEntityInformationHolderHome2_testInlinedParameters at "/sampleEntityInformationHolderHome2/{primaryIntegerKey}"
+		operation testInlinedParameters to PUT 
+			element "primaryIntegerKey" realized as PATH parameter 
+			element "atLeastOneString" realized as BODY parameter
+		operation getInlinedParameters to GET 
+			element "primaryIntegerKey" realized as PATH parameter 
+			element "atLeastOneString" realized as QUERY parameter
+	resource SampleEntityInformationHolderHome2_deleteExtractedParameters at "/sampleEntityInformationHolderHome2/{requestMessageWithTypeReference}"
+		operation deleteExtractedParameters to DELETE element "requestMessageWithTypeReference" realized as PATH parameter

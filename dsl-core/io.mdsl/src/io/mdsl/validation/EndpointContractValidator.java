@@ -3,13 +3,19 @@
  */
 package io.mdsl.validation;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.validation.Check;
-import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
 
 import io.mdsl.apiDescription.ApiDescriptionPackage;
 import io.mdsl.apiDescription.EndpointContract;
+import io.mdsl.apiDescription.EndpointInstance;
+import io.mdsl.apiDescription.EndpointList;
+import io.mdsl.apiDescription.Provider;
+import io.mdsl.apiDescription.impl.ProviderImpl;
 import io.mdsl.apiDescription.ServiceSpecification;
+import io.mdsl.apiDescription.TechnologyBinding;
 
 /**
  * This class contains custom validation rules. 
@@ -18,29 +24,53 @@ import io.mdsl.apiDescription.ServiceSpecification;
  */
 public class EndpointContractValidator extends AbstractMDSLValidator {
 	
-	public final static String HTTP_RESOURCE_BINDING_REQUIRED = "HTTP_RESOURCE_BINDING_REQUIRED";
+	public final static String HTTP_RESOURCE_BINDING_MISSING = "HTTP_RESOURCE_BINDING_MISSING";
 	
 	@Override
 	public void register(EValidatorRegistrar registrar) {
 		// not needed for classes used as ComposedCheck
 	}
 	
-	/*// disabled this one
 	@Check
-	public void apiLinterWelcome(final ServiceSpecification specRoot) {
-		info("MDSL API Linter activated, checking semantic rules in " + specRoot.getName(), specRoot, ApiDescriptionPackage.eINSTANCE.getServiceSpecification_Name()); // Literals.SERVICE_SPECIFICATION__NAME);
-	 */
-	
+	public void reportMissingHTTPBinding(EndpointContract epc) {
+		boolean found=false;
+		// get all bindings for this epc and check their type
+		ServiceSpecification ss = (ServiceSpecification) epc.eContainer();
+		for(EObject provider : ss.getProviders()) {
+			if(provider instanceof Provider) {
+				EList<EndpointList> epls = ((Provider) provider).getEpl();
+
+				for(EndpointList epl : epls) {
+					if(epl.getContract().getName().equals(epc.getName())) {
+						for(EndpointInstance ep : epl.getEndpoints()) {
+							EList<TechnologyBinding> pb = ep.getPb();
+							for(TechnologyBinding tb : pb) {
+								if(tb.getProtBinding().getHttp()!=null)
+									found=true;		
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		if(!found)
+			info(epc.getName() + " is not bound to an HTTP provider yet.", 
+					epc, ApiDescriptionPackage.eINSTANCE.getEndpointContract_Name(), 
+					HTTP_RESOURCE_BINDING_MISSING); // Literals.ENDPOINT_CONTRACT__NAME);
+	}
+
+	/*
 	@Check
 	public void reportContractSize(EndpointContract epc) {
 		int opsInContract = epc.getOps().size();
 		
 		if(opsInContract>5) {
-			// TODO offer QF in other cases too 
 			warning(epc.getName() + " exposes " + opsInContract + " operation(s), more than a single HTTP resource supports in its unified method/verb interface. Split the endpoint type into multiple resources in an HTTP binding before mapping to OpenAPI.", epc, ApiDescriptionPackage.eINSTANCE.getEndpointContract_Name(), HTTP_RESOURCE_BINDING_REQUIRED); // Literals.ENDPOINT_CONTRACT__NAME);		
 		}
 		else {
 			info(epc.getName() + " exposes " + opsInContract + " operation(s)", epc, ApiDescriptionPackage.eINSTANCE.getEndpointContract_Name()); // Literals.ENDPOINT_CONTRACT__NAME);
 		}
 	}
+	*/
 }

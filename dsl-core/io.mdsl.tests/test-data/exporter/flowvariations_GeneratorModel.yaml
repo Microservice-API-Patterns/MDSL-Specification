@@ -1,0 +1,585 @@
+apiName: "FlowTest4a"
+dataTypes: []
+endpoints: []
+providers: []
+clients: []
+providerImplementations: []
+orchestrationFlows:
+- name: "SampleFlowWithCisStepOr"
+  commands:
+  - name: "StartFlowCommand"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Event1"
+    composite: false
+    composedEvents: null
+  - name: "Command1"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Command1Done1"
+    composite: false
+    composedEvents: null
+  - name: "Command2"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Command2Done"
+    composite: false
+    composedEvents: null
+  - name: "Command3"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Command3Done"
+    composite: false
+    composedEvents: null
+  - name: "TerminateFlowCommand"
+    type: "SIMPLE"
+    emittedEvents:
+    - "FlowTerminated"
+    composite: false
+    composedEvents: null
+  events:
+    FlowInitiated:
+      name: "FlowInitiated"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "StartFlowCommand"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Event1:
+      name: "Event1"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "Command1"
+      - "Command2"
+      - "Command3"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Command1Done1:
+      name: "Command1Done1"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Command2Done:
+      name: "Command2Done"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Command3Done:
+      name: "Command3Done"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    AND_Command1Done1_Command2Done_Command3Done:
+      name: "AND_Command1Done1_Command2Done_Command3Done"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "TerminateFlowCommand"
+      composite: false
+      composedEvents:
+      - "Command1Done1"
+      - "Command2Done"
+      - "Command3Done"
+      join: true
+      andComposedCommands: null
+      conditionCount: 3
+    FlowTerminated:
+      name: "FlowTerminated"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+- name: "SampleFlowWithCisStepAnd"
+  commands:
+  - name: "StartFlowCommand"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Event1"
+    composite: false
+    composedEvents: null
+  - name: "Command1"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Command1Done1"
+    composite: false
+    composedEvents: null
+  - name: "Command2"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Command2Done"
+    composite: false
+    composedEvents: null
+  - name: "Command3"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Command3Done"
+    composite: false
+    composedEvents: null
+  - name: "AND_Command1_Command2_Command3"
+    type: "AND"
+    emittedEvents: []
+    composite: true
+    composedEvents:
+    - "Command1"
+    - "Command2"
+    - "Command3"
+  - name: "TerminateFlowCommand"
+    type: "SIMPLE"
+    emittedEvents:
+    - "FlowTerminated"
+    composite: false
+    composedEvents: null
+  events:
+    FlowInitiated:
+      name: "FlowInitiated"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "StartFlowCommand"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Event1:
+      name: "Event1"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "AND_Command1_Command2_Command3"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands:
+      - name: "Command1"
+        type: "SIMPLE"
+        emittedEvents:
+        - "Command1Done1"
+        composite: false
+        composedEvents: null
+      - name: "Command2"
+        type: "SIMPLE"
+        emittedEvents:
+        - "Command2Done"
+        composite: false
+        composedEvents: null
+      - name: "Command3"
+        type: "SIMPLE"
+        emittedEvents:
+        - "Command3Done"
+        composite: false
+        composedEvents: null
+    Command1Done1:
+      name: "Command1Done1"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Command2Done:
+      name: "Command2Done"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Command3Done:
+      name: "Command3Done"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    AND_Command1Done1_Command2Done_Command3Done:
+      name: "AND_Command1Done1_Command2Done_Command3Done"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "TerminateFlowCommand"
+      composite: false
+      composedEvents:
+      - "Command1Done1"
+      - "Command2Done"
+      - "Command3Done"
+      join: true
+      andComposedCommands: null
+      conditionCount: 3
+    FlowTerminated:
+      name: "FlowTerminated"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+- name: "SampleFlowWithDepStepAnd"
+  commands:
+  - name: "StartFlowCommand"
+    type: "SIMPLE"
+    emittedEvents:
+    - "AND_Event1_Event2_Event3"
+    composite: false
+    composedEvents: null
+  - name: "Command1"
+    type: "SIMPLE"
+    emittedEvents:
+    - "FlowTerminated"
+    composite: false
+    composedEvents: null
+  - name: "Command2"
+    type: "SIMPLE"
+    emittedEvents:
+    - "FlowTerminated"
+    composite: false
+    composedEvents: null
+  - name: "Command3"
+    type: "SIMPLE"
+    emittedEvents:
+    - "FlowTerminated"
+    composite: false
+    composedEvents: null
+  events:
+    FlowInitiated:
+      name: "FlowInitiated"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "StartFlowCommand"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Event1:
+      name: "Event1"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "Command1"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Event2:
+      name: "Event2"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "Command2"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Event3:
+      name: "Event3"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "Command3"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    AND_Event1_Event2_Event3:
+      name: "AND_Event1_Event2_Event3"
+      type: "AND"
+      triggeredCommands: []
+      composite: true
+      composedEvents:
+      - "Event1"
+      - "Event2"
+      - "Event3"
+      join: false
+      andComposedCommands: null
+    FlowTerminated:
+      name: "FlowTerminated"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+- name: "SampleFlowWithDepStepOr"
+  commands:
+  - name: "StartFlowCommand"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Event1"
+    - "Event2"
+    - "Event3"
+    composite: false
+    composedEvents: null
+  - name: "Command1"
+    type: "SIMPLE"
+    emittedEvents:
+    - "FlowTerminated"
+    composite: false
+    composedEvents: null
+  - name: "Command2"
+    type: "SIMPLE"
+    emittedEvents:
+    - "FlowTerminated"
+    composite: false
+    composedEvents: null
+  - name: "Command3"
+    type: "SIMPLE"
+    emittedEvents:
+    - "FlowTerminated"
+    composite: false
+    composedEvents: null
+  events:
+    FlowInitiated:
+      name: "FlowInitiated"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "StartFlowCommand"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Event1:
+      name: "Event1"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "Command1"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Event2:
+      name: "Event2"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "Command2"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Event3:
+      name: "Event3"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "Command3"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    FlowTerminated:
+      name: "FlowTerminated"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+- name: "SampleFlowWithAllOptions"
+  commands:
+  - name: "StartFlowCommand"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Event1"
+    - "Event2"
+    - "Event3"
+    composite: false
+    composedEvents: null
+  - name: "Command1"
+    type: "SIMPLE"
+    emittedEvents:
+    - "AND_Command1Done1_Command1Done2"
+    composite: false
+    composedEvents: null
+  - name: "Command2"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Command2Done"
+    composite: false
+    composedEvents: null
+  - name: "AND_Command1_Command2"
+    type: "AND"
+    emittedEvents: []
+    composite: true
+    composedEvents:
+    - "Command1"
+    - "Command2"
+  - name: "Command3"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Command3Done"
+    composite: false
+    composedEvents: null
+  - name: "Command4"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Command4Done"
+    composite: false
+    composedEvents: null
+  - name: "Command5"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Command5Done"
+    composite: false
+    composedEvents: null
+  - name: "Command6"
+    type: "SIMPLE"
+    emittedEvents:
+    - "Command6Done"
+    composite: false
+    composedEvents: null
+  - name: "TerminateFlowCommand"
+    type: "SIMPLE"
+    emittedEvents: []
+    composite: false
+    composedEvents: null
+  events:
+    FlowInitiated:
+      name: "FlowInitiated"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "StartFlowCommand"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Event1:
+      name: "Event1"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "AND_Command1_Command2"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands:
+      - name: "Command1"
+        type: "SIMPLE"
+        emittedEvents:
+        - "AND_Command1Done1_Command1Done2"
+        composite: false
+        composedEvents: null
+      - name: "Command2"
+        type: "SIMPLE"
+        emittedEvents:
+        - "Command2Done"
+        composite: false
+        composedEvents: null
+    Event2:
+      name: "Event2"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "Command3"
+      - "Command4"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Event3:
+      name: "Event3"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "Command5"
+      - "Command6"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Command1Done1:
+      name: "Command1Done1"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Command1Done2:
+      name: "Command1Done2"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    AND_Command1Done1_Command1Done2:
+      name: "AND_Command1Done1_Command1Done2"
+      type: "AND"
+      triggeredCommands: []
+      composite: true
+      composedEvents:
+      - "Command1Done1"
+      - "Command1Done2"
+      join: false
+      andComposedCommands: null
+    Command2Done:
+      name: "Command2Done"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Command3Done:
+      name: "Command3Done"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Command4Done:
+      name: "Command4Done"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Command5Done:
+      name: "Command5Done"
+      type: "SIMPLE"
+      triggeredCommands: []
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    Command6Done:
+      name: "Command6Done"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "TerminateFlowCommand"
+      composite: false
+      composedEvents: null
+      join: false
+      andComposedCommands: null
+    AND_Command1Done1_Command1Done2_Command2Done:
+      name: "AND_Command1Done1_Command1Done2_Command2Done"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "TerminateFlowCommand"
+      composite: false
+      composedEvents:
+      - "Command1Done1"
+      - "Command1Done2"
+      - "Command2Done"
+      join: true
+      andComposedCommands: null
+      conditionCount: 3
+    AND_Command3Done_Command4Done_Command5Done:
+      name: "AND_Command3Done_Command4Done_Command5Done"
+      type: "SIMPLE"
+      triggeredCommands:
+      - "TerminateFlowCommand"
+      composite: false
+      composedEvents:
+      - "Command3Done"
+      - "Command4Done"
+      - "Command5Done"
+      join: true
+      andComposedCommands: null
+      conditionCount: 3
+cuts: []

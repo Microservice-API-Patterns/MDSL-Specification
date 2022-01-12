@@ -6,10 +6,28 @@ servers: []
 tags:
 - name: TestEndpoint
   externalDocs:
-    description: The role of this endpoint is not specified.
+    description: TestEndpoint contract
     url: ""
 paths:
-  /TestEndpoint: {}
+  /TestEndpoint:
+    post:
+      tags:
+      - TestEndpoint
+      summary: o1
+      description: ""
+      operationId: o1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestType'
+      responses:
+        "200":
+          description: o1 successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestType1'
 components:
   schemas:
     TestType:
@@ -17,6 +35,8 @@ components:
       properties:
         testAttribute:
           type: array
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           items:
             type: string
     TestType1:
@@ -31,16 +51,24 @@ components:
       properties:
         testAttribute1:
           type: array
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           items:
             type: string
         testAttribute2:
           minItems: 1
           type: array
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           items:
             type: string
         testAttribute3:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           nullable: true
         testAttribute4:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           nullable: false

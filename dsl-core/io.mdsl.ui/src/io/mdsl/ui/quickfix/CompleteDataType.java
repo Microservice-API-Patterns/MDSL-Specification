@@ -2,20 +2,20 @@ package io.mdsl.ui.quickfix;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
-import org.eclipse.xtext.ui.editor.model.edit.ISemanticModification;
 
 import io.mdsl.apiDescription.RoleAndType;
+import io.mdsl.transformations.DataTypeTransformations;
 
-class CompleteDataType implements ISemanticModification {
+class CompleteDataType extends QuickfixSemanticModification {
 	private String type;
 
-	public CompleteDataType(String string) {
-		type = string;
+	public CompleteDataType(String type) {
+		this.type = type;
 	}
 
 	@Override
-	public void apply(EObject element, IModificationContext context) throws Exception {
+	public void performQuickfix(EObject element, IModificationContext context) {
 		RoleAndType rat = (RoleAndType) element;
-		rat.setBtype(type);
+		DataTypeTransformations.completeDataType(rat, type);
 	}
 }

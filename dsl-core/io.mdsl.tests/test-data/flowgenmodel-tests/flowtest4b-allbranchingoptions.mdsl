@@ -1,0 +1,35 @@
+API description FlowTest4
+version "MDSL 5.4 (and up)"
+
+event type FlowInitiated
+event type FlowStep1OutEvent1, FlowStep1OutEvent2, FlowStep2Completed, FlowStep3Completed, FlowStep4Completed
+event type FlowTerminated
+
+command type FlowStep1, FlowStep2, FlowStep3, FlowStep4, FlowStep5 
+
+flow AllAndOptionsInMDSLWithOverlap type APPLICATION_FLOW
+
+  event FlowInitiated triggers commands FlowStep1 and FlowStep2
+  command FlowStep1 emits events FlowStep1OutEvent1 and FlowStep1OutEvent2
+  event FlowStep1OutEvent1 triggers command FlowStep3
+  event FlowStep1OutEvent2 triggers command FlowStep4
+  command FlowStep2 emits event FlowStep2Completed
+  event FlowStep2Completed triggers command FlowStep3
+  command FlowStep3 emits event FlowStep3Completed
+  command FlowStep4 emits event FlowStep4Completed
+  events FlowStep3Completed and FlowStep4Completed trigger command FlowStep5
+  command FlowStep5 emits event FlowTerminated
+
+flow AllOrOptionsInMDSLWithOverlap type APPLICATION_FLOW
+
+  event FlowInitiated triggers commands FlowStep1 o FlowStep2
+  command FlowStep1 emits events FlowStep1OutEvent1 x FlowStep1OutEvent2
+  event FlowStep1OutEvent1 triggers command FlowStep3
+  event FlowStep1OutEvent2 triggers command FlowStep4
+  command FlowStep2 emits event FlowStep2Completed
+  event FlowStep2Completed triggers command FlowStep3
+  command FlowStep3 emits event FlowStep3Completed
+  command FlowStep4 emits event FlowStep4Completed
+  events FlowStep2Completed and FlowStep3Completed and FlowStep4Completed trigger command FlowStep5
+  // events FlowStep3Completed or FlowStep4Completed trigger command FlowStep5 // not possible
+  command FlowStep5 emits event FlowTerminated

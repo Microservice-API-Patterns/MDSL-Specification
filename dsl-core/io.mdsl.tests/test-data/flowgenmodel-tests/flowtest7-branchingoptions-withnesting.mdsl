@@ -1,0 +1,38 @@
+API description FlowTest7
+version "MDSL 5.4 (and up)"
+
+event type FlowInitiated
+event type FlowStep1OutEvent1, FlowStep1OutEvent2, FlowStep2Completed, FlowStep3Completed, FlowStep4Completed, FlowStep5Completed, FlowStep6Completed
+event type FlowTerminated
+
+command type FlowStep1, FlowStep2, FlowStep3, FlowStep4, FlowStep5, FlowStep6, FlowStep7
+
+flow NestedFlow1 type APPLICATION_FLOW
+
+  event FlowInitiated triggers commands FlowStep1 and FlowStep2
+  command FlowStep1 emits events FlowStep1OutEvent1 and FlowStep1OutEvent2
+  event FlowStep1OutEvent1 triggers command FlowStep3
+  event FlowStep1OutEvent2 triggers command FlowStep4
+  command FlowStep2 emits event FlowStep2Completed
+  event FlowStep2Completed triggers command FlowStep5
+  command FlowStep3 emits event FlowStep3Completed
+  command FlowStep4 emits event FlowStep4Completed
+  command FlowStep5 emits event FlowStep5Completed
+  events FlowStep3Completed and FlowStep4Completed trigger command FlowStep6
+  command FlowStep6 emits event FlowStep6Completed
+  events FlowStep5Completed and FlowStep6Completed trigger command FlowStep7
+  command FlowStep7 emits event FlowTerminated
+
+flow NestedFlow2 type SERVICE_ORCHESTRATION
+  // same as flow 1, TODO bring in OR or other, more challenging aggregation 
+  event FlowInitiated triggers commands FlowStep1 and FlowStep2
+  command FlowStep1 emits events FlowStep1OutEvent1 and FlowStep1OutEvent2
+  event FlowStep1OutEvent1 triggers command FlowStep3
+  event FlowStep1OutEvent2 triggers command FlowStep4
+  command FlowStep2 emits event FlowStep2Completed
+  event FlowStep2Completed triggers command FlowStep5
+  command FlowStep3 emits event FlowStep3Completed
+  command FlowStep4 emits event FlowStep4Completed
+  command FlowStep5 emits event FlowStep5Completed
+  events FlowStep3Completed and FlowStep4Completed and FlowStep5Completed trigger command FlowStep6
+  command FlowStep6 emits event FlowTerminated

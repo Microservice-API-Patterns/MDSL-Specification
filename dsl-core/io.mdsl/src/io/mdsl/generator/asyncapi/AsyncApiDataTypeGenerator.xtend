@@ -252,6 +252,7 @@ class AsyncApiDataTypeGenerator {
 	}
 	
 	def getType(String type){
+		// TODO string constants, check validity of MDSL base type
 		switch type{
 			case 'int': return 'integer'
 			case 'double': return 'number'

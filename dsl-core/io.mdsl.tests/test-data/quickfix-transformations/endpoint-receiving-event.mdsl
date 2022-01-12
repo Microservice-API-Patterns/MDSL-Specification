@@ -1,0 +1,14 @@
+API description QuickFixTransformationTestAPI
+version "Since version 5.4.2"
+overview "Testing the SOAD transformations and API refactorings"
+
+event type SomethingHappened {"when":MD<string>, "what":D<string>}
+event type SomethingElseHappened P
+
+endpoint type EventReceivingEndpoint
+  exposes
+    operation doSomething 
+      expecting payload {"sampleData":D} 
+      delivering payload "doSomethingResponseBody":D<string>
+      emitting event SomethingElseHappened
+    receives event SomethingHappened

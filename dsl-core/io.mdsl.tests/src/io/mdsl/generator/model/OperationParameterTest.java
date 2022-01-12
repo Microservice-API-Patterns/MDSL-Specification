@@ -31,7 +31,7 @@ public class OperationParameterTest {
 
 		// then
 		assertEquals("param1", parameter.getName());
-		assertEquals("string", parameter.getTypeAsString());
+		assertEquals("string", parameter.getType().getName());
 		assertEquals(BasicType.STRING, parameter.getType());
 	}
 

@@ -1,0 +1,30 @@
+API description FlowTest2
+version "MDSL 5.4 (and up)"
+overview "See http://www.workflowpatterns.com/patterns/control/"
+
+event type FlowInitiated
+event type FlowStep1Completed, FlowStep2Completed, FlowStep3Completed
+event type FlowTerminated
+
+command type FlowStep1
+command type FlowStep2
+command type FlowStep3
+command type FlowStep4
+
+flow ParallelSplit type APPLICATION_FLOW
+
+  event FlowInitiated triggers command FlowStep1
+  command FlowStep1 emits event FlowStep1Completed
+  event FlowStep1Completed triggers command FlowStep2 and FlowStep3
+  command FlowStep2 emits event FlowTerminated
+  command FlowStep3 emits event FlowTerminated
+
+flow ParallelSplitWithSynchronization type INTEGRATION_FLOW
+
+  event FlowInitiated triggers command FlowStep1
+  command FlowStep1 emits event FlowStep1Completed
+  event FlowStep1Completed triggers command FlowStep2 + FlowStep3
+  command FlowStep2 emits event FlowStep2Completed
+  command FlowStep3 emits event FlowStep3Completed
+  event FlowStep2Completed + FlowStep3Completed triggers command FlowStep4
+  command FlowStep4 emits event FlowTerminated

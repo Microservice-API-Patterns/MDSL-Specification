@@ -24,11 +24,12 @@ import java.util.Map;
  */
 public class JavaBinding implements ProtocolBinding {
 
+
 	private String javaPackage;
 	private Map<String, String> operationNameMapping;
 
 	public JavaBinding() {
-		this.operationNameMapping = new HashMap<>();
+		this.operationNameMapping = new HashMap<String, String>();
 	}
 
 	@Override
@@ -53,5 +54,4 @@ public class JavaBinding implements ProtocolBinding {
 			return this.operationNameMapping.get(operationName);
 		return operationName;
 	}
-
 }

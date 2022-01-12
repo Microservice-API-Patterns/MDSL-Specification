@@ -7,23 +7,19 @@ servers:
 tags:
 - name: RESTBucksProvider-RESTBucksHome
   externalDocs:
-    description: The role of this endpoint, offering a OrderManagementEndpoint contract,
-      is Processing Resource pattern
+    description: OrderManagementEndpoint contract, Processing Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
 - name: RESTBucksProvider-Orders
   externalDocs:
-    description: The role of this endpoint, offering a OrderManagementEndpoint contract,
-      is Processing Resource pattern
+    description: OrderManagementEndpoint contract, Processing Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
 - name: RESTBucksProvider-PaymentResource
   externalDocs:
-    description: The role of this endpoint, offering a OrderManagementEndpoint contract,
-      is Processing Resource pattern
+    description: OrderManagementEndpoint contract, Processing Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
 - name: RESTBucksProvider-ReceiptResource
   externalDocs:
-    description: The role of this endpoint, offering a OrderManagementEndpoint contract,
-      is Processing Resource pattern
+    description: OrderManagementEndpoint contract, Processing Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
 paths:
   /RESTBucksHome:
@@ -31,9 +27,8 @@ paths:
     post:
       tags:
       - RESTBucksProvider-RESTBucksHome
-      summary: write only
-      description: This operation realizes the [State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html)
-        pattern.
+      summary: placeOrder (write only method)
+      description: '[State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html).'
       operationId: RESTBucksHome-placeOrder
       requestBody:
         content:
@@ -53,6 +48,8 @@ paths:
                 properties:
                   orderId:
                     type: integer
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+                      target="_blank">Id Element</a>
                     format: int32
             application/vnd.restbucks.payment+xml:
               schema:
@@ -60,6 +57,8 @@ paths:
                 properties:
                   orderId:
                     type: integer
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+                      target="_blank">Id Element</a>
                     format: int32
           links:
             compensatingOperation:
@@ -69,8 +68,8 @@ paths:
     put:
       tags:
       - RESTBucksProvider-Orders
-      summary: ""
-      description: unspecified operation responsibility
+      summary: updateOrder
+      description: other operation responsibility pattern
       operationId: Orders-updateOrder
       requestBody:
         content:
@@ -87,19 +86,25 @@ paths:
                 properties:
                   statusCode:
                     type: integer
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
                     format: int32
     delete:
       tags:
       - RESTBucksProvider-Orders
-      summary: ""
-      description: unspecified operation responsibility
+      summary: cancelOrder
+      description: other operation responsibility pattern
       operationId: Orders-cancelOrder
       parameters:
       - name: id
         in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
         required: true
         schema:
           type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
           format: int32
       responses:
         "200":
@@ -111,14 +116,14 @@ paths:
                 properties:
                   success:
                     type: boolean
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
     patch:
       tags:
       - RESTBucksProvider-Orders
-      summary: read and write
-      description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
-        pattern.
+      summary: updateAmount (read and write method)
+      description: '[State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html).'
       operationId: Orders-updateAmount
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -127,6 +132,8 @@ paths:
               properties:
                 newAmount:
                   type: integer
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
                   format: int32
       responses:
         "200":
@@ -138,6 +145,8 @@ paths:
                 properties:
                   statusCode:
                     type: integer
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
                     format: int32
     parameters:
     - name: id
@@ -150,11 +159,9 @@ paths:
     put:
       tags:
       - RESTBucksProvider-PaymentResource
-      summary: read and write
-      description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
-        pattern.
+      summary: acceptPayment (read and write method)
+      description: '[State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html).'
       operationId: PaymentResource-acceptPayment
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -176,18 +183,20 @@ paths:
                 properties:
                   code:
                     type: string
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+                      target="_blank">Id Element</a>
                   info:
                     type: string
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
       security:
       - OnlyAuthenticatedShoppers: []
     post:
       tags:
       - RESTBucksProvider-PaymentResource
-      summary: read and write
-      description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
-        pattern.
+      summary: prepareOrderViaBarista (read and write method)
+      description: '[State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html).'
       operationId: PaymentResource-prepareOrderViaBarista
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -196,6 +205,8 @@ paths:
               properties:
                 id:
                   type: integer
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+                    target="_blank">Id Element</a>
                   format: int32
       responses:
         "200":
@@ -207,6 +218,8 @@ paths:
                 properties:
                   success:
                     type: boolean
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
     parameters:
     - name: id
       in: path
@@ -218,16 +231,19 @@ paths:
     delete:
       tags:
       - RESTBucksProvider-ReceiptResource
-      summary: read and write
-      description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
-        pattern.
+      summary: handOutAndConcludeProcess (read and write method)
+      description: '[State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html).'
       operationId: ReceiptResource-handOutAndConcludeProcess
       parameters:
       - name: id
         in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
         required: true
         schema:
           type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
           format: int32
       responses:
         "200":
@@ -239,6 +255,8 @@ paths:
                 properties:
                   success:
                     type: boolean
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
         x-743:
           description: n/a
           content:
@@ -248,8 +266,12 @@ paths:
                 properties:
                   code:
                     type: string
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+                      target="_blank">Id Element</a>
                   info:
                     type: string
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
     parameters:
     - name: id
       in: path
@@ -266,26 +288,39 @@ components:
         properties:
           milk:
             type: string
+            description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+              target="_blank">Data Element</a>
           size:
             type: string
+            description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+              target="_blank">Data Element</a>
           drink:
             type: string
+            description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+              target="_blank">Data Element</a>
           amount:
             type: integer
+            description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+              target="_blank">Data Element</a>
             format: int32
     PaymentDTO:
       type: object
       properties:
         means:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         authToken:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           format: binary
         amount:
           type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           format: int32
   securitySchemes:
     OnlyAuthenticatedShoppers:
       type: http
-      description: Default Element Name (Feature NYI)
       scheme: basic

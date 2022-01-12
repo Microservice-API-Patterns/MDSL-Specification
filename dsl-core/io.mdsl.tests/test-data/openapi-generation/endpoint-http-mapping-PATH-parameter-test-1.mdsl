@@ -13,8 +13,8 @@ endpoint type TestEndpoint
 
 API provider TestEndpointProvider
 	offers TestEndpoint
-	at endpoint location "/endpoint"
-	via protocol HTTP binding resource Home operation doSomethingJust4Test to GET
+	at endpoint location "https:8080//endpoint"
+	via protocol HTTP binding resource Home at "/{attr1}" operation doSomethingJust4Test to GET
 	element "attr1" realized as PATH parameter
 
 IPA

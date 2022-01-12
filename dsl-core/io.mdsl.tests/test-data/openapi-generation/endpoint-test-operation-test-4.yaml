@@ -6,7 +6,7 @@ servers: []
 tags:
 - name: TestEndpoint
   externalDocs:
-    description: The role of this endpoint is Information Holder Resource pattern
+    description: TestEndpoint contract, Information Holder Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
 paths:
   /TestEndpoint:
@@ -14,11 +14,11 @@ paths:
     put:
       tags:
       - TestEndpoint
-      summary: Puts a new test object (inlined data)
+      summary: putTest (Puts a new test object (inlined data) method)
       description: Puts a new test object (inlined data)
       operationId: putTest
-      parameters: []
       requestBody:
+        description: Message payload (content)
         content:
           application/json:
             schema:
@@ -26,6 +26,9 @@ paths:
               properties:
                 someText:
                   type: string
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
+              description: request body elements for putTest
       responses:
         "200":
           description: putTest successful execution
@@ -36,5 +39,7 @@ paths:
                 properties:
                   flag:
                     type: boolean
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
 components:
   schemas: {}

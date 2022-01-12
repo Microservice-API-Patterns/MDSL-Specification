@@ -1,0 +1,13 @@
+API description TestExtractAndInlineInformationHolder
+
+data type SampleEntityDTO "dto": {"d1":D<double>, "d2":{ID, MD}}
+
+endpoint type TestEndpointWithEmbeddedEntities 
+exposes
+  operation testExtractInformationHolderSPN 
+    expecting payload {"p1":D<int>, <<Embedded_Entity>> "data": SampleEntityDTO}
+    delivering payload {"p1":D<int>, <<Embedded_Entity>> "data": SampleEntityDTO}
+
+  operation testExtractInformationHolderPT
+    expecting payload {"p1":D<int>, <<Embedded_Entity>> "data": SampleEntityDTO}
+    delivering payload {"p1":D<int>, <<Embedded_Entity>> "dto": {"d1":D<double>, "d2":{ID, MD}}}

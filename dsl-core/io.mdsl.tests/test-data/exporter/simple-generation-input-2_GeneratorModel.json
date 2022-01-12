@@ -1,0 +1,156 @@
+{
+  "apiName" : "TestAPI",
+  "dataTypes" : [ {
+    "name" : "VersionedType",
+    "fields" : [ {
+      "name" : "uri",
+      "type" : "STRING",
+      "list" : false,
+      "nullable" : false,
+      "typeAsString" : "string"
+    } ],
+    "version" : "0.1",
+    "defaultValue" : "http://localhost:8080",
+    "atomic" : true
+  }, {
+    "name" : "workRequestDataType",
+    "fields" : [ {
+      "name" : "in",
+      "type" : "INTEGER",
+      "list" : false,
+      "nullable" : false,
+      "typeAsString" : "int"
+    } ],
+    "version" : "N/A",
+    "defaultValue" : null,
+    "atomic" : true
+  }, {
+    "name" : "WorkResponseDataType",
+    "fields" : [ {
+      "name" : "data",
+      "type" : "STRING",
+      "list" : false,
+      "nullable" : false,
+      "typeAsString" : "string"
+    } ],
+    "version" : "N/A",
+    "defaultValue" : null,
+    "atomic" : true
+  } ],
+  "endpoints" : [ {
+    "name" : "TestEndpoint",
+    "operations" : [ ],
+    "protocolBinding" : {
+      "protocolName" : "Undefined"
+    },
+    "states" : [ ],
+    "transitions" : [ ]
+  }, {
+    "name" : "S1RealizationEndpoint",
+    "operations" : [ {
+      "name" : "work",
+      "response" : {
+        "name" : "WorkResponseDataType",
+        "fields" : [ {
+          "name" : "data",
+          "type" : "STRING",
+          "list" : false,
+          "nullable" : false,
+          "typeAsString" : "string"
+        } ],
+        "version" : "N/A",
+        "defaultValue" : null,
+        "atomic" : true
+      },
+      "parameters" : [ {
+        "name" : "in",
+        "type" : {
+          "name" : "workRequestDataType",
+          "fields" : [ {
+            "name" : "in",
+            "type" : "INTEGER",
+            "list" : false,
+            "nullable" : false,
+            "typeAsString" : "int"
+          } ],
+          "version" : "N/A",
+          "defaultValue" : null,
+          "atomic" : true
+        }
+      } ],
+      "responsibility" : "",
+      "request" : {
+        "name" : "workRequest",
+        "fields" : [ {
+          "name" : "in",
+          "type" : {
+            "name" : "workRequestDataType",
+            "fields" : [ {
+              "name" : "in",
+              "type" : "INTEGER",
+              "list" : false,
+              "nullable" : false,
+              "typeAsString" : "int"
+            } ],
+            "version" : "N/A",
+            "defaultValue" : null,
+            "atomic" : true
+          },
+          "list" : false,
+          "nullable" : false,
+          "typeAsString" : "workRequestDataType"
+        } ],
+        "version" : "N/A",
+        "defaultValue" : null,
+        "atomic" : false
+      }
+    } ],
+    "protocolBinding" : {
+      "uriPath" : "http://localhost:8080",
+      "resources" : [ {
+        "name" : "S1RealizationEndpointHome",
+        "uriPath" : "/s1RealizationEndpointHome",
+        "operationBindings" : {
+          "work" : {
+            "name" : "work",
+            "verb" : "POST",
+            "parameterBindings" : {
+              "in" : "BODY"
+            }
+          }
+        }
+      } ],
+      "protocolName" : "HTTP"
+    },
+    "states" : [ ],
+    "transitions" : [ ]
+  } ],
+  "providers" : [ {
+    "name" : "S1RealizationEndpointProvider",
+    "offeredEndpoints" : [ "S1RealizationEndpoint" ]
+  } ],
+  "clients" : [ ],
+  "providerImplementations" : [ ],
+  "orchestrationFlows" : [ {
+    "name" : "S1Flow",
+    "commands" : [ {
+      "name" : "work",
+      "type" : "SIMPLE",
+      "emittedEvents" : [ ],
+      "composite" : false,
+      "composedEvents" : null
+    } ],
+    "events" : {
+      "workTrigger" : {
+        "name" : "workTrigger",
+        "type" : "SIMPLE",
+        "triggeredCommands" : [ "work" ],
+        "composite" : false,
+        "composedEvents" : null,
+        "join" : false,
+        "andComposedCommands" : null
+      }
+    }
+  } ],
+  "cuts" : [ ]
+}

@@ -71,27 +71,7 @@ public class MDSL2JolieConverter {
 		if (representationElement.getNp() != null) {
 			SingleParameterNode simpleParameter = representationElement.getNp();
 			convertSingleParameterNode(simpleParameter, result);
-			// TODO remove (left over after refactoring), test more systematically
-//			if(simpleParameter.getAtomP() != null) {
-//				AtomicParameter ap = simpleParameter.getAtomP();
-//				convertAtomicParameter(ap, result);
-//			}
-//			else if (simpleParameter.getGenP()!=null) {
-//				GenericParameter genericParameter = simpleParameter.getGenP();
-//				String parameterName = genericParameter.getName();
-//				 
-//				parameterName = createNameIfEmpty(parameterName);
-//				
-//				result.append(parameterName + ": void /* placeholder parameter */");
-//			}
-//			else if (simpleParameter.getTr()!=null) {
-//				TypeReference typeRef = simpleParameter.getTr();
-//				convertTypeReference(typeRef, result);
-//			}
-//			else {
-//				// can/should not get here, but you never know 
-//				throw new MDSLException("Unexpected spn type");
-//			}
+			// TODO test more systematically
 		} else if (representationElement.getApl() != null) {
 			convertAtomicParameterList(representationElement.getApl(), result);
 		} else if (representationElement.getPt() != null) {
@@ -100,7 +80,7 @@ public class MDSL2JolieConverter {
 		} else if (representationElement.getPf() != null) {
 			convertParameterForest(representationElement.getPf(), result);
 		} else {
-			// can/should not get here, but you never know (PragProg hint)
+			// can/should not get here
 			throw new MDSLException("Unexpected type of element structure");
 		}
 	}
@@ -142,7 +122,7 @@ public class MDSL2JolieConverter {
 		treeNodes.addAll(pt.getNexttn());
 		for (TreeNode treeNode : treeNodes) {
 			convertTreeNode(treeNode, result);
-			// result.append("\n\t"); // TODO not a clean solution for indentation
+			// result.append("\n\t"); 
 		}
 
 		result.append("} ");

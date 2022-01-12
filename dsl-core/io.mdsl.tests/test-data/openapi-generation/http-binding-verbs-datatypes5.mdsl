@@ -1,0 +1,77 @@
+API description HTTPVerbAndDataTypeMappingTest5 
+usage context PUBLIC_API for FRONTEND_INTEGRATION and BACKEND_INTEGRATION
+overview "API Test Case: HTTPVerbAndDataTypeMappingTest"
+
+data type ExtractedAtom "ap":MD<raw>
+data type ExtractedTree "pt":{{"pte1":MD<bool>, "pte2":L<string>}}
+data type FlatDTO5 "fDto": {
+	"idKey":D<int>, "atLeastOneString":D<string>+, "value3":D<int>, "tree4":{"p1":D, /*"p2"*/P}, "ea":ExtractedAtom, "ept": ExtractedTree} 
+data type NestedDTO5 "nDto": {"mdKey":MD<int>?, "innerDTO":FlatDTO5*, P} // adding a generic parameter
+
+// this file: deep nesting, type references, generic parameters (with level 1 tree binding)
+
+endpoint type SampleEntityInformationHolder serves as MASTER_DATA_HOLDER
+  exposes
+  	operation ping 
+  	  expecting payload "messagesIn":D<string>+
+  	  delivering payload "messagesOut":D<string>+
+  	
+    operation testInlinedParameters with responsibility STATE_CREATION_OPERATION
+      expecting
+        payload "requestMessage": {"idKey":D<int>, "atLeastOneString":D<string>+, "value3":D<int>, "tree4":{"p1":D, /*"p2"*/P}, "ea":ExtractedAtom, "ept": ExtractedTree} 
+      delivering
+        payload "responseMessage": {"mdKey":MD<int>?, "innerDTO":FlatDTO5*, P} // adding a generic parameter
+        
+    operation testExtractedParameters with responsibility STATE_TRANSITION_OPERATION
+      expecting
+        payload "requestMessageWithTypeReference": FlatDTO5 
+      delivering
+        payload "responseMessageWithTypeReference": NestedDTO5
+    
+    operation getInlinedParameters 
+      expecting 
+        payload "requestMessage": {"idKey":ID<int>, "atLeastOneString":D<string>+, "value3":D<int>, "tree4":{"p1":D, /*"p2"*/P}, "ea":ExtractedAtom, "ept": ExtractedTree}
+      delivering
+        payload "responseMessage": {"mdKey":MD<int>?, "innerDTO":FlatDTO5*, P} // adding a generic parameter
+        
+    operation deleteExtractedParameters 
+      expecting
+        payload "requestMessageWithTypeReference": FlatDTO5 
+      delivering
+        payload "primaryIntegerKey": NestedDTO5
+
+// generated and then patched (note that ID is mapped to PATH by default in QF)
+API provider SampleEntityInformationHolderProvider offers SampleEntityInformationHolder at endpoint location "http://localhost:8080"
+	via protocol HTTP binding
+resource SampleEntityInformationHolderHome at "/sampleEntityInformationHolderHome/{idKey}"
+    operation ping to HEAD
+        element "messagesIn" realized as BODY parameter
+	operation testInlinedParameters to PUT 
+		element "idKey" realized as PATH parameter 
+		element "atLeastOneString" realized as BODY parameter 
+		element "value3" realized as HEADER parameter
+		element "tree4" realized as BODY parameter
+		element "ea" realized as BODY parameter
+		element "ept" realized as BODY parameter
+	operation testExtractedParameters to POST 
+		// element "requestMessageWithTypeReference" realized as BODY parameter
+		element "idKey" realized as PATH parameter 
+		element "atLeastOneString" realized as QUERY parameter 
+		element "value3" realized as BODY parameter
+		element "tree4" realized as BODY parameter
+		element "ea" realized as BODY parameter
+		element "ept" realized as QUERY parameter
+	operation getInlinedParameters to GET 
+		element "idKey" realized as PATH parameter 
+		element "atLeastOneString" realized as COOKIE parameter 
+		element "value3" realized as QUERY parameter
+		element "tree4" realized as QUERY parameter
+		element "ea" realized as HEADER parameter
+		element "ept" realized as HEADER parameter
+	operation deleteExtractedParameters to DELETE 
+		element "idKey" realized as PATH parameter 
+		element "atLeastOneString" realized as QUERY parameter 
+		element "value3" realized as COOKIE parameter
+		element "tree4" realized as HEADER parameter
+		element "ea" realized as COOKIE parameter
+		element "ept" realized as COOKIE parameter

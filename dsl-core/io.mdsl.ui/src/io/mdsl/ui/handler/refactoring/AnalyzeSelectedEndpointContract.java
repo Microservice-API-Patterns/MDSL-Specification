@@ -13,8 +13,7 @@ import org.eclipse.xtext.resource.EObjectAtOffsetHelper;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 
 import io.mdsl.apiDescription.EndpointContract;
-import io.mdsl.apiDescription.impl.EndpointContractImpl;
-import io.mdsl.apiDescription.impl.OperationImpl;
+import io.mdsl.apiDescription.Operation;
 import io.mdsl.ui.handler.AbstractGenerationHandler;
 
 import com.google.inject.Inject;
@@ -39,15 +38,14 @@ public class AnalyzeSelectedEndpointContract extends AbstractGenerationHandler {
 
 		MessageBox box = new MessageBox(activeXtextEditor.getShell(), SWT.OK);
 		
-		if(selectedElement.getClass() == EndpointContractImpl.class) {
-			// System.out.println("The endpoint");
+		if(selectedElement instanceof EndpointContract) {
 			EndpointContract ec = (EndpointContract) selectedElement;
 			String endpointMessage = "The contract " + ec.getName()
 					+  " has " + ec.getOps().size() + " operations.";
 			System.out.println("Selected endpoint type: " + ec.getName());
 			box.setMessage(endpointMessage);
 		}
-		else if(selectedElement.getClass() == OperationImpl.class) {
+		else if(selectedElement instanceof Operation) {
 			System.err.println("Operation selected: " + selectedElement.getClass());
 			String endpointMessage = "Please select an endpoint type rather than an operation.";
 			box.setMessage(endpointMessage);

@@ -15,6 +15,7 @@
  */
 package io.mdsl.generator.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -52,8 +53,14 @@ public class Provider {
 	 * 
 	 * @return a list with all endpoints offered by the provider
 	 */
-	public List<EndpointContract> getOfferedEndpoints() {
-		return Lists.newLinkedList(offeredEndpoints);
+	public List<EndpointContract> offeredEndpoints() {
+		return Lists.newLinkedList(offeredEndpoints); 
+	}
+	
+	public List<String> getOfferedEndpoints() {
+		List<String> result = new ArrayList<String>();
+		offeredEndpoints.forEach(contractType->result.add(contractType.getName()));
+		return result;
 	}
 
 	/**

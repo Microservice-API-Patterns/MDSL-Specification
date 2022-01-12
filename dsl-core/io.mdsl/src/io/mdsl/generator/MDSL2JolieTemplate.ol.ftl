@@ -40,7 +40,7 @@ RequestResponse:
 <#list endpoint.ops as operation>
     <#-- operation responsibility: ${operation.responsibility!"undefined"} TODO FM function needed -->
 	${operation.name}( ${operation.name}RequestDTO )( ${operation.name}ResponseDTO ),
-    <#-- TODO no comma for last op -->
+    <#-- TODO no comma for last op (Freemarker has a utility for that) -->
     <#-- TODO port error reporting from Python to Java: {% if operation["errors"] %} throws {{ operation["errors"][0] }}( SOAPFaultMessage ) {% endif %} --> 
 </#list>
 }
@@ -51,7 +51,7 @@ RequestResponse:
 
 <#list serviceSpecification.contracts as endpoint>
 inputPort ${endpoint.name}Port {
-	location: "socket://localhost:8080" <#-- this should come from API Provider Info in MDSL; "socket" or "http"? -->
+	location: "socket://localhost:8080" <#-- this should come from API Provider binding in MDSL; "socket" or "http"? -->
 	protocol: soap
 	interfaces: ${endpoint.name}
 }

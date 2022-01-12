@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) to Protocol Buffer Specifications
 author: Stefan Kapferer
-copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2021. All rights reserved.
+copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2022. All rights reserved.
 ---
 
 [Tools Overview](./../tools), [OpenAPI](./open-api), [GraphQL](./graphql), [Jolie](./jolie), [Java](./java), [Freemarker templating](./freemarker), [AsyncAPI](./async-api)
@@ -14,7 +14,7 @@ The MDSL Eclipse plugin and the CLI allow API designers to generate [Protocol Bu
 ## Usage
 You can generate the specifications out of an MDSL model by using the [Eclipse plugin](./../tools#eclipse-plugin) or our [CLI](./../tools#command-line-interface-cli-tools).
 
-In Eclipse you find the generator in the MDSL context menu:
+In Eclipse, the generator is available in the MDSL context menu:
 
 <a href="./../media/eclipse-protocol-buffers-generator-context-menu.png">![Protocol Buffers Specification Generator Context Menu in Eclipse](./../media/eclipse-protocol-buffers-generator-context-menu.png)</a>
 
@@ -36,9 +36,7 @@ The generator maps the MDSL concepts to `*.proto` files as follows:
 ## Example
 The following example illustrates what the generator produces for an exemplary MDSL contract.
 
-You find the complete sources (incl. generated `*.proto` file) of this example [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/protocol-buffers-example).
-
-We use the following MDSL model which was an outcome of this [blogpost](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html) to illustrate our generator outputs:
+We use the following MDSL model, created during this [tools demo](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html) to illustrate our generator outputs:
 
 ```
 API description ReferenceManagementServiceAPI
@@ -112,6 +110,8 @@ service PaperArchiveFacade {
 }
 ```
 
+You find the complete sources (incl. generated `*.proto` file) of this example [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/protocol-buffers-example).
+
 You can use the generated `*.proto` files to implement a [gRPC](https://grpc.io/) interface.
 
 ## Java Client/Server Sample
@@ -165,7 +165,9 @@ sourceSets {
 }
 ```
 
-Lets start by implementing a server... Note that this code is based on the various gRPC examples that can be found [here](https://github.com/grpc/grpc-java/tree/master/examples). We create a new class called `ReferenceManagementServer`. In the generated code you will find a class with the name `*Grpc` that has a subclass `*ImplBase` for each of your services defined in the `*.proto` file. In our case it is `PaperArchiveFacadeGrpc.PaperArchiveFacadeImplBase`. We want to implement the method `createPaperItem` now. For that, we just add a static subclass that overrides this `*.ImplBase` and the corresponding method:
+Let's start by implementing a server. Note that this code is based on the various gRPC examples that can be found [here](https://github.com/grpc/grpc-java/tree/master/examples). 
+
+We create a new class called `ReferenceManagementServer`. In the generated code you will find a class with the name `*Grpc` that has a subclass `*ImplBase` for each of your services defined in the `*.proto` file. In our case it is `PaperArchiveFacadeGrpc.PaperArchiveFacadeImplBase`. We want to implement the method `createPaperItem` now. For that, we just add a static subclass that overrides this `*.ImplBase` and the corresponding method:
 
 ```java
 public class ReferenceManagementServer {
@@ -179,7 +181,7 @@ public class ReferenceManagementServer {
 }
 ```
 
-As you can see in the generated `*.proto` file above, this RPC shall respond with a `PaperItemDTO`. The simplest implementation for this little tutorial just constructs such an object and returns it:
+As you can see in the generated `*.proto` file above, this RPC shall respond with a `PaperItemDTO`. A simple implementation, sufficient for this tutorial, merely constructs such an object and returns it:
 
 ```java
 public class ReferenceManagementServer {
@@ -199,7 +201,7 @@ public class ReferenceManagementServer {
 }
 ```
 
-As you can see, we fill the _title_, _authors_ and _venue_ attributes of the object with the values we receive from the request object.
+We fill the _title_, _authors_ and _venue_ attributes of the object with the values we receive from the request object.
 
 In addition to that we need some code to start and stop the server (you can also find this in the [gRPC samples](https://github.com/grpc/grpc-java/tree/master/examples)); which leads us to the following exemplary server code:
 
@@ -279,7 +281,7 @@ Nov 26, 2020 12:28:29 PM io.mdsl.samples.grpc.reference_management.ReferenceMana
 INFO: Server started, listening on 50051
 ```
 
-To test if our server is working properly, lets also implement a client in the class `ReferenceManagementClient`. According to the gRPC examples, we first implement a method to send our `createPaperItem` request and print out the response we get:
+To test if our server is working properly, let's also implement a client in the class `ReferenceManagementClient`. According to the gRPC examples, we first implement a method to send our `createPaperItem` request and print out the response we get:
 
 ```java
 public class ReferenceManagementClient {
@@ -369,19 +371,21 @@ Nov 26, 2020 2:01:49 PM io.mdsl.samples.grpc.reference_management.ReferenceManag
 INFO: Received response: title=Domain-driven Service Design, authors=Stefan Kapferer and Olaf Zimmermann, venue=Ostschweizer Fachhochschule
 ```
 
-Seems to work. For more and other examples we refer to the [gRPC examples repository](https://github.com/grpc/grpc-java/tree/master/examples).
+For more and other examples we refer to the [gRPC examples repository](https://github.com/grpc/grpc-java/tree/master/examples).
 
 You find the complete sources (incl. generated `*.proto` file, server and client code) of this example [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/protocol-buffers-example).
 
 # Other Generators
 Also checkout our other generators:
+
 * [OpenAPI generator](./open-api)
 * [GraphQL generator](./graphql)
 * [Jolie generator](./jolie)
-* [Java generator](./java)
+* [Java "Modulith" generator](./java)
 * [Arbitrary textual generation with Freemarker](./freemarker)
 
 # Site Navigation
+
 * Back to [tools page](./../tools).
 * [Quick reference](./../quickreference) and [tutorial](./../tutorial). 
 * Language specification: 
@@ -389,4 +393,4 @@ Also checkout our other generators:
     * [Bindings](./../bindings) and [instance-level concepts](./../optionalparts). 
 * Back to [MDSL homepage](./../index).
 
-*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2022. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*

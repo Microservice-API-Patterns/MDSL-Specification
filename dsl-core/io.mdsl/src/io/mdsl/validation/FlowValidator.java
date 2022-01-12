@@ -3,16 +3,16 @@
  */
 package io.mdsl.validation;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
 
 import io.mdsl.apiDescription.ApiDescriptionPackage;
+import io.mdsl.apiDescription.CombinedInvocationStep;
 import io.mdsl.apiDescription.CommandInvokationStep;
 import io.mdsl.apiDescription.DomainEventProductionStep;
-import io.mdsl.apiDescription.EitherCommandOrOperation;
-import io.mdsl.apiDescription.EitherCommandOrOperationInvokation;
 import io.mdsl.apiDescription.EndpointContract;
-import io.mdsl.apiDescription.FlowStep;
 import io.mdsl.apiDescription.Orchestration;
 import io.mdsl.apiDescription.ServiceSpecification;
 
@@ -23,51 +23,75 @@ import io.mdsl.apiDescription.ServiceSpecification;
  */
 public class FlowValidator extends AbstractMDSLValidator {
 
-	public final static String FLOW_FOUND = "FLOW_FOUND";
+	public final static String FLOW_WITHOUT_SUPPORTING_ENDPOINT_TYPE_FOUND = "FLOW_WITHOUT_SUPPORTING_ENDPOINT_TYPE_FOUND";
 	public final static String FLOW_CIS_STEP_FOUND = "FLOW_CIS_STEP_FOUND";
 	public final static String FLOW_DEP_STEP_FOUND = "FLOW_DEP_STEP_FOUND";
+	public final static String FLOW_SIMPLE_DEP_STEP_FOUND = "FLOW_SIMPLE_DEP_STEP_FOUND";
+	public final static String FLOW_ECE_STEP_FOUND = "FLOW_ECE_STEP_FOUND";
 	public static final String COMMAND_FOUND = "COMMAND_FOUND";
+	public static final String EVENT_FOUND = "EVENT_FOUND";
+	public static final String FLOW_FOUND = "FLOW_FOUND";
 	
 	@Override
 	public void register(EValidatorRegistrar registrar) {
 		// not needed for classes used as ComposedCheck
 	}
 	
-	// TODO (M) check whether bindings exist already (or whether flow is supported by endpoint already)
-	
 	@Check
-	public void analyzeFlow(Orchestration flow) {;
-		if(flow.getName()!=null) 
-			info("This flow should be supported by an endpoint type.", flow, ApiDescriptionPackage.eINSTANCE.getOrchestration_Name(), FLOW_FOUND); 
+	public void reportFlow(Orchestration flow) {
+		info("Show flow as SketchMiner story fragments.", flow, ApiDescriptionPackage.eINSTANCE.getOrchestration_Name(), FLOW_FOUND);
 	}
-	
-	/*
+		
 	@Check
-	public void analyzeFlowStep(FlowStep eventOrCommand) {
-		// TODO WIP (quite a few rules and cases to be processed for full solution, for instance bindings)
-	}
-	*/
-	
-	@Check
-	public void reportCommand(EitherCommandOrOperation cmd) {
-		info("This command could be backed by an endpoint operation.", cmd, ApiDescriptionPackage.eINSTANCE.getEitherCommandOrOperation_Command(), COMMAND_FOUND); 
-	}
-	
-	@Check
-	public void reportCommand(EitherCommandOrOperationInvokation cmd) {
-		info("This command could be backed by an endpoint operation.", cmd, ApiDescriptionPackage.eINSTANCE.getEitherCommandOrOperationInvokation_Ci(), COMMAND_FOUND); 
-	}
-	
-	@Check
-	public void analyzeDepStep(DomainEventProductionStep dep) {
-		if(dep!=null && dep.getEventProduction()!=null) 
-			info("This domain event production event step should be backed by an endpoint operation.", dep, ApiDescriptionPackage.eINSTANCE.getDomainEventProductionStep_EventProduction(), FLOW_DEP_STEP_FOUND); 
+	public void analyzeFlow(Orchestration flow) {
+		if(flow.getName()!=null) {
+			boolean supported = false; 
+			EList<EObject> endpointContracts = ((ServiceSpecification) flow.eContainer()).getContracts();
+			for(EObject contract : endpointContracts) {
+				if(contract instanceof EndpointContract) {
+					EndpointContract endpointContract = (EndpointContract) contract;
+					if(endpointContract.getFlow()!=null&&endpointContract.getFlow().getName().equals(flow.getName()))
+						supported=true;
+				}
+			}
+			if(!supported)
+				info("This flow could be supported by an endpoint type.", flow, ApiDescriptionPackage.eINSTANCE.getOrchestration_Name(), FLOW_WITHOUT_SUPPORTING_ENDPOINT_TYPE_FOUND);
+		}
 	}
 	
 	@Check
 	public void analyzeCisStep(CommandInvokationStep cis) { 
-		if(cis!=null && cis.getAction()!=null) 
-			info("This command invocation step could be backed by an endpoint operation.", cis, ApiDescriptionPackage.eINSTANCE.getCommandInvokationStep_Action(), FLOW_CIS_STEP_FOUND); 
+		if(cis!=null && cis.getAction()!=null) {
+			// check that cis does not appear in ece rule, do not offer quick fixes in that case
+			if(cis.eContainer() instanceof CombinedInvocationStep) {
+				return;
+			}
+			// Eclipse popup does not always show the right message (picks last one?)
+			info("This command invocation step can be further refined.", cis, ApiDescriptionPackage.eINSTANCE.getCommandInvokationStep_Action(), FLOW_CIS_STEP_FOUND); 
+		}
+		
+		// TODO also offer consolidation QF here (see dep step)
 	}
-
+	
+	@Check
+	public void analyzeDepStep(DomainEventProductionStep dep) {
+		if(dep!=null && dep.getEventProduction()!=null) {
+			info("This domain event emission step can be further refined.", dep, ApiDescriptionPackage.eINSTANCE.getDomainEventProductionStep_EventProduction(), FLOW_DEP_STEP_FOUND); 
+			// info("This event may trigger a command.", dep, ApiDescriptionPackage.eINSTANCE.getDomainEventProductionStep_EventProduction(), FLOW_DEP_STEP_FOUND); 
+			// info("This domain event production event step should be realized by an endpoint operation.", dep, ApiDescriptionPackage.eINSTANCE.getDomainEventProductionStep_EventProduction(), EVENT_FOUND); 
+		
+			if(dep.getEventProduction().getSep()!=null) {
+				// should only offer this if there are two such steps with the same command on the left side
+				info("Look for consolidation opportunities.", dep, ApiDescriptionPackage.eINSTANCE.getDomainEventProductionStep_Action(), FLOW_SIMPLE_DEP_STEP_FOUND); 
+			}
+		}
+	}
+	
+	@Check
+	public void analyzeEceStep(CombinedInvocationStep ece) { 
+		if(ece!=null && ece.getCisStep()!=null && ece.getEventProduction()!=null) {
+			// Eclipse popup does not always show the right message (picks last one?)
+			info("This combined invocation step can be split.", ece, ApiDescriptionPackage.eINSTANCE.getCombinedInvocationStep_CisStep(), FLOW_ECE_STEP_FOUND); 
+		}
+	}
 }

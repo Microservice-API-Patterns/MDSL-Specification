@@ -2,14 +2,12 @@ package io.mdsl.ui.quickfix;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
-import org.eclipse.xtext.ui.editor.model.edit.ISemanticModification;
 
-import io.mdsl.apiDescription.ElementStructure;
-import io.mdsl.apiDescription.impl.ElementStructureImpl;
-import io.mdsl.exception.MDSLException;
+import io.mdsl.apiDescription.Operation;
 import io.mdsl.transformations.MessageTransformations;
+import io.mdsl.transformations.TransformationHelpers;
 
-class AddWishList implements ISemanticModification {
+class AddWishList extends QuickfixSemanticModification {
 	private String type; 
 
 	public AddWishList(String string) {
@@ -17,14 +15,16 @@ class AddWishList implements ISemanticModification {
 	}
 
 	@Override
-	public void apply(EObject element, IModificationContext context) throws Exception {
-	
-		// check that element actually always is a element structure
-		if(element.getClass()!=ElementStructureImpl.class) {
-			System.err.println("Add Wish List Quick Fix can only be applied if an element structure is selected.");
-			throw new MDSLException("Add Wish List Quick Fix can only be applied if an element structure is selected.");
+	public void performQuickfix(EObject element, IModificationContext context) {
+		if(type.equals("fromOperation")) {
+			if(!(element instanceof Operation)) {
+				TransformationHelpers.reportError("This type of Add Wish List Quick Fix can only be applied if an operation is selected.");
+			}
+			Operation operation = (Operation) element;
+			MessageTransformations.addWishList(operation);
 		}
-		
-		MessageTransformations.addWishList((ElementStructure)element, type);	
+		else {
+			TransformationHelpers.reportError("Add Wish List Quick Fix of unknown type: " + type);
+		}	
 	}
 }

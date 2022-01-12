@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) to Jolie Specifications
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2020-2021. All rights reserved.
+copyright: Olaf Zimmermann, 2020-2022. All rights reserved.
 ---
 
 [Tools Overview](./../tools), [OpenAPI](./open-api), [Protocol Buffers](./protocol-buffers), [GraphQL](./graphql), [Java](./java), [Freemarker templating](./freemarker), [AsyncAPI](./async-api)
@@ -171,4 +171,4 @@ Also checkout our other generators:
     * [Bindings](./../bindings) and [instance-level concepts](./../optionalparts). 
 * Back to [MDSL homepage](./../index).
 
-*Copyright: Olaf Zimmermann, 2020-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2020-2022. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*

@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) to OpenAPI Specifications
 author: Olaf Zimmermann, Stefan Kapferer
-copyright: Olaf Zimmermann, 2020-2021. All rights reserved.
+copyright: Olaf Zimmermann, 2020-2022. All rights reserved.
 ---
 
 [Tools Overview](./../tools), [Protocol Buffers](./protocol-buffers), [GraphQL](./graphql), [Jolie](./jolie), [Java](./java), [Freemarker templating](./freemarker), [AsyncAPI](./async-api)
@@ -34,8 +34,8 @@ The OpenAPI Specification (OAS) generator maps endpoint types to HTTP resource p
     * `RETRIEVAL_OPERATION` is transformed to `GET` (which causes problems if the request message has a complex structure)
     * `STATE_TRANSITION_OPERATION` is transformed to `PATCH`
     * `COMPUTATION_FUNCTION` is transformed to `POST`
-* If an HTTP verb is used instead of a MAP decorator (`"GET"`, `"POST"` etc.), it is passed through. 
-* If the operation name suggests CRUDish semantics (or starts with HTTP verb names), it is mapped as this: 
+* If an HTTP verb is used instead of a MAP decorator (`"GET"`, `"POST"` etc.), it is passed through.
+* If the operation name suggests CRUDish semantics (or starts with HTTP verb names), it is mapped as this:
     1. createNN and addToNN are transformed into `POST` methods
     2. readNN, getNN, retrieveNN, searchNN all are transformed into `GET`ters
     3. putNN and replaceNN are transformed into `PUT`s
@@ -43,10 +43,6 @@ The OpenAPI Specification (OAS) generator maps endpoint types to HTTP resource p
     5. deleteNN and removeNN transformed into `DELETE` methods
 
 If an HTTP verb appears more than once, for instance if more than five operations are defined, the information in the `expecting` part of the endpoint type is not sufficient to define a single HTTP resource API. An HTTP [binding](./../bindings#http-protocol-binding) with multiple resources has to be defined in that case (see the bindings page for an example of a resource definition). 
-
-<!--
-At present, one and only one such binding should be present; the generator will use the first one it finds. Note that not all abstract contracts can be mapped to all HTTP verbs; `GET`, in particular expects the in parameters to be simple enough so that they can be mapped to path and query parameters (this holds for atomic parameters and flat, unnested parameter trees).
--->
 
 The input data in MDSL are mapped differently, depending on the HTTP method/verb (which is mapped as explained above). The following table explains the mapping:
 
@@ -56,13 +52,13 @@ The input data in MDSL are mapped differently, depending on the HTTP method/verb
 |  | Atomic Parameter List `("p1":D<string>, "p2":D<string>)`| query, cookie, header <!-- TODO test cookie and header --> | each element becomes separate parameter |
 |  | Flat Parameter Tree `{"p1":D<string>, "p2":D<string>}`| query, cookie , header <!-- TODO test cookie and header --> | yes, also flattened |
 |  | Nested Parameter Tree `{"p1":D<string>, {"t2":D<string>}}`| query | yes (Deep Object) |
-|  | any parameter | path | limited support (TODO) |
+|  | any parameter | path | basic support (validation incomplete) |
 |  | any parameter | body | not supported (by HTTP/OAS) |
 | DELETE | same as GET |  |  |
 | POST | Atomic Parameter `"pname":D<string>` | query, cookie, header | supported, simple |
 | | Atomic Parameter List `("p1":D<string>, "p":D<string>)`| query, cookie, header | supported, simple |
 | | Flat Parameter Tree `{"p1":D<string>, "p":D<string>}`| query, cookie, header | supported, simple |
-| | Nested Parameter Tree `{"p1":D<string>, {"anotherTree":D<string>}}`| query <!-- TODO test --> |  |
+| | Nested Parameter Tree `{"p1":D<string>, {"anotherTree":D<string>}}`| query (others possible too)) |  |
 |  | any parameter | path | not recommended (TODO)  |
 |  | any parameter | body | default (multiple mime/media types) |
 | PUT, PATCH | same as POST |  |  |
@@ -125,11 +121,12 @@ openapi: 3.0.1
 info:
   title: ReferenceManagementServiceAPI
   version: "1.0"
+  x-generated-on: 2022-01-11T07:09:55.4937813
 servers: []
 tags:
 - name: PaperArchiveFacade
   externalDocs:
-    description: The role of this endpoint is Information Holder Resource pattern
+    description: PaperArchiveFacade contract, Information Holder Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
 paths:
   /PaperArchiveFacade:
@@ -137,16 +134,19 @@ paths:
     get:
       tags:
       - PaperArchiveFacade
-      summary: read only
-      description: This operation realizes the [Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html)
-        pattern.
+      summary: lookupPapersFromAuthor (read only method)
+      description: '[Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html).'
       operationId: lookupPapersFromAuthor
       parameters:
       - name: author
         in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
         required: true
         schema:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
       responses:
         "200":
           description: lookupPapersFromAuthor successful execution
@@ -159,11 +159,9 @@ paths:
     put:
       tags:
       - PaperArchiveFacade
-      summary: write only
-      description: This operation realizes the [State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html)
-        pattern.
+      summary: createPaperItem (write only method)
+      description: '[State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html).'
       operationId: createPaperItem
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -179,9 +177,9 @@ paths:
     post:
       tags:
       - PaperArchiveFacade
-      description: unspecified operation responsibility
+      summary: convertToMarkdownForWebsite
+      description: ""
       operationId: convertToMarkdownForWebsite
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -195,8 +193,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  anonymous1:
+                  anonymous3:
                     type: string
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
 components:
   schemas:
     PaperItemDTO:
@@ -204,10 +204,16 @@ components:
       properties:
         title:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         authors:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         venue:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         paperItemId:
           $ref: '#/components/schemas/PaperItemKey'
     PaperItemKey:
@@ -215,16 +221,23 @@ components:
       properties:
         doi:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
     createPaperItemParameter:
       type: object
       properties:
         who:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         what:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         where:
           type: string
-  securitySchemes: {}
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
 ```
 
 You find the complete sources (incl. the generated OAS specification) of this example [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/open-api-example).
@@ -233,15 +246,20 @@ You find the complete sources (incl. the generated OAS specification) of this ex
 ## Editor and Validation
 You can use the [Swagger Editor](https://editor.swagger.io/) to validate generated OAS specifications and/or generate an HTML documentation. You can also generate client and server code from there.
 
+This and other code generation options are featured in [this blog post](https://nordicapis.com/3-tools-to-auto-generate-client-libraries-from-oas/). 
 
 ## Known Limitations
 
-<!-- * The endpoint location name from the API provider part of the MDSL specification is not yet added to the generated OpenAPI contract. -->
-* The parameter mappings (MDSL to path, query, body/form parameters) may not cover all edge cases yet. For instance, the `*` and `+` multiplicities of Atomic Parameter Lists are not taken into account everywhere, and externally referenced generic parameters `P`are ignored. Some identifiers also are not used as one might expect either. Void parameters `D<void>` may cause the generate OpenAPI not to validate.<!-- For instance, the MDSL cardinalities of an expected payload (for example `*` for a list) are not used if the payload is mapped to parameters of HTTP GET or DELETE methods. -->
-<!-- * Error reports must have a numeric identifier and be atomic parameters. -->
-<!-- * The generator cannot deal with more than one binding, but uses the first one it finds. -->
-* If a representation element `"id"` is mapped to a `PATH` parameter but the resource URI does not contain a corresponding URI template `{id}` , the generated OpenAPI does not validate.
-* The HTTP binding information is not validated much; for instance, it is not checked that bound operations actually are exposed in the endpoint type. The existing validators do not catch all edge cases; for instance incomplete parameters `"idNoType"` are reported as not mappable. 
+* If a representation element such as `"id"` is mapped to a `PATH` parameter but the resource URI does not contain a corresponding URI template `{id}`, the generated OpenAPI does not validate.
+  * Many of these case are reported by the MDSL validator a.k.a. API Linter; quick fixes hae been introduced in Version 5.4 to help fix such situations. There still are cases that require attention, for instance when mixing binding styles across operations (paths are an endpoint/resource property!)
+* The HTTP binding information is not validated completely; for instance, it is not checked whether bound operations actually are exposed in the endpoint type.
+* The existing binding validators do not catch all edge cases; for instance incomplete parameters `"idNoType"` are reported as not mappable.
+* The parameter mappings (MDSL to path, query, body/form parameters) do not cover all edge cases yet:
+  * Externally referenced generic parameters without a name (for example, `P`) are ignored during response body/schema generation.
+  * Standalone identifiers `"someName"`are mapped but cannot be used as one might expect. Unnamed parameters cannot be mapped explicitly and individually (workaround: name them or use a global operation-level binding).
+  * The `*` and `+` multiplicities of Atomic Parameter Lists are not always taken into account.
+  * It is possible to generate nested/deep cookie parameters, which may not make much sense.
+  * Void parameters `D<void>` are mapped to strings, as VoidSchema (which exists in OpenAPI) may cause the generated OpenAPI not to validate in some tools (or cause unexpected behavior of tools that use OPenAPI as input).
 * The security binding supports all [security types and schemes in OAS](https://swagger.io/specification/#security-scheme-object), but might not respect all configuration options and input correctly yet, for instance in OAuth flows. If a security policy is defined in the abstract endpoint type but not bound (because no API provider instances with a suited HTTP binding can be found), the policy ignored and not mapped to an OAS security requirement.
  
 
@@ -264,4 +282,4 @@ The other generators are:
     * [Data contracts (schemas)](./../datacontract). 
     * [Bindings](./../bindings) and [instance-level concepts](./../optionalparts).
 
-*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2022. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*

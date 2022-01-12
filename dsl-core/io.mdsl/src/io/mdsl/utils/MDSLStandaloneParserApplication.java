@@ -9,7 +9,6 @@ import io.mdsl.apiDescription.ServiceSpecification;
 
 public class MDSLStandaloneParserApplication {
 
-	// TODO turn into test case (if not there already)
 	public static void main(String[] args) {
 		
 		// Reader r;

@@ -1,6 +1,6 @@
 # MDSL Doc Page
 
-This folder contains the MDSL Github page available at [https://microservice-api-patterns.github.io/MDSL-Specification/](https://microservice-api-patterns.github.io/MDSL-Specification/).
+This folder contains the MDSL GitHub page available at [https://microservice-api-patterns.github.io/MDSL-Specification/](https://microservice-api-patterns.github.io/MDSL-Specification/).
 
 ## Preview Page Locally
 To preview the page locally (in case you want to make changes to the page), run the following commands within this folder:

@@ -12,12 +12,16 @@ import io.mdsl.apiDescription.AtomicParameterList;
 import io.mdsl.apiDescription.Cardinality;
 import io.mdsl.apiDescription.DataContract;
 import io.mdsl.apiDescription.ElementStructure;
+import io.mdsl.apiDescription.GenericParameter;
 import io.mdsl.apiDescription.ParameterForest;
 import io.mdsl.apiDescription.ParameterTree;
 import io.mdsl.apiDescription.RoleAndType;
 import io.mdsl.apiDescription.SingleParameterNode;
 import io.mdsl.apiDescription.TreeNode;
+import io.mdsl.apiDescription.TypeReference;
 import io.mdsl.generator.AnonymousFieldNameGenerator;
+import io.mdsl.utils.MDSLLogger;
+import io.mdsl.utils.MDSLSpecificationWrapper;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
@@ -37,7 +41,14 @@ import io.swagger.v3.oas.models.media.UUIDSchema;
 @SuppressWarnings("rawtypes")
 public class DataType2SchemaConverter {
 
+	private static final String GENERIC_PARAMETER_DESCRIPTION = "Generic parameter";
+	private static final String ID_ROLE = "ID";
+	private static final String IDENTIFIER_ROLE = "Identifier"; // identical to ID_ROLE semantically
+	private static final String L_ROLE = "L"; // short for Link
+	private static final String LINK_ROLE = "Link";
+	
 	public final static String REF_PREFIX = "#/components/schemas/";
+	private static final String TREE_IDENTIFIER_PREFIX = "tree";
 
 	private AnonymousFieldNameGenerator fieldNameGenerator;
 
@@ -67,16 +78,38 @@ public class DataType2SchemaConverter {
 	public Schema convert(AtomicParameter atomicParameter) {
 		RoleAndType rat = atomicParameter.getRat();
 		Schema schema = getSchema4ParameterType(atomicParameter);
-		schema.setName(fieldNameGenerator.getUniqueName(rat.getName()));
-		if (atomicParameter.getCard() != null)
-			schema = mapCardinalities(atomicParameter.getCard(), schema);
+		if(schema!=null) {
+			schema.setName(fieldNameGenerator.getUniqueName(rat.getName()));
+			if (atomicParameter.getCard() != null) {
+				schema = mapCardinalities(atomicParameter.getCard(), schema);
+			}
+			String description = MDSLSpecificationWrapper.getClassifierAndElementStereotype(atomicParameter.getClassifier(), rat);
+			schema.setDescription(description);
+		}
 		return schema;
 	}
 	
-	public Schema convertAndCreateSchema4TreeNode(ParameterTree pt, boolean externalCardinality) {
+	public Schema<?> convert(GenericParameter genP) {
+		// note: no pattern stereotype classifier or cardinality in genP grammar 
+		Schema schema = new StringSchema();
+		schema.setName(fieldNameGenerator.getUniqueName(genP.getName()));
+		schema.setDescription(GENERIC_PARAMETER_DESCRIPTION);
+		return schema;
+	}
+	
+	public Schema convertAndCreateSchema4ParameterTreeAndItsNodes(ParameterTree pt, boolean externalCardinality) {
+		if(pt==null) {
+			return null;
+		}
+		
 		Schema treeWrapperSchema = new ObjectSchema();
 		treeWrapperSchema.setName(fieldNameGenerator.getUniqueName(pt.getName()));
 		treeWrapperSchema.setProperties(convertProperties(pt));
+
+		String description = MDSLSpecificationWrapper.getClassifierAndElementStereotype(pt.getClassifier(), null);
+		if(description!=null&&!description.equals("")) {
+			treeWrapperSchema.setDescription(description);
+		}
 		
 		if(externalCardinality)
 			return getArrayWrapperSchema(treeWrapperSchema);
@@ -116,18 +149,23 @@ public class DataType2SchemaConverter {
 	private Map<String, Schema> convertProperties(AtomicParameterList parameterList) {
 		Map<String, Schema> map = new LinkedHashMap<>();
 		Schema firstParameterSchema = convert(parameterList.getFirst());
-		map.put(firstParameterSchema.getName(), firstParameterSchema);
+		if(firstParameterSchema!=null) 
+			map.put(firstParameterSchema.getName(), firstParameterSchema);
 		for (AtomicParameter nextParameter : parameterList.getNextap()) {
 			Schema nextParameterSchema = convert(nextParameter);
-			map.put(nextParameterSchema.getName(), nextParameterSchema);
+			if(nextParameterSchema!=null) 
+				map.put(nextParameterSchema.getName(), nextParameterSchema);
 		}
 		return map;
 	}
 
 	private Map<String, Schema> convertProperties(SingleParameterNode parameterNode) {
-		// do not create attribute node in case it is a P type (on root level)
-		if (parameterNode.getGenP() != null)
-			return null;
+		if (parameterNode.getGenP() != null) {
+			// do not create attribute node in case it is a P type (on root level)
+			if(parameterNode.getGenP().getName()==null||parameterNode.getGenP().getName().equals("")) {
+				return null;
+			}
+		}
 
 		Map<String, Schema> map = new LinkedHashMap<>();
 		Schema schema = createSchema4SingleParameterNode(parameterNode);
@@ -145,7 +183,7 @@ public class DataType2SchemaConverter {
 		trees.add(parameterForest.getPtl().getFirst());
 		trees.addAll(parameterForest.getPtl().getNext());
 		for (ParameterTree tree : trees) {
-			Schema treeWrapperSchema = new ObjectSchema().name("tree" + treeCounter);
+			Schema treeWrapperSchema = new ObjectSchema().name(TREE_IDENTIFIER_PREFIX + treeCounter);
 			treeWrapperSchema.setProperties(convertProperties(tree));
 			map.put(treeWrapperSchema.getName(), treeWrapperSchema);
 			treeCounter++;
@@ -166,24 +204,34 @@ public class DataType2SchemaConverter {
 		return map;
 	}
 
-	private Schema createSchema4SingleParameterNode(SingleParameterNode singleNode) {
-		// only consider 'atomP'; nothing to generate for 'genP'
-		// TODO (tbd) map genP to a string (but no schema needed?)
+	public Schema createSchema4SingleParameterNode(SingleParameterNode singleNode) {
+		MDSLLogger.reportDetailedInformation("Entering createSchema4SingleParameterNode");
 		if (singleNode.getAtomP() != null) {
 			Schema atomPSchema = convert(singleNode.getAtomP());
 			if (atomPSchema != null)
 				return atomPSchema;
 		} else if (singleNode.getTr() != null) {
-			// TODO null check required?
-			String un = singleNode.getTr().getName();
-			// TODO null checks required?
-			String refn = REF_PREFIX + singleNode.getTr().getDcref().getName();
-			return mapCardinalities(singleNode.getTr().getCard(),
-				new Schema<>().name(fieldNameGenerator.getUniqueName(un)).$ref(refn));
+			return createSchemaForTypeReference(singleNode.getTr());
 		} else if (singleNode.getGenP() != null) {
-			return new ObjectSchema().name(fieldNameGenerator.getUniqueName(singleNode.getGenP().getName()));
+			Schema genPSchema = convert(singleNode.getGenP());
+			if (genPSchema != null) {
+				return genPSchema;
+			}
 		}
 		return null;
+	}
+	
+	public Schema createSchemaForTypeReference(TypeReference typeRef) {
+		String un = typeRef.getName(); // can be null
+		MDSLLogger.reportDetailedInformation("createSchemaForTypeReference " + un);
+		String refn = REF_PREFIX + typeRef.getDcref().getName();
+		// TODO v55 "mapCardinalities" is called, but does not always seems to have desired effect due to constraints of OAS spec. 
+		Schema result = mapCardinalities(typeRef.getCard(),
+			new Schema<>().name(fieldNameGenerator.getUniqueName(un)).$ref(refn)); // null un causes new name to be generated
+		if(un!=null&&!"".equals(un)) {
+			; // result.setDescription("Type reference " + un); // TODO (future work) activate feature
+		}
+		return result;
 	}
 
 	private Schema createSchema4TreeNode(TreeNode node) {
@@ -204,7 +252,7 @@ public class DataType2SchemaConverter {
 		}
 		return null;
 	}
-
+	
 	private Schema getArrayWrapperSchema(Schema schema) {
 		return new ArraySchema().items(schema).name(schema.getName());
 	}
@@ -214,11 +262,11 @@ public class DataType2SchemaConverter {
 			return getSchema4BasicType(parameter.getRat().getBtype());
 
 		if (parameter.getRat().getRole() != null
-				&& ("ID".equals(parameter.getRat().getRole()) || "Identifier".equals(parameter.getRat().getRole())))
+				&& (ID_ROLE.equals(parameter.getRat().getRole()) || IDENTIFIER_ROLE.equals(parameter.getRat().getRole())))
 			return new UUIDSchema();
 
 		if (parameter.getRat().getRole() != null
-				&& ("L".equals(parameter.getRat().getRole()) || "Link".equals(parameter.getRat().getRole())))
+				&& (L_ROLE.equals(parameter.getRat().getRole()) || LINK_ROLE.equals(parameter.getRat().getRole())))
 			return new URISchema();
 
 		return new StringSchema();
@@ -239,26 +287,42 @@ public class DataType2SchemaConverter {
 		case "raw":
 			return new BinarySchema();
 		case "void": {
-			return new VoidSchema(); // fixed Feb 8/June 30, 2021
+			// decided to ignore D<void> and not map to string:
+			MDSLLogger.reportInformation("Not mapping a <void> parameter.");
+			return null; // new VoidSchema(); // Schema<Void> is not appreciated by OAS and other tools
+			// return new ObjectSchema();
 		}
-		default:
-			// TODO (tbd) warn about this?
-			return new VoidSchema();
+		default: {
+			MDSLLogger.reportWarning("Unknown basic type " + basicType);
+			return null; 
+			}
 		}
 	}
 
-	// TODO (H) map D<void> (and other voids) properly:
-	// [x] ignore? [-] map to string?
-
 	private class VoidSchema extends Schema<Void> {
+		private static final String VOID_SCHEMA = "void";
+
 		public VoidSchema() {
-			super("void", null);
+			super(VOID_SCHEMA, null);
 		}
 	}
 
 	private class URISchema extends Schema<URI> {
+		private static final String STRING_SCHEMA_NAME = "string";
+
 		public URISchema() {
-			super("string", "uri");
+			super(STRING_SCHEMA_NAME, "uri");
+		}
+	}
+	
+	public Schema getSchema4RequestOrResponseStructure(ElementStructure payload) {
+		if (payload.getNp() != null && payload.getNp().getTr() != null) {
+			// case: reference to 'data type' declaration
+			TypeReference tr = payload.getNp().getTr();
+			return mapCardinalities(tr.getCard(), new Schema<>().$ref(DataType2SchemaConverter.REF_PREFIX + tr.getDcref().getName()));
+		} else {
+			// case: data structure defined inline in MDSL
+			return convert(payload);
 		}
 	}
 }

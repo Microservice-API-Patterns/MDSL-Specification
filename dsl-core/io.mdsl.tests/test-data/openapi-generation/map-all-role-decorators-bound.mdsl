@@ -1,0 +1,121 @@
+API description MAPRoleDecoratorTest
+
+data type ProductCatalog {"id":D<string>, "product", D<int>*}
+
+data type Endpoint1aDTO "endpoint1a":D
+data type Endpoint1bDTO "endpoint1b":D
+data type Endpoint2aDTO "endpoint2a":D
+data type Endpoint2bDTO "endpoint2b":D
+
+endpoint type Endpoint1a serves as PROCESSING_RESOURCE
+exposes
+operation initializeResource with responsibility STATE_CREATION_OPERATION expecting payload "inDTO":Endpoint1aDTO delivering payload "resourceId":ID<int>
+operation getResourceState with responsibility RETRIEVAL_OPERATION expecting payload "resourceId":ID<int>+ delivering payload "inDTO":Endpoint1aDTO*
+operation updateResourceState with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Endpoint1aDTO delivering payload "updateResult":Endpoint1aDTO
+operation deleteResourceState with responsibility STATE_DELETION_OPERATION expecting payload "resourceId":ID<string> delivering payload "success":MD<bool>
+
+endpoint type Endpoint1b serves as  STATEFUL_PROCESSING_RESOURCE // same as PROCESSING_RESOURCE
+exposes
+operation initializeResource with responsibility STATE_CREATION_OPERATION expecting payload "inDTO":Endpoint1bDTO delivering payload "resourceId":ID<int>
+operation getResourceState with responsibility RETRIEVAL_OPERATION expecting payload "resourceId":ID<int>+ delivering payload "inDTO":Endpoint1bDTO*
+operation updateResourceState with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Endpoint1bDTO delivering payload "updateResult":Endpoint1bDTO
+operation deleteResourceState with responsibility STATE_DELETION_OPERATION expecting payload "resourceId":ID<string> delivering payload "success":MD<bool>
+
+endpoint type Endpoint1c serves as  STATELESS_PROCESSING_RESOURCE
+exposes
+operation run with responsibility COMPUTATION_FUNCTION expecting payload "in":D<int> delivering payload "out":D<long>
+
+endpoint type Endpoint2a serves as INFORMATION_HOLDER_RESOURCE and MUTABLE_COLLECTION_RESOURCE
+exposes
+operation findAll with responsibility RETRIEVAL_OPERATION expecting payload "query":{"queryFilter":MD<string>*} delivering payload "result":{"responseDTO":Endpoint2aDTO}*
+operation findById with responsibility RETRIEVAL_OPERATION expecting payload "resourceId":ID<int> delivering payload "responseDTO":Endpoint2aDTO
+operation createCollection with responsibility STATE_CREATION_OPERATION expecting payload "emptyPayload":D<void> delivering payload "collectionId":ID<int>
+operation addItem with responsibility STATE_TRANSITION_OPERATION expecting payload {"collectionId":ID<int> , "newItem":Endpoint2aDTO} delivering payload "itemId":ID<int>
+operation getItem with responsibility RETRIEVAL_OPERATION expecting payload {"collectionId":ID<int> , "itemId":ID<int>} delivering payload "collectionItem":Endpoint2aDTO
+operation updateItem with responsibility STATE_TRANSITION_OPERATION expecting payload {"collectionId":ID<int> , "itemId":ID<int> , "newItem":Endpoint2aDTO} delivering payload "success":MD<bool>
+operation removeItem with responsibility STATE_DELETION_OPERATION expecting payload {"collectionId":ID<int> , "itemId":ID<int>} delivering payload "success":MD<bool>
+operation deleteCollection with responsibility STATE_DELETION_OPERATION expecting payload "collectionId":ID<int> delivering payload "success":MD<bool>
+
+endpoint type Endpoint2b serves as MASTER_DATA_HOLDER
+exposes
+operation findAll with responsibility RETRIEVAL_OPERATION expecting payload "query":{"queryFilter":MD<string>*} delivering payload "result":{"responseDTO":Endpoint2bDTO}*
+operation findById with responsibility RETRIEVAL_OPERATION expecting payload "resourceId":ID<int> delivering payload "responseDTO":Endpoint2bDTO
+
+endpoint type Endpoint3 serves as DATA_TRANSFER_RESOURCE
+exposes
+operation transferIn with responsibility STATE_CREATION_OPERATION expecting payload "data":D<raw> delivering payload "resourceId":ID
+operation transferOut with responsibility RETRIEVAL_OPERATION expecting payload "resourceId":ID delivering payload "data":D<raw>
+
+endpoint type Endpoint4 serves as LINK_LOOKUP_RESOURCE
+exposes
+operation lookupResourceById with responsibility STATE_CREATION_OPERATION expecting payload "resourceId":ID delivering payload "uri":L
+operation lookupResourcesViaFilter with responsibility RETRIEVAL_OPERATION expecting payload "criteria":MD delivering payload "uriSet":L*
+
+endpoint type Endpoint5a serves as VALIDATION_RESOURCE
+exposes
+operation check with responsibility COMPUTATION_FUNCTION expecting payload "data":D<string> delivering payload "result":D<bool>
+
+endpoint type Endpoint5b serves as TRANSFORMATION_RESOURCE
+exposes
+operation convert with responsibility COMPUTATION_FUNCTION expecting payload "data":D delivering payload "result":D
+
+
+API provider Endpoint1aProvider offers Endpoint1a at endpoint location "http://localhost:8080"
+via protocol HTTP binding
+resource Endpoint1aHome at "/endpoint1aHome"
+operation initializeResource to PUT element "inDTO" realized as BODY parameter
+operation updateResourceState to PATCH element "changeRequest" realized as BODY parameter
+resource Endpoint1aHome_getResourceState at "/endpoint1aHome/{resourceId}"
+operation getResourceState to GET element "resourceId" realized as PATH parameter
+operation deleteResourceState to DELETE element "resourceId" realized as PATH parameter
+
+// no binding for 1b (on purpose, defaults used)
+
+API provider Endpoint1cProvider offers Endpoint1c at endpoint location "http://localhost:8080"
+via protocol HTTP binding
+resource Endpoint1cHome at "/endpoint1cHome"
+operation run to POST element "in" realized as BODY parameter
+
+API provider Endpoint2aProvider offers Endpoint2a at endpoint location "http://localhost:8080"
+via protocol HTTP binding
+resource Endpoint2aHome at "/endpoint2aHome"
+operation createCollection to PUT element "emptyPayload" realized as BODY parameter
+operation findById to GET element "resourceId" realized as QUERY parameter // changed from PATH default
+resource Endpoint2aHomeCollection at "/endpoint2aHome/{collectionId}"
+operation addItem to POST element "collectionId" realized as PATH parameter element "newItem" realized as BODY parameter
+operation findAll to GET element "queryFilter" realized as QUERY parameter
+operation deleteCollection to DELETE element "collectionId" realized as PATH parameter
+resource Endpoint2aHomeCollectionItem at "/endpoint2aHome/{collectionId}/{itemId}"
+operation getItem to GET element "collectionId" realized as PATH parameter element "itemId" realized as PATH parameter
+operation updateItem to PATCH element "collectionId" realized as PATH parameter element "itemId" realized as PATH parameter element "newItem" realized as BODY parameter
+operation removeItem to DELETE element "collectionId" realized as PATH parameter element "itemId" realized as PATH parameter
+
+API provider Endpoint2bProvider offers Endpoint2b at endpoint location "http://localhost:8080"
+via protocol HTTP binding
+resource Endpoint2bHome at "/endpoint2bHome"
+operation findAll to GET element "queryFilter" realized as QUERY parameter
+resource endpoint2b1 at "/endpoint2bHome/{resourceId}"
+operation findById to GET element "resourceId" realized as PATH parameter
+
+API provider Endpoint3Provider offers Endpoint3 at endpoint location "http://localhost:8080"
+via protocol HTTP binding
+resource Endpoint3Home at "/endpoint3Home"
+operation transferIn to PUT element "data" realized as BODY parameter
+resource Endpoint3Home_transferOut at "/endpoint3Home/{resourceId}"
+operation transferOut to GET element "resourceId" realized as PATH parameter
+
+API provider Endpoint4Provider offers Endpoint4 at endpoint location "http://localhost:8080"
+via protocol HTTP binding
+resource Endpoint4Home at "/endpoint4Home"
+operation lookupResourceById to PUT element "resourceId" realized as QUERY parameter
+operation lookupResourcesViaFilter to GET element "criteria" realized as QUERY parameter
+
+API provider Endpoint5aProvider offers Endpoint5a at endpoint location "http://localhost:8080"
+via protocol HTTP binding
+resource Endpoint5aHome at "/endpoint5aHome"
+operation check to POST element "data" realized as BODY parameter
+
+API provider Endpoint5bProvider offers Endpoint5b at endpoint location "http://localhost:8080"
+via protocol HTTP binding
+resource Endpoint5bHome at "/endpoint5bHome"
+operation convert to POST element "data" realized as BODY parameter

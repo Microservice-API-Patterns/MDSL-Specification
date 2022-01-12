@@ -1,0 +1,913 @@
+openapi: 3.0.1
+info:
+  title: MAPRoleDecoratorTest
+  version: "1.0"
+servers:
+- url: http://localhost:8080
+- url: http://localhost:8080
+- url: http://localhost:8080
+- url: http://localhost:8080
+- url: http://localhost:8080
+- url: http://localhost:8080
+- url: http://localhost:8080
+- url: http://localhost:8080
+tags:
+- name: Endpoint1aProvider-Endpoint1aHome
+  externalDocs:
+    description: Endpoint1a contract, Processing Resource role
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
+- name: Endpoint1aProvider-Endpoint1aHome_getResourceState
+  externalDocs:
+    description: Endpoint1a contract, Processing Resource role
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
+- name: Endpoint1cProvider-Endpoint1cHome
+  externalDocs:
+    description: Endpoint1c contract, STATELESS_PROCESSING_RESOURCE (non-pattern role)
+      role
+    url: ""
+- name: Endpoint2aProvider-Endpoint2aHome
+  externalDocs:
+    description: Endpoint2a contract, Information Holder Resource role
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
+- name: Endpoint2aProvider-Endpoint2aHomeCollection
+  externalDocs:
+    description: Endpoint2a contract, Information Holder Resource role
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
+- name: Endpoint2aProvider-Endpoint2aHomeCollectionItem
+  externalDocs:
+    description: Endpoint2a contract, Information Holder Resource role
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
+- name: Endpoint2bProvider-Endpoint2bHome
+  externalDocs:
+    description: Endpoint2b contract, Master Data Holder role
+    url: https://microservice-api-patterns.org/patterns/responsibility/informationHolderEndpointTypes/MasterDataHolder.html
+- name: Endpoint2bProvider-endpoint2b1
+  externalDocs:
+    description: Endpoint2b contract, Master Data Holder role
+    url: https://microservice-api-patterns.org/patterns/responsibility/informationHolderEndpointTypes/MasterDataHolder.html
+- name: Endpoint3Provider-Endpoint3Home
+  externalDocs:
+    description: Endpoint3 contract, Data Transfer Resource role
+    url: https://microservice-api-patterns.org/patterns/responsibility/informationHolderEndpointTypes/DataTransferResource.html
+- name: Endpoint3Provider-Endpoint3Home_transferOut
+  externalDocs:
+    description: Endpoint3 contract, Data Transfer Resource role
+    url: https://microservice-api-patterns.org/patterns/responsibility/informationHolderEndpointTypes/DataTransferResource.html
+- name: Endpoint4Provider-Endpoint4Home
+  externalDocs:
+    description: Endpoint4 contract, Link Lookup Resource role
+    url: https://microservice-api-patterns.org/patterns/responsibility/informationHolderEndpointTypes/LinkLookupResource.html
+- name: Endpoint5aProvider-Endpoint5aHome
+  externalDocs:
+    description: Endpoint5a contract, VALIDATION_RESOURCE (non-pattern role) role
+    url: ""
+- name: Endpoint5bProvider-Endpoint5bHome
+  externalDocs:
+    description: Endpoint5b contract, TRANSFORMATION_RESOURCE (non-pattern role) role
+    url: ""
+paths:
+  /endpoint1aHome:
+    summary: activity-oriented endpoint
+    put:
+      tags:
+      - Endpoint1aProvider-Endpoint1aHome
+      summary: initializeResource (write only method)
+      description: '[State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html).'
+      operationId: Endpoint1aHome-initializeResource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Endpoint1aDTO'
+      responses:
+        "200":
+          description: initializeResource successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resourceId:
+                    type: integer
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+                      target="_blank">Id Element</a>
+                    format: int32
+    patch:
+      tags:
+      - Endpoint1aProvider-Endpoint1aHome
+      summary: updateResourceState (read and write method)
+      description: '[State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html).'
+      operationId: Endpoint1aHome-updateResourceState
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Endpoint1aDTO'
+      responses:
+        "200":
+          description: updateResourceState successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Endpoint1aDTO'
+  /endpoint1aHome/{resourceId}:
+    summary: activity-oriented endpoint
+    get:
+      tags:
+      - Endpoint1aProvider-Endpoint1aHome_getResourceState
+      summary: getResourceState (read only method)
+      description: '[Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html).'
+      operationId: Endpoint1aHome_getResourceState-getResourceState
+      parameters:
+      - name: resourceId
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: array
+          items:
+            minItems: 1
+            type: array
+            description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+              target="_blank">Id Element</a>
+            items:
+              type: integer
+              format: int32
+      responses:
+        "200":
+          description: getResourceState successful execution
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Endpoint1aDTO'
+    delete:
+      tags:
+      - Endpoint1aProvider-Endpoint1aHome_getResourceState
+      summary: deleteResourceState
+      description: other operation responsibility pattern
+      operationId: Endpoint1aHome_getResourceState-deleteResourceState
+      parameters:
+      - name: resourceId
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+      responses:
+        "200":
+          description: deleteResourceState successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+                      target="_blank">Metadata Element</a>
+    parameters:
+    - name: resourceId
+      in: path
+      required: true
+      schema:
+        type: string
+  /Endpoint1b:
+    summary: 'main responsibility: STATEFUL_PROCESSING_RESOURCE'
+    get:
+      tags:
+      - Endpoint1b
+      summary: getResourceState (read only method)
+      description: '[Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html).'
+      operationId: getResourceState
+      parameters:
+      - name: resourceId
+        in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: array
+          items:
+            minItems: 1
+            type: array
+            description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+              target="_blank">Id Element</a>
+            items:
+              type: integer
+              format: int32
+      responses:
+        "200":
+          description: getResourceState successful execution
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Endpoint1bDTO'
+    put:
+      tags:
+      - Endpoint1b
+      summary: initializeResource (write only method)
+      description: '[State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html).'
+      operationId: initializeResource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Endpoint1bDTO'
+      responses:
+        "200":
+          description: initializeResource successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resourceId:
+                    type: integer
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+                      target="_blank">Id Element</a>
+                    format: int32
+    delete:
+      tags:
+      - Endpoint1b
+      summary: deleteResourceState
+      description: other operation responsibility pattern
+      operationId: deleteResourceState
+      parameters:
+      - name: resourceId
+        in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+      responses:
+        "200":
+          description: deleteResourceState successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+                      target="_blank">Metadata Element</a>
+    patch:
+      tags:
+      - Endpoint1b
+      summary: updateResourceState (read and write method)
+      description: '[State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html).'
+      operationId: updateResourceState
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Endpoint1bDTO'
+      responses:
+        "200":
+          description: updateResourceState successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Endpoint1bDTO'
+  /endpoint1cHome:
+    summary: 'main responsibility: STATELESS_PROCESSING_RESOURCE'
+    post:
+      tags:
+      - Endpoint1cProvider-Endpoint1cHome
+      summary: run (no read, no write method)
+      description: '[Computation Function](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/ComputationFunction.html).'
+      operationId: Endpoint1cHome-run
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in:
+                  type: integer
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
+                  format: int32
+      responses:
+        "200":
+          description: run successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  out:
+                    type: number
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
+  /endpoint2aHome:
+    summary: general data-oriented endpoint
+    get:
+      tags:
+      - Endpoint2aProvider-Endpoint2aHome
+      summary: findById (read only method)
+      description: '[Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html).'
+      operationId: Endpoint2aHome-findById
+      parameters:
+      - name: resourceId
+        in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+          format: int32
+      responses:
+        "200":
+          description: findById successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Endpoint2aDTO'
+    put:
+      tags:
+      - Endpoint2aProvider-Endpoint2aHome
+      summary: createCollection (write only method)
+      description: '[State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html).'
+      operationId: Endpoint2aHome-createCollection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: createCollection successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collectionId:
+                    type: integer
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+                      target="_blank">Id Element</a>
+                    format: int32
+  /endpoint2aHome/{collectionId}:
+    summary: general data-oriented endpoint
+    get:
+      tags:
+      - Endpoint2aProvider-Endpoint2aHomeCollection
+      summary: findAll (read only method)
+      description: '[Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html).'
+      operationId: Endpoint2aHomeCollection-findAll
+      parameters:
+      - name: queryFilter
+        in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+          target="_blank">Metadata Element</a>
+        required: false
+        schema:
+          type: array
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
+          items:
+            type: string
+      responses:
+        "200":
+          description: findAll successful execution
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    responseDTO:
+                      $ref: '#/components/schemas/Endpoint2aDTO'
+    post:
+      tags:
+      - Endpoint2aProvider-Endpoint2aHomeCollection
+      summary: addItem (read and write method)
+      description: '[State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html).'
+      operationId: Endpoint2aHomeCollection-addItem
+      parameters:
+      - name: collectionId
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+          format: int32
+      requestBody:
+        description: Message payload (content)
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                endpoint2a:
+                  type: string
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
+              description: request body elements for addItem
+      responses:
+        "200":
+          description: addItem successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  itemId:
+                    type: integer
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+                      target="_blank">Id Element</a>
+                    format: int32
+    delete:
+      tags:
+      - Endpoint2aProvider-Endpoint2aHomeCollection
+      summary: deleteCollection
+      description: other operation responsibility pattern
+      operationId: Endpoint2aHomeCollection-deleteCollection
+      parameters:
+      - name: collectionId
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+          format: int32
+      responses:
+        "200":
+          description: deleteCollection successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+                      target="_blank">Metadata Element</a>
+    parameters:
+    - name: collectionId
+      in: path
+      required: true
+      schema:
+        type: string
+  /endpoint2aHome/{collectionId}/{itemId}:
+    summary: general data-oriented endpoint
+    get:
+      tags:
+      - Endpoint2aProvider-Endpoint2aHomeCollectionItem
+      summary: getItem (read only method)
+      description: '[Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html).'
+      operationId: Endpoint2aHomeCollectionItem-getItem
+      parameters:
+      - name: collectionId
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+          format: int32
+      - name: itemId
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+          format: int32
+      responses:
+        "200":
+          description: getItem successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Endpoint2aDTO'
+    delete:
+      tags:
+      - Endpoint2aProvider-Endpoint2aHomeCollectionItem
+      summary: removeItem
+      description: other operation responsibility pattern
+      operationId: Endpoint2aHomeCollectionItem-removeItem
+      parameters:
+      - name: collectionId
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+          format: int32
+      - name: itemId
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+          format: int32
+      responses:
+        "200":
+          description: removeItem successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+                      target="_blank">Metadata Element</a>
+    patch:
+      tags:
+      - Endpoint2aProvider-Endpoint2aHomeCollectionItem
+      summary: updateItem (read and write method)
+      description: '[State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html).'
+      operationId: Endpoint2aHomeCollectionItem-updateItem
+      parameters:
+      - name: collectionId
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+          format: int32
+      - name: itemId
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+          format: int32
+      requestBody:
+        description: Message payload (content)
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                endpoint2a:
+                  type: string
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
+              description: request body elements for updateItem
+      responses:
+        "200":
+          description: updateItem successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+                      target="_blank">Metadata Element</a>
+    parameters:
+    - name: collectionId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: itemId
+      in: path
+      required: true
+      schema:
+        type: string
+  /endpoint2bHome:
+    summary: data-oriented endpoint, long-lived
+    get:
+      tags:
+      - Endpoint2bProvider-Endpoint2bHome
+      summary: findAll (read only method)
+      description: '[Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html).'
+      operationId: Endpoint2bHome-findAll
+      parameters:
+      - name: queryFilter
+        in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+          target="_blank">Metadata Element</a>
+        required: false
+        schema:
+          type: array
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
+          items:
+            type: string
+      responses:
+        "200":
+          description: findAll successful execution
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    responseDTO:
+                      $ref: '#/components/schemas/Endpoint2bDTO'
+  /endpoint2bHome/{resourceId}:
+    summary: data-oriented endpoint, long-lived
+    get:
+      tags:
+      - Endpoint2bProvider-endpoint2b1
+      summary: findById (read only method)
+      description: '[Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html).'
+      operationId: endpoint2b1-findById
+      parameters:
+      - name: resourceId
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+          format: int32
+      responses:
+        "200":
+          description: findById successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Endpoint2bDTO'
+    parameters:
+    - name: resourceId
+      in: path
+      required: true
+      schema:
+        type: string
+  /endpoint3Home:
+    summary: data-oriented endpoint, temporary storage
+    put:
+      tags:
+      - Endpoint3Provider-Endpoint3Home
+      summary: transferIn (write only method)
+      description: '[State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html).'
+      operationId: Endpoint3Home-transferIn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: string
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
+                  format: binary
+      responses:
+        "200":
+          description: transferIn successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resourceId:
+                    type: string
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+                      target="_blank">Id Element</a>
+                    format: uuid
+  /endpoint3Home/{resourceId}:
+    summary: data-oriented endpoint, temporary storage
+    get:
+      tags:
+      - Endpoint3Provider-Endpoint3Home_transferOut
+      summary: transferOut (read only method)
+      description: '[Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html).'
+      operationId: Endpoint3Home_transferOut-transferOut
+      parameters:
+      - name: resourceId
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+          format: uuid
+      responses:
+        "200":
+          description: transferOut successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
+                    format: binary
+    parameters:
+    - name: resourceId
+      in: path
+      required: true
+      schema:
+        type: string
+  /endpoint4Home:
+    summary: 'data-oriented endpoint: resource directory'
+    get:
+      tags:
+      - Endpoint4Provider-Endpoint4Home
+      summary: lookupResourcesViaFilter (read only method)
+      description: '[Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html).'
+      operationId: Endpoint4Home-lookupResourcesViaFilter
+      parameters:
+      - name: criteria
+        in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+          target="_blank">Metadata Element</a>
+        required: true
+        schema:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
+      responses:
+        "200":
+          description: lookupResourcesViaFilter successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uriSet:
+                    type: array
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/LinkElement"
+                      target="_blank">Link Element</a>
+                    items:
+                      type: string
+                      format: uri
+    put:
+      tags:
+      - Endpoint4Provider-Endpoint4Home
+      summary: lookupResourceById (write only method)
+      description: '[State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html).'
+      operationId: Endpoint4Home-lookupResourceById
+      parameters:
+      - name: resourceId
+        in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+          format: uuid
+      responses:
+        "200":
+          description: lookupResourceById successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uri:
+                    type: string
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/LinkElement"
+                      target="_blank">Link Element</a>
+                    format: uri
+  /endpoint5aHome:
+    summary: 'main responsibility: VALIDATION_RESOURCE'
+    post:
+      tags:
+      - Endpoint5aProvider-Endpoint5aHome
+      summary: check (no read, no write method)
+      description: '[Computation Function](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/ComputationFunction.html).'
+      operationId: Endpoint5aHome-check
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: string
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
+      responses:
+        "200":
+          description: check successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: boolean
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
+  /endpoint5bHome:
+    summary: 'main responsibility: TRANSFORMATION_RESOURCE'
+    post:
+      tags:
+      - Endpoint5bProvider-Endpoint5bHome
+      summary: convert (no read, no write method)
+      description: '[Computation Function](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/ComputationFunction.html).'
+      operationId: Endpoint5bHome-convert
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: string
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
+      responses:
+        "200":
+          description: convert successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
+components:
+  schemas:
+    ProductCatalog:
+      type: object
+      properties:
+        id:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+        product:
+          type: string
+          description: Generic parameter
+        anonymous1:
+          type: array
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          items:
+            type: integer
+            format: int32
+    Endpoint1aDTO:
+      type: object
+      properties:
+        endpoint1a:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+    Endpoint1bDTO:
+      type: object
+      properties:
+        endpoint1b:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+    Endpoint2aDTO:
+      type: object
+      properties:
+        endpoint2a:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+    Endpoint2bDTO:
+      type: object
+      properties:
+        endpoint2b:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>

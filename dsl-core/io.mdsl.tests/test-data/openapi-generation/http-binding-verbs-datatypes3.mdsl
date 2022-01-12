@@ -1,0 +1,54 @@
+API description HTTPVerbAndDataTypeMappingTest3 
+usage context PUBLIC_API for FRONTEND_INTEGRATION and BACKEND_INTEGRATION
+overview "API Test Case: HTTPVerbAndDataTypeMappingTest"
+
+data type FlatDTO3 "fDto": {"idKey":ID<int>, "sampleValue":D<string>+, "value3":D<int>} // TODO adding a generic parameter
+data type NestedDTO3 "nDto": {"mdKey":MD<int>?, "innerDTO":FlatDTO3*, P} // adding a generic parameter
+
+// This file (partial): test body merging (simple payload, complex payload) and partial body mapping (some APs to query some to body)
+
+endpoint type SampleEntityInformationHolder serves as MASTER_DATA_HOLDER
+  exposes
+    operation testInlinedParameters with responsibility STATE_CREATION_OPERATION
+      expecting
+        payload "requestMessage": {"primaryIntegerKey":ID<int>, "atLeastOneString":D<string>+, "value3":D<int>} // TODO adding a generic parameter
+      delivering
+        payload "responseMessage": {"mdKey":MD<int>?, "innerDTO":FlatDTO3*, P} // adding a generic parameter
+        
+    operation testExtractedParameters with responsibility STATE_TRANSITION_OPERATION
+      expecting
+        payload "requestMessageWithTypeReference": FlatDTO3 
+      delivering
+        payload "responseMessageWithTypeReference": NestedDTO3
+    
+    operation getInlinedParameters 
+      expecting 
+        payload "requestMessage": {"primaryIntegerKey":ID<int>, "atLeastOneString":D<string>+, "value3":D<int>} // TODO adding a generic parameter
+      delivering
+        payload "responseMessage": {"mdKey":MD<int>?, "innerDTO":FlatDTO3*, P} // adding a generic parameter
+        
+    operation deleteExtractedParameters 
+      expecting
+        payload "requestMessageWithTypeReference": FlatDTO3 
+      delivering
+        payload "primaryIntegerKey": NestedDTO3
+
+// generated and then patched (note that ID is mapped to PATH by default in QF)
+API provider SampleEntityInformationHolderProvider offers SampleEntityInformationHolder at endpoint location "http://localhost:8080"
+	via protocol HTTP binding
+resource SampleEntityInformationHolderHome at "/sampleEntityInformationHolderHome"
+	operation testInlinedParameters to PUT 
+		element "primaryIntegerKey" realized as QUERY parameter 
+		element "atLeastOneString" realized as BODY parameter 
+		element "value3" realized as BODY parameter
+	operation testExtractedParameters to POST 
+		// element "requestMessageWithTypeReference" realized as BODY parameter
+		element "primaryIntegerKey" realized as QUERY parameter 
+		element "atLeastOneString" realized as BODY parameter 
+		element "value3" realized as BODY parameter
+	operation getInlinedParameters to GET 
+		element "primaryIntegerKey" realized as QUERY parameter 
+		element "atLeastOneString" realized as QUERY parameter 
+		element "value3" realized as QUERY parameter
+	operation deleteExtractedParameters to DELETE 
+		element "requestMessageWithTypeReference" realized as QUERY parameter

@@ -1,0 +1,176 @@
+openapi: 3.0.1
+info:
+  title: ExplicitTreeBindingTest
+  version: "1.0"
+servers:
+- url: http://localhost:8080
+tags:
+- name: SampleEntityInformationHolderProvider-SampleEntityInformationHolderHome
+  externalDocs:
+    description: SampleEntityInformationHolder contract
+    url: ""
+- name: SampleEntityInformationHolderProvider-SampleEntityInformationHolderHome2
+  externalDocs:
+    description: SampleEntityInformationHolder contract
+    url: ""
+paths:
+  /sampleEntityInformationHolderHome:
+    put:
+      tags:
+      - SampleEntityInformationHolderProvider-SampleEntityInformationHolderHome
+      summary: sampleMethodWithEmbeddedTypes
+      description: ""
+      operationId: SampleEntityInformationHolderHome-sampleMethodWithEmbeddedTypes
+      parameters:
+      - name: tree3
+        in: query
+        description: Type reference tree3
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/DTOFlat'
+      - name: tree4
+        in: query
+        description: Type reference tree4
+        schema:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/DTOFlat'
+      - name: tree5
+        in: cookie
+        description: Type reference tree5
+        schema:
+          $ref: '#/components/schemas/DTOFlat'
+      requestBody:
+        description: Message payload (content)
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tree1:
+                  $ref: '#/components/schemas/DTOFlat'
+                tree2:
+                  $ref: '#/components/schemas/DTOFlat'
+              description: request body elements for sampleMethodWithEmbeddedTypes
+      responses:
+        "200":
+          description: sampleMethodWithEmbeddedTypes successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tree1:
+                    $ref: '#/components/schemas/DTOFlat'
+                  tree2:
+                    $ref: '#/components/schemas/DTOFlat'
+                  tree3:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DTOFlat'
+                  tree4:
+                    minItems: 1
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DTOFlat'
+                  tree5:
+                    $ref: '#/components/schemas/DTOFlat'
+  /sampleEntityInformationHolderHome2/{tree2}:
+    post:
+      tags:
+      - SampleEntityInformationHolderProvider-SampleEntityInformationHolderHome2
+      summary: sampleMethodWithTypeReference
+      description: ""
+      operationId: SampleEntityInformationHolderHome2-sampleMethodWithTypeReference
+      parameters:
+      - name: tree1
+        in: query
+        description: Type reference tree1
+        schema:
+          $ref: '#/components/schemas/DTOFlat'
+      - name: tree2
+        in: path
+        description: Type reference tree2
+        required: true
+        schema:
+          $ref: '#/components/schemas/DTOFlat'
+      - name: tree3
+        in: cookie
+        description: Type reference tree3
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/DTOFlat'
+      - name: tree4
+        in: header
+        description: Type reference tree4
+        schema:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/DTOFlat'
+      requestBody:
+        description: Message payload (content)
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tree5:
+                  $ref: '#/components/schemas/DTOFlat'
+              description: request body elements for sampleMethodWithTypeReference
+      responses:
+        "200":
+          description: sampleMethodWithTypeReference successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DTONested'
+    parameters:
+    - name: tree2
+      in: path
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    DTOFlat:
+      type: object
+      properties:
+        leaf1:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+          format: int32
+        leaf2:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          nullable: true
+        leaf3:
+          minItems: 1
+          type: array
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          items:
+            type: string
+    DTONested:
+      type: object
+      properties:
+        tree1:
+          $ref: '#/components/schemas/DTOFlat'
+        tree2:
+          $ref: '#/components/schemas/DTOFlat'
+        tree3:
+          type: array
+          items:
+            $ref: '#/components/schemas/DTOFlat'
+        tree4:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/DTOFlat'
+        tree5:
+          $ref: '#/components/schemas/DTOFlat'

@@ -1,0 +1,425 @@
+# MDSL to Sketch Miner Converter Version 0.0.1 (Status: Demonstrator/Proof of Concept):
+
+/// Flow SampleFlowWithCisStepOr
+
+/// Events: 
+/// FlowInitiated
+/// Event1
+/// Command1Done1
+/// Command2Done
+/// Command3Done
+/// AND_Command1Done1_Command2Done_Command3Done
+/// FlowTerminated
+
+/// Commands:
+/// StartFlowCommand
+/// Command1
+/// Command2
+/// Command3
+/// TerminateFlowCommand
+
+
+/// Canonical/normalized flow model:
+Flow SampleFlowWithCisStepOr
+Number of events: 7
+Number of commands: 5
+ Event: FlowInitiated (Event) triggers 1 command(s): StartFlowCommand (Command) 
+ Event: Event1 (Event) triggers 3 command(s): Command1 (Command) Command2 (Command) Command3 (Command) 
+ Event: Command1Done1 (Event) triggers 0 command(s): 
+ Event: Command2Done (Event) triggers 0 command(s): 
+ Event: Command3Done (Event) triggers 0 command(s): 
+ Event: AND_Command1Done1_Command2Done_Command3Done (JoinEvent) triggers 1 command(s): TerminateFlowCommand (Command) 
+ Event: FlowTerminated (Event) triggers 0 command(s): 
+ Command StartFlowCommand emits 1 event(s): Event1 (Event) 
+ Command Command1 emits 1 event(s): Command1Done1 (Event) 
+ Command Command2 emits 1 event(s): Command2Done (Event) 
+ Command Command3 emits 1 event(s): Command3Done (Event) 
+ Command TerminateFlowCommand emits 1 event(s): FlowTerminated (Event) 
+
+
+/// Paths dump:
+FlowInitiated->StartFlowCommand;Event1->Command1;Command1Done1->AND_Command1Done1_Command2Done_Command3Done;AND_Command1Done1_Command2Done_Command3Done->TerminateFlowCommand;FlowTerminated->done;
+FlowInitiated->StartFlowCommand;Event1->Command2;Command2Done->AND_Command1Done1_Command2Done_Command3Done;AND_Command1Done1_Command2Done_Command3Done->TerminateFlowCommand;FlowTerminated->done;
+FlowInitiated->StartFlowCommand;Event1->Command3;Command3Done->AND_Command1Done1_Command2Done_Command3Done;AND_Command1Done1_Command2Done_Command3Done->TerminateFlowCommand;FlowTerminated->done;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+SampleFlowWithCisStepOr:
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Command1Done1)
+AND_Command1Done1_Command2Done_Command3Done
+(AND_Command1Done1_Command2Done_Command3Done)
+TerminateFlowCommand
+(FlowTerminated)
+done
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command2
+(Command2Done)
+AND_Command1Done1_Command2Done_Command3Done
+(AND_Command1Done1_Command2Done_Command3Done)
+TerminateFlowCommand
+(FlowTerminated)
+done
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command3
+(Command3Done)
+AND_Command1Done1_Command2Done_Command3Done
+(AND_Command1Done1_Command2Done_Command3Done)
+TerminateFlowCommand
+(FlowTerminated)
+done
+
+
+
+/// Flow SampleFlowWithCisStepAnd
+
+/// Events: 
+/// FlowInitiated
+/// Event1
+/// Command1Done1
+/// Command2Done
+/// Command3Done
+/// AND_Command1Done1_Command2Done_Command3Done
+/// FlowTerminated
+
+/// Commands:
+/// StartFlowCommand
+/// Command1
+/// Command2
+/// Command3
+/// AND_Command1_Command2_Command3
+/// TerminateFlowCommand
+
+
+/// Canonical/normalized flow model:
+Flow SampleFlowWithCisStepAnd
+Number of events: 7
+Number of commands: 6
+ Event: FlowInitiated (Event) triggers 1 command(s): StartFlowCommand (Command) 
+ Event: Event1 (Event) triggers 1 command(s): AND_Command1_Command2_Command3 (CompositeCommand) 
+ Event: Command1Done1 (Event) triggers 0 command(s): 
+ Event: Command2Done (Event) triggers 0 command(s): 
+ Event: Command3Done (Event) triggers 0 command(s): 
+ Event: AND_Command1Done1_Command2Done_Command3Done (JoinEvent) triggers 1 command(s): TerminateFlowCommand (Command) 
+ Event: FlowTerminated (Event) triggers 0 command(s): 
+ Command StartFlowCommand emits 1 event(s): Event1 (Event) 
+ Command Command1 emits 1 event(s): Command1Done1 (Event) 
+ Command Command2 emits 1 event(s): Command2Done (Event) 
+ Command Command3 emits 1 event(s): Command3Done (Event) 
+ Command AND_Command1_Command2_Command3 emits 0 event(s): 
+ Command TerminateFlowCommand emits 1 event(s): FlowTerminated (Event) 
+
+
+/// Paths dump:
+FlowInitiated->StartFlowCommand;Event1->Command1;Command1Done1->AND_Command1Done1_Command2Done_Command3Done;AND_Command1Done1_Command2Done_Command3Done->TerminateFlowCommand;FlowTerminated->done;
+FlowInitiated->StartFlowCommand;Event1->Command2;Command2Done->AND_Command1Done1_Command2Done_Command3Done;AND_Command1Done1_Command2Done_Command3Done->TerminateFlowCommand;FlowTerminated->done;
+FlowInitiated->StartFlowCommand;Event1->Command3;Command3Done->AND_Command1Done1_Command2Done_Command3Done;AND_Command1Done1_Command2Done_Command3Done->TerminateFlowCommand;FlowTerminated->done;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+SampleFlowWithCisStepAnd:
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Command1Done1)
+AND_Command1Done1_Command2Done_Command3Done
+(AND_Command1Done1_Command2Done_Command3Done)
+TerminateFlowCommand
+(FlowTerminated)
+done
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command2
+(Command2Done)
+AND_Command1Done1_Command2Done_Command3Done
+(AND_Command1Done1_Command2Done_Command3Done)
+TerminateFlowCommand
+(FlowTerminated)
+done
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command3
+(Command3Done)
+AND_Command1Done1_Command2Done_Command3Done
+(AND_Command1Done1_Command2Done_Command3Done)
+TerminateFlowCommand
+(FlowTerminated)
+done
+
+
+
+/// Flow SampleFlowWithDepStepAnd
+
+/// Events: 
+/// FlowInitiated
+/// Event1
+/// Event2
+/// Event3
+/// AND_Event1_Event2_Event3
+/// FlowTerminated
+
+/// Commands:
+/// StartFlowCommand
+/// Command1
+/// Command2
+/// Command3
+
+
+/// Canonical/normalized flow model:
+Flow SampleFlowWithDepStepAnd
+Number of events: 6
+Number of commands: 4
+ Event: FlowInitiated (Event) triggers 1 command(s): StartFlowCommand (Command) 
+ Event: Event1 (Event) triggers 1 command(s): Command1 (Command) 
+ Event: Event2 (Event) triggers 1 command(s): Command2 (Command) 
+ Event: Event3 (Event) triggers 1 command(s): Command3 (Command) 
+ Event: AND_Event1_Event2_Event3 (CompositeEvent) triggers 0 command(s): 
+ Event: FlowTerminated (Event) triggers 0 command(s): 
+ Command StartFlowCommand emits 1 event(s): AND_Event1_Event2_Event3 (CompositeEvent) 
+ Command Command1 emits 1 event(s): FlowTerminated (Event) 
+ Command Command2 emits 1 event(s): FlowTerminated (Event) 
+ Command Command3 emits 1 event(s): FlowTerminated (Event) 
+
+
+/// Paths dump:
+FlowInitiated->StartFlowCommand;Event1->Command1;FlowTerminated->done;
+FlowInitiated->StartFlowCommand;Event2->Command2;FlowTerminated->done;
+FlowInitiated->StartFlowCommand;Event3->Command3;FlowTerminated->done;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+SampleFlowWithDepStepAnd:
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(FlowTerminated)
+done
+
+(FlowInitiated)
+StartFlowCommand
+(Event2)
+Command2
+(FlowTerminated)
+done
+
+(FlowInitiated)
+StartFlowCommand
+(Event3)
+Command3
+(FlowTerminated)
+done
+
+
+
+/// Flow SampleFlowWithDepStepOr
+
+/// Events: 
+/// FlowInitiated
+/// Event1
+/// Event2
+/// Event3
+/// FlowTerminated
+
+/// Commands:
+/// StartFlowCommand
+/// Command1
+/// Command2
+/// Command3
+
+
+/// Canonical/normalized flow model:
+Flow SampleFlowWithDepStepOr
+Number of events: 5
+Number of commands: 4
+ Event: FlowInitiated (Event) triggers 1 command(s): StartFlowCommand (Command) 
+ Event: Event1 (Event) triggers 1 command(s): Command1 (Command) 
+ Event: Event2 (Event) triggers 1 command(s): Command2 (Command) 
+ Event: Event3 (Event) triggers 1 command(s): Command3 (Command) 
+ Event: FlowTerminated (Event) triggers 0 command(s): 
+ Command StartFlowCommand emits 3 event(s): Event1 (Event) Event2 (Event) Event3 (Event) 
+ Command Command1 emits 1 event(s): FlowTerminated (Event) 
+ Command Command2 emits 1 event(s): FlowTerminated (Event) 
+ Command Command3 emits 1 event(s): FlowTerminated (Event) 
+
+
+/// Paths dump:
+FlowInitiated->StartFlowCommand;Event1->Command1;FlowTerminated->done;
+FlowInitiated->StartFlowCommand;Event2->Command2;FlowTerminated->done;
+FlowInitiated->StartFlowCommand;Event3->Command3;FlowTerminated->done;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+SampleFlowWithDepStepOr:
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(FlowTerminated)
+done
+
+(FlowInitiated)
+StartFlowCommand
+(Event2)
+Command2
+(FlowTerminated)
+done
+
+(FlowInitiated)
+StartFlowCommand
+(Event3)
+Command3
+(FlowTerminated)
+done
+
+
+
+/// Flow SampleFlowWithAllOptions
+
+/// Events: 
+/// FlowInitiated
+/// Event1
+/// Event2
+/// Event3
+/// Command1Done1
+/// Command1Done2
+/// AND_Command1Done1_Command1Done2
+/// Command2Done
+/// Command3Done
+/// Command4Done
+/// Command5Done
+/// Command6Done
+/// AND_Command1Done1_Command1Done2_Command2Done
+/// AND_Command3Done_Command4Done_Command5Done
+
+/// Commands:
+/// StartFlowCommand
+/// Command1
+/// Command2
+/// AND_Command1_Command2
+/// Command3
+/// Command4
+/// Command5
+/// Command6
+/// TerminateFlowCommand
+
+
+/// Canonical/normalized flow model:
+Flow SampleFlowWithAllOptions
+Number of events: 14
+Number of commands: 9
+ Event: FlowInitiated (Event) triggers 1 command(s): StartFlowCommand (Command) 
+ Event: Event1 (Event) triggers 1 command(s): AND_Command1_Command2 (CompositeCommand) 
+ Event: Event2 (Event) triggers 2 command(s): Command3 (Command) Command4 (Command) 
+ Event: Event3 (Event) triggers 2 command(s): Command5 (Command) Command6 (Command) 
+ Event: Command1Done1 (Event) triggers 0 command(s): 
+ Event: Command1Done2 (Event) triggers 0 command(s): 
+ Event: AND_Command1Done1_Command1Done2 (CompositeEvent) triggers 0 command(s): 
+ Event: Command2Done (Event) triggers 0 command(s): 
+ Event: Command3Done (Event) triggers 0 command(s): 
+ Event: Command4Done (Event) triggers 0 command(s): 
+ Event: Command5Done (Event) triggers 0 command(s): 
+ Event: Command6Done (Event) triggers 1 command(s): TerminateFlowCommand (Command) 
+ Event: AND_Command1Done1_Command1Done2_Command2Done (JoinEvent) triggers 1 command(s): TerminateFlowCommand (Command) 
+ Event: AND_Command3Done_Command4Done_Command5Done (JoinEvent) triggers 1 command(s): TerminateFlowCommand (Command) 
+ Command StartFlowCommand emits 3 event(s): Event1 (Event) Event2 (Event) Event3 (Event) 
+ Command Command1 emits 1 event(s): AND_Command1Done1_Command1Done2 (CompositeEvent) 
+ Command Command2 emits 1 event(s): Command2Done (Event) 
+ Command AND_Command1_Command2 emits 0 event(s): 
+ Command Command3 emits 1 event(s): Command3Done (Event) 
+ Command Command4 emits 1 event(s): Command4Done (Event) 
+ Command Command5 emits 1 event(s): Command5Done (Event) 
+ Command Command6 emits 1 event(s): Command6Done (Event) 
+ Command TerminateFlowCommand emits 0 event(s): 
+
+
+/// Paths dump:
+FlowInitiated->StartFlowCommand;Event1->Command1;Command1Done1->AND_Command1Done1_Command1Done2_Command2Done;AND_Command1Done1_Command1Done2_Command2Done->TerminateFlowCommand;
+FlowInitiated->StartFlowCommand;Event1->Command1;Command1Done2->AND_Command1Done1_Command1Done2_Command2Done;AND_Command1Done1_Command1Done2_Command2Done->TerminateFlowCommand;
+FlowInitiated->StartFlowCommand;Event1->Command2;Command2Done->AND_Command1Done1_Command1Done2_Command2Done;AND_Command1Done1_Command1Done2_Command2Done->TerminateFlowCommand;
+FlowInitiated->StartFlowCommand;Event2->Command3;Command3Done->AND_Command3Done_Command4Done_Command5Done;AND_Command3Done_Command4Done_Command5Done->TerminateFlowCommand;
+FlowInitiated->StartFlowCommand;Event2->Command4;Command4Done->AND_Command3Done_Command4Done_Command5Done;AND_Command3Done_Command4Done_Command5Done->TerminateFlowCommand;
+FlowInitiated->StartFlowCommand;Event3->Command5;Command5Done->AND_Command3Done_Command4Done_Command5Done;AND_Command3Done_Command4Done_Command5Done->TerminateFlowCommand;
+FlowInitiated->StartFlowCommand;Event3->Command6;Command6Done->TerminateFlowCommand;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+SampleFlowWithAllOptions:
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Command1Done1)
+AND_Command1Done1_Command1Done2_Command2Done
+(AND_Command1Done1_Command1Done2_Command2Done)
+TerminateFlowCommand
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Command1Done2)
+AND_Command1Done1_Command1Done2_Command2Done
+(AND_Command1Done1_Command1Done2_Command2Done)
+TerminateFlowCommand
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command2
+(Command2Done)
+AND_Command1Done1_Command1Done2_Command2Done
+(AND_Command1Done1_Command1Done2_Command2Done)
+TerminateFlowCommand
+
+(FlowInitiated)
+StartFlowCommand
+(Event2)
+Command3
+(Command3Done)
+AND_Command3Done_Command4Done_Command5Done
+(AND_Command3Done_Command4Done_Command5Done)
+TerminateFlowCommand
+
+(FlowInitiated)
+StartFlowCommand
+(Event2)
+Command4
+(Command4Done)
+AND_Command3Done_Command4Done_Command5Done
+(AND_Command3Done_Command4Done_Command5Done)
+TerminateFlowCommand
+
+(FlowInitiated)
+StartFlowCommand
+(Event3)
+Command5
+(Command5Done)
+AND_Command3Done_Command4Done_Command5Done
+(AND_Command3Done_Command4Done_Command5Done)
+TerminateFlowCommand
+
+(FlowInitiated)
+StartFlowCommand
+(Event3)
+Command6
+(Command6Done)
+TerminateFlowCommand
+
+
+
+ 

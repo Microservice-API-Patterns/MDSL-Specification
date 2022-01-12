@@ -15,31 +15,42 @@
  */
 package io.mdsl.generator.model.converter;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtext.EcoreUtil2;
 
 import io.mdsl.apiDescription.Cardinality;
 import io.mdsl.apiDescription.ElementStructure;
 import io.mdsl.apiDescription.EndpointList;
+import io.mdsl.apiDescription.HTTPBinding;
+import io.mdsl.apiDescription.HTTPGlobalParameterBinding;
+import io.mdsl.apiDescription.HTTPOperationBinding;
+import io.mdsl.apiDescription.HTTPParameter;
+import io.mdsl.apiDescription.HTTPParameterBinding;
+import io.mdsl.apiDescription.HTTPResourceBinding;
 import io.mdsl.apiDescription.JavaBinding;
 import io.mdsl.apiDescription.JavaOperationBinding;
 import io.mdsl.apiDescription.OperationResponsibility;
 // import io.mdsl.apiDescription.TechnologyBinding;
 import io.mdsl.apiDescription.TypeReference;
 import io.mdsl.dsl.ServiceSpecificationAdapter;
+import io.mdsl.exception.MDSLException;
 import io.mdsl.generator.AnonymousFieldNameGenerator;
-import io.mdsl.generator.CardinalityHelper;
 import io.mdsl.generator.model.DataType;
 import io.mdsl.generator.model.DataTypeField;
 import io.mdsl.generator.model.EndpointContract;
+import io.mdsl.generator.model.HTTPResource;
 import io.mdsl.generator.model.MDSLGeneratorModel;
 import io.mdsl.generator.model.Operation;
 import io.mdsl.generator.model.OperationParameter;
 import io.mdsl.generator.model.ProtocolBinding;
 import io.mdsl.generator.model.StateTransition;
+import io.mdsl.utils.CardinalityHelper;
 
 /**
  * Converts MDSL endpoints (AST model) into endpoints of our generator model.
@@ -47,6 +58,8 @@ import io.mdsl.generator.model.StateTransition;
  */
 public class EndpointConverter {
 
+	private static final String OPTIONAL_INDICATOR = "Optional";
+	private static final String LIST_INDICATOR = "List";
 	private MDSLGeneratorModel model;
 	private DataTypeConverter dataTypeConverter;
 	private ServiceSpecificationAdapter serviceSpecification;
@@ -66,7 +79,6 @@ public class EndpointConverter {
 			if(transition!=null)
 				endpoint.addStateTransition(transition);
 		}
-		// System.out.println("Endpoint now has " + endpoint.getStates().size() + " states and " + endpoint.getTransitions().size() + " transitions");
 		return endpoint;
 	}
 
@@ -87,8 +99,6 @@ public class EndpointConverter {
 			endpoint.addState(st.getTo());
 		}
 		transition.setTo(st.getTo());
-		
-		// System.out.println("Endpoint model now has states: " + endpoint.getStates().size());
 		
 		transition.setName(operation.getName());
 		return transition;
@@ -161,11 +171,11 @@ public class EndpointConverter {
 
 	private DataType wrapDataTypeIntoListTypeIfNecessary(DataType dataType, Cardinality card) {
 		if (CardinalityHelper.isList(card)) {
-			Optional<DataType> alreadyExistingList = getDataTypeIfAlreadyExists(dataType.getName() + "List");
+			Optional<DataType> alreadyExistingList = getDataTypeIfAlreadyExists(dataType.getName() + LIST_INDICATOR);
 			if (alreadyExistingList.isPresent())
 				return alreadyExistingList.get();
 
-			DataType wrapper = new DataType(dataType.getName() + "List");
+			DataType wrapper = new DataType(dataType.getName() + LIST_INDICATOR);
 			DataTypeField field = new DataTypeField("entries");
 			field.setType(dataType);
 			field.isList(true);
@@ -174,11 +184,11 @@ public class EndpointConverter {
 			model.addDataType(wrapper);
 			return wrapper;
 		} else if (CardinalityHelper.isOptional(card)) {
-			Optional<DataType> alreadyExistingOptionalType = getDataTypeIfAlreadyExists(dataType.getName() + "Optional");
+			Optional<DataType> alreadyExistingOptionalType = getDataTypeIfAlreadyExists(dataType.getName() + OPTIONAL_INDICATOR);
 			if (alreadyExistingOptionalType.isPresent())
 				return alreadyExistingOptionalType.get();
 
-			DataType wrapper = new DataType(dataType.getName() + "Optional");
+			DataType wrapper = new DataType(dataType.getName() + OPTIONAL_INDICATOR);
 			DataTypeField field = new DataTypeField("value");
 			field.setType(dataType);
 			field.isList(false);
@@ -238,7 +248,13 @@ public class EndpointConverter {
 			Optional<JavaBinding> javaBinding = EcoreUtil2.eAllOfType(endpointList, JavaBinding.class).stream().findFirst();
 			if (javaBinding.isPresent())
 				return mapJavaBinding(javaBinding.get());
-			// TODO: handle other bindings (for now we just respect Java bindings)
+			Optional<HTTPBinding> httpBinding = EcoreUtil2.eAllOfType(endpointList, HTTPBinding.class).stream().findFirst();
+			if (httpBinding.isPresent()) {
+				if(endpointList.getEndpoints().size()!=1)
+					throw new MDSLException("Unexpected number of endpoint instances in provider");
+				return mapHTTPBinding(httpBinding.get(), endpointList.getEndpoints().get(0).getLocation());
+			}
+			// TODO (L) future work: support other bindings (gRPC, Jolie) 
 		}
 		return null;
 	}
@@ -250,6 +266,44 @@ public class EndpointConverter {
 		for (JavaOperationBinding operationBinding : mdslJavaBinding.getOpsBinding()) {
 			binding.mapOperationName(operationBinding.getBoundOperation(), operationBinding.getMethod());
 		}
+		return binding;
+	}
+	
+	private ProtocolBinding mapHTTPBinding(HTTPBinding mdslHTTPBinding, String endpointLocation) {
+		io.mdsl.generator.model.HTTPBinding binding 
+			= new io.mdsl.generator.model.HTTPBinding(endpointLocation);
+		
+		for (HTTPResourceBinding resource : mdslHTTPBinding.getEb()) {
+			String name = resource.getName();
+			HTTPResource genModelResource = new HTTPResource(name, resource.getUri());
+			binding.addResource(genModelResource);
+			for (HTTPOperationBinding operationBinding : resource.getOpsB()) {
+				Map<String, String> parameterBindings = new HashMap<>(); 
+				
+				// add parameter bindings to genmodel, using new DTO bean
+				HTTPGlobalParameterBinding gpb = operationBinding.getGlobalBinding();
+				if(gpb!=null) {
+					HTTPParameter ptype = gpb.getParameterMapping();
+					// String opName = operationBinding.getBoundOperation();
+					// TODO v55 get all operations, bind them to ptype explicitly
+					parameterBindings.put("all", ptype.getLiteral());
+				}
+				EList<HTTPParameterBinding> pbs = operationBinding.getParameterBindings();
+				if(pbs!=null) {
+					for(HTTPParameterBinding pb : pbs) {
+						String parameterName = pb.getBoundParameter();
+						HTTPParameter ptype = pb.getParameterMapping();
+						parameterBindings.put(parameterName, ptype.getLiteral());
+					}
+				}
+
+				io.mdsl.generator.model.HTTPOperationBinding hob = new io.mdsl.generator.model.HTTPOperationBinding(
+						operationBinding.getBoundOperation(), operationBinding.getMethod().getName(), parameterBindings);
+				// TODO v55 could add default bindings for unbound parameters
+				genModelResource.mapOperationAndParameters(operationBinding.getBoundOperation(), hob);
+			}
+		}
+		
 		return binding;
 	}
 
@@ -266,5 +320,4 @@ public class EndpointConverter {
 			structure.getPt().getName();
 		return "";
 	}
-
 }

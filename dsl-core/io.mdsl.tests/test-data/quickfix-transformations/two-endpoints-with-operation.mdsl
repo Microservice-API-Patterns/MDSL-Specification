@@ -1,0 +1,12 @@
+API description QuickFixTransformationTestAPI
+version "Since version 5.4.2"
+overview "Testing the SOAD transformations and API refactorings"
+
+data type SampleBusinessObjectDTO "sampleBusinessObjectKeyValueMap":{"key":ID<string> , "sampleBusinessObject":D}
+data type Sample_Scenario_1RealizationEndpointDTO "sample_Scenario_1RealizationEndpoint":D<string>
+
+endpoint type SourceEndpoint
+exposes
+operation doSomething expecting payload {"sampleData":D , "requestedPageSize":MD<int> , <<Wish_List>> "desiredElements":MD<string>*} delivering payload <<Pagination>> "doSomethingResponseBodyWrapper":{"doSomethingResponseBody":D<string> , "pageSize":MD<int> , "self":L<string> , "nextCursor":L<string>}
+
+endpoint type TargetEndpoint

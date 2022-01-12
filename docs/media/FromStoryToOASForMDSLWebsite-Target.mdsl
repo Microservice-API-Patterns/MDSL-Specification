@@ -1,0 +1,59 @@
+API description SoadDemo
+data type SomeBusinessObjectDTO {"someBusinessObject":D}
+data type SampleIntegrationScenarioRealizationEndpointDTO "sampleIntegrationScenarioRealizationEndpoint":D<string>
+event type something_has_happened
+event type CRUDSomeBusinessObjectTrigger
+event type SampleIntegrationScenarioFlowInitiated "eventDetails":MD<string>
+event type CRUDSomeBusinessObjectCompleted
+command type doSomething
+command type CRUDSomeBusinessObject
+
+endpoint type SampleIntegrationScenarioRealizationEndpoint supports scenario SampleIntegrationScenario
+serves as INFORMATION_HOLDER_RESOURCE
+exposes
+operation doSomething expecting payload {"dataTransferObject":D} delivering payload "doSomethingResponseBody":D<string>
+operation createSomeBusinessObject with responsibility STATE_CREATION_OPERATION expecting payload SomeBusinessObjectDTO delivering payload "resourceId":ID<string>
+operation readSomeBusinessObject with responsibility RETRIEVAL_OPERATION expecting payload "queryFilter":MD<string> delivering payload "resultSet":SomeBusinessObjectDTO*
+operation updateSomeBusinessObject with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":SomeBusinessObjectDTO delivering payload "updateResult":SomeBusinessObjectDTO
+operation deleteSomeBusinessObject with responsibility STATE_DELETION_OPERATION expecting payload "resourceId":ID<string> delivering payload "successFlag":D<bool>
+operation findAll with responsibility RETRIEVAL_OPERATION expecting payload "queryFilter":MD<string> delivering payload "resultSet":SampleIntegrationScenarioRealizationEndpointDTO*
+operation findById with responsibility RETRIEVAL_OPERATION expecting payload "resourceId":ID<string> delivering payload SampleIntegrationScenarioRealizationEndpointDTO
+
+endpoint type SampleIntegrationScenarioFlowEndpoint supports flow SampleIntegrationScenarioFlow serves as PROCESSING_RESOURCE
+exposes
+operation doSomething with responsibility STATE_TRANSITION_OPERATION expecting payload   "doSomethingRequestBodyWrapper":{"doSomethingRequestBody":D<string> , <<Wish_List>> "desiredElements":MD<string>*} delivering payload "doSomethingResponseBody" 
+  transitions from "doSomethingTriggered" to "doSomethingExecuted"
+operation cRUDSomeBusinessObject with responsibility EVENT_PROCESSOR expecting payload "cRUDSomeBusinessObjectRequestBody" delivering payload "cRUDSomeBusinessObjectResponseBody" emitting event CRUDSomeBusinessObjectCompleted
+receives event SampleIntegrationScenarioFlowInitiated
+
+API provider SampleIntegrationScenarioRealizationEndpointProvider offers SampleIntegrationScenarioRealizationEndpoint at endpoint location "http://localhost:8080"
+via protocol HTTP binding
+resource Home at "/Home"
+operation doSomething to POST all elements realized as BODY parameters
+operation createSomeBusinessObject to PUT all elements realized as BODY parameters
+operation readSomeBusinessObject to GET all elements realized as QUERY parameters
+resource Home_deleteSomeBusinessObject at "/{resourceId}"
+operation deleteSomeBusinessObject to DELETE element "resourceId" realized as PATH parameter
+resource Resource2 at "/Resource2"
+operation updateSomeBusinessObject to POST all elements realized as BODY parameters
+operation findAll to GET all elements realized as QUERY parameters
+resource Resource3 at "/Resource3"
+operation findById to GET all elements realized as QUERY parameters
+
+flow SampleIntegrationScenarioFlow realizes SampleIntegrationScenario
+event something_has_happened triggers command doSomething
+event CRUDSomeBusinessObjectTrigger triggers command CRUDSomeBusinessObject
+command CRUDSomeBusinessObject emits event CRUDSomeBusinessObjectCompleted
+
+scenario SampleIntegrationScenario
+  story ElaborateStory
+   when "something has happened" //precondition
+   a "customer and/or integrator" // role
+   wants to "doSomething" // business activity 
+   yielding "a result" // outcome
+   so that "both actors are satisfied and profit is made" // goal 
+    
+  story ShortStory
+    a API client
+    wants to CRUD "SomeBusinessObject" 
+    // CRUD is short for Create, Read, Update, Delete  

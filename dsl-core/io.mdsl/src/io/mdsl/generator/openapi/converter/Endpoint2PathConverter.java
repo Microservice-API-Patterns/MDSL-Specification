@@ -6,31 +6,30 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 
+import io.mdsl.apiDescription.ApiDescriptionFactory;
 import io.mdsl.apiDescription.AtomicParameter;
 import io.mdsl.apiDescription.ElementStructure;
 import io.mdsl.apiDescription.EndpointContract;
 import io.mdsl.apiDescription.Event;
+import io.mdsl.apiDescription.GenericParameter;
 import io.mdsl.apiDescription.HTTPOperationBinding;
 import io.mdsl.apiDescription.HTTPParameter;
 import io.mdsl.apiDescription.HTTPResourceBinding;
-import io.mdsl.apiDescription.HTTPTypeBinding;
-import io.mdsl.apiDescription.HTTPVerb;
-import io.mdsl.apiDescription.LinkContract;
 import io.mdsl.apiDescription.Operation;
-import io.mdsl.apiDescription.OperationResponsibility;
 import io.mdsl.apiDescription.ParameterTree;
-import io.mdsl.apiDescription.RelationshipLink;
 import io.mdsl.apiDescription.SecurityBinding;
 import io.mdsl.apiDescription.SecurityPolicies;
 import io.mdsl.apiDescription.SecurityPolicy;
+import io.mdsl.apiDescription.SingleParameterNode;
 import io.mdsl.apiDescription.StatusReport;
 import io.mdsl.apiDescription.StatusReports;
+import io.mdsl.apiDescription.TreeNode;
 import io.mdsl.apiDescription.TypeReference;
 import io.mdsl.dsl.ServiceSpecificationAdapter;
 import io.mdsl.exception.MDSLException;
 import io.mdsl.utils.MAPLinkResolver;
+import io.mdsl.utils.MDSLLogger;
 import io.mdsl.utils.MDSLSpecificationWrapper;
-import io.swagger.v3.oas.models.links.Link;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.media.Content;
@@ -41,7 +40,6 @@ import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.tags.Tag;
 
 /**
@@ -52,24 +50,29 @@ import io.swagger.v3.oas.models.tags.Tag;
  */
 public class Endpoint2PathConverter {
 	
-	// TODO (tbd) set OAS version in generated file to 3.0.3
-	
-	// TODO (H): when several endpoints and their resource bindings use same URI path, 
-	// only the last one makes it into OAS (data structure? put -> add)
-	
-	// TODO (H): VoidSchema to be ignored, validates in OAS but causes later tools to fail
-
-	// private static final String DEFAULT_MEDIA_TYPE = "application/json"; 
+	private static final String CORRECTIVE_ACTION_TEXT = ". Rename operation to start with 'create', 'read', 'update', 'delete', add decorators (MAP responsibilities or HTTP verbs), assign MAP decorator, or bind to multiple resources.";
+	private static final String METHOD_SUFFIX = " method)";
 	private static final String DEFAULT_RESPONSE_NAME = "200";
+	private static final String NO_RETURN_VALUE = "no return value";
+	private static final String SUCCESSFUL_EXECUTION = " successful execution";
+	private static final String X_999_CODE = "x-999";
+	private static final String TBD_TEXT = "tbd";
 
-	private DataType2SchemaConverter dataType2SchemaConverter; // TODO move to method?
-	private DataType2ParameterConverter dataType2ParameterConverter; // TODO move to method?
-	// private ServiceSpecificationAdapter mdslSpecification;
+	private DataType2SchemaConverter dataType2SchemaConverter; 
+	private DataType2ParameterConverter dataType2ParameterConverter; 
 	private MDSL2OpenAPIConverter mdsl2OpenAPIConverter;
 	private MDSLSpecificationWrapper mdslWrapper;
 	
+	private EndpointContract endpointType;
+	private Operation mdslOperation;
+	private HTTPResourceBinding httpBinding;
+	private HttpMethod httpVerb;
+	private List<String> mediaTypes = null;
+	private io.swagger.v3.oas.models.Operation oasOperation;
+	
+	private boolean eventMappingEnabled = false;
+	
 	public Endpoint2PathConverter(ServiceSpecificationAdapter apiDescriptionToBeConverted, MDSL2OpenAPIConverter mdsl2OpenAPIConverter) {
-		// this.mdslSpecification = apiDescriptionToBeConverted;
 		this.dataType2SchemaConverter = new DataType2SchemaConverter();
 		this.dataType2ParameterConverter = new DataType2ParameterConverter(apiDescriptionToBeConverted);
 		this.mdslWrapper = new MDSLSpecificationWrapper(apiDescriptionToBeConverted);
@@ -77,379 +80,783 @@ public class Endpoint2PathConverter {
 	}
 
 	public PathItem convertMetadataAndOperations(EndpointContract endpointType, HTTPResourceBinding binding) {
+		this.endpointType = endpointType;
+		this.httpBinding = binding;
+		
 		PathItem pathItemForResource = new PathItem();
-		// path.setDescription(mapEndpointPattern(endpoint)); // does not look nice in Swagger editor 
+		// does not look good in some OAS tools:
+		// pathItemForResource.setDescription(endpointType.getName()); 
+		
 		pathItemForResource.setSummary(MAPLinkResolver.explainRolePattern(endpointType));
 		HashMap<HttpMethod, String> alreadyUsedVerbs = new HashMap<HttpMethod, String>();
-		
-		// TODO refactor (not respecting DRY):
-		if(binding==null) {
+				
+		if(httpBinding==null) {
 			// bind all operations in single resource
 			for (Operation operation : endpointType.getOps()) {
-				HttpMethod verb = mapMethod(operation, binding);
-				if (alreadyUsedVerbs.containsKey(verb)) {					
-					throw new MDSLException("Mapping conflict in default resource " +  " (" + operation.getName() + "): operation " + alreadyUsedVerbs.get(verb) + " already maps to " + verb.toString()
-					+ ". Start operation names with 'create', 'read', 'update', 'delete', add decorators (MAP responsibilities or HTTP verbs) or bind to mulitple resources.");
+				httpVerb = HTTPBindingConverterHelpers.mapMethod(operation, httpBinding);
+				if (alreadyUsedVerbs.containsKey(httpVerb)) {					
+					throw new MDSLException("Mapping conflict in default resource " +  " (" + operation.getName() + "): operation " 
+						+ alreadyUsedVerbs.get(httpVerb) + " already maps to " + httpVerb.toString() + CORRECTIVE_ACTION_TEXT);
 				}
 				else {
-					alreadyUsedVerbs.put(verb, operation.getName());
+					alreadyUsedVerbs.put(httpVerb, operation.getName());
 				}
-				pathItemForResource.operation(verb, convertOperation(endpointType, operation, verb, binding));
+				pathItemForResource.operation(httpVerb, convertOperation(operation));
 			}
-			/*
-			// TODO work in progress (early PoC)
-			for (Event event : endpointType.getEvents()) {
-				addEventToDescription(pathItemForResource, event);
-				// pathItemForResource.operation(PathItem.HttpMethod.POST, convertEvent(endpointType, event, HttpMethod.POST, binding));
+			if(eventMappingEnabled) {
+				for (Event event : endpointType.getEvents()) {
+					addEventToDescription(pathItemForResource, event);
+					pathItemForResource.operation(PathItem.HttpMethod.POST, convertEvent(event, HttpMethod.POST));
+				}
 			}
-			*/
 		}
-		else {
-			// only work with operations for which a binding exists in this resource
+		else {			
+			// note: only working with operations for which a binding exists in this resource
 			for (Operation operation : endpointType.getOps()) {
-				HTTPOperationBinding opb = mdslWrapper.findOperationBindingFor(operation.getName(), binding);
+				httpVerb = HTTPBindingConverterHelpers.mapMethod(operation, httpBinding);
+				HTTPOperationBinding opb = HTTPBindingConverterHelpers.findOperationBindingFor(operation.getName(), this.httpBinding);
 				
 				if(opb==null) {
-					mdslWrapper.logWarning("Operation *not* bound in resource " + binding.getName() + " " + operation.getName());
+					MDSLLogger.reportInformation("Operation " + operation.getName() + " not bound in resource " + binding.getName());
 				}
 				else {
-					mdslWrapper.logInformation("Operation bound in this resource:" + binding.getName() + " " + operation.getName());
-
-					HttpMethod verb = mapMethod(operation, binding);
+					MDSLLogger.reportInformation("Operation " + operation.getName() + " bound in resource " + binding.getName());
+					HttpMethod verb = HTTPBindingConverterHelpers.mapMethod(operation, binding);
 					if (alreadyUsedVerbs.containsKey(verb)) {					
-						throw new MDSLException("Mapping conflict in resource " + binding.getName() + " (" + operation.getName() + "): operation " + alreadyUsedVerbs.get(verb) + " already maps to " + verb.toString()
-						+ ". Start operation names with 'create', 'read', 'update', 'delete', add decorators (MAP responsibilities or HTTP verbs) or bind to mulitple resources.");
+						throw new MDSLException("Mapping conflict in resource " + binding.getName() + " (" + operation.getName() + "): operation " 
+							+ alreadyUsedVerbs.get(verb) + " already maps to " + verb.toString() + CORRECTIVE_ACTION_TEXT);
 					}
 					else {
 						alreadyUsedVerbs.put(verb, operation.getName());
 					}
-					pathItemForResource.operation(verb, convertOperation(endpointType, operation, verb, binding));
-
+					pathItemForResource.operation(verb, convertOperation(operation));
 				}
 			}
-			// TODO handle bound events too (?)
+			// TODO (future work) handle bound events here too
 		}
 		return pathItemForResource;
 	}
 
-	/*
-	private void addEventToDescription(PathItem resource, Event event) {
-		// TODO decide how to map event reception (if at all)
-		// if(resource.getDescription()==null)
-			// resource.setDescription("Receiving event(s): " + event.getName());
-		// else
-			// resource.setDescription(resource.getDescription() + ", " + event.getName());
-	}
-	*/
-
-	private io.swagger.v3.oas.models.Operation convertOperation(EndpointContract endpointType, Operation mdslOperation, HttpMethod verb, HTTPResourceBinding binding) {
-		io.swagger.v3.oas.models.Operation operation = new io.swagger.v3.oas.models.Operation();
+	private io.swagger.v3.oas.models.Operation convertOperation(Operation mdslOperation) {
+		this.mdslOperation = mdslOperation;
+		this.oasOperation = new io.swagger.v3.oas.models.Operation();
 		
-		if(binding!=null)
-			operation.setOperationId(binding.getName() + '-' + mdslOperation.getName()); // resource name needed to make operationId unique in OAS
-		else 
-			operation.setOperationId(mdslOperation.getName()); 
+		if(httpBinding!=null) {
+			// note: resource name required to make operationId unique in OAS
+			this.oasOperation.setOperationId(httpBinding.getName() + '-' + mdslOperation.getName()); 
+		}
+		else {
+			this.oasOperation.setOperationId(mdslOperation.getName()); 
+		}
 		
-		operation.setSummary(MAPLinkResolver.explainResponsibilityPattern(mdslOperation));
-		operation.setDescription(MAPLinkResolver.provideLinktoMAPWebsite(mdslOperation));
+		// use operation name so that OAS tools from Swagger show it prominently
+		String stateImpactText = MAPLinkResolver.explainResponsibilityPattern(mdslOperation);
+		if(stateImpactText!=null && !stateImpactText.equals("")) {
+			oasOperation.setSummary(mdslOperation.getName() + " (" + MAPLinkResolver.explainResponsibilityPattern(mdslOperation) + METHOD_SUFFIX);
+		}
+		else {
+			oasOperation.setSummary(mdslOperation.getName());
+		}
+		
+		oasOperation.setDescription(MAPLinkResolver.specifyResponsibilityWithMAPLinkIfPossible(mdslOperation));
+		
 		List<String> tags = new ArrayList<String>();
-		Tag rtag = mdsl2OpenAPIConverter.createTag(endpointType, binding, false);
+		Tag rtag = mdsl2OpenAPIConverter.createTag(endpointType, httpBinding, false);
 		tags.add(rtag.getName());
-		// tags.add(endpointType.getName());
-		operation.setTags(tags);
+		oasOperation.setTags(tags);
 		
-		handleRequestMessage(endpointType, mdslOperation, verb, binding, operation);
-		handleResponseMessages(mdslOperation, binding, operation);
+		convertRequestMessage();
+		convertResponseMessages();
 		
-		// TODO (M) support/handle endpoint-level security default (OAS concept? PathItem/Tags?)
-		List<SecurityRequirement> securityRequrementList = handleSecurity(endpointType, mdslOperation, binding);
+		// TODO (future work) support/handle endpoint-level security default (OAS concept? PathItem/Tags?)
+		List<SecurityRequirement> securityRequrementList = handleSecurity();
 		if(securityRequrementList!=null)
-			securityRequrementList.forEach(requirement->operation.addSecurityItem(requirement));
+			securityRequrementList.forEach(requirement->oasOperation.addSecurityItem(requirement));
 		
-		return operation;
+		return oasOperation;
 	}
 	
-	/*
-	// TODO work in progress (early PoC)
-	private io.swagger.v3.oas.models.Operation convertEvent(EndpointContract endpointType, Event event, HttpMethod verb, HTTPResourceBinding binding) {
+	// ** events
+	
+	private void addEventToDescription(PathItem resource, Event event) {
+		// TODO (future work) map event reception (if at all)
+		if(resource.getDescription()==null)
+			resource.setDescription("Receiving event(s): " + event.getType().getName());
+		else
+			resource.setDescription(resource.getDescription() + ", " + event.getType().getName());
+	}
+
+	private io.swagger.v3.oas.models.Operation convertEvent(Event event, HttpMethod verb) {
 		io.swagger.v3.oas.models.Operation operation = new io.swagger.v3.oas.models.Operation();
 
-		// TODO use binding 
-		
-		// no longer working after grammar change:
-		// operation.setOperationId(event.getName() + "-events"); // resource name needed to make operationId unique in OAS
-	 	
-		// operation.setSummary(MAPLinkResolver.explainResponsibilityPattern(mdslOperation));
-		// operation.setDescription(MAPLinkResolver.provideLinktoMAPWebsite(mdslOperation));
+		// TODO (future work) use event binding 
+
 		List<String> tags = new ArrayList<String>();
-		Tag rtag = mdsl2OpenAPIConverter.createTag(endpointType, binding, false);
+		Tag rtag = mdsl2OpenAPIConverter.createTag(this.endpointType, httpBinding, false);
 		tags.add(rtag.getName());
-		// tags.add(endpointType.getName());
 		operation.setTags(tags);
 		
 		// TODO handleEventMessage(endpointType, event, verb, binding, operation);
 		// TODO response messages
-		
 		// TODO handle security (in grammar?)
 		
 		return operation;
 	}
-	*/
-
-	private void handleHeaders(EndpointContract endpointType, Operation mdslOperation, HttpMethod verb,
-			HTTPResourceBinding binding, io.swagger.v3.oas.models.Operation operation, List<Parameter> parameterList) {
-		ElementStructure headers = mdslOperation.getRequestMessage().getHeaders();
-		if(headers==null)
-			return;
-		
-		// TODO JWT as a special case? 
 	
-		convertSingleRepresentationElement(endpointType, mdslOperation, verb, binding, operation, 
-				HTTPParameter.HEADER, parameterList, headers, null); // ignoring any binding info 
-	}
+	// ** request 
 
-	private void handleRequestMessage(EndpointContract endpointType, Operation mdslOperation, HttpMethod verb,
-			HTTPResourceBinding binding, io.swagger.v3.oas.models.Operation operation) {
-		
-		// 'expecting' part of operation signature 
-		HTTPParameter boundParameter = HTTPParameter.BODY; // default
+	// 'expecting' part of operation signature 
+	private void convertRequestMessage() {
+	
 		List<Parameter> parameterList = new ArrayList<Parameter>();
+		this.mediaTypes =  HTTPBindingConverterHelpers.findMediaTypeForRequest(mdslOperation, httpBinding);
 		
 		if(mdslWrapper.operationHasHeader(mdslOperation)) {
 			// header should only have AP(L), can/must be mapped to OAS header parameters (binding ignored)
-			handleHeaders(endpointType, mdslOperation, verb, binding, operation, parameterList);
+			convertHeaders(parameterList, mediaTypes);
 		}
 		
-		if (mdslWrapper.operationHasPayload(mdslOperation)) {
-			
-			mdslWrapper.logInformation("Mapping payload of operation: " + mdslOperation.getName());
+		if (mdslWrapper.operationHasPayload(mdslOperation)) {			
 			ElementStructure operationPayload = mdslOperation.getRequestMessage().getPayload();
-		    List<String> mediaTypes =  mdslWrapper.findMediaTypeForRequest(mdslOperation, binding);
-
-			convertSingleRepresentationElement(endpointType, mdslOperation, verb, binding, operation, boundParameter,
-					parameterList, operationPayload, mediaTypes);
+			convertElementStructure(operationPayload, parameterList);
 		}
 	}
-
-	private void convertSingleRepresentationElement(EndpointContract endpointType, Operation mdslOperation,
-			HttpMethod verb, HTTPResourceBinding binding, io.swagger.v3.oas.models.Operation operation,
-			HTTPParameter boundParameter, List<Parameter> parameterList, ElementStructure operationPayload,
-			List<String> mediaTypes) {
+	
+	private void convertHeaders(List<Parameter> parameterList, List<String> mediaTypes) {
+		ElementStructure headerSpecification = this.mdslOperation.getRequestMessage().getHeaders();
+		if(headerSpecification==null)
+			return;
 		
-		if(operationPayload!=null && mdslWrapper.isAtomicOrIsFlatParameterTree(operationPayload)) {
-			mdslWrapper.logInformation(" has atomic parameters only (or a flat tree element structure).");
-			handleSimplePayload(endpointType, mdslOperation, verb, binding, operation, parameterList,
-					operationPayload, mediaTypes);
+		// TODO (future work) support JWT as a special case? 
+	
+		List<AtomicParameter> headers = mdslWrapper.extractAtomicElements(headerSpecification);
+		headers.forEach(header->convertRoleAndTypeAtom(header, HTTPParameter.HEADER, parameterList, mediaTypes)); 
+	}
+
+	private void convertElementStructure(ElementStructure content, List<Parameter> parameterList) {
+		if(content==null) {
+			MDSLLogger.reportWarning("Skipping empty or  payload structure in " + mdslOperation.getName() + " in " + endpointType.getName());
 		}
-		else if(operationPayload!=null) {
-			mdslWrapper.logInformation("This is a nested parameter tree or forest (or flat one with '*' or '+' cardinality)."); 
-			handleComplexPayload(mdslOperation, verb, binding,
-				// TODO simplify signature after semi-automatic refactoring:
-				operation, boundParameter, operationPayload, mediaTypes, false);
+		
+		if(mdslWrapper.isSimplePayload(content)) {
+			MDSLLogger.reportInformation(mdslOperation.getName() + " has atomic parameters only (embedded or type referenced).");
+			convertSimplePayload(content, parameterList);
+			if(parameterList.size()>0) {
+				oasOperation.parameters(parameterList);
+				// body not set here
+			}
+			return;
 		}
 		else {
-			// should not get here:
-			mdslWrapper.logWarning("Empty or unsupported request payload structure in " + mdslOperation.getName());
+			// must be complex payload
+			MDSLLogger.reportInformation("Converting a nested parameter tree or forest (or flat one, e.g., with '*' or '+' cardinality or type reference)."); 
+			convertComplexPayload(content, parameterList, false);
+			return;
+		}
+	}
+	
+	private void convertSimplePayload(ElementStructure content, List<Parameter> parameterList) {
+		if(content.getNp()!=null) { 
+			convertSingleParameterNodeInElementStructure(content, parameterList);
+		}
+		else if(content.getApl()!=null) {
+			convertAtomicParameterListInElementStructure(content, parameterList);
+		}
+		else if(content.getPt()!=null) {
+			// should be flat according to isSimplePayload check, so can be handled just like APL
+			convertAtomicParameterListInElementStructure(content, parameterList);
+		}
+		// Parameter Forest case not handled here
+		else {
+			MDSLLogger.reportError("Payload is not simple enough to be processed this way.");
 		}
 	}
 
-	private void handleSimplePayload(EndpointContract endpointType, Operation mdslOperation, HttpMethod verb,
-			HTTPResourceBinding binding, io.swagger.v3.oas.models.Operation operation, List<Parameter> parameterList,
-			ElementStructure operationPayload, List<String> mediaTypes) {
-		HTTPParameter boundParameter = defaultBindingFor(verb);
-		List<AtomicParameter> apsInOp = mdslWrapper.extractElements(operationPayload);
-		
-		// TODO (handle cardinality here too: array of APL is *not* flat (?)
-		
-		for(int i=0;i<apsInOp.size();i++) {
-			AtomicParameter nextParameter = apsInOp.get(i);
-			if(nextParameter.getRat().getName()==null) {
-				// a parameter that does not have a name cannot be bound
-				boundParameter = this.defaultBindingFor(verb);
-				mdslWrapper.logInformation("(" + verb.name() + "): anonymous parameter bound to: " + boundParameter.getLiteral()); 
+	private void convertSingleParameterNodeInElementStructure(ElementStructure content, List<Parameter> parameterList)
+			throws MDSLException {
+		HTTPParameter parameterBinding;
+		String parameterName;
+
+		if(content.getNp().getTr()!=null) {
+			// special case: type reference that might contain binding information
+			MDSLLogger.reportInformation(this.mdslOperation.getName() + ": binding type reference payload " + content.getNp().getTr().getName());
+			convertTopLevelTypeReference(content, parameterList);
+		}
+		else {
+			// regular SPN case: AP or GenP (could also be bound individually!)
+			MDSLLogger.reportDetailedInformation(this.mdslOperation.getName() + ": binding type reference payload regularly (embedded case)");
+			parameterName = nameOfAtom(content);
+			parameterBinding = bindParameterUseDefaultIfNoExplicitBindingExists(parameterName);
+
+			if(parameterBinding.equals(HTTPParameter.BODY)) {
+				MDSLLogger.reportInformation(mdslOperation.getName() + ": converting simple payload to request body");
+				checkAndPerformBodyMappingOfTopLevelPayload(mediaTypes, parameterBinding);
 			}
 			else {
-				boundParameter = mdslWrapper.findParameterBindingFor(mdslOperation.getName(), nextParameter.getRat().getName(), binding);
-				if(boundParameter!=null)
-					mdslWrapper.logInformation("(" + verb.name() + "): " + nextParameter.getRat().getName() + " bound to: " + boundParameter.getLiteral());
-				else {
-					boundParameter = this.defaultBindingFor(verb);
-					// mdslWrapper.log("[D, MS] (" + verb.name() + "): " + nextParameter.getRat().getName() + " no binding found, using default: " + boundParameter.getLiteral()); 
-				}
-			}
-			
-			if(boundParameter.equals(HTTPParameter.BODY)) {
-				if(!verbIsAllowedToHaveRequestBody(verb)) {
-					throw new MDSLException("Unsupported verb-parameterType combination: " + verb.name() + " and " + boundParameter.getLiteral() + " cannot be used together.");
-				}
-				
-				// TODO (H) does this replace the previous body elements? only useful for globally bound operations right now. need an addToRequestBody helper! 
-				operation.requestBody(createRequestBody(mdslOperation.getRequestMessage().getPayload(), mediaTypes));
-			}
-			else {
-				// must be query, path, cookie; note: single representation element can explode to multiple parameters!
-				List<Parameter> pl = this.dataType2ParameterConverter.convertSingleRepresentationElementToOneParameter(nextParameter, verb, boundParameter);
+				MDSLLogger.reportInformation(mdslOperation.getName() + ": converting simple payload to request parameter(s)");
+				// must be query, path, cookie; note: single representation element (MDSL parameter) can explode to multiple OAS/HTTP parameters
+				List<Parameter> pl = this.dataType2ParameterConverter.convertSingleParameterNodeToOneParameter(content.getNp(), parameterBinding);
 				parameterList.addAll(pl);
 			}
 		}
-		operation.parameters(parameterList);
 	}
 
-	private void handleComplexPayload(
-			Operation mdslOperation, 
-			HttpMethod verb, 
-			HTTPResourceBinding binding,
-			io.swagger.v3.oas.models.Operation operation, 
-			HTTPParameter boundParameter,
-			ElementStructure operationPayload, 
-			List<String> mediaTypes,
-			boolean externalCardinality) {
+	private void convertTopLevelTypeReference(ElementStructure content, List<Parameter> parameterList) {
+		HTTPParameter parameterBinding;
+		String parameterName;
+		// note: short cut for this special case:
+		parameterName = content.getNp().getTr().getName();
+		parameterBinding = findLevel0Binding(parameterName);
+		if(parameterBinding!=null) {
+			MDSLLogger.reportInformation("Binding type reference payload on level 0 explicitly");
+			handleLevel0TypeReferenceBinding(content, parameterList, mediaTypes, parameterBinding);
+			return;
+		}
 		
-		if(operationPayload.getPt() != null) {
-			String tname = operationPayload.getPt().getName();
-			
-			// handle cardinality
-			if(treeHasMultiplicity(operationPayload.getPt())) {
-				// mdslWrapper.logInformation("[E] Need to handle cardinality of PT");
-				externalCardinality = true;
-			}
-			
-			boundParameter = mdslWrapper.findParameterBindingFor(mdslOperation.getName(), tname, binding);
-			if(boundParameter==null) {
-				// no binding, so use default (BODY for complex payload):
-				boundParameter = HTTPParameter.BODY;
-			}
-			
-			// mdslWrapper.logInformation("[MX] (" + verb.name() + "): "+ tname + " bound to: " + boundParameter.getLiteral()); 
-			
-			if(boundParameter==HTTPParameter.BODY) {
-				if(verbIsAllowedToHaveRequestBody(verb)) {
-					operation.requestBody(createRequestBody(mdslOperation.getRequestMessage().getPayload(), mediaTypes));
-				}
-				else 
-					throw new MDSLException("Unsupported HTTPVerb-HTTPParameterType combination in " 
-							+ mdslOperation.getName() + ": "
-							+ verb.name() + " and " + boundParameter.getLiteral() + " cannot be used together.");
-			}
-			else {
-				// must be query, path, cookie; note: single representation element can explode to multiple parameters!
-				Parameter parameter = this.dataType2ParameterConverter.convertTree(operationPayload.getPt(), verb, boundParameter, externalCardinality);
-				operation.addParametersItem(parameter);
-			}
-		} else if(operationPayload.getPf() != null) {
-			mdslWrapper.logWarning(verb.name() + "): parameter forest bound to body"); 
-			
-			if(!verbIsAllowedToHaveRequestBody(verb)) {
-				// forests are always mapped to body at present (not ok for GET and DELETE)
-				throw new MDSLException("Known limitation: Parameter Forests can only be mapped to BODY at present, which is not possible for " + verb);
-			}	
-			
-			// TODO cardinality (if possible and not done in DataType2SchemaConverter)
-			
-			operation.requestBody(createRequestBody(mdslOperation.getRequestMessage().getPayload(), mediaTypes));
-		} else if (operationPayload.getNp().getTr() != null) {
-			// call same method for references type:
-			TypeReference referencedType = operationPayload.getNp().getTr();
-			if(referencedType==null||referencedType.getDcref()==null) {
-				throw new MDSLException("Type reference does not point at valid element structure (data type).");
-			}
-
-			boolean extCard = false;
-			if(referenceHasMultiplicity(operationPayload.getNp().getTr())) {
-				// mdslWrapper.logInformation("Need to handle cardinality of tref (NYI)");
-				extCard = true;
-			}
-			ElementStructure payloadInReferencedType = referencedType.getDcref().getStructure();
-			handleComplexPayload(mdslOperation, verb, binding, operation, boundParameter, payloadInReferencedType, mediaTypes, extCard);
-
-		} else if (operationPayload.getNp().getGenP()!=null) {
-			throw new MDSLException("Unexpected (complex) element structure: can't handle P and id-only here");
+		// try to find PT behind TR, look for binding for it
+		boolean hasAtLeastOneLevel1Binding = hasLevel1Binding(parameterName, content.getNp().getTr());
+		if(hasAtLeastOneLevel1Binding) {
+			MDSLLogger.reportInformation("Binding type reference payload on level 1 explicitly");
+			// note: this activates the parameter/body stitching 
+			convertComplexPayload(content, parameterList, false);
+			return;
 		}
 		else {
-			throw new MDSLException("Unexpected (complex) element structure.");
-		}
-	}
-	
-	private boolean treeHasMultiplicity(ParameterTree pt) {
-		if(pt==null || pt.getCard()==null) 
-			return false;
-		
-		return pt.getCard().getZeroOrOne()!=null
-				|| pt.getCard().getAtLeastOne()!=null
-				|| pt.getCard().getZeroOrMore()!=null;
-	}
-	
-	private boolean referenceHasMultiplicity(TypeReference tr) {
-		if(tr==null || tr.getCard()==null) 
-			return false;
-					
-		return tr.getCard().getZeroOrOne()!=null
-				|| tr.getCard().getAtLeastOne()!=null
-				|| tr.getCard().getZeroOrMore()!=null;
-	}
- 	
-	private HTTPParameter defaultBindingFor(HttpMethod verb) {
-		if(verbIsAllowedToHaveRequestBody(verb)) {
-			// POST, PUT, PATCH:
-			return HTTPParameter.BODY;
-		}
-		else { 
-			// GET and DELETE:
-			return HTTPParameter.QUERY;
+			MDSLLogger.reportInformation("Binding type reference payload on level 0 (default)?");
+			parameterBinding = HTTPBindingConverterHelpers.defaultBindingFor(httpVerb);
+			handleLevel0TypeReferenceBinding(content, parameterList, mediaTypes, parameterBinding);
+			return;	
 		}
 	}
 
-	private RequestBody createRequestBody(ElementStructure requestPayload, List<String> mediaTypes) {
-		if(requestPayload!=null) {	    
-			// TODO (M) add parameter description (name) 
-			
-			if(mediaTypes==null)
-				mdslWrapper.logWarning("At least one media type must be defined.");
-			else { 
+	private void handleLevel0TypeReferenceBinding(ElementStructure content, List<Parameter> parameterList,
+			List<String> mediaTypes, HTTPParameter parameterBinding) {
+		if(parameterBinding==HTTPParameter.BODY) {
+			RequestBody requestBody = createRequestBodyForSingleParameterNode(content.getNp(), mediaTypes);
+			oasOperation.setRequestBody(requestBody);
+		}
+		else {
+			List<Parameter> parameters = dataType2ParameterConverter.convertSingleParameterNodeToOneParameter(content.getNp(), parameterBinding);
+			parameterList.addAll(parameters);
+		}
+	}
+
+	private HTTPParameter findLevel0Binding(String parameterName) {
+		return HTTPBindingConverterHelpers.findParameterBindingFor(this.mdslOperation.getName(), parameterName, this.httpBinding);
+	}
+	
+	private boolean hasLevel1Binding(String parameterName, TypeReference typeReference) {
+		boolean foundAtLeastOneBindingForTreeElement = false;
+		
+		// note: using one simple case as L1 indicator only: first tree child is AP/GenP/TR, which is bound
+		
+		ElementStructure es = typeReference.getDcref().getStructure();
+		ParameterTree pt = es.getPt(); // APL not supported, others a/ar
+		
+		if(pt==null ) {
+			return false;
+		}
+		
+		if(pt.getFirst().getPn()==null) {
+			// TODO v55 this actually is an option that could be supported (edge case)
+			return false;
+		}
+		
+		if(pt.getFirst().getPn().getAtomP()!=null) {
+			parameterName = pt.getFirst().getPn().getAtomP().getRat().getName();
+		}
+		else if (pt.getFirst().getPn().getGenP()!=null) {
+			parameterName = pt.getFirst().getPn().getGenP().getName();
+		}
+		// bug fix (done):
+		else if (pt.getFirst().getPn().getTr()!=null) {
+			parameterName = pt.getFirst().getPn().getTr().getName();
+		}
+		
+		HTTPParameter pb = HTTPBindingConverterHelpers.findParameterBindingFor(this.mdslOperation.getName(), parameterName, this.httpBinding);
+		
+		if(pb!=null) {
+			foundAtLeastOneBindingForTreeElement = true;
+		}
+		else {
+			MDSLLogger.reportInformation("Checked first tree node only to decide whether level 1 binding should be performed.");
+			// TODO v55 try other tree elements too (APL)
+		}
+		
+		return foundAtLeastOneBindingForTreeElement;
+	}
+
+	private void convertAtomicParameterListInElementStructure(ElementStructure operationPayload, List<Parameter> parameterList) {
+		ParameterTree bodyElements = ApiDescriptionFactory.eINSTANCE.createParameterTree();
+		bodyElements.setName("request body elements for " + mdslOperation.getName());
+		HTTPParameter boundParameter = null; // HTTPBindingConverterHelpers.defaultBindingFor(httpVerb);
+		List<AtomicParameter> apsInOp = mdslWrapper.extractAtomicElements(operationPayload);
+		MDSLLogger.reportDetailedInformation("Converting simple payload, operating on a generated pseudo-APL: " + apsInOp.size());
 				
-				RequestBody result = new RequestBody();
-				Content c = new Content();
-				// mediaTypes.forEach(mediaType->c.addMediaType(mediaType, new MediaType().schema(getSchema4RequestOrResponseStructure(requestPayload))));
+		for(int i=0;i<apsInOp.size();i++) {
+			AtomicParameter nextParameter = apsInOp.get(i);
+			if(nextParameter.getRat().getName()==null) {
+				// note: a parameter that does not have a name cannot be bound individually 
+				// (unless binding has an entry for some surrogate name); how about global bindings?
+				MDSLLogger.reportDetailedInformation("Binding atomic parameter: " + nextParameter.getRat().getName());
+				boundParameter = HTTPBindingConverterHelpers.defaultBindingFor(httpVerb);
+			}
+			else {
+				MDSLLogger.reportDetailedInformation("Binding anonymouss atomic parameter");
+				boundParameter = bindParameterUseDefaultIfNoExplicitBindingExists(nextParameter.getRat().getName());
+			}
 			
-				MediaType item = new MediaType().schema(getSchema4RequestOrResponseStructure(requestPayload));
+			logMapping(mdslOperation, httpVerb, nextParameter.getRat().getName(), boundParameter);
 			
-				for(int i=0;i<mediaTypes.size();i++) {
-					c.addMediaType(mediaTypes.get(i), item);		
+			if(boundParameter.equals(HTTPParameter.BODY)) {
+				if(!HTTPBindingConverterHelpers.verbIsAllowedToHaveRequestBody(httpVerb)) {
+					throw new MDSLException("Unsupported verb-parameterType combination for operation " + mdslOperation.getName() + ": " + httpVerb.name() + " and " + boundParameter.getLiteral() + " cannot be used together.");
 				}
+				else {
+					HTTPBindingConverterHelpers.addToNewParameterTree(bodyElements, nextParameter);
+				}
+			}
+			else {
+				// must be query, path, cookie; note: single representation element (MDSL parameter) can explode to multiple OAS/HTTP parameters
+				List<Parameter> pl = this.dataType2ParameterConverter.convertAtomicParameterToOneParameter(nextParameter, boundParameter);
+				parameterList.addAll(pl);
+			}
+		}
+		if(parameterList.size()>0) {
+			oasOperation.parameters(parameterList);
+		}
+		schemaForCollectedBodyElements(bodyElements, oasOperation, mediaTypes);
+	}
+
+	private String nameOfAtom(ElementStructure operationPayload) {
+		if(operationPayload.getNp()==null) {
+			throw new MDSLException("Can only name atoms that appear in single parameter nodes.");
+		}
+		if(operationPayload.getNp().getAtomP()!=null) {
+			return operationPayload.getNp().getAtomP().getRat().getName();
+		}
+		else if(operationPayload.getNp().getGenP()!=null) {
+			return operationPayload.getNp().getGenP().getName();
+		}
+		else if(operationPayload.getNp().getTr()!=null) {
+			// TODO check that TR references atom already here (to make sure call terminates)
+			return nameOfAtom(operationPayload.getNp().getTr().getDcref().getStructure());
+		}
+		return null;
+	}
+
+	private void convertRoleAndTypeAtom(AtomicParameter ap, HTTPParameter parameterBinding, 
+			List<Parameter> parameterList, List<String> mediaTypes) throws MDSLException {
+		if(parameterBinding.equals(HTTPParameter.BODY)) {
+			checkAndPerformBodyMappingOfTopLevelPayload(mediaTypes, parameterBinding);
+		}
+		else {
+			// must be query, path, cookie; note: single representation element (MDSL parameter) can explode to multiple OAS/HTTP parameters
+			List<Parameter> pl = this.dataType2ParameterConverter.convertAtomicParameterToOneParameter(ap, parameterBinding);
+			parameterList.addAll(pl);
+		}
+	}
+	
+	private void convertGenericAtom(GenericParameter genP, HTTPParameter parameterBinding, 
+			List<Parameter> parameterList, List<String> mediaTypes) throws MDSLException {
+		if(parameterBinding.equals(HTTPParameter.BODY)) {
+			checkAndPerformBodyMappingOfTopLevelPayload(mediaTypes, parameterBinding);
+		}
+		else {
+			// must be query, path, cookie; note: single representation element (MDSL parameter) can explode to multiple OAS/HTTP parameters
+			Parameter p = this.dataType2ParameterConverter.convertGenericParameter(genP, parameterBinding);
+			parameterList.add(p);
+		}
+	}
+
+	private void checkAndPerformBodyMappingOfTopLevelPayload(List<String> mediaTypes, HTTPParameter parameterBinding)
+			throws MDSLException {
+		if(!HTTPBindingConverterHelpers.verbIsAllowedToHaveRequestBody(httpVerb)) {
+			throw new MDSLException("Unsupported verb-parameterType combination for operation " + mdslOperation.getName() + ": " + httpVerb.name() + " and " + parameterBinding.getLiteral() + " cannot be used together.");
+		}
+		
+		ElementStructure requestPayload = mdslOperation.getRequestMessage().getPayload();
+		oasOperation.requestBody(this.createRequestBodyForTopLevelPayload(requestPayload, mediaTypes));
+	}
+	
+	private void convertComplexPayload(
+			ElementStructure operationPayload, List<Parameter> parameterList, boolean externalCardinality) {
+		
+		if(operationPayload.getPt() != null) {
+			convertParameterTree(operationPayload.getPt(), mediaTypes, externalCardinality);
+		} else if (operationPayload.getPf() != null) {
+			convertParameterForest(mediaTypes);
+		} else if (operationPayload.getNp()!=null&&operationPayload.getNp().getTr() != null) {
+			// (PoC) must have cardinality of '*' or '+', would be simplePayload otherwise
+			convertTypeReferenceInElementStructure(operationPayload, parameterList);
+		} else if (operationPayload.getNp()!=null&&operationPayload.getNp().getAtomP()!=null) {
+			// (PoC) must have cardinality of '*' or '+', would be simplePayload otherwise
+			convertAtomicParameterInElementStructure(operationPayload, parameterList);
+		} else if (operationPayload.getNp()!=null&&operationPayload.getNp().getGenP()!=null) {
+			convertGenericParameterInElementStructure(operationPayload, parameterList);
+		}
+		else if (operationPayload.getApl()!=null) {
+			convertAtomicParameterListInElementStructure(operationPayload, parameterList);
+		}
+		else {
+			throw new MDSLException("Unexpected (complex) element structure in operation " + mdslOperation.getName());
+		}
+	}
+
+	private void convertGenericParameterInElementStructure(ElementStructure operationPayload, List<Parameter> parameterList) {
+		// should not get here usually, handled by isSimplePayload check and logic
+		HTTPParameter parameterBinding = bindParameterUseDefaultIfNoExplicitBindingExists(operationPayload.getNp().getGenP().getName());
+		convertGenericAtom(operationPayload.getNp().getGenP(), parameterBinding, parameterList, mediaTypes);
+		for(Parameter parameterItem : parameterList) {
+			oasOperation.addParametersItem(parameterItem);
+		}
+	}
+
+	private void convertAtomicParameterInElementStructure(ElementStructure operationPayload, List<Parameter> parameterList) throws MDSLException {
+		HTTPParameter parameterBinding = bindParameterUseDefaultIfNoExplicitBindingExists(operationPayload.getNp().getAtomP().getRat().getName());
+		// should not get here usually, handled by isSimplePayload check and logic
+		convertRoleAndTypeAtom(operationPayload.getNp().getAtomP(), parameterBinding, parameterList, mediaTypes);
+		for(Parameter parameterItem : parameterList) {
+			oasOperation.addParametersItem(parameterItem);
+		}
+	}
+	
+	private void convertTypeReferenceInElementStructure(ElementStructure messageElement, List<Parameter> parameterList) throws MDSLException {
+		HTTPParameter parameterBinding = HTTPBindingConverterHelpers.findParameterBindingFor(mdslOperation.getName(), messageElement.getNp().getTr().getName(), httpBinding);
+		MDSLLogger.reportInformation(mdslOperation.getName() + ": convertTypeReferenceInElementStructure converting type reference " + messageElement.getNp().getTr().getName());
+		if(parameterBinding!=null) {
+			MDSLLogger.reportInformation("Binding entire type reference: " + parameterBinding.getLiteral());
+			convertTypeReferenceAndSetEntireRequestBody(messageElement.getNp().getTr(), parameterBinding, parameterList, mediaTypes);
+		}
+		else {			
+			// note: this caused inner tree elements to be traversed, rather than entire PT as one binding entity (fixed)
+			ElementStructure referencedType = messageElement.getNp().getTr().getDcref().getStructure();
+			if(referencedType.getPt()!=null) {
+				MDSLLogger.reportDetailedInformation("Following type reference to locate binding (is PT), reference name is " + messageElement.getNp().getTr().getName());
+				convertParameterTree(referencedType.getPt(), mediaTypes, false);
+				return;
+			}
+			else if(referencedType.getNp()!=null) {
+				MDSLLogger.reportDetailedInformation("Following type reference to locate binding (is SPN), reference name is " + messageElement.getNp().getTr().getName());
+				convertSimplePayload(referencedType, parameterList);
+				return;
+			}
+			else if(referencedType.getApl()!=null) {
+				MDSLLogger.reportDetailedInformation("Following type reference to locate binding (is APL), reference name is " + messageElement.getNp().getTr().getName());
+				convertAtomicParameterListInElementStructure(messageElement, parameterList);
+				return;
+			}
+		}
+	}
+				
+	private void convertTypeReferenceAndSetEntireRequestBody(TypeReference referencedType, HTTPParameter parameterBinding, List<Parameter> parameterList, List<String> mediaTypes) {
+		boolean extCard = false;
+		if(mdslWrapper.referenceHasMultiplicity(referencedType)) {
+			extCard = true;
+		}
+		
+		if(parameterBinding.equals(HTTPParameter.BODY)) {
+			if(!HTTPBindingConverterHelpers.verbIsAllowedToHaveRequestBody(httpVerb)) {
+				throw new MDSLException("Unsupported verb-parameterType combination for operation " + mdslOperation.getName() + ": " + httpVerb.name() + " and " + parameterBinding.getLiteral() + " cannot be used together.");
+			}
 			
+			MDSLLogger.reportInformation(mdslOperation.getName() + " creating scheme reference for " + referencedType.getName() + " -> " + referencedType.getDcref().getName());
+			// not passing extCard in because createSchemaForTypeReference call mapCardinalities, which checks cardinality of referencedType 
+			Schema requestPayload = dataType2SchemaConverter.createSchemaForTypeReference(referencedType); 
+			
+			Content c = createContentFromSchemaAndMediaTypes(mediaTypes, requestPayload);
+			RequestBody rb = new RequestBody();
+			rb.setContent(c);
+			rb.setDescription("Request body for type " + referencedType.getName()); 
+			oasOperation.requestBody(rb);
+		}
+		else {
+			// note: this indirection starts at the top of the logic again
+			ElementStructure referencedStructure = referencedType.getDcref().getStructure();
+			convertComplexPayload(referencedStructure, parameterList, extCard);
+		}
+	}
+	
+	// TODO could make mediaTypes a class instance variable too
+
+	private void convertParameterTree(ParameterTree pt, List<String> mediaTypes, boolean externalCardinality) throws MDSLException {
+		HTTPParameter parameterBinding;
+		String treeName = pt.getName();
+		
+		if(mdslWrapper.treeHasMultiplicity(pt)) {
+			externalCardinality = true;
+		}
+ 
+		parameterBinding = HTTPBindingConverterHelpers.findParameterBindingFor(mdslOperation.getName(), treeName, this.httpBinding);
+		if(parameterBinding!=null) {
+			MDSLLogger.reportInformation(mdslOperation.getName() + " in " + endpointType.getName()+  ": binding entire tree as DTO in payload.");
+			convertParameterTreeAsSingleBoundParameter(pt, parameterBinding, mediaTypes, externalCardinality);
+		}
+		else {
+			MDSLLogger.reportInformation(mdslOperation.getName() + " in " + endpointType.getName()+  ": binding via level 1 tree nodes in payload.");
+			// assuming that convertParameterTreeViaLevel1TreeNodeTraversal is only used here
+			convertParameterTreeViaLevel1TreeNodeTraversal(pt, parameterBinding, mediaTypes); 
+		}
+	}
+
+	private void convertParameterForest(List<String> mediaTypes) throws MDSLException {
+		MDSLLogger.reportWarning(httpVerb.name() + ": parameter forest bound to body"); 
+		
+		if(!HTTPBindingConverterHelpers.verbIsAllowedToHaveRequestBody(httpVerb)) {
+			// forests are always mapped to body at present (which is not ok for GET and DELETE; workaround: replace forest with tree)
+			throw new MDSLException("Known limitation: Parameter Forests can only be mapped to BODY at present, which is not possible for " + mdslOperation.getName() + " and " + httpVerb);
+		}	
+		oasOperation.requestBody(createRequestBodyForTopLevelPayload(mdslOperation.getRequestMessage().getPayload(), mediaTypes));
+	}
+
+	private void convertParameterTreeViaLevel1TreeNodeTraversal(ParameterTree pt, HTTPParameter parameterBinding, List<String> mediaTypes) {
+		
+		MDSLLogger.reportDetailedInformation(mdslOperation.getName() + " in convertParameterTreeViaLevel1TreeNodeTraversal");
+
+		List<Parameter> parameterList = new ArrayList<Parameter>();
+		List<TreeNode> treeNodes = mdslWrapper.collectTreeNodes(pt);
+		
+		ParameterTree parameterTreeForBody = ApiDescriptionFactory.eINSTANCE.createParameterTree();
+		// merge BODY snippets of all nextNode elements in case multiple of them (AP/PT) map to BODY
+		// do not create the body in loop but collect them in a new PT, which is then converted at the end 
+		parameterTreeForBody.setName("request body elements for " + mdslOperation.getName());
+		
+		// iterate over all children, first and next (no recursion, top-level only) and add one parameter each
+		for(TreeNode nextNode : treeNodes) {
+			if(nextNode.getPn()!=null) { // is AP, GenP, TR
+				MDSLLogger.reportDetailedInformation(mdslOperation.getName() + " is SPN");
+				parameterBinding = handleInnerSingleParameterNodeInComplexPayload(parameterBinding, parameterList, parameterTreeForBody, nextNode);
+			}
+			else if (nextNode.getChildren()!=null) { // is Parameter Tree
+				// note: caused problems in test case 4 (header vs. path), fixed:
+				MDSLLogger.reportDetailedInformation(mdslOperation.getName() + " is PT, calling handleInnerParameterTreeInComplexPayload for " + nextNode.getChildren().getName() + " while processing " + pt.getName());
+				// parameterBinding = handleInnerParameterTreeInComplexPayload(pt.getName(), nextNode, parameterList, parameterTreeForBody);
+				parameterBinding = handleInnerParameterTreeInComplexPayload(nextNode.getChildren(), parameterList, parameterTreeForBody);
+			}
+			else if (nextNode.getApl()!=null) { // is Atomic Parameter List
+				MDSLLogger.reportWarning("Not supported: mapping of APL in " + mdslOperation.getName());
+			}
+		}
+		
+		if(parameterList.size()>0) {
+			oasOperation.parameters(parameterList);
+		}	
+		schemaForCollectedBodyElements(parameterTreeForBody, oasOperation, mediaTypes);
+	}
+
+	private void schemaForCollectedBodyElements(
+			ParameterTree parameterTreeForBody, io.swagger.v3.oas.models.Operation oasOperation, List<String> mediaTypes) {
+		RequestBody ptSchema = this.createRequestBodyForParameterTree(parameterTreeForBody, mediaTypes);
+		MDSLLogger.reportDetailedInformation("Entering schemaForCollectedBodyElements");
+		if(ptSchema!=null) {
+			ptSchema.setDescription("Message payload (content)"); 
+			oasOperation.requestBody(ptSchema);
+		}
+	}
+
+	private HTTPParameter handleInnerParameterTreeInComplexPayload(ParameterTree treeNode, List<Parameter> parameterList, ParameterTree parameterTreeForBody) {
+		HTTPParameter parameterBinding;		
+		MDSLLogger.reportDetailedInformation("Entering handleInnerParameterTreeInComplexPayload");
+		
+		boolean treeCardinality = false;
+		if(mdslWrapper.treeHasMultiplicity(treeNode)) {
+			treeCardinality = true;
+		}
+		
+		parameterBinding = this.bindParameterUseDefaultIfNoExplicitBindingExists(treeNode.getName());
+		
+		MDSLLogger.reportInformation(mdslOperation.getName() + ": adding to " + parameterBinding + " payload/parameter " + treeNode.getName());
+		if(parameterBinding==HTTPParameter.BODY) {
+			HTTPBindingConverterHelpers.addToNewParameterTree(parameterTreeForBody, treeNode);
+		}
+		else {
+			parameterList.add(dataType2ParameterConverter.convertParameterTree(treeNode, parameterBinding, treeCardinality));
+		}
+		
+		return parameterBinding;
+	}
+
+	private HTTPParameter handleInnerSingleParameterNodeInComplexPayload(
+			HTTPParameter parameterBinding, List<Parameter> parameterList, ParameterTree parameterTreeForBody, TreeNode nextNode) {
+		MDSLLogger.reportDetailedInformation(mdslOperation.getName() + " in handleInnerSingleParameterNodeInComplexPayload");
+		if(nextNode.getPn().getAtomP()!= null) {
+			// note: different from genP and PT treatment in that it always creates and returns a parameterBinding (default?)
+			parameterBinding = handleInnerAtomicParameterInComplexPayload(parameterList, parameterTreeForBody, nextNode);
+		}
+		else if(nextNode.getPn().getGenP()!= null) {
+			parameterBinding = handleGenericParameterInComplexPayload(parameterList, parameterTreeForBody, nextNode);
+		}
+		else if(nextNode.getPn().getTr()!= null) {
+			String trName = nextNode.getPn().getTr().getName();		
+			MDSLLogger.reportDetailedInformation(mdslOperation.getName() + " in handleInnerSingleParameterNodeInComplexPayload, next node is TR " + trName);
+
+			parameterBinding = this.bindParameterUseDefaultIfNoExplicitBindingExists(trName);
+			logMapping(mdslOperation, httpVerb, trName, parameterBinding);
+		
+			// ElementStructure payloadInReferencedType = nextNode.getPn().getTr().getDcref().getStructure();
+			
+			if(HTTPParameter.BODY.equals(parameterBinding)) {
+				MDSLLogger.reportDetailedInformation(mdslOperation.getName() + " in handleInnerSingleParameterNodeInComplexPayload, body mapping");
+				HTTPBindingConverterHelpers.addToNewParameterTree(parameterTreeForBody, nextNode.getPn().getTr());
+			}
+			else {
+				parameterList.addAll(dataType2ParameterConverter.convertSingleParameterNodeToOneParameter(nextNode.getPn(), parameterBinding));
+			}
+		}
+		return parameterBinding;
+	}
+
+	private HTTPParameter handleGenericParameterInComplexPayload(List<Parameter> parameterList,
+			ParameterTree parameterTreeForBody, TreeNode nextNode) {
+		HTTPParameter parameterBinding;
+		parameterBinding = HTTPBindingConverterHelpers.findParameterBindingFor(mdslOperation.getName(), nextNode.getPn().getGenP().getName(), this.httpBinding);
+		if(parameterBinding==null) {
+			parameterBinding = HTTPBindingConverterHelpers.defaultBindingFor(httpVerb);
+		}
+		if(HTTPParameter.BODY.equals(parameterBinding)) {
+			HTTPBindingConverterHelpers.addToNewParameterTree(parameterTreeForBody, nextNode.getPn().getAtomP());
+			logMapping(mdslOperation, httpVerb, nextNode.getPn().getGenP().getName(), parameterBinding);
+		}
+		else {
+			logMapping(mdslOperation, httpVerb, nextNode.getPn().getAtomP().getRat().getName(), parameterBinding);
+			parameterList.addAll(dataType2ParameterConverter.convertSingleParameterNodeToOneParameter(nextNode.getPn(), parameterBinding));
+		}
+		return parameterBinding;
+	}
+
+	private HTTPParameter handleInnerAtomicParameterInComplexPayload(List<Parameter> parameterList, ParameterTree parameterTreeForBody, TreeNode nextNode) {
+		HTTPParameter parameterBinding;
+		parameterBinding = HTTPBindingConverterHelpers.findParameterBindingFor(mdslOperation.getName(), nextNode.getPn().getAtomP().getRat().getName(), this.httpBinding);
+		if(parameterBinding==null) {
+			parameterBinding = HTTPBindingConverterHelpers.defaultBindingFor(httpVerb);
+		}			
+		if(HTTPParameter.BODY.equals(parameterBinding)) {
+			logMapping(mdslOperation, httpVerb, nextNode.getPn().getAtomP().getRat().getName(), parameterBinding);
+			HTTPBindingConverterHelpers.addToNewParameterTree(parameterTreeForBody, nextNode.getPn().getAtomP());
+			// checkAndPerformBodyMappingOfSimpleParameterNode(mdslOperation, httpVerb, nextNode.getPn(), oasOperation, parameterBinding, mediaTypes);
+		}
+		else {
+			logMapping(mdslOperation, httpVerb, nextNode.getPn().getAtomP().getRat().getName(), parameterBinding);
+			parameterList.addAll(dataType2ParameterConverter.convertSingleParameterNodeToOneParameter(nextNode.getPn(), parameterBinding));
+		}
+		return parameterBinding;
+	}
+	
+	private void convertParameterTreeAsSingleBoundParameter(ParameterTree pt, HTTPParameter parameterBinding, List<String> mediaTypes, 
+			boolean externalCardinality) throws MDSLException {
+		if(parameterBinding==HTTPParameter.BODY) {
+			if(HTTPBindingConverterHelpers.verbIsAllowedToHaveRequestBody(httpVerb)) {
+				oasOperation.requestBody(createRequestBodyForTopLevelPayload(mdslOperation.getRequestMessage().getPayload(), mediaTypes));
+			}
+			else {
+				String ptName = pt.getName();
+				if(ptName==null) {
+					ptName = "unnamed";
+				}
+				throw new MDSLException("Unsupported HTTPVerb-HTTPParameterType combination in " 
+						+ mdslOperation.getName() + ", parameter: " + ptName + ": "
+						+ httpVerb.name() + " and " + parameterBinding.getLiteral() + " cannot be used together.");
+			}
+		}
+		else {
+			// must be query, path, cookie; note: single representation element can explode to multiple parameters!
+			Parameter parameter = this.dataType2ParameterConverter.convertParameterTree(pt, parameterBinding, externalCardinality);
+			oasOperation.addParametersItem(parameter);
+		}
+	}
+	
+	private RequestBody createRequestBodyForSingleParameterNode(SingleParameterNode spn, List<String> mediaTypes) {
+		if(spn==null) {
+			throw new MDSLException("Invalid operation invocation: expected a non-empty parameter tree node.");
+		}
+
+		if(mediaTypes==null) {
+			MDSLLogger.reportError("At least one media type must be defined.");
+		}
+
+		MDSLLogger.reportDetailedInformation("Entering createRequestBodyForSingleParameterNode");
+		
+		RequestBody result = new RequestBody();
+		Content requestBodyContent = new Content();
+		Schema schema = dataType2SchemaConverter.createSchema4SingleParameterNode(spn);
+		MediaType item = new MediaType().schema(schema);
+
+		for(int i=0;i<mediaTypes.size();i++) {
+			requestBodyContent.addMediaType(mediaTypes.get(i), item);		
+		}
+
+		result.setContent(requestBodyContent);
+		return result;
+	}
+
+	private RequestBody createRequestBodyForTopLevelPayload(ElementStructure messageRepresentation, List<String> mediaTypes) {
+		if(messageRepresentation!=null) {	    
+			if(mediaTypes==null) {
+				MDSLLogger.reportWarning("At least one media type must be defined.");
+			}
+			else { 
+				RequestBody result = new RequestBody();
+				// mediaTypes.forEach(mediaType->c.addMediaType(mediaType, new MediaType().schema(getSchema4RequestOrResponseStructure(requestPayload))));
+				Schema newSchema = this.dataType2SchemaConverter.getSchema4RequestOrResponseStructure(messageRepresentation);
+				Content c = createContentFromSchemaAndMediaTypes(mediaTypes, newSchema);
 				result.setContent(c);
 				return result;
 			}
 			return null;
 		}
+		else {
+			return null;
+		}
+	}
+	
+	private RequestBody createRequestBodyForParameterTree(ParameterTree parameterTree, List<String> mediaTypes) {
+		if(parameterTree!=null) {	    
+			if(mediaTypes==null) {
+				MDSLLogger.reportWarning("At least one media type must be defined.");
+			}
+			else { 				
+				if(HTTPBindingConverterHelpers.hasAtLeastOneNode(parameterTree)) {
+					RequestBody result = new RequestBody();
+					// respect cardinality of incoming PT
+					Schema newSchema = this.dataType2SchemaConverter.convertAndCreateSchema4ParameterTreeAndItsNodes(parameterTree, mdslWrapper.treeHasMultiplicity(parameterTree));
+					newSchema.setDescription(parameterTree.getName()); 
+					Content c = createContentFromSchemaAndMediaTypes(mediaTypes, newSchema);
+					result.setContent(c);
+					return result;
+				}
+				else {
+					return null;
+				}
+			}
+			return null;
+		}
 		else 
 			return null;
 	}
+	
+	// ** response
 
-	private void handleResponseMessages(Operation mdslOperation, HTTPResourceBinding binding,
-			io.swagger.v3.oas.models.Operation operation) {
+	private void convertResponseMessages() {
 		
 		// 'delivering' part of operation signature 
 		if (mdslWrapper.operationHasReturnValue(mdslOperation)) {
-		    List<String> mediaTypes =  mdslWrapper.findMediaTypeForResponse(mdslOperation, binding);
+		    List<String> mediaTypes =  HTTPBindingConverterHelpers.findMediaTypeForResponse(mdslOperation, httpBinding);
 			
-			ApiResponse apiResponse = createAPIResponse(mdslOperation.getResponseMessage().getPayload(), mdslOperation.getName() + " successful execution", mediaTypes);
+			ApiResponse apiResponse = createAPIResponse(mdslOperation.getResponseMessage().getPayload(), mdslOperation.getName() + SUCCESSFUL_EXECUTION, mediaTypes);
 			ApiResponses responseList = new ApiResponses().addApiResponse(DEFAULT_RESPONSE_NAME, apiResponse);
 
-			handleLinks(mdslOperation, binding, apiResponse); 
-			
-			// TODO cardinality of response body (hopefully done in DataType2SchemaConverter)?
+			HTTPBindingConverterHelpers.handleLinks(mdslOperation, httpBinding, apiResponse); 
 				
 			// handle 'reporting`
-			// (V5 input example) reporting error orderCreated "text":D<string> (more options available)
+			// input example: `reporting error orderCreated "text":D<string>` (more options available)
 			if (mdslWrapper.operationHasReturnValueWithReports(mdslOperation)) {
 				StatusReports reports = mdslOperation.getReports();
 				EList<StatusReport> rl = reports.getReportList();
 
 				for(int i=0;i<rl.size();i++) {
 					ApiResponse reportResponse = null;
-					String code = "x-999";
-					String reportText = "tbd";
+					String code = X_999_CODE;
+					String reportText = TBD_TEXT;
 					StatusReport report = rl.get(i);
 					String reportNameInEndpointType = report.getName();
 					ElementStructure reportDataForResponse = report.getReportData();
@@ -457,115 +864,46 @@ public class Endpoint2PathConverter {
 					if(reportDataForResponse!=null) {
 						reportResponse = createAPIResponse(reportDataForResponse, mdslOperation.getName() + ": " + reportText, mediaTypes);
 
-						code = mdslWrapper.findReportCodeInBinding(mdslOperation.getName(), reportNameInEndpointType, binding);
-						reportText = mdslWrapper.findReportTextInBinding(mdslOperation.getName(), reportNameInEndpointType, binding);
+						code = mdslWrapper.findReportCodeInBinding(mdslOperation.getName(), reportNameInEndpointType, httpBinding);
+						reportText = mdslWrapper.findReportTextInBinding(mdslOperation.getName(), reportNameInEndpointType, httpBinding);
 						reportResponse.description(reportText);
 						
-						// TODO cardinality of report response? 
-						
-					    // TODO (tbd) are there any more links in reports?
-					    // TODO (tbd) what about media types of error responses?
+						// TODO (future work) cardinality of report response (top level)? description?
+					    // TODO (future work) are there any more links in reports?
+					    // TODO (future work) what about media types of error responses?
 						
 						responseList.addApiResponse(code, reportResponse);
 					}
 				}
 			}
-			operation.responses(responseList);
+			oasOperation.responses(responseList);
 		} else {
-			operation.responses(new ApiResponses().addApiResponse(DEFAULT_RESPONSE_NAME, new ApiResponse().description("no return value").content(new Content())));
-		}
-	}
-
-	private void handleLinks(Operation mdslOperation, HTTPResourceBinding binding, ApiResponse httpResponse) {
-		// add link objects if present in MDSL endpoint type, see https://swagger.io/specification/#linkObject
-
-		EList<RelationshipLink> hypermediaRelations = mdslOperation.getRelations();
-		for(int j=0;j<hypermediaRelations.size();j++) {
-			mdslWrapper.logInformation("Processing link relations in " + mdslOperation.getName()); 
-			RelationshipLink nextLink = hypermediaRelations.get(j);
-			
-			HTTPTypeBinding ltb = mdslWrapper.findLinkTypeBindingFor(nextLink.getLcref().getName(), binding);
-
-			// TODO the warning does not seem to make it (?(
-			if(ltb==null)
-				mdslWrapper.logWarning("No binding found for " + nextLink.getName() + ", skipping this link." );
-			else 
-				handleSingleLink(nextLink, ltb, httpResponse);
-		}
-
-		Operation compensatingOperation = mdslOperation.getUndo();
-		if(compensatingOperation!=null) {
-			// mdslWrapper.logInformation("[C] Compensating action found for " + mdslOperation.getName() + ": " + compensatingOperation.getName()); 
-			Link link = new Link().operationId(compensatingOperation.getName()); // operationRefRecommended
-			httpResponse.link("compensatingOperation", link);
-		}
-		else {
-			; // mdslWrapper.logInformation("[C] No compensating action found for " + mdslOperation.getName()); 
+			oasOperation.responses(new ApiResponses().addApiResponse(DEFAULT_RESPONSE_NAME, new ApiResponse().description(NO_RETURN_VALUE).content(new Content())));
 		}
 	}
 	
-	private void handleSingleLink(RelationshipLink abstractLink, HTTPTypeBinding linkBinding, ApiResponse httpResponse) {
-
-		String opId = "";
-		if(linkBinding!=null)
-			opId = ((HTTPResourceBinding)linkBinding.eContainer()).getName() + "-"; 
-		
-		if(abstractLink.getLcref().getOperation()!=null)
-			opId += abstractLink.getLcref().getOperation();
-		else
-			opId = "unknownOperation";
-			
-		// TODO null check, use endpointResource-operation tuple for opId
-		Link link = new Link().operationId(opId); 
-		// TODO operationRefRecommended (but only works in same server)
-		
-		LinkContract refedLinkType = abstractLink.getLcref();
-		if(refedLinkType!=null && refedLinkType.getDataType()!=null && refedLinkType.getDataType().getName()!=null) {
-			link.parameters(abstractLink.getName(), refedLinkType.getDataType().getName());
-			if(refedLinkType.getOperation()!=null)
-				link.description("Targeted operation: " + refedLinkType.getOperation());
-			else 
-				link.description("Unknown target.");
-		}
-		// else 
-		//	link.parameters(abstractLink.getName(), "unknown link name and target");
-		
-		// could also render entire info into single HAL or JSON-LD
-		if(linkBinding.getHml().getLocal()!=null)
-			link.parameters("resource", linkBinding.getHml().getLocal().getName());
-		else if(linkBinding.getHml().getExternal()!=null)
-			link.parameters("resource", linkBinding.getHml().getExternal());
-		
-		if(linkBinding.getHml().getVerb()!=null)
-			link.parameters("verb", linkBinding.getHml().getVerb().getName());
-		
-		if(linkBinding.getHml().getCmt()!=null)
-			link.parameters("cmt", linkBinding.getHml().getCmt().getName());
-		
-		// OAS link object has parameters, request body, headers, server
-		// see https://swagger.io/docs/specification/links/ 
-		
-		// TODO check input (is optional) and add it to parameter/body element
-		// need to work with parameter mapping for that: id, type name, mapping def. (body vs. query etc.)
-		
-		Server server = new Server();
-		String targetAddress = null;
-		if(abstractLink.getLcref().getUrn()!=null)
-			targetAddress=abstractLink.getLcref().getUrn();
-		if(linkBinding.getHml()!=null&&linkBinding.getHml().getExternal()!=null)
-			targetAddress=linkBinding.getHml().getExternal();
-		if(targetAddress!=null) {
-			server.url(targetAddress);  
-			link.server(server);
-		}
-		
-		httpResponse.link(abstractLink.getName(), link); // TODO decapitalize only first char
+	private ApiResponse createAPIResponse(ElementStructure responsePayload, String description, List<String> mediaTypes) {
+		Content c = new Content();
+		mediaTypes.forEach(mediaType->c.addMediaType(mediaType, new MediaType().schema(this.dataType2SchemaConverter.getSchema4RequestOrResponseStructure(responsePayload))));
+		return new ApiResponse().description(description).content(c);
 	}
 	
-	private List<SecurityRequirement> handleSecurity(EndpointContract endpointType, Operation mdslOperation, HTTPResourceBinding binding) {
+	// ** local helpers
+	
+	private Content createContentFromSchemaAndMediaTypes(List<String> mediaTypes, Schema<?> newSchema) {
+		Content c = new Content();
+		MediaType item = new MediaType().schema(newSchema);
+		for(int i=0;i<mediaTypes.size();i++) {
+			c.addMediaType(mediaTypes.get(i), item);		
+		}
+		return c;
+	}
+	
+	// TODO (future work) support what WSDL, gRPC another target protocols need
+	
+	private List<SecurityRequirement> handleSecurity() {
 		// https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securitySchemeObject 
-		// future work: check what WSDL, gRPC another target protocols need  
-				
+		  
 		List<SecurityRequirement> ss = new ArrayList<SecurityRequirement>(); 
 		SecurityPolicies securityPolicies = mdslOperation.getPolicies();
 		if(securityPolicies == null)
@@ -575,147 +913,56 @@ public class Endpoint2PathConverter {
 		for(int i=0;i<secPols.size();i++){
 			SecurityPolicy securityPolicy = secPols.get(i);
 			String spName = securityPolicy.getName();
-			
-			SecurityBinding boundPolicy = mdslWrapper.findPolicyInBinding(mdslOperation.getName(), spName, binding);
+			SecurityBinding boundPolicy = mdslWrapper.findPolicyInBinding(mdslOperation.getName(), spName, httpBinding);
 			
 			this.mdsl2OpenAPIConverter.convertPolicy2SecurityScheme(securityPolicy, boundPolicy);
 						
 			if(boundPolicy!=null) {
-				mdslWrapper.logInformation("Found a security policy " + spName + " for " + mdslOperation.getName()); 
-					// + ": binding-level identifier is: " + boundPolicy.getDetails().getNp().getAtomP().getRat().getName());
+				MDSLLogger.reportInformation("Found a security policy " + spName + " for " + mdslOperation.getName()); 
 				SecurityRequirement sr = new SecurityRequirement(); 
 				sr.addList(spName); // does OAS know a "policyDescription"?
 				ss.add(sr); 
 			}
 			else 
-				mdslWrapper.logWarning("Found a security policy (but no binding)" + spName + " for " + mdslOperation.getName() + ". Skipping it so that the generated OpenAPI validates.");
+				MDSLLogger.reportWarning("Found a security policy (but no binding)" + spName + " for " + mdslOperation.getName() + ". Skipping it so that the generated OpenAPI validates.");
 		}
 		
 		return ss;
 	}
 
-	private ApiResponse createAPIResponse(ElementStructure responsePayload, String description, List<String> mediaTypes) {
-		Content c = new Content();
-		mediaTypes.forEach(mediaType->c.addMediaType(mediaType, new MediaType().schema(getSchema4RequestOrResponseStructure(responsePayload))));
-		return new ApiResponse().description(description).content(c);
-	}
-
-	private Schema getSchema4RequestOrResponseStructure(ElementStructure payload) {
-		if (payload.getNp() != null && payload.getNp().getTr() != null) {
-			// case: reference to 'data type' declaration
-			TypeReference tr = payload.getNp().getTr();
-			return this.dataType2SchemaConverter.mapCardinalities(tr.getCard(), new Schema<>().$ref(DataType2SchemaConverter.REF_PREFIX + tr.getDcref().getName()));
-		} else {
-			// case: data structure defined inline in MDSL
-			return this.dataType2SchemaConverter.convert(payload);
+	private HTTPParameter bindParameterUseDefaultIfNoExplicitBindingExists(String parameterName) {
+		HTTPParameter parameterBinding = HTTPBindingConverterHelpers.findParameterBindingFor(this.mdslOperation.getName(), parameterName, this.httpBinding);
+		if(parameterBinding==null) {
+			parameterBinding = HTTPBindingConverterHelpers.defaultBindingFor(httpVerb);
 		}
+		logMapping(this.mdslOperation, this.httpVerb, parameterName, parameterBinding);
+		return parameterBinding;
 	}
 
-	private HttpMethod mapMethod(Operation operation, HTTPResourceBinding binding) {
-		HttpMethod result = null;
-		
-		// option 1: work with HTTPOperationBinding
-		HTTPVerb verb = mdslWrapper.findVerbBindingFor(operation.getName(), binding);
-		if(verb!=null)
-			return mapMethodViaBinding(verb);
-				
-		// options 2 and 3: decorators (MAP or HTTP)
-		OperationResponsibility reponsibility = operation.getResponsibility(); // only 1 at present
-		if(reponsibility!=null) {
-			result = mapMethodViaDecorator(reponsibility);
-			if(result!=null) {
-				return result;
-			}
+	private void logMapping(Operation mdslOperation, HttpMethod httpVerb, String nextParameterName, HTTPParameter boundParameter) {
+		if(mdslOperation==null) {
+			MDSLLogger.reportError("MDSL operation not defined yet.");
+			return;
+		}
+		if(httpVerb==null) {
+			MDSLLogger.reportWarning(mdslOperation.getName() + " does not map to an HTTP verb yet.");
+			return;
 		}
 		
-		// option 4: name prefixes (heuristic, see "The Design of Web APIs")
-		return mapMethodByName(operation);
-	}
-
-	private HttpMethod mapMethodViaDecorator(OperationResponsibility reponsibility) {
-		if (reponsibility == null)
-			// mdslWrapper.logInformation("No responsibility defined for " + operation.getName());
-			return null; 
+		String nextParameterNameForLog;
+		if(nextParameterName==null) {
+			nextParameterNameForLog = "anonymous";
+		}
 		else {
-			// option 2: MAPs
-			if (reponsibility.getCf() != null)
-				return HttpMethod.POST; // could also be GET (in parameters: OAS "deepObject")
-			if (reponsibility.getSco() != null)
-				return HttpMethod.PUT; // could also be POST 
-			if (reponsibility.getRo() != null)
-				return HttpMethod.GET; // also must be POSTed sometimes (requiring explicit binding)
-			if (reponsibility.getSto() != null)
-				return HttpMethod.PATCH; // could also be PUT
-			// new in V4.5
-			if (reponsibility.getSro() != null)
-				return HttpMethod.PUT;
-			if (reponsibility.getSdo() != null)
-				return HttpMethod.DELETE;
-		
-			// option 3: HTTP direct (defined as responsibility decorator)
-			if (reponsibility.getOther() != null && reponsibility.getOther().equals("POST"))
-				return HttpMethod.POST;
-			if (reponsibility.getOther() != null && reponsibility.getOther().equals("PUT"))
-				return HttpMethod.PUT;
-			if (reponsibility.getOther() != null && reponsibility.getOther().equals("PATCH"))
-				return HttpMethod.PATCH;
-			if (reponsibility.getOther() != null && reponsibility.getOther().equals("GET"))
-				return HttpMethod.GET;
-			if (reponsibility.getOther() != null && reponsibility.getOther().equals("DELETE"))
-				return HttpMethod.DELETE;
-			// the verbs are not used much, and some servers, proxies etc. block them
-			if (reponsibility.getOther() != null && reponsibility.getOther().equals("OPTIONS"))
-				return HttpMethod.OPTIONS;
-			if (reponsibility.getOther() != null && reponsibility.getOther().equals("HEAD"))
-				return HttpMethod.HEAD;
-			if (reponsibility.getOther() != null && reponsibility.getOther().equals("TRACE"))
-				return HttpMethod.TRACE;
+			nextParameterNameForLog = nextParameterName;
 		}
-		return null;
-	}
-
-	private HttpMethod mapMethodViaBinding(HTTPVerb verb) {
-		if (verb != null && verb == HTTPVerb.GET)
-			return HttpMethod.GET;
-		if (verb != null && verb == HTTPVerb.PUT)
-			return HttpMethod.PUT;
-		if (verb != null && verb == HTTPVerb.POST)
-			return HttpMethod.POST;
-		if (verb != null && verb == HTTPVerb.PATCH)
-			return HttpMethod.PATCH;
-		if (verb != null && verb == HTTPVerb.OPTIONS)
-			return HttpMethod.OPTIONS;
-		if (verb != null && verb == HTTPVerb.HEAD)
-			return HttpMethod.HEAD;
-		if (verb != null && verb == HTTPVerb.TRACE)
-			return HttpMethod.TRACE;
-		if (verb != null && verb == HTTPVerb.DELETE)
-			return HttpMethod.DELETE;
-		return null;
-	}
-
-	private HttpMethod mapMethodByName(Operation operation) {
-		if (operation.getName().startsWith("create")) // changed
-			return HttpMethod.POST; // not needed as default return is HttpMethod.POST
-		if (operation.getName().startsWith("addTo") || operation.getName().startsWith("add_to")) 
-			return HttpMethod.POST; // not needed as default return is HttpMethod.POST
-		if (operation.getName().startsWith("get") || operation.getName().startsWith("read")
-				|| operation.getName().startsWith("retrieve") || operation.getName().startsWith("search"))
-			return HttpMethod.GET;
-		if (operation.getName().startsWith("put") || operation.getName().startsWith("replace"))
-			return HttpMethod.PUT;
-		if (operation.getName().startsWith("patch") || operation.getName().startsWith("update")
-				|| operation.getName().startsWith("modify"))
-			return HttpMethod.PATCH;
-		if (operation.getName().startsWith("delete") || operation.getName().startsWith("remove"))
-			return HttpMethod.DELETE;
-
-		// last report: map to POST as default
-		mdslWrapper.logInformation("No heuristic found for " + operation.getName() + ", mapping to POST");
-		return HttpMethod.POST;
-	}
-			
-	private boolean verbIsAllowedToHaveRequestBody(HttpMethod verb) {
-		return !(verb == HttpMethod.GET || verb == HttpMethod.DELETE);
+				
+		if(boundParameter==null) {
+			MDSLLogger.reportInformation(mdslOperation.getName() + " (" + httpVerb.name() + "): " + nextParameterNameForLog + " not bound");
+			return;
+		}
+		else {
+			MDSLLogger.reportInformation(mdslOperation.getName() + " (" + httpVerb.name() + "): " + nextParameterNameForLog + " bound to: " + boundParameter.getLiteral());  
+		}
 	}
 }

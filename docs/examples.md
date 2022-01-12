@@ -1,20 +1,17 @@
 ---
 title: Microservice Domain Specific Language (MDSL) Examples
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2019. All rights reserved.
+copyright: Olaf Zimmermann, 2019-2022. All rights reserved.
 ---
 
 [Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Type](./datacontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Bindings](./bindings) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
 
-<!-- TODO (H) update for 5.3 and merge/align with primer? -->
 
 MDSL Examples
 =============
 
 ## Service Contract (Grammar Reference)
 The following exemplary API specification compiles against the [MDSL grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext): 
-
-<!-- TODO feature error reporting and versioning of data types -->
 
 ~~~
 API description SampleCustomerManagementAPI
@@ -49,9 +46,11 @@ endpoint type CustomerManagementContract
 			  "city":D)+,
 			"segment":("REGULAR":D|"VIP":D) // choice 
 		}* // zero or more
+	  reporting error NotFound
+	  protected by policy RequiresReadRights
 ~~~
 
-<!-- some text from service contract page could be copied or moved here -->
+<!-- TODO (future work) feature state transitions and compensation (requires two SCO/STO) -->
 
 ## Data Contract Examples
 
@@ -59,29 +58,33 @@ The following simple examples feature the structural language primitives and giv
 
 ~~~
 data type SomeAtomicParameter D 
-// yields any string or numeric literal: "A", 1, true
+// specifies any string or numeric literal: "A", 1, true
 
-data type SomeNumber D<int> 
-// yields 1
+data type SomeNumber D<int> default is "7"
+// specifies numeric literal
 
 data type SomeStructuredRecord {SomeFlatRecord, SomeNumber} 
-// yields { ("A", 1, true), 42 }
+// specifies { ("A", 1, true), 42 }
 
 data type TwoNestingLevels {SomeStructuredRecord, SomeAtomicParameter} 
-// yields { {("A", 1, true), 42}, "A" }
+// specifies { {("A", 1, true), 42}, "A" }
 
-data type SomeFlatRecord (D<string>, D<int>, D<bool>) 
-// yields ("A", 1, true)
+data type SomeFlatRecord version "1.0.0" {D<string>, D<int>, D<bool>}
+// specifies {"A", 1, true}
 
-data type ChoiceDemo {"optionA":D | "optionB":D} // not implemented in tools yet
+data type SomeFlatRecordAsAPL (D<string>, D<int>, D<bool>) 
+// specifies ("A", 1, true)
+
+// not implemented specifically in tools yet (treated as Parameter Tree):
+data type ChoiceDemo {"optionA":D<int> | "optionB":D<string>} 
+// specifies { 42 } or { "someText" }
 ~~~
+
 
 More examples can be found in in the [public](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) <!-- and in the [private](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) --> MDSL repository.
 
-<!-- TODO (M) feature RESTBucks here -->
 
 ## Links
-
 
 * API usage [scenarios and stories](scenarios.md) (experimental)
 * Orchestration [flows](flows.md) (experimental)
@@ -94,6 +97,6 @@ More examples can be found in in the [public](https://github.com/Microservice-AP
 * [Tool information (CLI, editor/linter)](./tools)
 * [SOAD transformations](./soad)
 
-*Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2022. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

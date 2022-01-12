@@ -95,8 +95,4 @@ public interface MDSLStandaloneAPI {
 	 * @param generator the generator that shall be called
 	 */
 	String callGeneratorInMemory(MDSLResource mdsl, IGenerator2 generator);
-
-	/*
-	MDSLResource loadMDSL(InputStream mdslStream);
-	*/
 }

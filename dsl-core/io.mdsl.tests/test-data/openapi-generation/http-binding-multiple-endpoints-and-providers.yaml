@@ -8,37 +8,43 @@ servers:
 tags:
 - name: HelloHTTPEndpointNoBinding2-Home
   externalDocs:
-    description: The role of this endpoint, offering a HTTPSampleContract01 contract,
-      is not specified.
+    description: HTTPSampleContract01 contract
     url: ""
 - name: HelloHTTPEndpointNoBinding3-Home
   externalDocs:
-    description: The role of this endpoint, offering a HTTPSampleContract01 contract,
-      is not specified.
+    description: HTTPSampleContract01 contract
     url: ""
 - name: HelloHTTPEndpointNoBinding3-Subresource1
   externalDocs:
-    description: The role of this endpoint, offering a HTTPSampleContract01 contract,
-      is not specified.
+    description: HTTPSampleContract01 contract
     url: ""
 paths:
   /HTTPSampleContract00:
     get:
       tags:
       - HTTPSampleContract00
-      description: unspecified operation responsibility
+      summary: getOperation
+      description: ""
       operationId: getOperation
       parameters:
       - name: aQueryParameter
         in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
         required: true
         schema:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
       - name: abc
         in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
         required: true
         schema:
           type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           format: int32
       responses:
         "200":
@@ -50,9 +56,9 @@ paths:
     put:
       tags:
       - HTTPSampleContract00
-      description: unspecified operation responsibility
+      summary: putOperation
+      description: ""
       operationId: putOperation
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -68,7 +74,8 @@ paths:
     post:
       tags:
       - HTTPSampleContract00
-      description: unspecified operation responsibility
+      summary: createOperation
+      description: ""
       operationId: createOperation
       requestBody:
         content:
@@ -85,40 +92,15 @@ paths:
     delete:
       tags:
       - HTTPSampleContract00
-      description: unspecified operation responsibility
+      summary: deleteOperation
+      description: ""
       operationId: deleteOperation
       parameters:
-      - name: id
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: md
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: dInt
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: lString
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: dLong
-        in: query
-        required: true
-        schema:
-          type: number
       - name: Parameter1
         in: query
-        required: true
+        description: Type reference null
         schema:
-          type: boolean
+          $ref: '#/components/schemas/FlatParameterTree'
       responses:
         "200":
           description: deleteOperation successful execution
@@ -129,9 +111,9 @@ paths:
     patch:
       tags:
       - HTTPSampleContract00
-      description: unspecified operation responsibility
+      summary: patchOperation
+      description: ""
       operationId: patchOperation
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -149,15 +131,15 @@ paths:
     get:
       tags:
       - HelloHTTPEndpointNoBinding3-Home
-      description: unspecified operation responsibility
+      summary: getOperation
+      description: ""
       operationId: Home-getOperation
       parameters:
       - name: abc
         in: cookie
-        required: true
+        description: Type reference abc
         schema:
-          type: integer
-          format: int32
+          $ref: '#/components/schemas/AtomicParameter'
       responses:
         "200":
           description: getOperation successful execution
@@ -168,7 +150,8 @@ paths:
     put:
       tags:
       - HelloHTTPEndpointNoBinding3-Home
-      description: unspecified operation responsibility
+      summary: createOperation
+      description: ""
       operationId: Home-createOperation
       requestBody:
         content:
@@ -185,9 +168,9 @@ paths:
     post:
       tags:
       - HelloHTTPEndpointNoBinding3-Home
-      description: unspecified operation responsibility
+      summary: putOperation
+      description: ""
       operationId: Home-putOperation
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -204,7 +187,8 @@ paths:
     put:
       tags:
       - HelloHTTPEndpointNoBinding3-Subresource1
-      description: unspecified operation responsibility
+      summary: createOperation
+      description: ""
       operationId: Subresource1-createOperation
       requestBody:
         content:
@@ -221,9 +205,9 @@ paths:
     post:
       tags:
       - HelloHTTPEndpointNoBinding3-Subresource1
-      description: unspecified operation responsibility
+      summary: putOperation
+      description: ""
       operationId: Subresource1-putOperation
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -243,22 +227,36 @@ components:
       properties:
         id:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
         md:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
         dInt:
           type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           format: int32
         lString:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/LinkElement"
+            target="_blank">Link Element</a>
         dLong:
           type: number
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         anonymous1:
           type: boolean
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
     NestedParameterTree:
       type: object
       properties:
         npt1:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         npt2:
           $ref: '#/components/schemas/FlatParameterTree'
     FlatResponseDTR:
@@ -266,15 +264,23 @@ components:
       properties:
         fr1:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         fr2:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
     NestedResponseDTR:
       type: object
       properties:
         r1:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
         r2:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/LinkElement"
+            target="_blank">Link Element</a>
         anonymous2:
           $ref: '#/components/schemas/FlatResponseDTR'
     AtomicParameter:
@@ -282,13 +288,19 @@ components:
       properties:
         abc:
           type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           format: int32
     AtomicParameterList:
       type: object
       properties:
         abc:
           type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           format: int32
         def:
           type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           format: int32

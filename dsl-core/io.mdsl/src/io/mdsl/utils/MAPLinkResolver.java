@@ -1,5 +1,7 @@
 package io.mdsl.utils;
 
+import org.eclipse.emf.common.util.EList;
+
 import io.mdsl.apiDescription.EndpointContract;
 import io.mdsl.apiDescription.Operation;
 import io.mdsl.apiDescription.OperationResponsibility;
@@ -12,10 +14,13 @@ public class MAPLinkResolver {
 		return string.replace("\"", "");
 	}
 	
+	// TODO add support for API-level foundation patterns
+	
 	public static String explainRolePattern(EndpointContract mdslEndpoint) {
 		String role1 = mdslEndpoint.getPrimaryRole();
 		
 		// TODO (L) could also work with additional roles ("and" in grammar)	
+				
 		if (role1 == null)
 			return null;
 
@@ -33,8 +38,10 @@ public class MAPLinkResolver {
 			return "data-oriented endpoint, temporary storage";
 		else if (role1.equals("LINK_LOOKUP_RESOURCE"))
 			return "data-oriented endpoint: resource directory";
-
-		return "main repsonsibility: " + role1; // free form responsibility (?)
+		else if (!role1.equals(""))
+			return "main responsibility: " + role1; // free form responsibility
+		
+		return "";
 	}
 
 	public static String provideLinktoMAPWebsite(EndpointContract mdslEndpointType) {
@@ -71,42 +78,49 @@ public class MAPLinkResolver {
 	
 	public static String provideMAP(EndpointContract mdslEndpointType) {
 		String role1 = mdslEndpointType.getPrimaryRole();
-
-		if (role1 == null)
-			return "not specified.";
 		
-		if(role1.equals("PROCESSING_RESOURCE")) {
-			return "Processing Resource pattern";
+		// TODO what about secondary roles (if present)?
+		EList<String> otherRoles = mdslEndpointType.getOtherRoles();
+
+		return mapRolePattern(role1);
+	}
+
+	private static String mapRolePattern(String role) {
+		if (role == null || role.equals("")) {
+			return null; 
 		}
-		else if(role1.equals("INFORMATION_HOLDER_RESOURCE")) {
-			return "Information Holder Resource pattern";
+		if(role.equals("PROCESSING_RESOURCE")) {
+			return "Processing Resource";
 		}
-		else if(role1.equals("OPERATIONAL_DATA_HOLDER")) {
-			return "Operational Data Holder pattern";
+		else if(role.equals("INFORMATION_HOLDER_RESOURCE")) {
+			return "Information Holder Resource";
 		}
-		else if(role1.equals("MASTER_DATA_HOLDER")) {
-			return "Master Data Holder pattern";
+		else if(role.equals("OPERATIONAL_DATA_HOLDER")) {
+			return "Operational Data Holder";
 		}
-		else if(role1.equals("REFERENCE_DATA_HOLDER")) {
-			return "Reference Data Holder pattern";
+		else if(role.equals("MASTER_DATA_HOLDER")) {
+			return "Master Data Holder";
 		}
-		else if(role1.equals("DATA_TRANSFER_RESOURCE")) {
-			return "Data Transfer Resource pattern";
+		else if(role.equals("REFERENCE_DATA_HOLDER")) {
+			return "Reference Data Holder";
 		}
-		else if(role1.equals("LINK_LOOKUP_RESOURCE")) {
-			return "Link Lookup Resource pattern";
+		else if(role.equals("DATA_TRANSFER_RESOURCE")) {
+			return "Data Transfer Resource";
+		}
+		else if(role.equals("LINK_LOOKUP_RESOURCE")) {
+			return "Link Lookup Resource";
 		}
 		else
-			return role1 + "(non-pattern role)";
+			return role + " (non-pattern role)";
 	}
 	
-	public static String provideLinktoMAPWebsite(Operation mdslOperation) {
+	public static String specifyResponsibilityWithMAPLinkIfPossible(Operation mdslOperation) {
 		OperationResponsibility responsibility = mdslOperation.getResponsibility();
 		String uri = "https://microservice-api-patterns.org/patterns/responsibility/";
 		String patternName;
 
 		if (responsibility == null)
-			return "unspecified operation responsibility";
+			return ""; 
 
 		if (responsibility.getOther() != null) {
 			return unquoteString(responsibility.getOther());
@@ -124,10 +138,13 @@ public class MAPLinkResolver {
 		} else if (responsibility.getSto() != null) {
 			patternName = "State Transition Operation";
 			uri += "operationResponsibilities/StateTransitionOperation.html";
-		} else
-			return "unspecified operation responsibility";
+		} 
+		// TODO handle variants (delete, replace, collection) 
+		else
+			return "other operation responsibility pattern";
 		;
-		return "This operation realizes the [" + patternName + "](" + uri + ") pattern.";
+		
+		return "[" + patternName + "](" + uri + ").";
 	}
 	
 	public static String explainResponsibilityPattern(Operation mdslOperation) {
@@ -136,13 +153,13 @@ public class MAPLinkResolver {
 			return null;
 
 		if (responsibility.getCf() != null)
-			return "no read, no write"; // return responsibility.getCf();
+			return "no read, no write"; 
 		if (responsibility.getSco() != null)
-			return "write only"; // return responsibility.getSco();
+			return "write only"; 
 		if (responsibility.getRo() != null)
-			return "read only"; // return responsibility.getRo();
+			return "read only"; 
 		if (responsibility.getSto() != null)
-			return "read and write"; // return responsibility.getSto();
+			return "read and write"; 
 
 		if (responsibility.getOther() != null) {
 			return unquoteString(responsibility.getOther());
@@ -151,6 +168,10 @@ public class MAPLinkResolver {
 	}
 	
 	public static String mapParameterRoleAndType(RoleAndType roleAndType) {
+		if(roleAndType==null) {
+			return "";
+		}
+			
 		if (roleAndType.getRole().equals("D") || roleAndType.getRole().equals("Data")) {
 			return "<a href=\"https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement\" target=\"_blank\">Data Element</a>";
 		} else if (roleAndType.getRole().equals("MD") || roleAndType.getRole().equals("Metadata")) {
@@ -160,7 +181,8 @@ public class MAPLinkResolver {
 		} else if (roleAndType.getRole().equals("L") || roleAndType.getRole().equals("Link")) {
 			return "<a href=\"https://microservice-api-patterns.org/patterns/structure/elementStereotypes/LinkElement\" target=\"_blank\">Link Element</a>";
 		}
-		// TODO would have to add R<...> if it stays (and is on this level in grammar)
-		return "Unknown role and type.";
+		else {
+			return " Unknown role and type.";
+		}
 	}
 }

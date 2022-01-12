@@ -45,15 +45,16 @@ public class ProviderConverter {
 	public Provider convert(io.mdsl.apiDescription.Provider mdslProvider) {
 		Provider provider = new Provider(mdslProvider.getName());
 		mapEndpoints(provider, mdslProvider.getEpl());
+		// other binding elements not converted and added to gen model here because they are included in the endpoint type gemodel
 		return provider;
 	}
-
+	
 	private void mapEndpoints(Provider provider, List<EndpointList> endpoints) {
 		for (EndpointList endpoint : endpoints) {
 			Optional<EndpointContract> correspondingEndpoint = this.genModel.getEndpoints().stream()
-					.filter(e -> e.getName().equals(endpoint.getContract().getName())).findFirst();
+					.filter(e -> e.getName().equals(endpoint.getContract().getName())).findFirst(); // TODO overcome known limitation
 			if (correspondingEndpoint.isEmpty())
-				throw new MDSLException("MDSL error: a provider exposes an endpoint that does not exist!");
+				throw new MDSLException("MDSL error: a provider exposes an endpoint that does not exist.");
 			provider.addEndpoint(correspondingEndpoint.get());
 		}
 	}

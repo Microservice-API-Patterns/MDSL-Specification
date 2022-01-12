@@ -46,23 +46,21 @@ import io.mdsl.apiDescription.SecurityPolicies
 import io.mdsl.apiDescription.SecurityPolicy
 import io.mdsl.apiDescription.StatusReports
 import io.mdsl.apiDescription.StatusReport
-
-// import io.mdsl.apiDescription.BasicDataType;
+import io.mdsl.apiDescription.IntegrationStory
 
 class APIDescriptionFormatter extends AbstractFormatter2  {
 	
-	// TODO (generated, updated partially): implement for CommandTypes, CommandType, ParameterForest, BindingParameter, BindingParams, ChannelPathWithParams, RequestReplyChannel, RequestChannel, ReplyChannel, Payload, OneWayChannel, Message, ParameterTreeList, ParameterTree, TreeNode, SingleParameterNode, TypeReference, AtomicParameterList, AtomicParameter, 
+	// TODO (generated, partially done): implement for CommandTypes, CommandType, ParameterForest, BindingParameter, BindingParams, ChannelPathWithParams, RequestReplyChannel, RequestChannel, ReplyChannel, Payload, OneWayChannel, Message, ParameterTreeList, ParameterTree, TreeNode, SingleParameterNode, TypeReference, AtomicParameterList, AtomicParameter, 
 	// EndpointContract, Operation, StatusReports, StatusReport, SecurityPolicies, SecurityPolicy, DataTransferRepresentation, Provider, EndpointList, EndpointInstance, MessageBroker, AsyncEndpoint, TechnologyBinding, ProtocolBinding, HTTPBinding, HTTPResourceBinding, HTTPTypeBinding, HTTPOperationBinding, MediaTypeList, HTTPParameterBinding, JavaBinding, JavaOperationBinding, GRPCBinding, 
 	// SLA, SLATemplate, InternalSLA, RateLimit, SLO, Measurement, LandingZone, Client, Consumption, MessageEndpoint, AsyncConsumptionFromBroker, AsyncConsumptionNoProtocolBinding, AsyncConsumptionWithProtocolBinding, WhereConstruct, Gateway, Gate, 
 	// IntegrationScenario, Orchestration, FlowStep, CombinedInvocationStep, DomainEventProductionStep, CommandInvokationStep, EitherCommandOrOperation, EitherCommandOrOperationInvokation, CommandInvokation, OperationInvokation, SingleOperationInvokation, ConcurrentOperationInvokation, ExclusiveAlternativeOperationInvokation, InclusiveAlternativeOperationInvokation, EventProduction
-	
 	// TODO (generated): format HiddenRegions around keywords, attributes, cross references, etc. 
 	
 	def dispatch void format(ServiceSpecification serviceSpecification, extension IFormattableDocument document) {
 		
 		for (DataContract dataContract : serviceSpecification.getTypes()) {
 			dataContract.format
-			dataContract.prepend[newLine] // changed from append to prepend on June 13
+			dataContract.prepend[newLine] // changed from "append" to "prepend" on June 13
 		}
 		
 		for (EventTypes events : serviceSpecification.getEvents()) {
@@ -86,7 +84,6 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 		
 		for (EObject eObject : serviceSpecification.getProviders()) {
 			/*
-			// taken out June 13 
 			serviceSpecification.regionFor.keywords('API').forEach [
 				prepend[newLines = 1]
 				format(eObject);
@@ -104,7 +101,7 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 			format(gateway);
 		}
 		
-		// TODO provider realizations (implementation)  missing
+		// TODO provider realizations (implementation) missing
 		
 		for (Orchestration flows : serviceSpecification.getOrchestrations()) {
 			format(flows);
@@ -116,11 +113,8 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
     }
     
     def dispatch void format(DataContract dc, extension IFormattableDocument document) {
-    	// System.out.println("[INFO] Formatting data contract " + dc.name);
-    	// dc.regionFor.keyword("data").prepend[newLines=1] // needed? replace with dc.prepend[newLine]?
-    	dc.prepend[newLine] // changed June 13
+    	dc.prepend[newLine] 
     	dc.structure.format
-    	// dc.append[newLines=1] // brought back June 9, removed June 13
 	}
 	
 	def dispatch void format(EventTypes events, extension IFormattableDocument document) {
@@ -146,7 +140,7 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 	}
 	
 	def dispatch void format(DataTransferRepresentation dtr, extension IFormattableDocument document) {
-		dtr.prepend[indent] // new  June 25
+		dtr.prepend[indent] 
 		dtr.payload.format
 	}
 	
@@ -160,15 +154,14 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 	def dispatch void format(ParameterTree pt, extension IFormattableDocument document) {
 		
 		pt.classifier.format
-		pt.regionFor.keyword(':').surround[noSpace] // new June 13
-    	pt.regionFor.keyword('{').append[noSpace] // June 27
+		pt.regionFor.keyword(':').surround[noSpace]
+    	pt.regionFor.keyword('{').append[noSpace] 
     	pt.first.format
-    	// TODO how about APL?
     	for (TreeNode tn : pt.nexttn) {
 			format(tn);
 		}
 		pt.card.format
-		pt.regionFor.keyword('}').prepend[noSpace] // June 27
+		pt.regionFor.keyword('}').prepend[noSpace]
     }
     
     def dispatch void format(TreeNode tn, extension IFormattableDocument document) {
@@ -178,65 +171,48 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
     }
     
 	def dispatch void format(SingleParameterNode spn, extension IFormattableDocument document) {
-    	// System.out.println("[INFO] Formatting spn in ES");
     	spn.genP.format
     	spn.atomP.format 
     	spn.tr.format
 	}
 	
 	def dispatch void format(GenericParameter gp, extension IFormattableDocument document) {
-		gp.regionFor.keyword(':').append[noSpace] // new June 13, changed June 25
+		gp.regionFor.keyword(':').append[noSpace]
 	}
 	
 	def dispatch void format(TypeReference tr, extension IFormattableDocument document) {
-		// System.out.println("[INFO] Formatting type reference in AP");
-		
-		// note: classifier not formatted yet (here and elsewhere)
-		
-		// tr.dcref.format// taken out June 13  	
-		
-		tr.regionFor.keyword(':').surround[noSpace] // new June 13
-		// tr.dcref.append[noSpace] // removed June 13
+		tr.classifier.format
+		tr.regionFor.keyword(':').surround[noSpace]
 		tr.card.format
 		
-		// no effect, trying to remove space from "delivering payload SampleDTO *"
+		// no effect
 		// tr.regionFor.keyword('*').surround[noSpace]
 		// tr.regionFor.keyword('*').prepend[noSpace]
 	}
 	
-	def dispatch void format(AtomicParameterList apl, extension IFormattableDocument document) {
-		// System.out.println("[INFO] Formatting APL in DC");
-		
-		// note: classifier not formatted yet (here and elsewhere)
+	def dispatch void format(AtomicParameterList apl, extension IFormattableDocument document) {		
     	apl.first.format
-    	// updated July 4
     	for (AtomicParameter ap : apl.nextap) {
 			format(ap);
 		}
  		apl.card.format
 	}
 	
-	def dispatch void format(AtomicParameter ap, extension IFormattableDocument document) {
-		// System.out.println("[INFO] Formatting AP in DC ");
-		
+	def dispatch void format(AtomicParameter ap, extension IFormattableDocument document) {		
 		ap.classifier.format
     	ap.rat.format // name is in rat
  		ap.card.format
 	}
 	
 	def dispatch void format(RoleAndType rat, extension IFormattableDocument document) {
-		// System.out.println("[INFO] Formatting role and type in RAT " + rat.name); // not called yet?
 		rat.regionFor.keyword(':').surround[noSpace]
 		rat.regionFor.keyword('<').surround[noSpace]
-		rat.regionFor.keyword('>').prepend[noSpace] // changed July 4
-		// rat.btype.format // needed? removed June 2
+		rat.regionFor.keyword('>').prepend[noSpace]
+		// rat.btype.format
 	}
 	
 	def dispatch void format(Cardinality c, extension IFormattableDocument document) {
-		// System.out.println("[INFO] Formatting cardinality");
-		// not working yet:
-		// c.prepend[noSpace] // removed June 2
-		c.regionFor.keyword('!').prepend[noSpace] // changed from surround->prepend June 15
+		c.regionFor.keyword('!').prepend[noSpace] // changed from surround->prepend 
 		c.regionFor.keyword('+').prepend[noSpace]
 		c.regionFor.keyword('?').prepend[noSpace]
 		c.regionFor.keyword('*').prepend[noSpace]
@@ -250,45 +226,42 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 	/*
 	// grammar does not cause the BasicDataType interface/class to be generated yet:
 	def dispatch void format(BasicDataType btype, extension IFormattableDocument document) {
-		System.out.println("[INFO] Formatting basic type"); // not called yet; is rule the right one?
+		// System.out.println("[INFO] Formatting basic type"); // not called yet; is rule the right one?
 		btype.regionFor.keyword('<').surround[noSpace]
 		btype.regionFor.keyword('>').prepend[noSpace]
 	}
 	*/ 
 
     def dispatch void format(EndpointContract ec, extension IFormattableDocument document) {
-		// System.out.println("[INFO] Formatting endpoint contract");
 		
-		ec.prepend[newLines=2] // added June 9, moved here June 13
+		ec.prepend[newLines=2] 
 				
-		// this might cause two tests to fail (that call "save" on resource explicitly):
-    	ec.regionFor.keyword("exposes").prepend[newLines=1] // no effect (June 9)?
+    	ec.regionFor.keyword("exposes").prepend[newLines=1] // no effect?
     	
     	for (Operation operations : ec.ops) {
 			format(operations);
 		}
 		
-		// TODO more contract parts: receives, compensatedBy?
-		ec.regionFor.keyword("receives").prepend[newLines=1] // seems to work (June 9)
+		// TODO more contract parts: receives (event)
+		
+		ec.regionFor.keyword("receives").prepend[newLines=1]
 		
 
 	}
 
 	def dispatch void format(ChannelContract cc, extension IFormattableDocument document) {
-		// System.out.println("[INFO] Formatting AsyncMDSL channel contract");
-		
     	// cc.regionFor.keyword("channel").prepend[newLines=1] // "2" here yields conflicting channels exception
     	// p.append[newLines=1] // "2" here yields conflicting channels exception
     	
     	cc.conversationType.format
     	
-    	cc.prepend[newLines=2] // added June 9 (and taken out first one)
+    	cc.prepend[newLines=2] 
 	}
 	
-	// TODO indentation *not* working yet (MDSL does not have block closing keywords, unlike CML)
+	// TODO indentation not working (MDSL does not have block closing keywords, unlike CML)
+	
 	def dispatch void format(RequestReplyChannel channels, extension IFormattableDocument document) {
     	channels.prepend[newLine]
-		// channel.prepend[indent]
 		interior(
 			channels.regionFor.keyword('request'),
 			channels.regionFor.keyword('reply')
@@ -299,7 +272,6 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 	}
 	
 	def dispatch void format(RequestChannel channel, extension IFormattableDocument document) {
-		// TODO fix/complete
 		channel.prepend[newLine]
 		// channel.prepend[indent] // no effect/exception
 		interior(
@@ -313,7 +285,6 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 	def dispatch void format(ReplyChannel channel, extension IFormattableDocument document) {
 		channel.prepend[newLine] 
 		// channel.prepend[space="2"] // no effect
-		
 		// no effect
 		interior(
 			channel.regionFor.keyword('request'),
@@ -328,28 +299,19 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 	}
 	
 	def dispatch void format(Operation operation, extension IFormattableDocument document) {
-    	// op.regionFor.keyword("operation").prepend[newLine] // caused pbs
+    	// op.regionFor.keyword("operation").prepend[newLine] // causes pbs
     	    	
-    	operation.prepend[newLine]; // added June 9, moved here June 13
-
-    	// operation.regionFor.keyword('expecting').surround[autowrap].surround[indent] // new July 4
-    	// operation.regionFor.keyword('delivering').surround[autowrap] // new July 4
-/*
-    	operation.regionFor.keyword('expecting').surround[indent] // new June 25, no effect in CF QF (?) 	
-    	operation.regionFor.keyword('delivering').surround[indent] // new June 25, no effect in CF QF (?)
- */   	
-    	operation.requestMessage.format // TODO bug: causes extra line break (sometimes)
-    	operation.responseMessage.format // no extra line break here (?)
+    	operation.prepend[newLine];   	
+    	operation.requestMessage.format // TODO causes extra line break (sometimes)
+    	operation.responseMessage.format // no extra line break here
 
     	operation.reports.format   
     	operation.policies.format
-    	
-    	// TODO other spec elements: compensating etc.
+    	operation.undo.format // NYI
 	}
 	
 	def dispatch void format(StatusReports reports, extension IFormattableDocument document) {
 		for (StatusReport report : reports.getReportList()){
-			// report.surround[autowrap]
 			format(report);
 		}
 	}
@@ -360,7 +322,6 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 		
 	def dispatch void format(SecurityPolicies policies, extension IFormattableDocument document) {
 		for (SecurityPolicy policy : policies.getPolicyList()){
-			// policy.surround[autowrap]
 			format(policy);
 		}
 	}
@@ -371,9 +332,6 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 
 	def dispatch void format(Provider p, extension IFormattableDocument document) {
 		p.prepend[newLines=2]
-    	// p.regionFor.keyword("API").prepend[newLines=1] // no effect? removed June 9
-    	// p.regionFor.keyword("API").append[newLines=1] // no effect? removed June 9
-    	// p.append[newLine] // not sure about effect
     	
     	for (EndpointList el : p.epl) {
 			el.format;
@@ -388,7 +346,6 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 	
 	def dispatch void format(EndpointInstance ei, extension IFormattableDocument document) {
 		for (TechnologyBinding tpb : ei.pb) {
-			// pb is a poor/wrong name here (in grammar)
 			tpb.format;
 		}
 	}
@@ -403,7 +360,6 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 	}
 	
 	def dispatch void format(HTTPBinding httpb, extension IFormattableDocument document) {
-		// eb is a poor name (in grammar)
 		for (HTTPResourceBinding rb : httpb.eb) {
 			rb.format;
 		}
@@ -411,7 +367,7 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 
 	def dispatch void format(HTTPResourceBinding httprb, extension IFormattableDocument document) {
 		httprb.prepend[newLine];
-		// handle tB+=HTTPTypeBinding too? 
+		// TODO handle tB+=HTTPTypeBinding too? 
 		for (HTTPOperationBinding ob : httprb.opsB) {
 			ob.format;
 		}
@@ -423,12 +379,7 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 	}
 	
 	def dispatch void format(Client c, extension IFormattableDocument document) {
-		// System.out.println("[INFO] Formatting API client");
-		
 		c.prepend[newLines=2]
-    	// c.regionFor.keyword("API").prepend[newLines=1]
-    	// c.regionFor.keyword("API").append[newLines=1]
-    	// c.append[newLine] // not sure about effect
 	}
 	
 	def dispatch void format(Orchestration flow, extension IFormattableDocument document) {
@@ -452,6 +403,13 @@ class APIDescriptionFormatter extends AbstractFormatter2  {
 	}
 	
 	def dispatch void format(IntegrationScenario scenario, extension IFormattableDocument document) {
-		scenario.prepend[newLines=2] // not sure this is needed, not added in any QF
+		scenario.prepend[newLines=2] 
+		for (IntegrationStory story : scenario.getStories()) {
+			story.format;
+		}
+	}
+		
+	def dispatch void format(IntegrationStory story, extension IFormattableDocument document) {
+		story.prepend[newLine]
 	}
 }

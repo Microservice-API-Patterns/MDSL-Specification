@@ -3,35 +3,111 @@ info:
   title: TestAPI
   version: "1.0"
 servers:
-- url: /endpoint
+- url: http://tbc
+- url: http://tbc
+- url: http://tbc
 tags:
 - name: TestEndpointProvider-Home
   externalDocs:
-    description: The role of this endpoint, offering a TestEndpoint contract, is Information
-      Holder Resource pattern
+    description: TestEndpoint contract, Information Holder Resource role
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
+- name: TestEndpointProvider2-Home
+  externalDocs:
+    description: TestEndpoint2 contract, Information Holder Resource role
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
+- name: TestEndpointProvider3-Home3
+  externalDocs:
+    description: TestEndpoint contract, Information Holder Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
 paths:
-  /home:
+  /sharedrelpath:
     summary: general data-oriented endpoint
     get:
       tags:
-      - TestEndpointProvider-Home
-      description: unspecified operation responsibility
-      operationId: Home-doSomethingJust4Test
+      - TestEndpointProvider2-Home
+      summary: doSomethingElse
+      description: ""
+      operationId: Home-doSomethingElse
       parameters:
       - name: attr1
         in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
         required: true
         schema:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
       - name: attr2
         in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
         required: true
         schema:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
       responses:
         "200":
-          description: doSomethingJust4Test successful execution
+          description: doSomethingElse successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+    put:
+      tags:
+      - TestEndpointProvider3-Home3
+      summary: doSomething
+      description: ""
+      operationId: Home3-doSomething
+      requestBody:
+        description: Message payload (content)
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                attr1:
+                  type: string
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
+                attr2:
+                  type: string
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
+              description: request body elements for doSomething
+      responses:
+        "200":
+          description: doSomething successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+    post:
+      tags:
+      - TestEndpointProvider-Home
+      summary: doSomething
+      description: ""
+      operationId: Home-doSomething
+      requestBody:
+        description: Message payload (content)
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                attr1:
+                  type: string
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
+                attr2:
+                  type: string
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
+              description: request body elements for doSomething
+      responses:
+        "200":
+          description: doSomething successful execution
           content:
             application/json:
               schema:

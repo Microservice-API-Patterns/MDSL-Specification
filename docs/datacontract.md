@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) Data Contracts
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2019-2021. All rights reserved.
+copyright: Olaf Zimmermann, 2019-2022. All rights reserved.
 ---
 
 [Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Bindings](./bindings) &mdash; [Tutorial](./tutorial) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
@@ -29,7 +29,7 @@ The structure patterns from MAP form the base of the type system that is used in
 * The *role* can be any [element stereotype](https://microservice-api-patterns.org/patterns/structure/) from MAP: `D` (data), `MD` (metadata), `ID` (identifier), `L` (link).
 * The optional *type* `<String>` is either basic (see below) or nested/structured; it also corresponds to a concept known from type systems in programming and data representation languages.
 
-Simple, yet powerful nesting is supported, realizes the Microservice API Pattern (MAP) [Parameter Tree](https://microservice-api-patterns.org/patterns/structure/representationElements/ParameterTree):
+Simple, yet powerful nesting is supported, realizing the Microservice API Pattern (MAP) [Parameter Tree](https://microservice-api-patterns.org/patterns/structure/representationElements/ParameterTree):
 
 * The nesting is expressed in an object- or block-like syntax: `{...{...}}`.
 * This nesting syntax is similar to that in data representation languages such as JSON (and the Jolie type system).
@@ -42,7 +42,7 @@ Already existing metamodels and schema languages can be used alternatively to `M
 
 ### The I in IRT: Identifiers
 
-Identifiers must be embedded in double quotes`"somePayloadData"`. They may contain blanks or underscores. 
+Identifiers must be embedded in double quotes `"somePayloadData"`. They may contain blanks or underscores. 
 
 ### The R in IRT: Role stereotypes for representation elements/data types
 The role within a message payload that is taken by a particular part of a header or payload (a representation element in MAP terminology) is the primary specification element; identifiers and data type are optional. This three-part specification (with only one mandatory part) is a bit different from the identifier-type pairs typically used in programming languages. It makes it possible to create rather compact (but still incomplete) specifications during agile API modeling. <!-- talk about rationale for this modeling decision even more? --> 
@@ -150,11 +150,9 @@ data type CustomerWithAddressAndMoveHistory {
 
 Note that a parameter tree that only contains atomic parameters `{D<int>, D<string>}` can also be modeled as an Atomic Parameter List `(D<int>, D<string>)`. It is recommended to prefer the Parameter Tree syntax over that of the Atomic Parameter List (to promote information hiding and defer detailed modeling decisions until the last/most responsible moment). `<<Entity>>` is a patttern stereotype (see section "Outlook: MAP Decorators" of the [CSV tutorial](./tutorial) for explanations).
 
-<!-- TODO (H): * feature choice '|' when supported in all tools -->
+<!-- TODO (M): * feature choice '|' when supported in tools -->
 
-<!-- TODO feature CSV in new Tutorial "sheets": ["rows":{"columnCells":{Data|Formula}*}*] // title row is different? -->
-
-<!-- TODO model this in JSON Schema, XML Schema (and/or Avro?) -->
+<!-- TODO (L) model example in JSON Schema, XML Schema (and/or Avro?) -->
 
 
 ## Technology Mappings
@@ -181,6 +179,6 @@ Note that some combinations are syntactically possible at present (to simplify t
 * [Quick reference](./quickreference), [tutorial](./tutorial) and [tools](./tools)
 * Back to [MDSL homepage](./index).
 
-*Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2022. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

@@ -37,7 +37,6 @@ public class AsyncMDSLGenerator extends AbstractMDSLGenerator {
 
 			// formatting is required, defaults looks poor after "save"; this requires additional class/Xtend code 
 			// https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#formatting
-			// https://github.com/ContextMapper/context-mapper-dsl/blob/master/org.contextmapper.dsl/src/org/contextmapper/tactic/dsl/formatting2/TacticDDDLanguageFormatter.xtend
 			sourceSpec.save(null);
 			
 			// this caused entire spec. to go to single line before formatter was introduced:
@@ -174,7 +173,7 @@ public class AsyncMDSLGenerator extends AbstractMDSLGenerator {
 	protected void generateFromServiceSpecification(ServiceSpecification mdslSpecification, IFileSystemAccess2 fsa,
 		org.eclipse.emf.common.util.URI inputFileURI) {
 		for (EndpointContract endpointType : new ServiceSpecificationAdapter(mdslSpecification).getEndpointContracts()) {
-			; // System.out.println("About to add a p2p channel definition for endpoint type (in doGenerate)" + endpointType.getName());
+			; 
 		}
 	}
 }

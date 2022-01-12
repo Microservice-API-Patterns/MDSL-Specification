@@ -32,6 +32,6 @@ exposes
         accepts "application/json"// defined at https://www.iana.org/assignments/media-types/media-types.xhtml
         replies "application/vnd.custom-mediatype-for-productDTO-v1" // custom media type 
       
-      operation updatePrice to PATCH at "/products/{productId}/price"
+      operation updatePrice to PATCH // at "/products/{productId}/price"
         element "currency" realized as QUERY parameter
         element "amount" realized as QUERY parameter

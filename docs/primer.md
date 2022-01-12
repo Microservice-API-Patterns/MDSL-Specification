@@ -1,51 +1,53 @@
 ---
 title: Microservice Domain-Specific Language (MDSL) Primer
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2019-2021. All rights reserved.
+copyright: Olaf Zimmermann, 2019-2022. All rights reserved.
 ---
 
 [Home](./index) &mdash; [Endpoint Types](./servicecontract) &mdash; [Bindings](./bindings) &mdash; [Tutorial](./tutorial) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools) &mdash; [Transformations](./soad.md)
 
-## Getting Started with MDSL
+## Primer: Getting Started with MDSL
 
 MDSL supports the [API Description](https://microservice-api-patterns.org/patterns/foundation/APIDescription) pattern from [Microservice API Patterns (MAP)](https://ozimmer.ch/patterns/2020/05/07/MAPMetaPost.html). It picks up MAP concepts such as API *endpoint*, *operation*, *client* and *provider*, and features many API design patterns as decorators (a.k.a. stereotypes) such as ``<<pagination>>``. Its data contracts are inspired — but generalize from — message exchange formats such as JSON and the Jolie type system.
 
-### Hello World (Service API Edition)
+### Example (Service/API Edition)
 
-The `Hello World` of MDSL and service design specifies a single endpoint `HelloWorldEndpoint` that exposes an operation `sayHello`:
-
-<!-- TODO (M) feature CustomerExample here, with MAP decorators -->
+The following example `CustomerRelationshipManager` extends concepts features in the MDSL ["Hello World"](./index) with compensation, reporting, and state transitions:
 
 ~~~
-API description HelloWorldAPI
+API description SampleCRMScenario
+version "1.0"
+usage context PUBLIC_API for FRONTEND_INTEGRATION 
+overview "Example in MDSL Primer"
 
-data type SampleDTO {ID, D<string>}
+data type Customer {"name": D<string>, 
+                    "address": D<string>, 
+                    "birthday": D<string>}
+data type StatusCode "success": MD<bool> default is "true"
 
-endpoint type HelloWorldEndpoint
+endpoint type CustomerRelationshipManager serves as PROCESSING_RESOURCE
 exposes 
-  operation sayHello 
-    expecting payload "in": D<string>  
-    delivering payload SampleDTO
-
-API provider HelloWorldAPIProvider
-  offers HelloWorldEndpoint 
-  at endpoint location "http://localhost:8000" 
-  via protocol HTTP 
-    binding resource HomeResource at "/"
-      operation sayHello to POST 
-  
-API client HelloWorldAPIClient
-  consumes HelloWorldEndpoint 
-  from HelloWorldAPIProvider
-  via protocol HTTP
+  operation createCustomer with responsibility STATE_CREATION_OPERATION
+    expecting payload "customerRecord": Customer
+    delivering payload "customerId": D<int>
+    compensated by deleteCustomer
+  operation upgradeCustomer with responsibility STATE_TRANSITION_OPERATION
+    expecting payload "promotionCode": P // request partially specified
+    delivering payload P // response unspecified
+  operation deleteCustomer with responsibility STATE_DELETION_OPERATION
+    expecting payload "customerId": D<int>
+    delivering payload "success": StatusCode
+    transitions from "customerIsActive" to "customerIsArchived"
+  operation validateCustomerRecord with responsibility COMPUTATION_FUNCTION
+    expecting payload "customerRecord": Customer
+    delivering payload "isCompleteAndSound": D<bool>
+    reporting error ValidationResultsReport 
+      "issues": {"code":D<int>, "message":D<string>}+
 ~~~
 
-`sayHello` accepts a single scalar string value `D<string>` as input. This operation returns a Data Transfer Object (DTO) called `SampleDTO` as output, which is modeled explicitly so that its specification can be reused. `SampleDTO` is specified incompletely as an identifier-data pair `{ID, D}`: the two elements in the pair are an identifier `ID` and some data (`D`). The names of these two "parameters" have not been specified yet (unlike `"in"`, the data send in the request message of `sayHello`). The [data element](https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement) in the pair is a string; type of the `ID` parameter is yet unspecified. In addition to the endpoint type (a.k.a. service contract) `HelloWorldEndpoint`, an API client and an API provider working with this contract are defined (and [bound](./bindings) to HTTP, a single home resource in this simple case). 
+`createCustomer` is marked with the pattern [STATE_CREATION_OPERATION](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation); the reverse operation is specified (`compensated by deleteCustomer`).  `upgradeCustomer` also has a responsibility decorator, and its parameters are specified incompletely (`P`). `deleteCustomer` discloses the API-internal state transition that takes place (via the strings `"customerIsActive"` and `"customerIsArchived"`). Finally, `validateCustomerRecord` not only has a normal response payload, but also may return an error report.
 
-Take a look at Hello World in [Swagger/OpenAPI Specification](https://swagger.io/blog/api-development/getting-started-with-swagger-i-what-is-swagger/) in comparison. You can find such contract specification example [here](./HelloWorldWebsitePrimer.yaml) (note: this OpenAPI specification contains a few more details about the HTTP [binding](./bindings) of the abstract contract). 
-
-<!-- TODO (M) could also link to Protocol Buffers, GraphQL, WSDL/XML schema here; files are in here: HelloWorldWebsitePrimerGeneratedIDLs.zip -->
-
+Two data types `Customer` and `StatusCode` are made explicit, the others are inlined in the request and response message definitions. As a basic type, `StatusCode` has a default value defined.
 
 ### Design Goals
 
@@ -63,7 +65,6 @@ As a contract language for (micro-)service API design, MDSL should:
 
 <!-- TODO: retrofit paper page (Appendix A from https://www.overleaf.com/project/5e384b88f46297000133080d)? -->
 
-
 ### Design Principles
 
 To achieve the above design goals:
@@ -73,17 +74,8 @@ To achieve the above design goals:
 
 [^1]: The service and the data contract languages can be used independently of each other; for instance, data contracts for operations in contract types can also be specified in JSON Schema (but might not be supported by MDSL tools in that case).
 
-### Tool Support
+### Where and When to Use MDSL 
 
-At present, the following tools are available (see [tools page](./tools) for more information):
-
-* An Eclipse-based [Editor and API Linter](./tools#eclipse-plugin), also offering [transformations](./soad) for rapid, goal-driven API design ("API first") 
-* [Command-Line Interface (CLI)](./tools#command-line-interface-cli-tools) tools to validate a specification, to generate platform-specific contracts (OpenAPI, gRPC, Jolie) and reports
-* MDSL generator in Context Mapper
-
-## A Closer Look 
-
-### Where and when to use MDSL 
 Let us visualize the usage context of MDSL specifications with two [hexagons](https://herbertograca.com/2017/09/14/ports-adapters-architecture/), a notation and style that is quite popular in the microservices community:[^2] 
 
 [^2]: Octogons, as used to denote cells in [Cell-Based Architectures (CBAs)](https://github.com/wso2/reference-architecture), look promising too!
@@ -93,25 +85,7 @@ Let us visualize the usage context of MDSL specifications with two [hexagons](ht
 
 If you want to leverage and promote [microservices tenets](http://rdcu.be/mJPz) such as polyglot programming and use multiple integration protocols, e.g., an HTTP resource API and message queuing, then MDSL is for you. The request and response message representations in the diagram can be specified with MDSL data contracts; the provided interface supports an MDSL endpoint type.
 
-
-### Language specification elements 
-
-1. Service [endpoint contract types](./servicecontract) follow this template: 
-   `endpoint type ... exposes operation ... expecting ... delivering ...`
-2. [Data contracts (schemas)](./datacontract): `data type SampleDTO {ID, V}` in the above example
-3. Optional [instance-level concepts](./optionalparts): 
-    * API Provider with protocol [bindings](./bindings) and, optionally, [*Service Level Agreements*](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ServiceLevelAgreement) and evolution strategies such as [*Two in Production*](https://microservice-api-patterns.org/patterns/evolution/TwoInProduction)
-    * API Client instances consuming the contracts exposed by providers
-    * API Gateways (or intermediaries) acting both in client and in provider role; note that gateways are not featured in the simple example above
-4. Integration scenarios including stories
-    * See [this page](scenarios.md).
-5. Orchestration flows
-    * See [this page](flows.md).
-
-See these concepts in action in the [tutorial](./tutorial), the [quick reference](./quickreference) and on the [example](./examples) page.
-
-
-### Usage of and support for Microservice API Patterns (MAP)
+### Integration with Microservice API Patterns (MAP)
 
 MDSL supports all [Microservice API Patterns](https://microservice-api-patterns.org/) one way or another:
 
@@ -123,22 +97,35 @@ MDSL supports all [Microservice API Patterns](https://microservice-api-patterns.
 
 The four types of decorators/annotations and stereotypes are optional; if present, they make the API description more expressive and can be processed by tools such as API linters/contract validators, code/configuration generators, MDSL to OpenAPI or WSDL converters (work in progress).
 
+### Tool Support
 
-## More Information
+At present, the following tools are available (see [tools page](./tools) for more information):
 
-### MDSL Git Pages (this website)
+* An Eclipse-based [Editor and API Linter](./tools#eclipse-plugin), also offering [transformations](./soad) for rapid, goal-driven API design ("API first") 
+* [Command-Line Interface (CLI)](./tools#command-line-interface-cli-tools) tools to validate a specification, to generate platform-specific contracts (OpenAPI, gRPC, Jolie) and reports
+* *Work in progress:* [MDSL Web](https://mdsl-web.herokuapp.com/) Tools.
 
-* API usage [scenarios and stories](scenarios.md) (experimental)
-* Orchestration [flows](flows.md) (experimental)
+There is an MDSL generator in [Context Mapper](https://contextmapper.org/docs/mdsl/).
+
+### MDSL Documentation (this Website)
+
+* API usage [scenarios and stories](scenarios.md)
+* Orchestration [flows](flows.md)
 * Service [endpoint contract types](./servicecontract)
 * [Data contracts (schemas)](./datacontract)
-* [Bindings](./bindings)
+* General [binding](./bindings) information and [HTTP-/REST-specific binding details](./http-rest)
 * Optional [language elements on the instance level (provider, client, gateway)](./optionalparts)
-* [Tutorial](./tutorial), another [example](./examples)
+* [Tutorial](./tutorial) and [example](./examples)
 * [Quick reference](./quickreference)
-* [Tool information (CLI, editor/linter)](./tools)
-* [SOAD transformations](./soad)
+<!-- * [Tool information (CLI, editor/linter)](./tools) -->
+* [Transformations and refactorings (in tools)](./soad)
 
-*Copyright: [Olaf Zimmermann](https://ozimmer.ch/index.html), 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+### Publications
+
+* Section 5.2 in *From OpenAPI Fragments to API Pattern Primitives and Design Smells*, Proc. of European Conference on Pattern Languages of Programs (EuroPLoP) 2021 by Souhaila Serbout, Cesare Pautasso, Uwe Zdun, and Olaf Zimmermann features MDSL ([PDF](http://design.inf.usi.ch/sites/default/files/biblio/apiace-europlop2021.pdf))
+* Zimmermann, Olaf: *Dimensions of Successful Web API Design and Evolution: Context, Contracts, Components*, Keynote, 20th International Conference on Web Engineering (ICWE), June 11, 2020. ([PDF](https://ozimmer.ch/assets/presos/ZIO-ICWEKeynoteWADEC3v10p.pdf), [blog post](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html))
+* Kapferer, Stefan and Zimmermann, Olaf: *Domain-driven Service Design — Context Modeling, Model Refactoring and Contract Generation*. Proc. of SummerSoC 2020 conference, Springer CCIS Volume 1310 ([PDF](https://contextmapper.org/media/SummerSoC-2020_Domain-driven-Service-Design_Authors-Copy.pdf), [Presentation](https://contextmapper.org/media/Stefan-Kapferer_SummerSoC2020_presentation.pdf))
+
+*Copyright: [Olaf Zimmermann](https://ozimmer.ch/index.html), 2018-2022. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

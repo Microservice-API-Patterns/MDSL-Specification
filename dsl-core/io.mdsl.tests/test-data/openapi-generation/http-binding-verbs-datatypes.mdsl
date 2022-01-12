@@ -13,6 +13,7 @@ endpoint type SampleEntityInformationHolder
         payload "expecting": {"primaryIntegerKey":ID<int>, "atLeastOneString":D<string>+} 
       delivering
         payload "delivering": NestedDTO+
+
     operation get
       expecting
       	payload NestedDTO*
@@ -24,6 +25,7 @@ endpoint type SampleEntityInformationHolder
         payload "updateObject": {"dtoKey":ID<int>?, "dto1":DTO1Flat*}*
       delivering
         payload DTO1Flat?
+
     operation delete
       expecting
         // description is there but not "primaryKey" (hard coded tbc)?
@@ -38,7 +40,7 @@ via protocol HTTP
 binding 
   resource Home // at "/eihHome/{primaryIntegerKey}/{atLeastOneString}"
     operation create to POST
-      all elements realized as QUERY parameters
+      all elements realized as BODY parameters
     operation get to GET
       all elements realized as QUERY parameters
     // update not bound

@@ -48,6 +48,23 @@ public class Operation {
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Wraps the parameters of the represented operation in a new MDSLType.
+	 * 
+	 * @return a DataType DTO with the parameters of the operation as fields
+	 */
+	public MDSLType getRequest() {
+		if (this.parameters == null)
+			return BasicType.VOID;
+		DataType result = new DataType(name+"Request");
+		for(OperationParameter parameter : this.parameters) {
+			DataTypeField field = new DataTypeField(parameter.getName());
+			field.setType(parameter.getType());
+			result.addField(field);
+		}
+		return result;
+	}
 
 	/**
 	 * Returns the return/response type of the represented operation.
@@ -66,7 +83,7 @@ public class Operation {
 	 * @param response the return/response type of the operation
 	 */
 	public void setResponse(MDSLType response) {
-		this.response = response;
+		this.response = response; 
 	}
 
 	/**
@@ -84,6 +101,7 @@ public class Operation {
 	 * @param parameter the parameter that shall be added to the operation
 	 */
 	public void addParameter(OperationParameter parameter) {
+		// TODO v55 this getter causes parameters to appear twice in genmodel export
 		this.parameters.add(parameter);
 	}
 
@@ -105,4 +123,5 @@ public class Operation {
 		this.responsibility = responsibility;
 	}
 
+	// TODO provide a sampleJSON method here that walks through the parameters and turns them into a JSON object
 }

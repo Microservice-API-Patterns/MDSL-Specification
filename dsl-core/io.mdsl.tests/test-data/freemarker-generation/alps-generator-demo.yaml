@@ -1,12 +1,12 @@
-############################################################
-# Title .....: ALPS representation of alps-generator-demo.mdsl
-# Author ...: MDSL Freemarker Generator
+##############################################################
+# Title ....: ALPS representation of alps-generator-demo.mdsl
+# Author ...: MDSL Freemarker Generator, ALPS Demonstrator V02
 # Date .....: tba
-############################################################
+##############################################################
 
 # you can generate OpenAPI and other specifications from ALPS:
 # unified -h -f <alpsfile> -t <format type> -o <outfile> (type can be o, p, s; j, a, w)
-# [nodemodulesdir]alps-unified\src\index.js -f alps-generator-demo.mdsl.alps.yaml -t o -o alps-generator-demo.mdsl.oas.yaml
+# [nodemodulesdir]alps-unified\src\index.js -f alps-generator-demo-alps.yaml -t o -o alps-generator-demo-oas.yaml
 
 
 alps:

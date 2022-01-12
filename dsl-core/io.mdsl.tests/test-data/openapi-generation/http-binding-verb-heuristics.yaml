@@ -10,23 +10,20 @@ servers:
 tags:
 - name: NameHeuristicEndpointProvider1-self1
   externalDocs:
-    description: The role of this endpoint, offering a HeuristicEndpoint1 contract,
-      is Information Holder Resource pattern
+    description: HeuristicEndpoint1 contract, Information Holder Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
 - name: NameHeuristicEndpointProvider21-self2
   externalDocs:
-    description: The role of this endpoint, offering a HeuristicEndpoint2 contract,
-      is Processing Resource pattern
+    description: HeuristicEndpoint2 contract, Processing Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
 - name: NameHeuristicEndpointProvider22-self3
   externalDocs:
-    description: The role of this endpoint, offering a HeuristicEndpoint2 contract,
-      is Processing Resource pattern
+    description: HeuristicEndpoint2 contract, Processing Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
 - name: NameHeuristicEndpointProvider42-self
   externalDocs:
-    description: The role of this endpoint, offering a HeuristicEndpoint3 contract,
-      is "Another Role (not in MAP)"(non-pattern role)
+    description: HeuristicEndpoint3 contract, "Another Role (not in MAP)" (non-pattern
+      role) role
     url: ""
 paths:
   /self1:
@@ -34,31 +31,15 @@ paths:
     get:
       tags:
       - NameHeuristicEndpointProvider1-self1
-      summary: POST
+      summary: createSomething (POST method)
       description: POST
       operationId: self1-createSomething
       parameters:
-      - name: dataString
+      - name: listOfBasicAtomicParameterTypes
         in: query
-        required: true
+        description: Type reference listOfBasicAtomicParameterTypes
         schema:
-          type: string
-      - name: metadataString
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: intIdentifier
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: stringLink
-        in: query
-        required: true
-        schema:
-          type: string
+          $ref: '#/components/schemas/ListOfBasicAtomicParameterTypes'
       responses:
         "200":
           description: createSomething successful execution
@@ -71,10 +52,9 @@ paths:
     post:
       tags:
       - NameHeuristicEndpointProvider21-self2
-      summary: HEAD
+      summary: readSomething (HEAD method)
       description: HEAD
       operationId: self2-readSomething
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -92,10 +72,9 @@ paths:
     post:
       tags:
       - NameHeuristicEndpointProvider22-self3
-      summary: HEAD
+      summary: readSomething (HEAD method)
       description: HEAD
       operationId: self3-readSomething
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -109,34 +88,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/GenericParameterP'
   /self:
-    summary: 'main repsonsibility: "Another Role (not in MAP)"'
+    summary: 'main responsibility: "Another Role (not in MAP)"'
     get:
       tags:
       - NameHeuristicEndpointProvider42-self
-      description: unspecified operation responsibility
+      summary: putSomething
+      description: ""
       operationId: self-putSomething
       parameters:
-      - name: dataString
+      - name: Parameter1
         in: query
-        required: true
+        description: Type reference null
         schema:
-          type: string
-      - name: metadataString
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: intIdentifier
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: stringLink
-        in: query
-        required: true
-        schema:
-          type: string
+          $ref: '#/components/schemas/ListOfBasicAtomicParameterTypes'
       responses:
         "200":
           description: putSomething successful execution
@@ -148,10 +112,9 @@ paths:
     put:
       tags:
       - HeuristicEndpoint4
-      summary: PUT
+      summary: updateSomething (PUT method)
       description: PUT
       operationId: updateSomething
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -167,9 +130,9 @@ paths:
     patch:
       tags:
       - HeuristicEndpoint4
-      description: unspecified operation responsibility
+      summary: patchSomething
+      description: ""
       operationId: patchSomething
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -186,10 +149,9 @@ paths:
     post:
       tags:
       - HeuristicEndpoint5
-      summary: POST
+      summary: removeSomething (POST method)
       description: POST
       operationId: removeSomething
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -205,30 +167,15 @@ paths:
     delete:
       tags:
       - HeuristicEndpoint5
-      description: unspecified operation responsibility
+      summary: deleteSomething
+      description: ""
       operationId: deleteSomething
       parameters:
-      - name: dataString
+      - name: Parameter2
         in: query
-        required: true
+        description: Type reference null
         schema:
-          type: string
-      - name: metadataString
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: intIdentifier
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: stringLink
-        in: query
-        required: true
-        schema:
-          type: string
+          $ref: '#/components/schemas/ListOfBasicAtomicParameterTypes'
       responses:
         "200":
           description: deleteSomething successful execution
@@ -245,27 +192,45 @@ components:
       properties:
         dataString:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         metadataString:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
         intIdentifier:
           type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
           format: int32
         stringLink:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/LinkElement"
+            target="_blank">Link Element</a>
     PersonAsFlatParamaterTree:
       type: object
       properties:
         person:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         street:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         zip:
           type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           format: int32
         city:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         phoneNumbers:
           minItems: 1
           type: array
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           items:
             type: string

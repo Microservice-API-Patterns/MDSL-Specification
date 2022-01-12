@@ -1,0 +1,45 @@
+API description FlowTest5
+
+event type FlowInitiated
+event type Event0, Event1, Event2
+event type Command1Done, Command2Done
+event type FlowTerminated
+
+command type StartFlowCommand
+command type Command1, Command2, JoinCommand
+command type TerminateCommand, CleanupCommand
+
+flow SampleFlowWithSyntaxVariations1 
+event Event0 triggers command Command1
+event Event0 triggers command Command2
+command Command1 emits event Event1
+command Command1 emits event Event2
+command Command2 emits event Event1
+command Command2 emits event Event2
+// TODO apply merge quickfix in test and compare the two gen models (as strings?)
+event Event1 and Event2 trigger command TerminateCommand
+// event Event1 and Event2 trigger command TerminateCommand // duplicate, causes pbs in genmodel contruction and path visits
+
+flow SampleFlowWithSyntaxVariations2 type APPLICATION_FLOW
+event FlowInitiated triggers command StartFlowCommand
+command StartFlowCommand emits event Event1 + Event2
+command Command1 emits event Event1 o Event2
+command Command2 emits event Event1 x Event2
+event Event1 triggers command Command1 + Command2
+event Event2 triggers command Command1 o Command2
+event Event2 triggers command Command1 x Command2
+event Command1Done + Command2Done triggers command JoinCommand
+event Event1 + Event2 + FlowTerminated triggers command TerminateCommand + CleanupCommand
+
+flow SampleFlowWithSyntaxVariations3
+event Event1 triggers command Command1 emits event Event2
+
+flow SampleFlowWithSyntaxVariations4
+event Event1 triggers command Command1 
+command Command1 emits event Event1
+command Command1 emits events Command1Done and FlowTerminated
+command Command2 emits events Command1Done and FlowTerminated
+// TODO also test (are duplicates removed?):
+event Event1 triggers command Command1 and Command2
+event Event1 triggers command Command1 and Command2
+event Event2 triggers command Command1 and Command2

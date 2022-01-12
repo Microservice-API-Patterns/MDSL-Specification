@@ -1,6 +1,67 @@
-## MDSL change log (and release notes)
+## MDSL Change Log (and Release Notes)
 
-V5.3
+V5.4.5, January 2022
+
+* Improved quick fixes (INFORMATION_HOLDER_RESOURCE operation generation, addWishList for AP and TR requests)
+* Completed genmodel export to JSON and YAML (flows, HTTP bindings)
+* BPMN Sketch Miner generation via quick fix and generator (from Context Mapper project)
+* Sample curl/Java provider now respects element-level parameter bindings, default values for sample JSON 
+* ALPS generator PoC V2
+* Apache Camel sample improved (edge cases)
+* Documentation updates
+
+V5.4.4 (and V5.4.3.1), December 2021
+
+* Bug fixes and extended mapping support in OpenAPI generation (L0, L1 tree bindings, type references; most cardinalities)
+* Extended genmodel export with HTTP protocol binding details and full flow supported
+* Made genmodel export Java bean compliant
+* Parameter trees mapped to HEADER are simple object again, not deep objects (oas validation pb)
+* Refactored flow gen model, path finder, tests
+* CLI can now trigger demo transformation chain on a scenario story
+* Analytics message improved in CLI/MDSL Web interface
+* New tests for new and fixed features
+
+* Bug fixes and extended mapping support in OpenAPI generation (L0, L1 tree bindings, type references; most cardinalities) 
+* Extended genmodel export with HTTP protocol binding details and full flow supported
+* Made genmodel export Java bean compliant
+* Parameter trees mapped to HEADER are simple object again, not deep objects (oas validation pb)
+* Refactored flow gen model, path finder, tests
+* CLI can now trigger demo transformation chain on a scenario story
+* Analytics message improved in CLI/MDSL Web interface
+* New tests for new and fixed features 
+
+V5.4.3, December 2021
+
+* Many more quick fix transformations, transformation chaining
+  * From scenario story to flows to MAP and IRC and then to OpenAPI etc.
+  * See SOAD page in MDSL language reference  
+* Improved and streamlined integration flow modeling
+  * Support for combined event-command-event rule
+  * Productivity quick fixes
+  * Improved and streamlined flow gen model
+* More flexible of OpenAPI generation, bug fixes
+  * Element to parameter/body bindings
+  * gen model now contains HTTP binding
+  * timestamp included in generate
+* More Freemarker templates and examples
+  * Apache Camel (for flows)
+  * karate test DSL and Spring Boot sample (Web controller)
+  * Sample data
+
+V5.4.1 and V5.4.2, fall 2021
+
+* New decorator COLLECTION_RESOURCE with quick fix transformation support
+* "at" clause of operation no longer supported 
+* Path parameter {id} validation
+* New quick fix transformation to add resource with {id} PATH parameter
+* {uri} quick fix transformation moved to operation level (from resource level) 
+* Full operation signatures for other endpoint/operation quick fix transformations
+* Preconditions and decoration for Pagination and other MAP/IRCs redesigned
+* New quick fix transformation "Extract Information Holder" (MVP)
+* Void Param now ignored in OASgen (Swagger/Spring tools do unexpected things with it)
+* OASgen: same URI can now be used by multiple resources/endpoints (will be merged if possible)
+
+V5.3, summer/fall 2021
 
 * Additional features and consistency cleanup in orchestration flow and story/scenario grammar
 * Corresponding tool support in 20+ quick fix transformations

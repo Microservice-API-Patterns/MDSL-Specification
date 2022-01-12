@@ -1,0 +1,36 @@
+API description HTTPVerbAndDataTypeMappingTest1 
+usage context PUBLIC_API for FRONTEND_INTEGRATION and BACKEND_INTEGRATION
+overview "API Test Case: HTTPVerbAndDataTypeMappingTest"
+
+data type FlatDTO "fDto": {"idKey":ID<int>, "sampleValue":D<string>+}
+data type NestedDTO "nDto": {"mdKey":MD<int>?, "innerDTO":FlatDTO*}
+
+// four methods, all with same in and out parameters/messages; 2x inlined, 2x explicitly type referenced 
+// this file: no provider binding
+// TODO add more cardinalities
+
+endpoint type SampleEntityInformationHolder serves as MASTER_DATA_HOLDER
+  exposes
+    operation testInlinedParameters with responsibility STATE_CREATION_OPERATION
+      expecting
+        payload "requestMessage": {"primaryIntegerKey":ID<int>, "atLeastOneString":D<string>+} 
+      delivering
+        payload "responseMessage": {"mdKey":MD<int>?, "innerDTO":FlatDTO*}
+        
+    operation testExtractedParameters with responsibility STATE_TRANSITION_OPERATION
+      expecting
+        payload "requestMessageWithTypeReference": FlatDTO 
+      delivering
+        payload "responseMessageWithTypeReference": NestedDTO
+    
+    operation getInlinedParameters 
+      expecting
+        payload "requestMessage": {"primaryIntegerKey":ID<int>, "atLeastOneString":D<string>+} 
+      delivering
+        payload "responseMessage": {"mdKey":MD<int>?, "innerDTO":FlatDTO*}
+        
+    operation deleteExtractedParameters 
+      expecting
+        payload "requestMessageWithTypeReference": FlatDTO 
+      delivering
+        payload "responseMessageWithTypeReference": NestedDTO

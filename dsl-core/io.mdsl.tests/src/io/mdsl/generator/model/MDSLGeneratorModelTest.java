@@ -105,4 +105,18 @@ public class MDSLGeneratorModelTest {
 		assertEquals("TestImpl", mdslGenModel.getProviderImplementations().get(0).getName());
 	}
 
+	/*
+	@Test
+	public void canAddScenarioStoryModel() {
+		// given
+		MDSLGeneratorModel mdslGenModel = new MDSLGeneratorModel("TestAPI");
+		Scenario scenario = new IntegratopNScenario();
+
+		// when
+		mdslGenModel.addScenario(scenario);
+
+		// then
+		// TODO NYI
+	}
+	*/
 }

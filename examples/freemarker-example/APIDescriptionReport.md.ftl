@@ -37,7 +37,7 @@ The current version is inspired by MAP Tutorial 2 and the CEL/REL tables in DPR
   | Operation | Responsibility | Parameters | Return Type | State Transition |<#lt>
   |-|-|-|-|-|<#lt>
   <#list endpoint.operations as op>
-  | ${op.name} | ${op.responsibility!"*n/a*"} | <#if op.parameters?has_content><#list op.parameters as p> ${p.name} of type ${p.typeAsString} </#list> <#else> none </#if> | <#if op.response?has_content>${getType(op.response)}<#else>none</#if> | not available yet |<#lt>
+  | ${op.name} | ${op.responsibility!"*n/a*"} | <#if op.parameters?has_content><#list op.parameters as p> ${p.name} of type ${p.type.name} </#list> <#else> none </#if> | <#if op.response?has_content>${getType(op.response)}<#else>none</#if> | not available yet |<#lt>
   </#list>
   </#if>    
 </#list>

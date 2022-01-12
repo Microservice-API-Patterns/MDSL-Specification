@@ -1,0 +1,123 @@
+// Generated from DDD Context Map 'null' at 21.09.2021 11:11:18 CEST.
+API description EventStormingBoardContextAPI
+
+
+data type Accept_PaperCommand P // the type Accept_PaperCommand has not been specified or does not contain any attributes in CML
+data type Publish_Authors_CopyCommand P // the type Publish_Authors_CopyCommand has not been specified or does not contain any attributes in CML
+data type Reject_PaperCommand P // the type Reject_PaperCommand has not been specified or does not contain any attributes in CML
+data type Review_FeedbackCommand P // the type Review_FeedbackCommand has not been specified or does not contain any attributes in CML
+data type Review_PaperCommand P // the type Review_PaperCommand has not been specified or does not contain any attributes in CML
+data type Write_PaperCommand P // the type Write_PaperCommand has not been specified or does not contain any attributes in CML
+
+event type Research_Result_Available
+event type Paper_Submitted_for_Review
+event type Paper_Will_Be_Revised
+event type Acceptance_Decision_Made
+event type Feedback_Sent
+event type Proceedings_Available
+event type Paper_Available_Online
+
+command type Conduct_Research_Command
+command type Write_PaperCommand
+command type Review_PaperCommand
+command type Review_FeedbackCommand
+command type Accept_PaperCommand
+command type Reject_PaperCommand
+command type Publish_Authors_CopyCommand
+
+
+endpoint type EventStormingBoardContextApplication
+	exposes
+		operation Write_Paper
+			expecting
+				payload Write_PaperCommand
+		operation Review_Paper
+			expecting
+				payload Review_PaperCommand
+		operation Review_Feedback
+			expecting
+				payload Review_FeedbackCommand
+		operation Accept_Paper
+			expecting
+				payload Accept_PaperCommand
+		operation Reject_Paper
+			expecting
+				payload Reject_PaperCommand
+		operation Publish_Authors_Copy
+			expecting
+				payload Publish_Authors_CopyCommand
+endpoint type Paper
+// Your aggregate root does not specify any methods/operations. Therefore we can not generate any endpoint operations.
+endpoint type Review_Feedback
+// Your aggregate root does not specify any methods/operations. Therefore we can not generate any endpoint operations.
+endpoint type Conference_Program
+// Your aggregate root does not specify any methods/operations. Therefore we can not generate any endpoint operations.
+endpoint type Paper_Collection
+// Your aggregate root does not specify any methods/operations. Therefore we can not generate any endpoint operations.
+
+
+API provider EventStormingBoardContextProvider
+	offers EventStormingBoardContextApplication
+	at endpoint location "http://localhost:8000"
+		via protocol "tbd" // The protocol is generated if you specify the implementation technology in CML
+	offers Paper
+	at endpoint location "http://localhost:8001"
+		via protocol "tbd" // The protocol is generated if you specify the implementation technology in CML
+	offers Review_Feedback
+	at endpoint location "http://localhost:8002"
+		via protocol "tbd" // The protocol is generated if you specify the implementation technology in CML
+	offers Conference_Program
+	at endpoint location "http://localhost:8003"
+		via protocol "tbd" // The protocol is generated if you specify the implementation technology in CML
+	offers Paper_Collection
+	at endpoint location "http://localhost:8004"
+		via protocol "tbd" // The protocol is generated if you specify the implementation technology in CML
+
+flow Write_Paper type APPLICATION_FLOW
+event Research_Result_Available triggers command Write_PaperCommand
+command Write_PaperCommand emits event Paper_Submitted_for_Review
+event Paper_Submitted_for_Review triggers command Review_PaperCommand
+command Review_FeedbackCommand emits event Paper_Will_Be_Revised
+event Paper_Will_Be_Revised triggers command Write_PaperCommand
+command Review_PaperCommand emits event Acceptance_Decision_Made
+event Acceptance_Decision_Made triggers command Accept_PaperCommand x Reject_PaperCommand
+command Reject_PaperCommand emits event Feedback_Sent
+event Feedback_Sent triggers command Review_FeedbackCommand
+command Accept_PaperCommand emits event Proceedings_Available
+event Proceedings_Available triggers command Publish_Authors_CopyCommand
+command Publish_Authors_CopyCommand emits event Paper_Available_Online
+
+flow Write_Paper_WithInitCommand type APPLICATION_FLOW
+command Conduct_Research_Command emits event Research_Result_Available
+event Research_Result_Available triggers command Write_PaperCommand
+command Write_PaperCommand emits event Paper_Submitted_for_Review
+event Paper_Submitted_for_Review triggers command Review_PaperCommand
+command Review_FeedbackCommand emits event Paper_Will_Be_Revised
+event Paper_Will_Be_Revised triggers command Write_PaperCommand
+command Review_PaperCommand emits event Acceptance_Decision_Made
+event Acceptance_Decision_Made triggers command Accept_PaperCommand x Reject_PaperCommand
+command Reject_PaperCommand emits event Feedback_Sent
+event Feedback_Sent triggers command Review_FeedbackCommand
+command Accept_PaperCommand emits event Proceedings_Available
+event Proceedings_Available triggers command Publish_Authors_CopyCommand
+command Publish_Authors_CopyCommand emits event Paper_Available_Online
+
+flow Write_Paper_NoInitEventOrCommand type APPLICATION_FLOW
+command Write_PaperCommand emits event Paper_Submitted_for_Review
+event Paper_Submitted_for_Review triggers command Review_PaperCommand
+command Review_FeedbackCommand emits event Paper_Will_Be_Revised
+event Paper_Will_Be_Revised triggers command Write_PaperCommand
+command Review_PaperCommand emits event Acceptance_Decision_Made
+event Acceptance_Decision_Made triggers command Accept_PaperCommand x Reject_PaperCommand
+command Reject_PaperCommand emits event Feedback_Sent
+event Feedback_Sent triggers command Review_FeedbackCommand
+command Accept_PaperCommand emits event Proceedings_Available
+event Proceedings_Available triggers command Publish_Authors_CopyCommand
+command Publish_Authors_CopyCommand emits event Paper_Available_Online
+
+
+scenario EventStormingBoardContextAPI 
+story EventStormingBoardContextAPIDefaultStory
+  a "ContextClient"
+  wants to "ContextResponsibility"
+  so that "ContextDomainVisionStatement"

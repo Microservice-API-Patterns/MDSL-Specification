@@ -1,0 +1,351 @@
+openapi: 3.0.1
+info:
+  title: HTTPVerbAndDataTypeMappingTest4
+  description: 'API Test Case: HTTPVerbAndDataTypeMappingTest PUBLIC_API FRONTEND_INTEGRATIONBACKEND_INTEGRATION'
+  version: "1.0"
+servers:
+- url: http://localhost:8080
+tags:
+- name: SampleEntityInformationHolderProvider-SampleEntityInformationHolderHome
+  externalDocs:
+    description: SampleEntityInformationHolder contract, Master Data Holder role
+    url: https://microservice-api-patterns.org/patterns/responsibility/informationHolderEndpointTypes/MasterDataHolder.html
+paths:
+  /sampleEntityInformationHolderHome/{idKey}/{atLeastOneString}:
+    summary: data-oriented endpoint, long-lived
+    get:
+      tags:
+      - SampleEntityInformationHolderProvider-SampleEntityInformationHolderHome
+      summary: getInlinedParameters
+      description: ""
+      operationId: SampleEntityInformationHolderHome-getInlinedParameters
+      parameters:
+      - name: idKey
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+          target="_blank">Id Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+          format: int32
+      - name: atLeastOneString
+        in: cookie
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: array
+          items:
+            minItems: 1
+            type: array
+            description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+              target="_blank">Data Element</a>
+            items:
+              type: string
+      - name: value3
+        in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          format: int32
+      - name: tree4
+        in: query
+        style: deepObject
+        explode: true
+        schema:
+          type: object
+          properties:
+            p1:
+              type: string
+              description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                target="_blank">Data Element</a>
+            p2:
+              type: string
+              description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+                target="_blank">Metadata Element</a>
+      responses:
+        "200":
+          description: getInlinedParameters successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mdKey:
+                    type: integer
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+                      target="_blank">Metadata Element</a>
+                    format: int32
+                    nullable: true
+                  innerDTO:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FlatDTO4'
+                  anonymous2:
+                    type: string
+                    description: Generic parameter
+    put:
+      tags:
+      - SampleEntityInformationHolderProvider-SampleEntityInformationHolderHome
+      summary: testInlinedParameters (write only method)
+      description: '[State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html).'
+      operationId: SampleEntityInformationHolderHome-testInlinedParameters
+      parameters:
+      - name: idKey
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          format: int32
+      - name: atLeastOneString
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: array
+          items:
+            minItems: 1
+            type: array
+            description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+              target="_blank">Data Element</a>
+            items:
+              type: string
+      - name: value3
+        in: header
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          format: int32
+      requestBody:
+        description: Message payload (content)
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tree4:
+                  type: object
+                  properties:
+                    p1:
+                      type: string
+                      description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                        target="_blank">Data Element</a>
+                    p2:
+                      type: string
+                      description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+                        target="_blank">Metadata Element</a>
+              description: request body elements for testInlinedParameters
+      responses:
+        "200":
+          description: testInlinedParameters successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mdKey:
+                    type: integer
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+                      target="_blank">Metadata Element</a>
+                    format: int32
+                    nullable: true
+                  innerDTO:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FlatDTO4'
+                  anonymous1:
+                    type: string
+                    description: Generic parameter
+    post:
+      tags:
+      - SampleEntityInformationHolderProvider-SampleEntityInformationHolderHome
+      summary: testExtractedParameters (read and write method)
+      description: '[State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html).'
+      operationId: SampleEntityInformationHolderHome-testExtractedParameters
+      parameters:
+      - name: idKey
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          format: int32
+      requestBody:
+        description: Message payload (content)
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                atLeastOneString:
+                  minItems: 1
+                  type: array
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
+                  items:
+                    type: string
+                value3:
+                  type: integer
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
+                  format: int32
+                tree4:
+                  type: object
+                  properties:
+                    p1:
+                      type: string
+                      description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                        target="_blank">Data Element</a>
+                    p2:
+                      type: string
+                      description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+                        target="_blank">Metadata Element</a>
+              description: request body elements for testExtractedParameters
+      responses:
+        "200":
+          description: testExtractedParameters successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedDTO4'
+    delete:
+      tags:
+      - SampleEntityInformationHolderProvider-SampleEntityInformationHolderHome
+      summary: deleteExtractedParameters
+      description: ""
+      operationId: SampleEntityInformationHolderHome-deleteExtractedParameters
+      parameters:
+      - name: idKey
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          format: int32
+      - name: atLeastOneString
+        in: path
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: array
+          items:
+            minItems: 1
+            type: array
+            description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+              target="_blank">Data Element</a>
+            items:
+              type: string
+      - name: value3
+        in: cookie
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          format: int32
+      - name: tree4
+        in: header
+        style: simple
+        explode: true
+        schema:
+          type: object
+          properties:
+            p1:
+              type: string
+              description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                target="_blank">Data Element</a>
+            p2:
+              type: string
+              description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+                target="_blank">Metadata Element</a>
+      responses:
+        "200":
+          description: deleteExtractedParameters successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedDTO4'
+    parameters:
+    - name: idKey
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: atLeastOneString
+      in: path
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    FlatDTO4:
+      type: object
+      properties:
+        idKey:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          format: int32
+        atLeastOneString:
+          minItems: 1
+          type: array
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          items:
+            type: string
+        value3:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          format: int32
+        tree4:
+          type: object
+          properties:
+            p1:
+              type: string
+              description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                target="_blank">Data Element</a>
+            p2:
+              type: string
+              description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+                target="_blank">Metadata Element</a>
+    NestedDTO4:
+      type: object
+      properties:
+        mdKey:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
+          format: int32
+          nullable: true
+        innerDTO:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlatDTO4'
+        anonymous1:
+          type: string
+          description: Generic parameter

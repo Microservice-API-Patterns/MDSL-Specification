@@ -1,0 +1,21 @@
+API description MAPRoleDecoratorTest
+
+data type ProductCatalog {"id":D<string>, "product", D<int>*}
+
+endpoint type Endpoint1a serves as PROCESSING_RESOURCE
+
+endpoint type Endpoint1b serves as  STATEFUL_PROCESSING_RESOURCE
+
+endpoint type Endpoint1c serves as  STATELESS_PROCESSING_RESOURCE
+
+endpoint type Endpoint2a serves as INFORMATION_HOLDER_RESOURCE and MUTABLE_COLLECTION_RESOURCE
+
+endpoint type Endpoint2b serves as MASTER_DATA_HOLDER // OHD, RDH do the same at present
+
+endpoint type Endpoint3 serves as DATA_TRANSFER_RESOURCE
+
+endpoint type Endpoint4 serves as LINK_LOOKUP_RESOURCE
+
+endpoint type Endpoint5a serves as VALIDATION_RESOURCE
+
+endpoint type Endpoint5b serves as TRANSFORMATION_RESOURCE

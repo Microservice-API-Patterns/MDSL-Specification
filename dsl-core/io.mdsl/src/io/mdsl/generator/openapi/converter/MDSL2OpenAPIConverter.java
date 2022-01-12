@@ -13,27 +13,27 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 
 import io.mdsl.apiDescription.DataContract;
+import io.mdsl.apiDescription.DirectionList;
 import io.mdsl.apiDescription.ElementStructure;
 import io.mdsl.apiDescription.EndpointContract;
 import io.mdsl.apiDescription.EndpointInstance;
 import io.mdsl.apiDescription.EndpointList;
-import io.mdsl.apiDescription.HTTPBinding;
 import io.mdsl.apiDescription.HTTPResourceBinding;
 import io.mdsl.apiDescription.OASSecurity;
-import io.mdsl.apiDescription.ProtocolBinding;
 import io.mdsl.apiDescription.Provider;
 import io.mdsl.apiDescription.SecurityBinding;
 import io.mdsl.apiDescription.SecurityPolicy;
 import io.mdsl.apiDescription.ServiceSpecification;
-import io.mdsl.apiDescription.TechnologyBinding;
 import io.mdsl.dsl.ServiceSpecificationAdapter;
 import io.mdsl.exception.MDSLException;
 import io.mdsl.utils.MAPLinkResolver;
+import io.mdsl.utils.MDSLLogger;
 import io.mdsl.utils.MDSLSpecificationWrapper;
 import io.mdsl.utils.URITemplateHelper;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Info;
@@ -55,9 +55,14 @@ import io.swagger.v3.oas.models.tags.Tag;
  */
 public class MDSL2OpenAPIConverter {
 
-
-	private static final String DEFAULT_VERSION = "1.0";
-
+	private static final String JWT_BEARER_FORMAT = "JWT";
+	private static final String API_KEY_SCHEME_NAME = "api_key";
+	private static final String BEARER_SCHEME_NAME = "bearer";
+	private static final String BASIC_SCHEME_NAME = "basic";
+	private static final String DEFAULT_VERSION = "1.0"; // use different value? (preference)
+	private static final String ROLE_SUFFIX = " role";
+	private static final String CONTRACT_SUFFIX = " contract";
+	
 	private ServiceSpecificationAdapter mdslSpecification;
 	private MDSLSpecificationWrapper mdslWrapper;
 	private Map<String, SecurityScheme> securitySchemes;
@@ -78,18 +83,34 @@ public class MDSL2OpenAPIConverter {
 	 */
 	public OpenAPI convert() {
 		OpenAPI oas = new OpenAPI();
-		// timestamp gen temporarily disabled, breaks build:
-		oas.setInfo(new Info().title(mdslSpecification.getName()).version(getAPIVersion()));
-		// oas.setInfo(new Info().title(mdslSpecification.getName()).version(getAPIVersion()).extensions(Map.of("x-generated-on", getCurrentLocalDateTimeStamp())));		
-		// TODO add foundation MAPs if present: Visibility, Direction
+		Info info = new Info().title(mdslSpecification.getName());
+		String descriptionText = "";
+		if(this.getDescription()!=null && !"".equals(getDescription())) {
+			descriptionText += this.getDescription();
+		}
+		String visibilityAndDirection = this.getVisibilityAndDirectionInformation();
+		if(visibilityAndDirection!=null && !visibilityAndDirection.equals("") ) {
+			if(!"".equals(descriptionText) ) {
+				descriptionText += " ";
+			}
+			descriptionText += visibilityAndDirection; // TODO turn pattern names into plain lower case text or hyperlink
+		}
+		if(descriptionText!=null &&!descriptionText.equals("")) {
+			info.setDescription(descriptionText);
+		}
+		String versionText = getAPIVersion();
+		if(versionText!=null&&!versionText.equals("") ) {
+			info.setVersion(versionText); 
+		}
+
+		info.setExtensions(Map.of("x-generated-on", getCurrentLocalDateTimeStamp()));		
+		oas.setInfo(info);
 		
-		// this start the main action:
-		oas.setPaths(convertEndpoints2Paths());
+		oas.setPaths(this.convertEndpoints2Paths());
 		
-		oas.setComponents(createComponents());
-		oas.getComponents().setSchemas(convertDataTypes2Schemas());
-		// oas.setTags(createTagsViaEndpointType());
-		oas.setTags(createTagsViaEndpointInstanceAndItsResources());
+		oas.setComponents(this.createComponents());
+		oas.getComponents().setSchemas(this.convertDataTypes2Schemas());
+		oas.setTags(this.createTagsViaEndpointInstanceAndItsResources());
 		
 		// postprocessing:
 		oas.servers(this.servers);
@@ -103,10 +124,39 @@ public class MDSL2OpenAPIConverter {
 		return new Components();
 	}
 	
+	private String getDescription() {
+		return mdslSpecification.getDescription() != null && !"".equals(mdslSpecification.getDescription()) ? mdslSpecification.getDescription() : null;
+	}
+	
 	private String getAPIVersion() {
 		return mdslSpecification.getSvi() != null && !"".equals(mdslSpecification.getSvi()) ? mdslSpecification.getSvi() : DEFAULT_VERSION;
 	}
 	
+	private String getVisibilityAndDirectionInformation() {
+		if(mdslSpecification.getReach()==null&&!"".equals(mdslSpecification.getReach())) {
+			return null;
+		}
+		StringBuffer result = new StringBuffer(mdslSpecification.getReach() + " ");
+		
+		mdslSpecification.getDirection().forEach(direction->{if(directionToString(direction) != null&&!"".equals(directionToString(direction))) result.append(directionToString(direction));});
+
+		return result.toString();
+	}
+	
+	private String directionToString(DirectionList direction) {
+		if(direction==null)
+			return null;
+		
+		StringBuffer result = new StringBuffer();
+		if(direction.getPrimaryDirection()!=null&&!("").equals(direction.getPrimaryDirection())) {
+			result.append(direction.getPrimaryDirection());
+		}
+		if(direction.getOtherDirection()!=null&&!("").equals(direction.getOtherDirection())){
+			result.append(direction.getOtherDirection());
+		}
+		return result.toString();
+	}
+
 	public String getCurrentLocalDateTimeStamp() {
 		return LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 	}
@@ -116,7 +166,6 @@ public class MDSL2OpenAPIConverter {
 		boolean foundAtLeastOneBinding = false;
 		
 		for (HTTPResourceBinding resourceBinding : EcoreUtil2.eAllOfType(mdslSpecification, HTTPResourceBinding.class)) {
-			// mdsl2OpenAPIConverter.log("[TB]: " + " found resource " + resourceBinding.getName());
 			Tag tag = createTag(null, resourceBinding, true);
 			tags.add(tag);
 			foundAtLeastOneBinding=true;
@@ -135,15 +184,15 @@ public class MDSL2OpenAPIConverter {
 			EndpointInstance ei = getContainingEndpointInstance(resourceBinding);
 			EndpointList eil = (EndpointList) ei.eContainer();
 			Provider provider = (Provider) eil.eContainer();
-			// mdslWrapper.log("[I-TB]: Found EP: " + provider.getName());
 
 			tag.setName(provider.getName() + "-" + resourceBinding.getName());
-			String contractName = eil.getContract().getName();
+			// not looking good in some OAS tools
+			// String contractName = eil.getContract().getName();
 			// tag.setDescription("Offered contract/endpoint type: " + contractName);
 
 			if(createExternalDescription) {
 				ExternalDocumentation externalDocs = new ExternalDocumentation();
-				externalDocs.setDescription("The role of this endpoint, offering a " + contractName + " contract, is " + MAPLinkResolver.provideMAP(eil.getContract()));
+				externalDocs.setDescription(wrapContractAndPatternName(eil.getContract()));
 				externalDocs.setUrl(MAPLinkResolver.provideLinktoMAPWebsite(eil.getContract()));
 				tag.setExternalDocs(externalDocs);
 			}
@@ -152,22 +201,35 @@ public class MDSL2OpenAPIConverter {
 			tag.setName(endpointType.getName());
 			
 			if(createExternalDescription) {
-				ExternalDocumentation externalDocs = new ExternalDocumentation();
-				externalDocs.setDescription("The role of this endpoint, offering a " + endpointType.getName() + " contract, is " + MAPLinkResolver.provideMAP(endpointType));
-				externalDocs.setUrl(MAPLinkResolver.provideLinktoMAPWebsite(endpointType));
+				ExternalDocumentation externalDocs = createExternalDescriptionForTag(endpointType);
 				tag.setExternalDocs(externalDocs);
 			}
 		}
 		else
-			throw new MDSLException("Either a contract name or a resource binding name must be present.");
+			throw new MDSLException("Either a contract or a resource binding must be present.");
 		
 		return tag;
+	}
+
+	private String wrapContractAndPatternName(EndpointContract contract) {
+		String result = contract.getName() + CONTRACT_SUFFIX;
+		String mapText = MAPLinkResolver.provideMAP(contract);
+		if(mapText!=null&&!"".equals(mapText)) {
+			result += ", " + mapText + ROLE_SUFFIX;
+		}
+		return result;
+	}
+
+	private ExternalDocumentation createExternalDescriptionForTag(EndpointContract endpointType) {
+		ExternalDocumentation externalDocs = new ExternalDocumentation();
+		externalDocs.setDescription(wrapContractAndPatternName(endpointType));
+		externalDocs.setUrl(MAPLinkResolver.provideLinktoMAPWebsite(endpointType));
+		return externalDocs;
 	}
 	
 	public EndpointInstance getContainingEndpointInstance(HTTPResourceBinding resourceBinding) {
 		EObject rbc = resourceBinding.eContainer();
 		EObject eic = rbc.eContainer().eContainer().eContainer();
-		// mdsl2OpenAPIConverter.log("[TB]: Container is of type: " + eic.getClass().getName());
 		return (EndpointInstance) eic;
 	}
 	
@@ -176,12 +238,8 @@ public class MDSL2OpenAPIConverter {
 		for (EndpointContract endpointType : mdslSpecification.getEndpointContracts()) {
 			Tag tag = new Tag();
 			tag.setName(endpointType.getName());
-			// tag.setDescription("Offered contract/endpoint type:" + endpoint.getName());
-			
-			ExternalDocumentation externalDocs = new ExternalDocumentation();
-			externalDocs.setDescription("The role of this endpoint is " + MAPLinkResolver.provideMAP(endpointType));
-			externalDocs.setUrl(MAPLinkResolver.provideLinktoMAPWebsite(endpointType));
-			
+			// tag.setDescription("Endpoint type:" + endpointType.getName()); // does not look good in some OAS tools
+			ExternalDocumentation externalDocs = createExternalDescriptionForTag(endpointType);
 			tag.setExternalDocs(externalDocs);
 			tags.add(tag);
 		}
@@ -189,7 +247,7 @@ public class MDSL2OpenAPIConverter {
 	}
 
 	public SecurityScheme convertPolicy2SecurityScheme(SecurityPolicy sp, SecurityBinding secBinding) { 
-		// expects something like this in MDSL: protected by policy "HTTPBasicAuthentication": MD<string>
+		// expects this structure in MDSL: protected by policy "HTTPBasicAuthentication": MD<string>
 		// binding is ID and STRING only
 		// see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securitySchemeObject
 		SecurityScheme ss = null;
@@ -201,9 +259,9 @@ public class MDSL2OpenAPIConverter {
 		ElementStructure spo = sp.getSecurityObject();
 		
 		if(secBinding==null) {
-			mdslWrapper.logWarning("Skipping empty binding");
+			MDSLLogger.reportWarning("Skipping empty binding");
 			// could insist on binding and throw an exception
-			return null; // TODO return a default binding?
+			return null; 
 		}
 		
 		if(secBinding.getHttp()==null) {
@@ -212,19 +270,19 @@ public class MDSL2OpenAPIConverter {
 		
 		if(secBinding.getHttp().getValue()==OASSecurity.BASIC_AUTHENTICATION_VALUE) {
 			ss = new SecurityScheme().type(SecurityScheme.Type.HTTP);
-			ss.scheme("basic");
+			ss.scheme(BASIC_SCHEME_NAME);
 			this.securitySchemes.put(sp.getName(), ss); 
 		}
 		else if(secBinding.getHttp().getValue()==OASSecurity.JWT_VALUE) {
 			ss = new SecurityScheme().type(SecurityScheme.Type.HTTP);
-			ss.scheme("bearer");
-			ss.bearerFormat("JWT");
+			ss.scheme(BEARER_SCHEME_NAME);
+			ss.bearerFormat(JWT_BEARER_FORMAT);
 			this.securitySchemes.put(sp.getName(), ss); 
 		}
 		else if(secBinding.getHttp().getValue()==OASSecurity.API_KEY_VALUE) {
 			ss = new SecurityScheme().type(SecurityScheme.Type.APIKEY); 
 			ss.in(In.HEADER);
-			ss.name("api_key");
+			ss.name(API_KEY_SCHEME_NAME);
 			this.securitySchemes.put(sp.getName(), ss); 
 		}
 		else if(secBinding.getHttp().getValue()==OASSecurity.OAUTH_IMPLICIT_VALUE) {
@@ -251,7 +309,7 @@ public class MDSL2OpenAPIConverter {
 			this.securitySchemes.put(sp.getName(), ss); 
 		}
 		else if(secBinding.getHttp().getValue()==OASSecurity.OAUTH_FLOW_VALUE) {
-			// TODO (tbd) get OpenID decision from input?
+			// TODO (future work) could get OpenID decision from input
 			ss = new SecurityScheme().type(SecurityScheme.Type.OPENIDCONNECT);
 			ss.openIdConnectUrl(mdslWrapper.findOIDUrlInPolicy(secBinding));
 			
@@ -260,22 +318,22 @@ public class MDSL2OpenAPIConverter {
 			this.securitySchemes.put(sp.getName(), ss); 
 		}
 		else {
-			// TODO how about the other security policy string enums?
+			// TODO (future work): how about the other security policy string enums?
 			// see https://swagger.io/specification/#security-scheme-object
-			mdslWrapper.logError("Unknown security type" + secBinding.getHttp().getValue());
+			MDSLLogger.reportError("Unknown security type" + secBinding.getHttp().getValue());
 		}
 		
-		if(ss!=null) {
-			// TODO only use if present in abstract policy (if not null)
+		if(ss!=null&&spo!=null) {
 			String id = mdslWrapper.getElementName(spo);
-			ss.description(id); 	
+			if(id!=null)
+				ss.description(id); 	
 		}
 		
 		return ss; 
 	}
 
 	/**
-	 * Convert endpoints
+	 * Convert endpoints and their operations 
 	 */
 	private Paths convertEndpoints2Paths() {
 		Paths paths = new Paths();
@@ -283,15 +341,15 @@ public class MDSL2OpenAPIConverter {
 		for (EndpointContract endpointType : mdslSpecification.getEndpointContracts()) {
 			List<EndpointInstance> endpointInstanceList = mdslWrapper.findProviderEndpointInstancesFor(endpointType);
 			 
-			// TODO possibly also https://swagger.io/specification/#callback-object (SSEs?)
+			// TODO (future work) possibly also https://swagger.io/specification/#callback-object (SSEs?)
 			
-			mdslWrapper.logInformation("Endpoint type " + endpointType.getName() + " has " + endpointInstanceList.size() + " HTTP binding(s).");
+			MDSLLogger.reportInformation("Endpoint type " + endpointType.getName() + " has " + endpointInstanceList.size() + " HTTP binding(s).");
 
 			if(endpointInstanceList.size()==0) {
-				mdslWrapper.logWarning("No endpoint instance/provider in " + endpointType.getName());
+				MDSLLogger.reportInformation("No endpoint instance/provider in " + endpointType.getName());
 				String pathURI = "/" + endpointType.getName(); // use type name if no provider endpoint specified
 				PathItem mappedEndpoint = pathsConverter.convertMetadataAndOperations(endpointType, null);
-				paths.addPathItem(pathURI, mappedEndpoint);
+				addPathItemIfPossible(paths, pathURI, mappedEndpoint);
 			}
 			else for(int i=0;i<endpointInstanceList.size();i++) {
 				Parameter pp = null;
@@ -301,51 +359,47 @@ public class MDSL2OpenAPIConverter {
 				this.servers.add(server);
 				
 				if(endpointInstanceList.get(i).getLocation().startsWith("/")) {
-					mdslWrapper.logInformation("Next endpoint instance: " + endpointInstanceList.get(i).getLocation());
+					MDSLLogger.reportInformation("Next endpoint instance: " + endpointInstanceList.get(i).getLocation());
 					pathURI = endpointInstanceList.get(i).getLocation();
 					
-					// TODO (tbd) support templates here too? (done on resource level at present)
+					// could support templates here too, done on resource level at present
 					List<String> templates = URITemplateHelper.findTemplateParameters(pathURI);
 					if(templates.size()>0) {
-						mdslWrapper.logWarning("Found one or more URI template parameters on endpoint level, not mapped."); 
+						MDSLLogger.reportWarning("Found one or more URI template parameters on endpoint level, not mapped."); 
 					}
-					// else
-						// mdslResolver.log("No URI template parameters");
 				}	 
 				else {
-					mdslWrapper.logWarning("Endpoint instance location should start with '/', added.");
+					MDSLLogger.reportWarning("Endpoint instance location should start with '/', added.");
 					pathURI = "/" + endpointInstanceList.get(i).getLocation(); 
 				}
 				 
-				// pathURI = convertPathParameters(pathURI, endpointInstanceList.get(i)); // old code
-				EList<HTTPResourceBinding> bindings = getHTTPResourceBindings(endpointInstanceList.get(i));
+				EList<HTTPResourceBinding> bindings = mdslWrapper.getHTTPResourceBindings(endpointInstanceList.get(i));
 				
 				if(bindings.size()==0) {
-					mdslWrapper.logWarning("No HTTP binding found for " + endpointType.getName());
+					MDSLLogger.reportWarning("No HTTP binding found for " + endpointType.getName());
 					PathItem mappedEndpoint = pathsConverter.convertMetadataAndOperations(endpointType, null);
-					paths.addPathItem(pathURI, mappedEndpoint);
+					addPathItemIfPossible(paths, pathURI, mappedEndpoint);
 				}
 				else for(int j=0;j<bindings.size();j++) {
 					String relURI = "";
-					// TODO check that relative URI is there and makes sense (API Linter?) 
+					// TODO (future work) check that relative URI is there and makes sense (API Linter?) 
 					HTTPResourceBinding binding = bindings.get(j);
 					if(binding.getUri() != null && !binding.getUri().equals("")) {
 						if(binding.getUri().startsWith("/"))
 							relURI = binding.getUri();
 						else {
-							mdslWrapper.logWarning("Relative URI should start with '/', adding it.");
+							MDSLLogger.reportWarning("Relative URI should start with '/', adding it.");
 							relURI = "/" + binding.getUri();
 						}				
 					}
 					else {
-						mdslWrapper.logWarning("HTTP binding does not have a relative URI, adding resource name " + endpointType.getName());
+						MDSLLogger.reportWarning("HTTP binding does not have a relative URI, adding resource name " + endpointType.getName());
 						relURI = "/" + binding.getName();
 					}
 									
 					PathItem mappedEndpoint = pathsConverter.convertMetadataAndOperations(endpointType, binding);
 					List<String> templates = URITemplateHelper.findTemplateParameters(relURI);
 					if(templates!=null) {
-						// mdslWrapper.logInformation("Found one or more URI template parameters in resource URI: " + relURI); 
 						for(int k=0;k<templates.size();k++) {
 							pp = new Parameter();
 							String template = templates.get(k);
@@ -355,11 +409,11 @@ public class MDSL2OpenAPIConverter {
 							mappedEndpoint.addParametersItem(pp);
 						}
 					}
-					else
-						mdslWrapper.logInformation("No URI template parameters in resource URI: " + relURI);
-						
-					// paths.addPathItem(pathURI+relURI, mappedEndpoint);
-					paths.addPathItem(relURI, mappedEndpoint); // fix May 26, 2021
+					else {
+						MDSLLogger.reportInformation("No URI template parameters in resource URI: " + relURI);
+					}
+		
+					addPathItemIfPossible(paths, relURI, mappedEndpoint);
 				}
 			}
 		}
@@ -367,10 +421,8 @@ public class MDSL2OpenAPIConverter {
 		return paths;
 	}
 
-
-	/**
-	 * Convert datatypes
-	 */
+	// ** converters 
+	
 	@SuppressWarnings("rawtypes")
 	private Map<String, Schema> convertDataTypes2Schemas() {
 		Map<String, Schema> map = new LinkedHashMap<>();
@@ -381,25 +433,92 @@ public class MDSL2OpenAPIConverter {
 		return map;
 	}
 
+	// ** PathItem manipulation helpers (TODO move to helper?)
 	
-	/**
-	 * Helpers
-	 */
-	
-	// could move and merge with the one in MSDL wrapper/helper (DRY)
-	private EList<HTTPResourceBinding> getHTTPResourceBindings(EndpointInstance endpointInstance) {
-		EList<TechnologyBinding> protocolBindings = endpointInstance.getPb();
-		for(int i=0;i<protocolBindings.size();i++) {
-			ProtocolBinding pb = endpointInstance.getPb().get(i).getProtBinding(); 
-			HTTPBinding httpb = pb.getHttp();
-			if(httpb!=null) {
-				EList<HTTPResourceBinding> httprb = httpb.getEb();
-				if(httprb==null) { // check needed?
-					return null;
-				}
-				return httprb;
- 			}
+	private void addPathItemIfPossible(Paths paths, String pathURI, PathItem mappedEndpoint) {
+		if(paths.get(pathURI)==null) { 
+			// normal case: each endpoint and binding works with different (relative) URI 
+			paths.addPathItem(pathURI, mappedEndpoint);
 		}
-		return null; 
+		else {
+			MDSLLogger.reportWarning("Path URI uses multiple times: " + pathURI);
+			// TODO check verbs in existing PathItem, merge/report mapping conflicts
+			PathItem existingPathItem = paths.get(pathURI);
+			mergePathItems(existingPathItem, mappedEndpoint);
+		}
+	}
+
+	// TODO (M) v55 refactor and improve error message: include value of pathURI; use MDSLLogger.reportWarning and skip duplicate rather than stop
+	
+	private void mergePathItems(PathItem existingPathItem, PathItem mappedEndpoint) {
+		Operation mappedOp = mappedEndpoint.getPost();
+		if(mappedOp!=null) {
+			if(existingPathItem.getPost()!=null) 
+				throw new MDSLException("Cannot add " + mappedEndpoint.getPost().getOperationId() + " to path item: Path URI already defines a POST method, ignoring second one: " + existingPathItem.getPost().getOperationId());
+			else {
+				MDSLLogger.reportInformation("Merging POST into path URI.");
+				existingPathItem.setPost(mappedOp);
+			}
+		}
+
+		mappedOp = mappedEndpoint.getGet();
+		if(mappedOp!=null) {
+			if(existingPathItem.getGet()!=null) 
+				throw new MDSLException("Cannot add " + mappedEndpoint.getGet().getOperationId() + " to path item: Path URI already defines a GET method: " + existingPathItem.getGet().getOperationId());
+			else {
+				MDSLLogger.reportInformation("Merging GET into path URI.");
+				existingPathItem.setGet(mappedOp);
+			}
+		}
+		
+		mappedOp = mappedEndpoint.getPut();
+		if(mappedOp!=null) {
+			if(existingPathItem.getPut()!=null) 
+				throw new MDSLException("Cannot add " + mappedEndpoint.getPut().getOperationId() + " to path item: Path URI already defines a PUT method: " + existingPathItem.getPut().getOperationId());
+			else {
+				MDSLLogger.reportInformation("Merging PUT into path URI.");
+				existingPathItem.setPut(mappedOp);
+			}
+		}
+		
+		mappedOp = mappedEndpoint.getPatch();
+		if(mappedOp!=null) {
+			if(existingPathItem.getPatch()!=null) 
+				throw new MDSLException("Cannot add " + mappedEndpoint.getPatch().getOperationId() + " to path item: Path URI already defines a PATCH method: " + existingPathItem.getPatch().getOperationId());
+			else {
+				MDSLLogger.reportInformation("Merging PATCH into path URI.");
+				existingPathItem.setPatch(mappedOp);
+			}
+		}
+		
+		mappedOp = mappedEndpoint.getDelete();
+		if(mappedOp!=null) {
+			if(existingPathItem.getDelete()!=null) 
+				throw new MDSLException("Cannot add " + mappedEndpoint.getDelete().getOperationId() + " to path item: Path URI already defines a DELETE method: " + existingPathItem.getDelete().getOperationId());
+			else {
+				MDSLLogger.reportInformation("Merging DELETE into path URI.");
+				existingPathItem.setDelete(mappedOp);
+			}
+		}
+		
+		mappedOp = mappedEndpoint.getHead();
+		if(mappedOp!=null) {
+			if(existingPathItem.getHead()!=null) 
+				throw new MDSLException("Cannot add " + mappedEndpoint.getHead().getOperationId() + " to path item: Path URI already defines a HEAD method: " + existingPathItem.getHead().getOperationId());
+			else {
+				MDSLLogger.reportInformation("Merging HEAD into path URI.");
+				existingPathItem.setHead(mappedOp);
+			}
+		}
+		
+		mappedOp = mappedEndpoint.getOptions();
+		if(mappedOp!=null) {
+			if(existingPathItem.getOptions()!=null) 
+				throw new MDSLException("Cannot add " + mappedEndpoint.getOptions().getOperationId() + " to path item: Path URI already defines a OPTIONS method: " + existingPathItem.getOptions().getOperationId());
+			else {
+				MDSLLogger.reportInformation("Merging OPTIONS into path URI.");
+				existingPathItem.setOptions(mappedOp);
+			}
+		}
 	}
 }

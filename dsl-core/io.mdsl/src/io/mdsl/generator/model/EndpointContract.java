@@ -27,7 +27,7 @@ public class EndpointContract {
 
 	private String name;
 	private List<Operation> operations;
-	private ProtocolBinding protocolBinding;
+	private ProtocolBinding protocolBinding; // TODO change to array list
 	
 	// could group these two into one class:
 	private List<String> states;	
@@ -41,7 +41,7 @@ public class EndpointContract {
 	public EndpointContract(String name) {
 		this.name = name;
 		this.operations = Lists.newLinkedList();
-		this.protocolBinding = new UndefinedProtocol();
+		this.protocolBinding = new UndefinedProtocol(); 
 		this.states = Lists.newLinkedList();
 		this.transitions = Lists.newLinkedList();
 	}

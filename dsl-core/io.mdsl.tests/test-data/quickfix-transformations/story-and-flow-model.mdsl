@@ -1,0 +1,16 @@
+API description QuickFixTransformationTestAPI
+version "Since version 5.4.2"
+overview "Testing the SOAD transformations and API refactorings"
+event type doSomethingSampleDataTrigger
+event type CRUDSampleBusinessObjectTrigger
+command type doSomethingSampleData
+command type CRUDSampleBusinessObject
+
+flow Sample_Scenario_1Flow realizes Sample_Scenario_1
+event doSomethingSampleDataTrigger triggers command doSomethingSampleData
+event CRUDSampleBusinessObjectTrigger triggers command CRUDSampleBusinessObject
+
+scenario Sample_Scenario_1
+  story Sample_Story_1 
+    a "SampleUser" wants to "doSomething" in "SampleData" 
+    a "AnotherUser" wants to CRUD "SampleBusinessObject"

@@ -1,19 +1,20 @@
-############################################################
-# Title .....: ALPS representation of ${fileName}
-# Author ...: MDSL Freemarker Generator
+##############################################################
+# Title ....: ALPS representation of ${fileName}
+# Author ...: MDSL Freemarker Generator, ALPS Demonstrator V02
 # Date .....: tba
-############################################################
+##############################################################
 
 <#--
-# This is an MDSL-to-ALPS demo template provided with MDSL 5.1, author: socadk
+# This is an MDSL-to-ALPS demo template provided with MDSL 5.4
 # ALPS specification: https://github.com/alps-io/spec/blob/master/draft-07/draft-07.txt 
 # ALPS generator tool "unified": https://github.com/mamund/alps-unified
 -->
 # you can generate OpenAPI and other specifications from ALPS:
 # unified -h -f <alpsfile> -t <format type> -o <outfile> (type can be o, p, s; j, a, w)
-# [nodemodulesdir]alps-unified\src\index.js -f ${fileName}.alps.yaml -t o -o ${fileName}.oas.yaml
+# [nodemodulesdir]alps-unified\src\index.js -f ${fileName?remove_ending(".mdsl")}-alps.yaml -t o -o ${fileName?remove_ending(".mdsl")}-oas.yaml
 
-<#assign groupTypes = genModel.dataTypes?filter(o->!(o.isAtomic()))>
+<#assign groupTypes = genModel.dataTypes>
+<#-- <#assign groupTypes = genModel.dataTypes?filter(o->!(o.isAtomic()))> -->
 
 <#function convertOperationSemanticsToHTTPVerbProperty responsibility>
 <#if responsibility??>
@@ -138,7 +139,7 @@ alps:
       tags: ${convertOperationSemanticsToCRUDPrimitive(operation.responsibility)}
       descriptor:
       <#list operation.parameters as parameter>
-      - href: '#${parameter.typeAsString}' # parameter name: ${parameter.name}
+      - href: '#${parameter.type.name}' # parameter name: ${parameter.name}
       </#list>
       rt: '${operation.response.name}'
       text: ${operation.responsibility}

@@ -1,0 +1,8 @@
+API description QuickFixTransformationTestAPI
+version "Since version 5.4.2"
+overview "Testing the SOAD transformations and API refactorings"
+
+scenario Sample_Scenario_1
+  story Sample_Story_1 
+    a "SampleUser" wants to "doSomething" in "SampleData" 
+    a "AnotherUser" wants to CRUD "SampleBusinessObject"

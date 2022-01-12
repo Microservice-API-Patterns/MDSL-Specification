@@ -15,6 +15,8 @@
  */
 package io.mdsl.generator.model;
 
+import java.util.regex.Matcher;
+
 /**
  * Represents an MDSL basic type.
  *
@@ -24,6 +26,9 @@ public enum BasicType implements MDSLType {
 	STRING("string"), BOOLEAN("bool"), INTEGER("int"), LONG("long"), DOUBLE("double"), RAW("raw"), VOID("void");
 
 	private String name;
+
+	private String version;
+	private String defaultValue;
 
 	private static final BasicType DEFAULT_BASIC_TYPE = VOID;
 
@@ -66,4 +71,61 @@ public enum BasicType implements MDSLType {
 		return true;
 	}
 
+	@Override
+	public String sampleJSON(int levelOfDetail) {
+		return /*'"' + name + '"' + ":" + */ sampleValue(levelOfDetail);
+	}
+	
+	@Override 
+	public String sampleJSONWithEscapedQuotes(int levelOfDetail) {
+		String result = this.sampleJSON(levelOfDetail);
+		return result.toString().replaceAll("\"", Matcher.quoteReplacement("\\\""));
+	}
+	
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	/*
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+	*/
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	String sampleValue(int levelOfDetail) {
+		
+		/*
+		if(this.defaultValue!=null ) {
+			// not checked for syntactic correctness
+			return "\"" + this.defaultValue + "\"";
+		}
+		*/
+		
+		// TODO vary values by levelOfDetail (?)
+		
+		switch (name) {
+		case "string":
+			return "\"someText\"";
+		case "int":
+			return "\"42\"";
+		case "bool":
+			return "\"true\"";
+		case "long":
+			return "\"1.0\"";
+		case "raw":
+			return "\"TWFueSBoYW5kcyBtYWtlIGxpZ2h0IHdvcmsu\""; // from https://en.wikipedia.org/wiki/Base64
+		case "void":
+			return "\"null\"";
+		default:
+			return "";
+		}
+	}
 }

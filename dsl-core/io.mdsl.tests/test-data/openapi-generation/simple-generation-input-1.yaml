@@ -6,7 +6,7 @@ servers: []
 tags:
 - name: TestEndpoint
   externalDocs:
-    description: The role of this endpoint is not specified.
+    description: TestEndpoint contract
     url: ""
 paths:
   /TestEndpoint: {}

@@ -8,14 +8,9 @@ import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
 
 import io.mdsl.apiDescription.ApiDescriptionPackage;
-import io.mdsl.apiDescription.CommandInvokationStep;
-import io.mdsl.apiDescription.DomainEventProductionStep;
-import io.mdsl.apiDescription.EitherCommandOrOperation;
-import io.mdsl.apiDescription.EndpointContract;
-import io.mdsl.apiDescription.FlowStep;
 import io.mdsl.apiDescription.IntegrationScenario;
 import io.mdsl.apiDescription.IntegrationStory;
-import io.mdsl.apiDescription.ServiceSpecification;
+
 
 /**
  * This class contains custom validation rules. 

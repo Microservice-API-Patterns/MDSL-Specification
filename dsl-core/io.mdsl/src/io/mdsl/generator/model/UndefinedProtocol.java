@@ -26,5 +26,4 @@ public class UndefinedProtocol implements ProtocolBinding {
 	public String getProtocolName() {
 		return "Undefined";
 	}
-
 }

@@ -60,7 +60,7 @@ public class GeneratorsActionGroup extends ActionGroup {
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.GraphQLGenerationCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.JolieGenerationCommand")); 
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.JavaGenerationCommand"));
-		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.ALPSGenerationCommand")); // experimental
+		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.ALPSGenerationCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.TextFileGenerationCommand"));
 		generatorSubmenu.add(new Separator());
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.GenModelJSONExporterCommand"));
@@ -69,8 +69,8 @@ public class GeneratorsActionGroup extends ActionGroup {
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.AsyncMDSLGenerationCommand"));
 		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.AsyncAPIGenerationCommand"));
 		generatorSubmenu.add(new Separator());
-		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.MDSLRefactoringCommand")); // elsewhere
-		// TODO add new API analysis/refactoring menu (if it stays)
+		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.SketchMinerGenerationCommand"));
+		added += addAction(generatorSubmenu, createAction("io.mdsl.ui.handler.MDSLRefactoringCommand")); // now a QF
 		return added;
 	}
 

@@ -12,7 +12,8 @@ exposes
     delivering payload {"a": SampleDTO, "b": SampleDTO}
     
 API provider HelloWorldAPIProvider
-  offers HelloWorldEndpoint
+  offers HelloWorldEndpoint at endpoint location "http://localhost:8080"
+  via protocol HTTP binding resource Home at "/hello"
 
 API client HelloWorldAPIClient
   consumes HelloWorldEndpoint

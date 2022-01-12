@@ -5,18 +5,11 @@ package io.mdsl.validation;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtext.validation.Check;
-import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
 
 import io.mdsl.apiDescription.ApiDescriptionPackage;
-import io.mdsl.apiDescription.CommandInvokationStep;
-import io.mdsl.apiDescription.DomainEventProductionStep;
-import io.mdsl.apiDescription.EitherCommandOrOperation;
 import io.mdsl.apiDescription.EndpointContract;
 import io.mdsl.apiDescription.Event;
-import io.mdsl.apiDescription.FlowStep;
-import io.mdsl.apiDescription.IntegrationScenario;
-import io.mdsl.apiDescription.ServiceSpecification;
 
 /**
  * This class contains custom validation rules. 
@@ -32,9 +25,9 @@ public class EventValidator extends AbstractMDSLValidator {
 		// not needed for classes used as ComposedCheck
 	}
 	
-	// just to try option out (default seems to be NORMAL):
-	@Check(CheckType.FAST)
+	// @Check(CheckType.FAST)
 	// @Check(CheckType.EXPENSIVE)
+	@Check
 	public void proposeEventAPI(EndpointContract apiSpec) {
 		EList<Event> events = apiSpec.getEvents();
 		for(Event event : events) {

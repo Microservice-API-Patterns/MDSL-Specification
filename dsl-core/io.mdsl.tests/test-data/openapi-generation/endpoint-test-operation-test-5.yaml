@@ -6,7 +6,7 @@ servers: []
 tags:
 - name: TestEndpoint
   externalDocs:
-    description: The role of this endpoint is Information Holder Resource pattern
+    description: TestEndpoint contract, Information Holder Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
 paths:
   /TestEndpoint:
@@ -14,10 +14,9 @@ paths:
     post:
       tags:
       - TestEndpoint
-      summary: Creates new Test object
+      summary: postTest (Creates new Test object method)
       description: Creates new Test object
       operationId: postTest
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -30,7 +29,7 @@ paths:
     patch:
       tags:
       - TestEndpoint
-      summary: Updates a Test object partially
+      summary: patchTest (Updates a Test object partially method)
       description: Updates a Test object partially
       operationId: patchTest
       responses:
@@ -47,7 +46,13 @@ components:
       properties:
         testData1:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
     TestData2:
       type: object
+      properties:
+        idOnly:
+          type: string
+          description: Generic parameter
     TestData3:
       type: object

@@ -7,13 +7,11 @@ servers:
 tags:
 - name: RESTLevel3Provider-Home
   externalDocs:
-    description: The role of this endpoint, offering a HypermediaDrivenEndpoint contract,
-      is Processing Resource pattern
+    description: HypermediaDrivenEndpoint contract, Processing Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
 - name: RESTLevel3Provider-ResourceForStep2
   externalDocs:
-    description: The role of this endpoint, offering a HypermediaDrivenEndpoint contract,
-      is Processing Resource pattern
+    description: HypermediaDrivenEndpoint contract, Processing Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
 paths:
   /home:
@@ -21,11 +19,9 @@ paths:
     post:
       tags:
       - RESTLevel3Provider-Home
-      summary: write only
-      description: This operation realizes the [State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html)
-        pattern.
+      summary: initiateProcess (write only method)
+      description: '[State Creation Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateCreationOperation.html).'
       operationId: Home-initiateProcess
-      parameters: []
       requestBody:
         content:
           application/vnd.step2cmt+json:
@@ -34,6 +30,8 @@ paths:
               properties:
                 in:
                   type: string
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>
       responses:
         "200":
           description: initiateProcess successful execution
@@ -44,6 +42,8 @@ paths:
                 properties:
                   out:
                     type: integer
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
                     format: int32
           links:
             transferToStep2:
@@ -59,11 +59,18 @@ paths:
     put:
       tags:
       - RESTLevel3Provider-ResourceForStep2
-      summary: read and write
-      description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
-        pattern.
+      summary: continueProcessing (read and write method)
+      description: '[State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html).'
       operationId: ResourceForStep2-continueProcessing
-      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id2:
+                  type: string
+                  description: Generic parameter
       responses:
         "200":
           description: continueProcessing successful execution
@@ -74,6 +81,8 @@ paths:
                 properties:
                   statusCode:
                     type: integer
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                      target="_blank">Data Element</a>
                     format: int32
           links:
             finishProcessing:
@@ -104,8 +113,12 @@ components:
       properties:
         someMoreILinkInformation:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
     HALInstance2:
       type: object
       properties:
         evenMoreILinkInformation:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>

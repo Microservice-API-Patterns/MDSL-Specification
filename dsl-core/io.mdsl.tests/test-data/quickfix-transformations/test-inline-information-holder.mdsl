@@ -1,0 +1,24 @@
+API description TestExtractAndInlineInformationHolder
+
+data type SampleEntityDTO "dto": {"d1":D<double>, "d2":{ID, MD}}
+data type DataDTO "data":SampleEntityDTO
+data type DtoDTO "dto":{"d1":D<double> , "d2":{ID , MD}}
+   
+endpoint type TestEndpointWithLinkedInformationHolders
+exposes
+  operation testInlineInformationHolderSPN 
+    expecting payload {"p1":D<int>, <<Linked_Information_Holder>> "data":L<string>}
+    delivering payload {"o1":D<int>, <<Linked_Information_Holder>> "odata":L<string>}
+
+  operation testInlineInformationHolderPT
+    expecting payload {"i1":D<int>, <<Linked_Information_Holder>> "idto":L<string>}
+    delivering payload {"p1":D<int>, <<Linked_Information_Holder>> "dto":L<string>}
+
+endpoint type DataInformationHolderResource serves as INFORMATION_HOLDER_RESOURCE
+exposes
+  operation lookup with responsibility RETRIEVAL_OPERATION expecting payload "resourceId":ID<string> delivering payload "resultSet":DataDTO*
+
+endpoint type DtoInformationHolderResource serves as INFORMATION_HOLDER_RESOURCE
+  exposes
+  operation lookup with responsibility RETRIEVAL_OPERATION expecting payload "resourceId":ID<string> delivering payload "resultSet":DtoDTO*
+  

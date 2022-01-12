@@ -1,0 +1,50 @@
+API description SampleScenarioForEuroPLoP2020
+
+data type SampleDTO {ID, D<string>}
+
+data type Customer {"name": D<string>, 
+                    "address": D<string>, 
+                    "birthday": D<string>}
+
+endpoint type CustomerRelationshipManager serves as PROCESSING_RESOURCE
+exposes 
+  operation createCustomer with responsibility STATE_CREATION_OPERATION
+    expecting payload "customerRecord": Customer
+    delivering payload "customerId": D<int>
+    compensated by deleteCustomer
+  operation upgradeCustomer with responsibility STATE_TRANSITION_OPERATION
+    expecting payload "promotionCode": P // request partially specified
+    delivering payload P // response unspecified
+  operation deleteCustomer with responsibility STATE_DELETION_OPERATION
+    expecting payload "customerId": D<int>
+    delivering payload "success": MD<bool>
+    transitions from "customerIsActive" to "customerIsArchived"
+  operation validateCustomerRecord with responsibility COMPUTATION_FUNCTION
+    expecting payload "customerRecord": Customer
+    delivering payload "isCompleteAndSound": D<bool>
+    reporting error ValidationResultsReport "issues": {"code":D<int>, "message":D<string>}+
+    // "issues" does not make it into OAS; check what x-742 means (quotes needed?)
+        
+endpoint type CustomerRepository serves as INFORMATION_HOLDER_RESOURCE
+exposes 
+  operation findCustomer with responsibility RETRIEVAL_OPERATION
+    expecting payload "searchFilter": D<string> 
+    delivering payload "customerList": Customer*
+    
+endpoint type HelloWorldEndpoint
+exposes 
+  operation sayHello 
+    expecting payload "in": D<string>  
+    delivering payload SampleDTO
+
+API provider HelloWorldAPIProvider
+  offers HelloWorldEndpoint 
+  at endpoint location "http://localhost:8000" 
+  via protocol HTTP 
+    binding resource HomeResource at "/"
+      operation sayHello to POST 
+  
+API client HelloWorldAPIClient
+  consumes HelloWorldEndpoint 
+  from HelloWorldAPIProvider
+  via protocol HTTP

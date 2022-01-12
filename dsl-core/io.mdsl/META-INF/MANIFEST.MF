@@ -3,7 +3,7 @@ Automatic-Module-Name: io.mdsl
 Bundle-ManifestVersion: 2
 Bundle-Name: io.mdsl
 Bundle-Vendor: MDSL Project
-Bundle-Version: 5.3.3.qualifier
+Bundle-Version: 5.4.5.qualifier
 Bundle-SymbolicName: io.mdsl; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
@@ -39,9 +39,13 @@ Export-Package: io.mdsl,
  io.mdsl.formatting2,
  io.mdsl.generator,
  io.mdsl.generator.asyncapi,
+ io.mdsl.generator.bpmn,
  io.mdsl.generator.model,
+ io.mdsl.generator.model.composition,
+ io.mdsl.generator.model.composition.views,
  io.mdsl.generator.model.converter,
  io.mdsl.generator.protobuf.converter,
+ io.mdsl.generator.refactorings,
  io.mdsl.parser.antlr,
  io.mdsl.parser.antlr.internal,
  io.mdsl.scoping,
@@ -49,6 +53,7 @@ Export-Package: io.mdsl,
  io.mdsl.services,
  io.mdsl.standalone,
  io.mdsl.transformations,
+ io.mdsl.utils,
  io.mdsl.validation
 Import-Package: io.mdsl.formatting2,
  org.apache.log4j,

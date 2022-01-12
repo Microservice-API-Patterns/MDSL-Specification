@@ -1,21 +1,27 @@
 API description TestAPI
 
+// "toBeIgnored":MD<void> and ParamType2 with other roles added in V5.4
+
 data type Test P
-data type ParamType ("attr1":D<string>, "attr2":D<string>)
+data type ParamType {"attr1":D<string>, "attr2":D<string>, "toBeIgnored":MD<void>}
+data type ParamType2 {"toBeIgnored":ID<void>, "attr1":MD<string>, "attr2":L<string>}
 
 endpoint type TestEndpoint
   serves as INFORMATION_HOLDER_RESOURCE
   exposes
     operation doSomethingJust4Test
       expecting
-        payload ParamType
+        payload {"attr1":D<string>, "attr2":D<string>, "toBeIgnored":MD<void>} // NYI: ParamType
       delivering
-        payload Test
+        payload ParamType2
 
 API provider TestEndpointProvider
 	offers TestEndpoint
-	at endpoint location "/endpoint"
-	via protocol HTTP binding resource Home operation doSomethingJust4Test to GET
-	element "attr1" realized as PATH parameter
-
+	at endpoint location "localhost://tbc"
+	via protocol HTTP 
+	binding 
+	 resource Home at "/{attr1}" 
+	  operation doSomethingJust4Test to GET
+	    element "attr1" realized as PATH parameter
+	    // missing element binding for "attr2" could be warned about (defaults to QUERY) 
 IPA

@@ -210,7 +210,7 @@ public class ChannelContractValidator extends AbstractMDSLValidator {
 							channelTypes.indexOf(channelTypes.stream().filter(t -> t.getValue() == ChannelType.GUARANTEED_DELIVERY_VALUE).findFirst().get())); 
 
 					/* @gdl: tbc: is one message enough?
-				error("'" + channel.getQuality().getName() +  "' can not be assigned to a channel of type GUARANTEED_DELIVERY.",
+					error("'" + channel.getQuality().getName() +  "' can not be assigned to a channel of type GUARANTEED_DELIVERY.",
 						channel,
 						ApiDescriptionPackage.eINSTANCE.getChannelContract_Quality());
 					 */

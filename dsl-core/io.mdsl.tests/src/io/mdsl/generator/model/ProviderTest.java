@@ -43,8 +43,8 @@ public class ProviderTest {
 		provider.addEndpoint(endpoint);
 
 		// then
-		assertEquals(1, provider.getOfferedEndpoints().size());
-		assertEquals("TestEndpoint", provider.getOfferedEndpoints().get(0).getName());
+		assertEquals(1, provider.offeredEndpoints().size());
+		assertEquals("TestEndpoint", provider.offeredEndpoints().get(0).getName());
 	}
 
 }

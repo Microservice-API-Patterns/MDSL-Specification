@@ -15,16 +15,21 @@
  */
 package io.mdsl.generator.model;
 
+import io.mdsl.exception.MDSLException;
+
 /**
- * Represens a field/attribute of an MDSL data type.
+ * Represents a field/attribute of an MDSL data type.
  *
  */
 public class DataTypeField {
 
+	private static final String ANONYMOUS_KEY = "akey";
 	private String name;
 	private MDSLType type;
 	private boolean list = false;
 	private boolean nullable = false;
+	
+	private String defaultValue;
 
 	/**
 	 * Creates a new data type field.
@@ -108,4 +113,51 @@ public class DataTypeField {
 		this.nullable = nullable;
 	}
 
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	/**
+	 * Sample data
+	 * 
+	 * @param levelOfDetail amount of data to be included
+	 */
+	public String sampleJSON(int levelOfDetail) {	
+		
+		String sampleValue;
+		
+		if(defaultValue!=null&&!defaultValue.equals("")) {
+			sampleValue = "\"" + defaultValue + "\"";
+		}
+		else {
+			sampleValue = type.sampleJSON(levelOfDetail);
+		}
+		
+		switch (levelOfDetail) {
+		case 0 : 
+			// how about nullable lists? 
+			if(list) {
+				return ", \"" + name + "\": []";
+			}
+			if(nullable) {
+				return ", \"" + name + "\": {}";
+			}
+		case 1:
+			if(list) {
+				return ", \"" + name + "\": ["+ sampleValue +"]";
+			}
+			else {
+				return ", \"" + name + "\":" + sampleValue;
+			}
+		case 2:
+			if(list) {
+				return ", \"" + name + "\": ["+ sampleValue  
+					+ ", "+ sampleValue + " ]";
+			}
+			else {
+				return ", \"" + name + "\":" + sampleValue;
+			}
+		}
+		throw new MDSLException("Unsupported level of detail, try 0 or 1 or 2.");
+	}
 }

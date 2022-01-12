@@ -1,0 +1,196 @@
+# MDSL to Sketch Miner Converter Version 0.0.1 (Status: Demonstrator/Proof of Concept):
+
+/// Flow Write_Paper
+
+/// Events: 
+/// Research_Result_Available
+/// Paper_Submitted_for_Review
+/// Paper_Will_Be_Revised
+/// Acceptance_Decision_Made
+/// Feedback_Sent
+/// Proceedings_Available
+/// Paper_Available_Online
+
+/// Commands:
+/// Write_PaperCommand
+/// Review_PaperCommand
+/// Review_FeedbackCommand
+/// Accept_PaperCommand
+/// Reject_PaperCommand
+/// Publish_Authors_CopyCommand
+
+
+/// Canonical/normalized flow model:
+Flow Write_Paper
+Number of events: 7
+Number of commands: 6
+ Event: Research_Result_Available (Event) triggers 1 command(s): Write_PaperCommand (Command) 
+ Event: Paper_Submitted_for_Review (Event) triggers 1 command(s): Review_PaperCommand (Command) 
+ Event: Paper_Will_Be_Revised (Event) triggers 1 command(s): Write_PaperCommand (Command) 
+ Event: Acceptance_Decision_Made (Event) triggers 2 command(s): Accept_PaperCommand (Command) Reject_PaperCommand (Command) 
+ Event: Feedback_Sent (Event) triggers 1 command(s): Review_FeedbackCommand (Command) 
+ Event: Proceedings_Available (Event) triggers 1 command(s): Publish_Authors_CopyCommand (Command) 
+ Event: Paper_Available_Online (Event) triggers 0 command(s): 
+ Command Write_PaperCommand emits 1 event(s): Paper_Submitted_for_Review (Event) 
+ Command Review_PaperCommand emits 1 event(s): Acceptance_Decision_Made (Event) 
+ Command Review_FeedbackCommand emits 1 event(s): Paper_Will_Be_Revised (Event) 
+ Command Accept_PaperCommand emits 1 event(s): Proceedings_Available (Event) 
+ Command Reject_PaperCommand emits 1 event(s): Feedback_Sent (Event) 
+ Command Publish_Authors_CopyCommand emits 1 event(s): Paper_Available_Online (Event) 
+
+
+/// Paths dump:
+Research_Result_Available->Write_PaperCommand;Paper_Submitted_for_Review->Review_PaperCommand;Acceptance_Decision_Made->Accept_PaperCommand;Proceedings_Available->Publish_Authors_CopyCommand;Paper_Available_Online->done;
+Research_Result_Available->Write_PaperCommand;Paper_Submitted_for_Review->Review_PaperCommand;Acceptance_Decision_Made->Reject_PaperCommand;Feedback_Sent->Review_FeedbackCommand;Paper_Will_Be_Revised->Write_PaperCommand;Write_PaperCommand->GOTO-Paper_Submitted_for_Review;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+Write_Paper:
+(Research_Result_Available)
+Write_PaperCommand
+(Paper_Submitted_for_Review)
+Review_PaperCommand
+(Acceptance_Decision_Made)
+Accept_PaperCommand
+(Proceedings_Available)
+Publish_Authors_CopyCommand
+(Paper_Available_Online)
+done
+
+(Research_Result_Available)
+Write_PaperCommand
+(Paper_Submitted_for_Review)
+Review_PaperCommand
+(Acceptance_Decision_Made)
+Reject_PaperCommand
+(Feedback_Sent)
+Review_FeedbackCommand
+(Paper_Will_Be_Revised)
+Write_PaperCommand
+(Write_PaperCommand)
+GOTO-Paper_Submitted_for_Review
+
+
+
+/// Flow Write_Paper_WithInitCommand
+
+/// Events: 
+/// Research_Result_Available
+/// Paper_Submitted_for_Review
+/// Paper_Will_Be_Revised
+/// Acceptance_Decision_Made
+/// Feedback_Sent
+/// Proceedings_Available
+/// Paper_Available_Online
+
+/// Commands:
+/// Conduct_Research_Command
+/// Write_PaperCommand
+/// Review_PaperCommand
+/// Review_FeedbackCommand
+/// Accept_PaperCommand
+/// Reject_PaperCommand
+/// Publish_Authors_CopyCommand
+
+
+/// Canonical/normalized flow model:
+Flow Write_Paper_WithInitCommand
+Number of events: 7
+Number of commands: 7
+ Event: Research_Result_Available (Event) triggers 1 command(s): Write_PaperCommand (Command) 
+ Event: Paper_Submitted_for_Review (Event) triggers 1 command(s): Review_PaperCommand (Command) 
+ Event: Paper_Will_Be_Revised (Event) triggers 1 command(s): Write_PaperCommand (Command) 
+ Event: Acceptance_Decision_Made (Event) triggers 2 command(s): Accept_PaperCommand (Command) Reject_PaperCommand (Command) 
+ Event: Feedback_Sent (Event) triggers 1 command(s): Review_FeedbackCommand (Command) 
+ Event: Proceedings_Available (Event) triggers 1 command(s): Publish_Authors_CopyCommand (Command) 
+ Event: Paper_Available_Online (Event) triggers 0 command(s): 
+ Command Conduct_Research_Command emits 1 event(s): Research_Result_Available (Event) 
+ Command Write_PaperCommand emits 1 event(s): Paper_Submitted_for_Review (Event) 
+ Command Review_PaperCommand emits 1 event(s): Acceptance_Decision_Made (Event) 
+ Command Review_FeedbackCommand emits 1 event(s): Paper_Will_Be_Revised (Event) 
+ Command Accept_PaperCommand emits 1 event(s): Proceedings_Available (Event) 
+ Command Reject_PaperCommand emits 1 event(s): Feedback_Sent (Event) 
+ Command Publish_Authors_CopyCommand emits 1 event(s): Paper_Available_Online (Event) 
+
+
+/// Paths dump:
+Write_Paper_WithInitCommandInitiated->Conduct_Research_Command;Research_Result_Available->Write_PaperCommand;Paper_Submitted_for_Review->Review_PaperCommand;Acceptance_Decision_Made->Accept_PaperCommand;Proceedings_Available->Publish_Authors_CopyCommand;Paper_Available_Online->done;
+Write_Paper_WithInitCommandInitiated->Conduct_Research_Command;Research_Result_Available->Write_PaperCommand;Paper_Submitted_for_Review->Review_PaperCommand;Acceptance_Decision_Made->Reject_PaperCommand;Feedback_Sent->Review_FeedbackCommand;Paper_Will_Be_Revised->Write_PaperCommand;Write_PaperCommand->GOTO-Paper_Submitted_for_Review;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+Write_Paper_WithInitCommand:
+(Write_Paper_WithInitCommandInitiated)
+Conduct_Research_Command
+(Research_Result_Available)
+Write_PaperCommand
+(Paper_Submitted_for_Review)
+Review_PaperCommand
+(Acceptance_Decision_Made)
+Accept_PaperCommand
+(Proceedings_Available)
+Publish_Authors_CopyCommand
+(Paper_Available_Online)
+done
+
+(Write_Paper_WithInitCommandInitiated)
+Conduct_Research_Command
+(Research_Result_Available)
+Write_PaperCommand
+(Paper_Submitted_for_Review)
+Review_PaperCommand
+(Acceptance_Decision_Made)
+Reject_PaperCommand
+(Feedback_Sent)
+Review_FeedbackCommand
+(Paper_Will_Be_Revised)
+Write_PaperCommand
+(Write_PaperCommand)
+GOTO-Paper_Submitted_for_Review
+
+
+
+/// Flow Write_Paper_NoInitEventOrCommand
+
+/// Events: 
+/// Paper_Submitted_for_Review
+/// Paper_Will_Be_Revised
+/// Acceptance_Decision_Made
+/// Feedback_Sent
+/// Proceedings_Available
+/// Paper_Available_Online
+
+/// Commands:
+/// Write_PaperCommand
+/// Review_PaperCommand
+/// Review_FeedbackCommand
+/// Accept_PaperCommand
+/// Reject_PaperCommand
+/// Publish_Authors_CopyCommand
+
+
+/// Canonical/normalized flow model:
+Flow Write_Paper_NoInitEventOrCommand
+Number of events: 6
+Number of commands: 6
+ Event: Paper_Submitted_for_Review (Event) triggers 1 command(s): Review_PaperCommand (Command) 
+ Event: Paper_Will_Be_Revised (Event) triggers 1 command(s): Write_PaperCommand (Command) 
+ Event: Acceptance_Decision_Made (Event) triggers 2 command(s): Accept_PaperCommand (Command) Reject_PaperCommand (Command) 
+ Event: Feedback_Sent (Event) triggers 1 command(s): Review_FeedbackCommand (Command) 
+ Event: Proceedings_Available (Event) triggers 1 command(s): Publish_Authors_CopyCommand (Command) 
+ Event: Paper_Available_Online (Event) triggers 0 command(s): 
+ Command Write_PaperCommand emits 1 event(s): Paper_Submitted_for_Review (Event) 
+ Command Review_PaperCommand emits 1 event(s): Acceptance_Decision_Made (Event) 
+ Command Review_FeedbackCommand emits 1 event(s): Paper_Will_Be_Revised (Event) 
+ Command Accept_PaperCommand emits 1 event(s): Proceedings_Available (Event) 
+ Command Reject_PaperCommand emits 1 event(s): Feedback_Sent (Event) 
+ Command Publish_Authors_CopyCommand emits 1 event(s): Paper_Available_Online (Event) 
+
+
+/// Paths dump:
+This flow does not seem to have any paths, at least one init event or command are needed to find one.
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+As this flow does not seem to have any paths (at least one init event or init command required), no path stories can be reported here.
+
+ 

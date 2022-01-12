@@ -1,0 +1,65 @@
+# MDSL to Sketch Miner Converter Version 0.0.1 (Status: Demonstrator/Proof of Concept):
+
+/// Flow HelloWorldFlow0
+
+/// Events: 
+/// FlowInitiated
+
+/// Commands:
+/// FlowStep1
+
+
+/// Canonical/normalized flow model:
+Flow HelloWorldFlow0
+Number of events: 1
+Number of commands: 1
+ Event: FlowInitiated (Event) triggers 1 command(s): FlowStep1 (Command) 
+ Command FlowStep1 emits 0 event(s): 
+
+
+/// Paths dump:
+FlowInitiated->FlowStep1;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+HelloWorldFlow0:
+(FlowInitiated)
+FlowStep1
+
+
+
+/// Flow HelloWorldFlow1
+
+/// Events: 
+/// FlowInitiated
+/// Event2
+
+/// Commands:
+/// FlowStep1
+/// FlowStep2
+
+
+/// Canonical/normalized flow model:
+Flow HelloWorldFlow1
+Number of events: 2
+Number of commands: 2
+ Event: FlowInitiated (Event) triggers 1 command(s): FlowStep1 (Command) 
+ Event: Event2 (Event) triggers 1 command(s): FlowStep2 (Command) 
+ Command FlowStep1 emits 1 event(s): Event2 (Event) 
+ Command FlowStep2 emits 0 event(s): 
+
+
+/// Paths dump:
+FlowInitiated->FlowStep1;Event2->FlowStep2;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+HelloWorldFlow1:
+(FlowInitiated)
+FlowStep1
+(Event2)
+FlowStep2
+
+
+
+ 

@@ -1,0 +1,209 @@
+openapi: 3.0.1
+info:
+  title: HTTPMultipleBindingsTest
+  version: "1.0"
+servers:
+- url: http://localhost:8080
+- url: http://localhost:8080
+tags:
+- name: HTTPSampleContract1Provider1-HTTPSampleResource1
+  externalDocs:
+    description: HTTPSampleContract1 contract
+    url: ""
+- name: HTTPSampleContract1Provider2-HTTPSampleResource21
+  externalDocs:
+    description: HTTPSampleContract2 contract
+    url: ""
+- name: HTTPSampleContract1Provider2-HTTPSampleResource22
+  externalDocs:
+    description: HTTPSampleContract2 contract
+    url: ""
+paths:
+  /home:
+    get:
+      tags:
+      - HTTPSampleContract1Provider1-HTTPSampleResource1
+      summary: getOperation
+      description: ""
+      operationId: HTTPSampleResource1-getOperation
+      parameters:
+      - name: aQueryParameter
+        in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+      - name: abc
+        in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          format: int32
+      responses:
+        "200":
+          description: getOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedResponseDTR'
+    put:
+      tags:
+      - HTTPSampleContract1Provider2-HTTPSampleResource21
+      summary: createOperation
+      description: ""
+      operationId: HTTPSampleResource21-createOperation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedParameterTree'
+      responses:
+        "200":
+          description: createOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlatResponseDTR'
+    post:
+      tags:
+      - HTTPSampleContract1Provider1-HTTPSampleResource1
+      summary: createOperation
+      description: ""
+      operationId: HTTPSampleResource1-createOperation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedParameterTree'
+      responses:
+        "200":
+          description: createOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlatResponseDTR'
+  /home2:
+    get:
+      tags:
+      - HTTPSampleContract1Provider2-HTTPSampleResource22
+      summary: getOperation
+      description: ""
+      operationId: HTTPSampleResource22-getOperation
+      parameters:
+      - name: aQueryParameter
+        in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+      - name: abc
+        in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          format: int32
+      responses:
+        "200":
+          description: getOperation successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedResponseDTR'
+components:
+  schemas:
+    FlatParameterTree:
+      type: object
+      properties:
+        id:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+        md:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
+        dInt:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          format: int32
+        lString:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/LinkElement"
+            target="_blank">Link Element</a>
+        dLong:
+          type: number
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+        anonymous1:
+          type: boolean
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+    NestedParameterTree:
+      type: object
+      properties:
+        npt1:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+        npt2:
+          $ref: '#/components/schemas/FlatParameterTree'
+    FlatResponseDTR:
+      type: object
+      properties:
+        fr1:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+        fr2:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
+    NestedResponseDTR:
+      type: object
+      properties:
+        r1:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
+        r2:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/LinkElement"
+            target="_blank">Link Element</a>
+        anonymous2:
+          $ref: '#/components/schemas/FlatResponseDTR'
+    AtomicParameter:
+      type: object
+      properties:
+        abc:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          format: int32
+    AtomicParameterListAsTree:
+      type: object
+      properties:
+        abc:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          format: int32
+        def:
+          type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+          format: int32

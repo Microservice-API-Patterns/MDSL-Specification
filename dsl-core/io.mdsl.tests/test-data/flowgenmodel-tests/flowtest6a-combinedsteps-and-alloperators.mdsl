@@ -1,0 +1,17 @@
+API description TestCombinedStepsAndAllOptionsBrief
+
+event type e1, e2, e3, e4, e5
+command type c0, c1, c2, c3, c4, c5 
+
+flow TestFlowWithCombinedSteps
+command c0 emits event e1 or e3
+event e1 triggers command c1 emits event e2 
+event e2 + e3 triggers command c2 emits event e4 or e5
+// event e2 + e3 triggers command c3 and c4 emits event e4 or e5 // not supported (in genmodel)
+
+flow TestFlowUsingAllOperators 
+event e1 triggers command c1 or c2
+command c1 emits event e2 and e3
+command c2 emits event e4 or e5
+event e3 and e4 triggers command c3
+command c3 emits event e4 x e5

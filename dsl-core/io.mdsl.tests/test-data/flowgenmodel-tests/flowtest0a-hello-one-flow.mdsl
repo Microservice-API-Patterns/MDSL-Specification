@@ -1,0 +1,10 @@
+API description FlowTest0
+version "MDSL 5.4 (and up)"
+
+event type FlowInitiated, Event2
+command type FlowStep1, FlowStep2
+
+flow HelloWorldFlow0
+  event FlowInitiated triggers command FlowStep1
+  command FlowStep1 emits event Event2
+  event Event2 triggers command FlowStep2

@@ -6,7 +6,7 @@ servers: []
 tags:
 - name: TestEndpoint
   externalDocs:
-    description: The role of this endpoint is Information Holder Resource pattern
+    description: TestEndpoint contract, Information Holder Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
 paths:
   /TestEndpoint:
@@ -14,19 +14,33 @@ paths:
     get:
       tags:
       - TestEndpoint
-      description: unspecified operation responsibility
+      summary: getTest
+      description: ""
       operationId: getTest
       parameters:
       - name: attr1
         in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
         required: true
         schema:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
       - name: attr2
         in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
         required: true
         schema:
-          type: string
+          type: array
+          items:
+            minItems: 1
+            type: array
+            description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+              target="_blank">Data Element</a>
+            items:
+              type: string
       responses:
         "200":
           description: getTest successful execution
@@ -41,3 +55,5 @@ components:
       properties:
         anonymous1:
           type: number
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>

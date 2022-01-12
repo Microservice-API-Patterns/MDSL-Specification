@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 public class ImplementationTechnologyTest {
+	
+	// TODO (M) could add HTTP binding related tests here as well
 
 	@Test
 	public void canCreateStandardTechnology() {

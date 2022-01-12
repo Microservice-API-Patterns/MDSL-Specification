@@ -6,7 +6,7 @@ servers: []
 tags:
 - name: TestEndpoint
   externalDocs:
-    description: The role of this endpoint is not specified.
+    description: TestEndpoint contract
     url: ""
 paths:
   /TestEndpoint: {}
@@ -19,7 +19,11 @@ components:
         properties:
           testAttribute1:
             type: string
+            description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+              target="_blank">Data Element</a>
           testAttribute2:
             type: array
+            description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+              target="_blank">Data Element</a>
             items:
               type: string

@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) to AsyncAPI Specifications
 author: Giacomo Di Liberali, Olaf Zimmermann
-copyright: The authors, 2020-2021. All rights reserved.
+copyright: The authors, 2020-2022. All rights reserved.
 ---
 
 [MDSL Home](../index) &mdash; [AsyncMDSL Language Reference](../async-mdsl) &mdash; [MDSL Tools Overview](../tools)
@@ -274,6 +274,8 @@ More information on the `asyncapi-generator` that we used in this example can be
 ## Known limitations
 
 - The generator does not support security policies.
+- A channel can only transfer messages of one data type.
+- The generator is not yet supported in the CLI.
 
 # Other Generators
 Also checkout our other generators:

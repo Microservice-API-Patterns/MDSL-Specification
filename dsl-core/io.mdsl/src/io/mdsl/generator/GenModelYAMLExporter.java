@@ -13,9 +13,10 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 
 import io.mdsl.apiDescription.ServiceSpecification;
-import io.mdsl.exception.MDSLException;
+// import io.mdsl.exception.MDSLException;
 import io.mdsl.generator.model.MDSLGeneratorModel;
 import io.mdsl.generator.model.converter.MDSL2GeneratorModelConverter;
+import io.mdsl.utils.MDSLLogger;
 
 /**
  * Exports the generator model as JSON file.
@@ -32,7 +33,7 @@ public class GenModelYAMLExporter extends AbstractMDSLGenerator {
 			fsa.generateFile(inputFileURI.trimFileExtension().lastSegment() + "_GeneratorModel.yaml",
 					mapper.writeValueAsString(genModel));
 		} catch (JsonProcessingException e) {
-			throw new MDSLException("Could not serialize generator model as YAML.", e);
+			MDSLLogger.reportError("Could not serialize generator model as YAML: " + e.getOriginalMessage());
 		}
 	}
 }

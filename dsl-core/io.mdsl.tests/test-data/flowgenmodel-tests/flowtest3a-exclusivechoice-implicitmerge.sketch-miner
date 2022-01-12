@@ -1,0 +1,63 @@
+# MDSL to Sketch Miner Converter Version 0.0.1 (Status: Demonstrator/Proof of Concept):
+
+/// Flow ExclusiveChoiceWithImplicitMerge
+
+/// Events: 
+/// FlowInitiated
+/// FlowStep1CompletedOptionA
+/// FlowStep1CompletedOptionB
+/// FlowStep2Completed
+/// FlowStep3Completed
+/// FlowTerminated
+
+/// Commands:
+/// FlowStep1
+/// FlowStep2
+/// FlowStep3
+/// FlowStep4
+
+
+/// Canonical/normalized flow model:
+Flow ExclusiveChoiceWithImplicitMerge
+Number of events: 6
+Number of commands: 4
+ Event: FlowInitiated (Event) triggers 1 command(s): FlowStep1 (Command) 
+ Event: FlowStep1CompletedOptionA (Event) triggers 1 command(s): FlowStep2 (Command) 
+ Event: FlowStep1CompletedOptionB (Event) triggers 1 command(s): FlowStep3 (Command) 
+ Event: FlowStep2Completed (Event) triggers 1 command(s): FlowStep4 (Command) 
+ Event: FlowStep3Completed (Event) triggers 1 command(s): FlowStep4 (Command) 
+ Event: FlowTerminated (Event) triggers 0 command(s): 
+ Command FlowStep1 emits 2 event(s): FlowStep1CompletedOptionA (Event) FlowStep1CompletedOptionB (Event) 
+ Command FlowStep2 emits 1 event(s): FlowStep2Completed (Event) 
+ Command FlowStep3 emits 1 event(s): FlowStep3Completed (Event) 
+ Command FlowStep4 emits 1 event(s): FlowTerminated (Event) 
+
+
+/// Paths dump:
+FlowInitiated->FlowStep1;FlowStep1CompletedOptionA->FlowStep2;FlowStep2Completed->FlowStep4;FlowTerminated->done;
+FlowInitiated->FlowStep1;FlowStep1CompletedOptionB->FlowStep3;FlowStep3Completed->FlowStep4;FlowTerminated->done;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+ExclusiveChoiceWithImplicitMerge:
+(FlowInitiated)
+FlowStep1
+(FlowStep1CompletedOptionA)
+FlowStep2
+(FlowStep2Completed)
+FlowStep4
+(FlowTerminated)
+done
+
+(FlowInitiated)
+FlowStep1
+(FlowStep1CompletedOptionB)
+FlowStep3
+(FlowStep3Completed)
+FlowStep4
+(FlowTerminated)
+done
+
+
+
+ 

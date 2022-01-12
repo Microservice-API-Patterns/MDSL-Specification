@@ -87,8 +87,9 @@ endpoint type MAPDecoratorValidationDemoPort3 serves as REFERENCE_DATA_HOLDER
 API provider APILinterDemoAdapter1a
 offers APILinterDemoPort
 at endpoint location "http://tbc.tbc.tbc"
-via protocol HTTP 
-  binding operation op1 to GET
+via protocol HTTP binding
+ resource Home
+   operation unboundOperation to GET
 
 API provider APILinterDemoAdapter2
 offers APILinterDemoPort

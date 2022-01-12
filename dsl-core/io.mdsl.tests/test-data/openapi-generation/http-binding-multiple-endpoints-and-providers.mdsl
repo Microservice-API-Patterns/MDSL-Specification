@@ -45,7 +45,7 @@ endpoint type HTTPSampleContract01
         payload FlatResponseDTR
     operation getOperation 
       expecting
-        payload AtomicParameter 
+        payload "abc": AtomicParameter 
       delivering
         payload "queryResponse": NestedResponseDTR
     operation putOperation 

@@ -6,7 +6,7 @@ servers: []
 tags:
 - name: TestEndpoint
   externalDocs:
-    description: The role of this endpoint is not specified.
+    description: TestEndpoint contract
     url: ""
 paths:
   /TestEndpoint: {}
@@ -21,17 +21,24 @@ components:
         properties:
           testAttribute1:
             type: string
+            description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+              target="_blank">Data Element</a>
           testAttribute2:
             $ref: '#/components/schemas/RefType'
           testAttribute3:
-            type: object
+            type: string
+            description: Generic parameter
           list:
             type: object
             properties:
               listAttribute1:
                 type: string
+                description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                  target="_blank">Data Element</a>
               listAttribute2:
                 type: integer
+                description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                  target="_blank">Data Element</a>
                 format: int32
           subTree:
             type: array
@@ -40,3 +47,5 @@ components:
               properties:
                 subTreeAttribute:
                   type: string
+                  description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+                    target="_blank">Data Element</a>

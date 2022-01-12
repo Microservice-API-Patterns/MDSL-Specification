@@ -1,0 +1,21 @@
+/// TODO provide generation statistics (source file name, time)
+SampleFlowWithDepStepOr:
+
+(FlowInitiated)
+SampleFlowWithDepStepOr: user StartFlowCommand
+(Event1)
+SampleFlowWithDepStepOr: user Command1
+(FlowTerminated)
+
+(FlowInitiated)
+SampleFlowWithDepStepOr: user StartFlowCommand
+(Event2)
+SampleFlowWithDepStepOr: user Command2
+(FlowTerminated)
+
+(FlowInitiated)
+SampleFlowWithDepStepOr: user StartFlowCommand
+(Event3)
+SampleFlowWithDepStepOr: user Command3
+(FlowTerminated)
+

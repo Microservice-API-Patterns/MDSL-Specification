@@ -1,0 +1,29 @@
+API description ReferenceManagementDemo
+overview "Featured in blog post"
+
+event type Paper_Submitted_for_Review
+event type Paper_Will_Be_Revised
+event type Acceptance_Decision_Made
+event type Feedback_Sent
+event type Proceedings_Available
+event type Paper_Available_Online
+
+command type Write_PaperCommand
+command type Review_PaperCommand
+command type Review_FeedbackCommand
+command type Accept_PaperCommand
+command type Reject_PaperCommand
+command type Publish_Authors_CopyCommand
+
+flow Write_Paper type APPLICATION_FLOW
+command Write_PaperCommand emits event Paper_Submitted_for_Review
+event Paper_Submitted_for_Review triggers command Review_PaperCommand
+command Review_FeedbackCommand emits event Paper_Will_Be_Revised
+event Paper_Will_Be_Revised triggers command Write_PaperCommand
+command Review_PaperCommand emits event Acceptance_Decision_Made
+event Acceptance_Decision_Made triggers command Accept_PaperCommand x Reject_PaperCommand
+command Reject_PaperCommand emits event Feedback_Sent
+event Feedback_Sent triggers command Review_FeedbackCommand
+command Accept_PaperCommand emits event Proceedings_Available
+event Proceedings_Available triggers command Publish_Authors_CopyCommand
+command Publish_Authors_CopyCommand emits event Paper_Available_Online

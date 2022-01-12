@@ -1,12 +1,11 @@
-API description HelloWorldAPI
-
-data type SampleDTO {ID, D} // partial, incomplete specification
+API description HelloWorldDemoAPI
+overview "Demonstrating optional/runtime concepts"
 
 endpoint type SomeDemoContract
 exposes 
   operation sayHello 
     expecting payload D<string>  
-    delivering payload SampleDTO
+    delivering payload D<int>
 
 API provider SampleAPIProvider1 
   offers SomeDemoContract 

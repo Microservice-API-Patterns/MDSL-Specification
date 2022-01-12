@@ -1,15 +1,13 @@
 ---
 title: Microservice Domain Specific Language (MDSL) Tutorial
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2019-2021. All rights reserved.
+copyright: Olaf Zimmermann, 2019-2022. All rights reserved.
 ---
 
 [Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Type](./datacontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Bindings](./bindings) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
 
 MDSL Tutorial
 =============
-
-<!-- TODO (M) feature security policy, default value in this tutorial or an advanced one -->
 
 ## Getting Started
 
@@ -21,8 +19,7 @@ Unlike Swagger/OpenAPI Specification, Microservice Domain-Specific Language (MDS
 
 ## Modeling Representation Elements 
 
-Let's start with data modeling. A spreadsheet may contain several sheet tabs (sometime also called worksheets). This multiplicity can be indicated by an asterisk `*`:
-<!-- we simplify on purpose here -->
+Let's start with data modeling. A spreadsheet may contain several sheet tabs (sometime also called worksheets). This multiplicity can be indicated by an asterisk `*`: <!-- simplified on purpose here -->
 
 ~~~
 data type CSVSpreadsheet CSVSheetTab*
@@ -43,6 +40,8 @@ Each row is identified by a `line` number and features data in at least one `col
 ~~~
 data type Rows {"line": ID<int>, "columns":Column+} 
 ~~~
+
+<!-- TODO feature CSV "sheets": ["rows":{"columnCells":{Data|Formula}*}*] // note that title row is different (?) -->
 
 This atomic parameter is not characterized as a plain value `D` as the name in `CSVSheetTab` above, but as a unique identifier `ID`. [*Id(entifier) Element*](https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement) is another MAP leveraged by and integrated into MDSL. [^2]
 
@@ -106,9 +105,9 @@ exposes
   [operations go here]
 ~~~
 
-## Wrapping it all up (Full Specification)
+## Final Step and Full Specification
 
-We are still missing an API description wrapper and, optionally, can add a sample client and provider:
+We are still missing an API description wrapper:
 
 ~~~
 API description SpreadSheetExchangeAPI
@@ -136,17 +135,30 @@ exposes
     expecting payload ID
     delivering payload CSVSpreadsheet
       reporting error "204" // No Content, aka "SheetNotFound" 
+~~~
 
+<!--
 API provider SpreadSheetExchangeAPIProvider
 offers SpreadSheetExchangeEndpoint
 
 API client SpreadSheetExchangeAPIClient
 consumes SpreadSheetExchangeEndpoint
-~~~
-
-<!-- You find the complete sources (incl. generated files) of this tutorial [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/TODO) -->
+-->
 
 We are done modeling and now would be ready to implement the contract and deploy a provider supporting it. 
+
+<!-- TODO (future work) feature error reporting, security policy, state transitions, compensation, and default values in this tutorial or an advanced one -->
+
+## Outlook: Advanced Contract Modeling
+
+MDSL supports more concepts to model endpoint types and their operations:
+
+* Error reporting
+* Security policy
+* State transitions and compensating operations
+* Default values
+
+These language features are not demonstrated in this tutorial; please refer to the example in the [MDSL Primer](./primer).
 
 ## Outlook: Protocol Bindings
 
@@ -227,6 +239,6 @@ In addition to MAP patterns, any string can decorate endpoints and operations; i
 * [Quick reference skeleton](./quickreference) 
 * [Microservice API Patterns](https://microservice-api-patterns.org/).
 
-*Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2022. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

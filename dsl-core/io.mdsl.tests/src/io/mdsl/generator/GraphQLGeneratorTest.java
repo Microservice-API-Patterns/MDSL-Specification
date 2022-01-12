@@ -92,15 +92,7 @@ public class GraphQLGeneratorTest extends AbstractMDSLInputIntegrationTest {
 		generator.doGenerate(inputModel, javaIoFileSystemAccess, new GeneratorContext());
 
 		// then
-		assertEquals(getTestFileContent(baseFilename + "_" + endpointName + ".graphql"), getGeneratedFileContent(baseFilename + "_" + endpointName + ".graphql"));
-	}
-
-	private String getTestFileContent(String fileName) throws IOException {
-		return FileUtils.readFileToString(getTestInputFile(fileName), "UTF-8");
-	}
-
-	private String getGeneratedFileContent(String fileName) throws IOException {
-		return FileUtils.readFileToString(new File(getGenerationDirectory(), fileName), "UTF-8");
+		assertEquals(getExpectedTestResult(baseFilename + "_" + endpointName + ".graphql"), getGeneratedFileContent(baseFilename + "_" + endpointName + ".graphql"));
 	}
 
 	@Override

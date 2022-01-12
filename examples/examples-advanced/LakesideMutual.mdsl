@@ -1,0 +1,48 @@
+API description CustomerManagementBackend
+usage context SOLUTION_INTERNAL_API 
+  for FRONTEND_INTEGRATION
+
+data type AddressDto { 
+  "streetAddress": D<string>, 
+  "postalCode": D<string>, 
+  "city": D<string>
+}
+
+data type CustomerProfileUpdateRequestDto { 
+  "firstname": D<string>, 
+  "lastname": D<string>, 
+  "email": D<string>, 
+  "phoneNumber": D<string>, 
+  "currentAddress": AddressDto
+}
+
+data type CustomerId "cid": D<int>
+data type CustomerResponseDto CustomerProfileUpdateRequestDto
+
+endpoint type CustomerInformationHolder 
+  version "0.1.0"
+  serves as INFORMATION_HOLDER_RESOURCE
+  exposes
+    operation updateCustomer
+    with responsibility STATE_TRANSITION_OPERATION
+     expecting
+    headers 
+      <<API_Key>> "accessToken": D<string>
+        payload {
+      <<Identifier_Element>> "id": CustomerId,
+      <<Data_Element>> 
+        "updatedProfile": CustomerProfileUpdateRequestDto
+    }
+    delivering 
+    payload {
+      <<Data_Element>> "updatedCustomer": CustomerResponseDto,
+      <<Error_Report>>{
+        "status":D<string>, 
+        "error":D<string>, 
+        "message":D<string>}
+    }
+    
+API provider CustomerInformationHolderProvider offers CustomerInformationHolder at endpoint location "http://localhost:8080"
+via protocol HTTP binding
+resource CustomerInformationHolderHome at "/customerInformationHolderHome"
+operation updateCustomer to POST element "treeParameter" realized as BODY parameter

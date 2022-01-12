@@ -31,11 +31,11 @@ import io.mdsl.apiDescription.ParameterTree;
 import io.mdsl.apiDescription.SingleParameterNode;
 import io.mdsl.apiDescription.TreeNode;
 import io.mdsl.generator.AnonymousFieldNameGenerator;
-import io.mdsl.generator.CardinalityHelper;
 import io.mdsl.generator.model.BasicType;
 import io.mdsl.generator.model.DataType;
 import io.mdsl.generator.model.DataTypeField;
 import io.mdsl.generator.model.MDSLGeneratorModel;
+import io.mdsl.utils.CardinalityHelper;
 
 /**
  * Converts MDSL data types (AST model) into data types of our generator model.
@@ -43,8 +43,11 @@ import io.mdsl.generator.model.MDSLGeneratorModel;
  */
 public class DataTypeConverter {
 
+	private static final String ANONYMOUS_TYPE_NAME = "AnonymousType";
 	private AnonymousFieldNameGenerator fieldNameGenerator;
 	private MDSLGeneratorModel model;
+	
+	private String currentDefaultValue = null;
 
 	public DataTypeConverter(MDSLGeneratorModel model) {
 		this.model = model;
@@ -58,8 +61,22 @@ public class DataTypeConverter {
 	 * @return the generator model data type
 	 */
 	public DataType convert(DataContract dataContract) {
+		currentDefaultValue = null;
 		DataType dataType = new DataType(dataContract.getName());
+		
+		// new in V5.4.4
+		String version = dataContract.getSvi();
+		if(version!=null ) {
+			// is surrounded by double quotes
+			dataType.setVersion(version.substring(1, version.length()-1)); 
+		}
+		if(dataContract.getDefault()!=null ) {
+			currentDefaultValue = dataContract.getDefault().getDefault();
+			dataType.setDefaultValue(currentDefaultValue); // no quotes
+		}
+		
 		mapElementStructure(dataContract.getStructure(), dataType);
+		
 		return dataType;
 	}
 
@@ -147,6 +164,7 @@ public class DataTypeConverter {
 	}
 
 	private void mapAtomicParameterList(AtomicParameterList apl, DataType dataType) {
+		// TODO handle defaultValue
 		List<AtomicParameter> parameters = new LinkedList<>();
 		parameters.add(apl.getFirst());
 		parameters.addAll(apl.getNextap());
@@ -166,6 +184,7 @@ public class DataTypeConverter {
 			field.setType(BasicType.byName(spn.getAtomP().getRat().getBtype()));
 			field.isList(CardinalityHelper.isList(spn.getAtomP().getCard()));
 			field.isNullable(CardinalityHelper.isOptional(spn.getAtomP().getCard()));
+			field.setDefaultValue(currentDefaultValue);
 			dataType.addField(field);
 		} else if (spn.getTr() != null) {
 			DataTypeField field = new DataTypeField(fieldNameGenerator.getUniqueName(spn.getTr().getName()));
@@ -181,7 +200,7 @@ public class DataTypeConverter {
 	private String getUniqueTypeName(String initialName) {
 		String name = initialName;
 		if (name == null || "".equals(name))
-			return getUniqueTypeName("AnonymousType");
+			return getUniqueTypeName(ANONYMOUS_TYPE_NAME);
 
 		name = name.substring(0, 1).toUpperCase() + name.substring(1);
 		Set<String> alreadyExistingTypeNames = model.getDataTypes().stream().map(d -> d.getName())

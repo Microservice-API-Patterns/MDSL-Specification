@@ -16,7 +16,7 @@ Service Endpoint Contracts in MDSL
   * A context-sensitive, Eclipse-based editor for MDSL, developed with [Xtext](https://www.eclipse.org/Xtext/), is available [here](./updates/)
   * Generators for platform-specific technologies such as OpenAPI (f.k.a. Swagger), WSDL/SOAP (via Jolie), gRPC, see [here](./tools/)  <!-- GQL: prototype (not fully tested yet) -->
   * Command Line Interface (CLI) for the generators, see [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli) <!-- emerging: Web application -->
-* Reverse engineering (future work):
+* Reverse engineering:
   * Discover contracts, clients, providers in existing systems 
   * Analysis support (metrics)
 
@@ -32,37 +32,45 @@ The contract syntax (grammar) of MDSL is inspired by the API domain model from M
 
 [^99]: This domain model is published in Section 3 of the [EuroPLoP 2019 paper on Patterns for API Evolution from the MAP team](http://eprints.cs.univie.ac.at/6082/1/WADE-EuroPlop2019Paper.pdf).
 
-<!-- TODO V5.3: update with new grammar parts -->
-
 ~~~
 ServiceSpecification: 
-	'API' 'description' name=ID
-	('usage' 'context' visibility=Visibility 
-	    'for' direction+=DirectionList)?
-	types+=GataContract*
+    'API' 'description' name=ID
+    ('version' svi=SemanticVersioningIdentifier)? // plain STRING
+    ('usage' 'context' reach=Visibility ('for' direction+=DirectionList)?)?
+	('overview' description=STRING)?
+	types+=DataContract*
 	contracts+=EndpointContract+
 	providers+=Provider*
 	clients+=Client*
 	gateways+=Gateway*
+	orchestrations+=Orchestration* 
+	scenarios+=IntegrationScenario* 
 	('IPA')?;
 
 EndpointContract:
 	'endpoint' 'type' name=ID 
-	('version' svi=SemanticVersioningIdentifier)? 
+	('version' svi=SemanticVersioningIdentifier)? // plain STRING
 	('serves' 'as' primaryRole=ResourceRole 
-	    ('and' otherRoles+=ResourceRole)* 'role'?)? 
+	    ('and' otherRoles+=ResourceRole)* 'role'?)? // pattern decorator
 	('identified' 'by' pathParameters=ElementStructure)? 
 	('exposes' ops+=operation+)?;
+	('receives' events+=Event+)?
 
 Operation:
-	'operation' name=ID
+	'operation' 
+	name=ID 
 	('version' svi=SemanticVersioningIdentifier)?
-	('with' 'responsibility' respos=OperationResponsibility)?
-	('in'  mep=messageExchangePattern 'conversation')?  
-	'expecting' requestMessage=DataTransferRepresentation
-	('delivering' responseMessage=DataTransferRepresentation
-		('reporting' reportData=StatusReport)? // optional
-	)?;
+	('with' 'responsibility' responsibility=OperationResponsibility)? // pattern decorator
+	('in'  mep=MessageExchangePattern 'conversation')? 
+	('expecting' requestMessage=DataTransferRepresentation)? 
+	('delivering' responseMessage=DataTransferRepresentation 
+	  ('links' relations+=RelationshipLink+)? // optional within 'delivering'
+	  ('reporting' reports=StatusReports)? // optional within 'delivering'
+	)? // response is optional 
+	('transitions' st=StateTransition)? 
+	('emitting' events+=Event+)?  
+	('compensated' 'by' undo=[Operation])?  
+	('protected' 'by' policies=SecurityPolicies)?  
 
 DataTransferRepresentation:
 	('headers' headers=ElementStructure)? 
@@ -74,13 +82,13 @@ The notation used above is the [grammar language of Xtext](https://www.eclipse.o
 
 Endpoint types correspond to ports in the Hexagonal Architecture terminology; adapters are represented by technology [bindings](./bindings) <!-- [O] generate hexagon drawing --> The request and response messages consist of headers and payloads, whose content is modelled with MDSL [data transfer representations](./datacontract).
 
-*Note:* Versions 5.1 and 5.2 of the MDSL grammar extend the endpoint types with language concepts to model compensating operations, states and their transitions, events, and service orchestration flows. These features are still under design and development; the MDSL tools do not support them yet. Two sample specification featuring these advanced concepts can be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/examples-advanced/AdvancedServiceContractConcepts1.mdsl) and [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/examples-advanced/AdvancedServiceContractConcepts2.mdsl). Please view these grammar extensions as [technology previews](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview) subject to change and not yet supported in tools.
+*Note:* The above MDSL grammar also has language concepts to model compensating operations, states and their transitions, event emission and reception, and security policies. These features are still under design and development. The [MDSL Primer](./primer) shows them, and sample specifications featuring these advanced concepts can also be found [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/examples-advanced/AdvancedServiceContractConcepts1.mdsl) and [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/examples-advanced/AdvancedServiceContractConcepts2.mdsl). Please view these grammar extensions as [technology previews](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview) subject to change in future versions.
 
 ## Example
 
 The following exemplary API specification compiles against the [MDSL grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext) sketched above: 
 
-<!-- TODO feature new role keyword? update snippet for V5.2 -->
+<!-- TODO feature optional "role" keyword (?) -->
 
 ~~~
 API description SampleCustomerManagementAPI version "1.0.0"
@@ -156,12 +164,11 @@ exposes
 
 In this example, the error report is a simple numeric code (`400`); elaborate [error reports](https://microservice-api-patterns.org/patterns/quality/qualityManagementAndGovernance/ErrorReport) can be modeled as well, as any MDSL [data type](./datacontract) can be used. 
 
-<!-- TODO 2020 'analysis' keyword for reporting not featured yet (only 'error') -->
-
-*Important note*: This MDSL feature is still under design and construction (view it as a technology preview); future versions of the MDSL documentation pages will provide more examples.
+<!-- TODO 'analysis' keyword for reporting not featured yet (only 'error') -->
 
 The security `policy` also is modelled as an MDSL data contract; it can be used to define the various security assertions and protocol headers that exist (for instance, basic authentication in HTTP, as explained in the [OpenAPI specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securitySchemeObject)). *Important note*: This MDSL feature also still is under design and construction (view it as an incomplete [technology preview](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview)); future versions of the MDSL documentation pages will provide more examples.
 
+*Note*: These two MDSL features and tool support for them still are under development; future versions of the MDSL documentation pages will provide more examples.
 
 ## Technology Mappings
 
@@ -176,6 +183,6 @@ See [this page](technology-mappings) for information on how MDSL maps to OpenAPI
 * [Quick reference](./quickreference), [tutorial](./tutorial) and [tools](./tools)
 * Back to [MDSL homepage](./index)
 
-*Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2022. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

@@ -1,0 +1,20 @@
+API description FlowTest6b
+
+event type FlowInitiated
+event type Event1, Event2, Command1Done, Command2Done
+event type FlowTerminated
+
+command type StartFlowCommand
+command type Command1Command, Command2Command, JoinCommand
+command type TerminateCommand, CleanupCommand
+
+flow SampleFlowIncompleteAndOverlapping type APPLICATION_FLOW
+event FlowInitiated triggers command StartFlowCommand
+command StartFlowCommand emits event Event1 + Event2
+command Command1Command emits event Event1 o Event2
+command Command2Command emits event Event1 x Event2
+event Event1 triggers command Command1Command + Command2Command
+event Event2 triggers command Command1Command o Command2Command
+event Event2 triggers command Command1Command x Command2Command
+event Command1Done + Command2Done triggers command JoinCommand
+event Event1 + Event2 + FlowTerminated triggers command TerminateCommand + CleanupCommand

@@ -1,0 +1,25 @@
+API description FlowTest3a
+version "MDSL 5.4 (and up)"
+overview "http://www.workflowpatterns.com/patterns/control/basic/wcp4.php and http://www.workflowpatterns.com/patterns/control/basic/wcp5.php"
+
+event type FlowInitiated
+event type FlowStep1CompletedOptionA, FlowStep1CompletedOptionB, FlowStep2Completed, FlowStep3Completed
+event type FlowTerminated
+
+command type FlowStep1
+command type FlowStep2
+command type FlowStep3
+command type FlowStep4
+
+flow ExclusiveChoiceWithImplicitMerge type SERVICE_ORCHESTRATION
+
+  event FlowInitiated triggers command FlowStep1
+  command FlowStep1 emits event FlowStep1CompletedOptionA xor FlowStep1CompletedOptionB
+  event FlowStep1CompletedOptionA triggers command FlowStep2 
+  event FlowStep1CompletedOptionB triggers command FlowStep3 
+  command FlowStep2 emits event FlowStep2Completed
+  command FlowStep3 emits event FlowStep3Completed
+  // implicit merge via commands (no "FlowStep2Completed or FlowSteprCompleted triggers..." in grammar)
+  event FlowStep2Completed triggers command FlowStep4
+  event FlowStep3Completed  triggers command FlowStep4
+  command FlowStep4 emits event FlowTerminated

@@ -1,0 +1,197 @@
+# MDSL to Sketch Miner Converter Version 0.0.1 (Status: Demonstrator/Proof of Concept):
+
+/// Flow NestedFlow1
+
+/// Events: 
+/// FlowInitiated
+/// FlowStep1OutEvent1
+/// FlowStep1OutEvent2
+/// AND_FlowStep1OutEvent1_FlowStep1OutEvent2
+/// FlowStep2Completed
+/// FlowStep3Completed
+/// FlowStep4Completed
+/// FlowStep5Completed
+/// AND_FlowStep3Completed_FlowStep4Completed
+/// FlowStep6Completed
+/// AND_FlowStep5Completed_FlowStep6Completed
+/// FlowTerminated
+
+/// Commands:
+/// FlowStep1
+/// FlowStep2
+/// AND_FlowStep1_FlowStep2
+/// FlowStep3
+/// FlowStep4
+/// FlowStep5
+/// FlowStep6
+/// FlowStep7
+
+
+/// Canonical/normalized flow model:
+Flow NestedFlow1
+Number of events: 12
+Number of commands: 8
+ Event: FlowInitiated (Event) triggers 1 command(s): AND_FlowStep1_FlowStep2 (CompositeCommand) 
+ Event: FlowStep1OutEvent1 (Event) triggers 1 command(s): FlowStep3 (Command) 
+ Event: FlowStep1OutEvent2 (Event) triggers 1 command(s): FlowStep4 (Command) 
+ Event: AND_FlowStep1OutEvent1_FlowStep1OutEvent2 (CompositeEvent) triggers 0 command(s): 
+ Event: FlowStep2Completed (Event) triggers 1 command(s): FlowStep5 (Command) 
+ Event: FlowStep3Completed (Event) triggers 0 command(s): 
+ Event: FlowStep4Completed (Event) triggers 0 command(s): 
+ Event: FlowStep5Completed (Event) triggers 0 command(s): 
+ Event: AND_FlowStep3Completed_FlowStep4Completed (JoinEvent) triggers 1 command(s): FlowStep6 (Command) 
+ Event: FlowStep6Completed (Event) triggers 0 command(s): 
+ Event: AND_FlowStep5Completed_FlowStep6Completed (JoinEvent) triggers 1 command(s): FlowStep7 (Command) 
+ Event: FlowTerminated (Event) triggers 0 command(s): 
+ Command FlowStep1 emits 1 event(s): AND_FlowStep1OutEvent1_FlowStep1OutEvent2 (CompositeEvent) 
+ Command FlowStep2 emits 1 event(s): FlowStep2Completed (Event) 
+ Command AND_FlowStep1_FlowStep2 emits 0 event(s): 
+ Command FlowStep3 emits 1 event(s): FlowStep3Completed (Event) 
+ Command FlowStep4 emits 1 event(s): FlowStep4Completed (Event) 
+ Command FlowStep5 emits 1 event(s): FlowStep5Completed (Event) 
+ Command FlowStep6 emits 1 event(s): FlowStep6Completed (Event) 
+ Command FlowStep7 emits 1 event(s): FlowTerminated (Event) 
+
+
+/// Paths dump:
+FlowInitiated->FlowStep1;FlowStep1OutEvent1->FlowStep3;FlowStep3Completed->AND_FlowStep3Completed_FlowStep4Completed;AND_FlowStep3Completed_FlowStep4Completed->FlowStep6;FlowStep6Completed->AND_FlowStep5Completed_FlowStep6Completed;AND_FlowStep5Completed_FlowStep6Completed->FlowStep7;FlowTerminated->done;
+FlowInitiated->FlowStep1;FlowStep1OutEvent2->FlowStep4;FlowStep4Completed->AND_FlowStep3Completed_FlowStep4Completed;AND_FlowStep3Completed_FlowStep4Completed->FlowStep6;FlowStep6Completed->AND_FlowStep5Completed_FlowStep6Completed;AND_FlowStep5Completed_FlowStep6Completed->FlowStep7;FlowTerminated->done;
+FlowInitiated->FlowStep2;FlowStep2Completed->FlowStep5;FlowStep5Completed->AND_FlowStep5Completed_FlowStep6Completed;AND_FlowStep5Completed_FlowStep6Completed->FlowStep7;FlowTerminated->done;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+NestedFlow1:
+(FlowInitiated)
+FlowStep1
+(FlowStep1OutEvent1)
+FlowStep3
+(FlowStep3Completed)
+AND_FlowStep3Completed_FlowStep4Completed
+(AND_FlowStep3Completed_FlowStep4Completed)
+FlowStep6
+(FlowStep6Completed)
+AND_FlowStep5Completed_FlowStep6Completed
+(AND_FlowStep5Completed_FlowStep6Completed)
+FlowStep7
+(FlowTerminated)
+done
+
+(FlowInitiated)
+FlowStep1
+(FlowStep1OutEvent2)
+FlowStep4
+(FlowStep4Completed)
+AND_FlowStep3Completed_FlowStep4Completed
+(AND_FlowStep3Completed_FlowStep4Completed)
+FlowStep6
+(FlowStep6Completed)
+AND_FlowStep5Completed_FlowStep6Completed
+(AND_FlowStep5Completed_FlowStep6Completed)
+FlowStep7
+(FlowTerminated)
+done
+
+(FlowInitiated)
+FlowStep2
+(FlowStep2Completed)
+FlowStep5
+(FlowStep5Completed)
+AND_FlowStep5Completed_FlowStep6Completed
+(AND_FlowStep5Completed_FlowStep6Completed)
+FlowStep7
+(FlowTerminated)
+done
+
+
+
+/// Flow NestedFlow2
+
+/// Events: 
+/// FlowInitiated
+/// FlowStep1OutEvent1
+/// FlowStep1OutEvent2
+/// AND_FlowStep1OutEvent1_FlowStep1OutEvent2
+/// FlowStep2Completed
+/// FlowStep3Completed
+/// FlowStep4Completed
+/// FlowStep5Completed
+/// AND_FlowStep3Completed_FlowStep4Completed_FlowStep5Completed
+/// FlowTerminated
+
+/// Commands:
+/// FlowStep1
+/// FlowStep2
+/// AND_FlowStep1_FlowStep2
+/// FlowStep3
+/// FlowStep4
+/// FlowStep5
+/// FlowStep6
+
+
+/// Canonical/normalized flow model:
+Flow NestedFlow2
+Number of events: 10
+Number of commands: 7
+ Event: FlowInitiated (Event) triggers 1 command(s): AND_FlowStep1_FlowStep2 (CompositeCommand) 
+ Event: FlowStep1OutEvent1 (Event) triggers 1 command(s): FlowStep3 (Command) 
+ Event: FlowStep1OutEvent2 (Event) triggers 1 command(s): FlowStep4 (Command) 
+ Event: AND_FlowStep1OutEvent1_FlowStep1OutEvent2 (CompositeEvent) triggers 0 command(s): 
+ Event: FlowStep2Completed (Event) triggers 1 command(s): FlowStep5 (Command) 
+ Event: FlowStep3Completed (Event) triggers 0 command(s): 
+ Event: FlowStep4Completed (Event) triggers 0 command(s): 
+ Event: FlowStep5Completed (Event) triggers 0 command(s): 
+ Event: AND_FlowStep3Completed_FlowStep4Completed_FlowStep5Completed (JoinEvent) triggers 1 command(s): FlowStep6 (Command) 
+ Event: FlowTerminated (Event) triggers 0 command(s): 
+ Command FlowStep1 emits 1 event(s): AND_FlowStep1OutEvent1_FlowStep1OutEvent2 (CompositeEvent) 
+ Command FlowStep2 emits 1 event(s): FlowStep2Completed (Event) 
+ Command AND_FlowStep1_FlowStep2 emits 0 event(s): 
+ Command FlowStep3 emits 1 event(s): FlowStep3Completed (Event) 
+ Command FlowStep4 emits 1 event(s): FlowStep4Completed (Event) 
+ Command FlowStep5 emits 1 event(s): FlowStep5Completed (Event) 
+ Command FlowStep6 emits 1 event(s): FlowTerminated (Event) 
+
+
+/// Paths dump:
+FlowInitiated->FlowStep1;FlowStep1OutEvent1->FlowStep3;FlowStep3Completed->AND_FlowStep3Completed_FlowStep4Completed_FlowStep5Completed;AND_FlowStep3Completed_FlowStep4Completed_FlowStep5Completed->FlowStep6;FlowTerminated->done;
+FlowInitiated->FlowStep1;FlowStep1OutEvent2->FlowStep4;FlowStep4Completed->AND_FlowStep3Completed_FlowStep4Completed_FlowStep5Completed;AND_FlowStep3Completed_FlowStep4Completed_FlowStep5Completed->FlowStep6;FlowTerminated->done;
+FlowInitiated->FlowStep2;FlowStep2Completed->FlowStep5;FlowStep5Completed->AND_FlowStep3Completed_FlowStep4Completed_FlowStep5Completed;AND_FlowStep3Completed_FlowStep4Completed_FlowStep5Completed->FlowStep6;FlowTerminated->done;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+NestedFlow2:
+(FlowInitiated)
+FlowStep1
+(FlowStep1OutEvent1)
+FlowStep3
+(FlowStep3Completed)
+AND_FlowStep3Completed_FlowStep4Completed_FlowStep5Completed
+(AND_FlowStep3Completed_FlowStep4Completed_FlowStep5Completed)
+FlowStep6
+(FlowTerminated)
+done
+
+(FlowInitiated)
+FlowStep1
+(FlowStep1OutEvent2)
+FlowStep4
+(FlowStep4Completed)
+AND_FlowStep3Completed_FlowStep4Completed_FlowStep5Completed
+(AND_FlowStep3Completed_FlowStep4Completed_FlowStep5Completed)
+FlowStep6
+(FlowTerminated)
+done
+
+(FlowInitiated)
+FlowStep2
+(FlowStep2Completed)
+FlowStep5
+(FlowStep5Completed)
+AND_FlowStep3Completed_FlowStep4Completed_FlowStep5Completed
+(AND_FlowStep3Completed_FlowStep4Completed_FlowStep5Completed)
+FlowStep6
+(FlowTerminated)
+done
+
+
+
+ 

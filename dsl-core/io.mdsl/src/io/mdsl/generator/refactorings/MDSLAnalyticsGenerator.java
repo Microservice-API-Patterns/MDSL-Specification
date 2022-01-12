@@ -12,19 +12,15 @@ import io.mdsl.generator.AbstractMDSLGenerator;
 public class MDSLAnalyticsGenerator extends AbstractMDSLGenerator {
 	private String sourceEndpoint = null;
 			
-	public MDSLAnalyticsGenerator(String sourceEndpoint, String roleDecorator) {
+	public MDSLAnalyticsGenerator(String sourceEndpoint) {
 		super();
-		this.sourceEndpoint = sourceEndpoint;
+		this.sourceEndpoint = sourceEndpoint; // not used yet
 	}
 	
 	@Override
 	protected void generateFromServiceSpecification(ServiceSpecification mdslSpecification, IFileSystemAccess2 fsa, URI inputFileURI) {
-		// TODO [R] just a stub, not yet implemented: provide meaningful data and test
-		
-		// output file name still ignored as we generate to main memory (string fsa), in download option (seems to be null)
-		String fileName = inputFileURI.trimFileExtension().lastSegment() + "-refactored.mdsl";
-		System.out.println("Target file name is " + fileName);
-		String result = "This MDSL specification contains " +  mdslSpecification.getContracts() + " endpoint type/channel contracts."; 
-		fsa.generateFile(fileName, result);
+		// TODO (future work) provide meaningful insights
+		String result = "// Analytics PoC: This MDSL specification contains " +  mdslSpecification.getContracts().size() + " endpoint type/channel contracts.\n\n";
+		RefactoringHelpers.generateRefactoringOutput(mdslSpecification, fsa, inputFileURI, mdslSpecification, result);
 	}
 }

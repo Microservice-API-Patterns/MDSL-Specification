@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) Advanced HTTP Binding Concepts
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2020-2021. All rights reserved.
+copyright: Olaf Zimmermann, 2020-2022. All rights reserved.
 ---
 
 [Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Types](./datacontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Bindings](./bindings) &mdash; [OpenAPI generator](./generators/open-api) &mdash; [Tools Overview](./tools)
@@ -10,7 +10,7 @@ copyright: Olaf Zimmermann, 2020-2021. All rights reserved.
 Advanced Support for HTTP Resource APIs
 ========================================
 
-*Note:* This is an [technology preview](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview) subject to change at any time. Its documentation is work in progress.
+*Note:* This is an [technology preview](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview) subject to change at any time. Its documentation is work in progress. Please refer to the specification of general [HTTP protocol binding concepts](./bindings) for context information.
 
 ## Context 
 
@@ -120,11 +120,12 @@ Note that this endpoint provider instance defines tw resources to bind a single 
 
 As a technology preview, this feature might change at any time, both on the language and on the tool level. And it still specifies static contracts, whereas the original vision of REST promotes dynamic contracts in support of flexibility and evolvability. <!-- TODO bring MDSL to runtime via annotation processing -->
 
+The OpenAPI generator is able to convert the above information into Link Objects as defined in the [OpenAPI specification](https://swagger.io/specification/). The processing of these Link Object differs in the tools processing OpenAPI as input. <!-- true HATEOAS? -->
+
 ## More information
 
-Several versions of the RESTBucks example are modelled as examples and can be found [here](TODO).
+Several versions of the RESTBucks example have been modeled in MDSL (see JUnit test cases of the project).
 
-Since version 5.0.3, the OpenAPI generator converts the above information into Link Objects.
 
 # Site Navigation
 
@@ -132,10 +133,10 @@ Language specification pages:
 
 * Service [endpoint contract types](./servicecontract)
 * [Data contracts (schemas)](./datacontract)
+* General [HTTP protocol binding concepts](./bindings) (and bindings to other technologies)
 * Other [runtime concepts](./optionalparts)
-* Other [binding concepts](./bindings)
-* [OpenAPI generator]([OpenAPI generator](./generators/open-api))
+* [OpenAPI generator](./generators/open-api)
 
-*Copyright: Olaf Zimmermann, 2020-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2020-2022. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

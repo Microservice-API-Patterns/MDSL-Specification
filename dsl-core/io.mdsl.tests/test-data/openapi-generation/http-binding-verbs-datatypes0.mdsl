@@ -1,0 +1,48 @@
+API description CRUDVerbAndDataTypeMappingTest 
+
+data type DTO1Flat "dto1": {"dtoKey":ID<int>, "dtoValue":D<string>}
+data type DTO1Array "dto1a": {"dtoKey1a":ID<int>, "dtoValue1a":D<string>}*
+data type NestedDTO "dto2": {"dtoKey":ID<int>?, "dto1Nested":DTO1Flat*}
+data type DTO2WithAPL "apl": ("a1":ID<int>?, "a2":D<string>)* // * not supported yet
+data type TestDTO "noDTOButInt": D<int>
+
+endpoint type SampleEntityInformationHolder
+  exposes
+    operation create
+      expecting
+        payload "expecting": {"primaryIntegerKey":ID<int>, "atLeastOneString":D<string>+} 
+      delivering
+        payload "delivering": NestedDTO+
+        
+    operation get
+      expecting
+      	payload NestedDTO*
+      delivering
+        payload "delivering": NestedDTO // DTO1Flat* or DTO1Array
+        
+    operation update // with responsibility STATE_CREATION_OPERATION
+      expecting
+        payload "updateObject": {"dtoKey":ID<int>?, "dto1":DTO1Flat*}*
+      delivering
+        payload DTO1Flat?
+        
+    operation delete
+      expecting
+        // description is there but not "primaryKey" (hard coded tbc)?
+        payload "primaryKey":ID<int> 
+      // delivering
+        // payload "successCode" // HTTP response must be an empty "object"
+                                                   
+API provider Sample_CRUD_APIProvider
+offers SampleEntityInformationHolder
+at endpoint location "https://some.sample.domain/crudApiEndpoint"
+via protocol HTTP 
+binding 
+  resource Home // at "/eihHome/{primaryIntegerKey}/{atLeastOneString}"
+    operation create to POST
+      all elements realized as BODY parameters
+    operation get to GET
+      all elements realized as QUERY parameters
+    // update not bound
+    // delete not bound
+      

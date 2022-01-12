@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) to GraphQL
 author: Stefan Kapferer
-copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2021. All rights reserved.
+copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2022. All rights reserved.
 ---
 
 [Tools Overview](./../tools), [OpenAPI](./open-api), [Protocol Buffers](./protocol-buffers), [Jolie](./jolie), [Java](./java), [Freemarker templating](./freemarker), [AsyncAPI](./async-api)
@@ -11,11 +11,11 @@ GraphQL Generator
 The MDSL Eclipse plugin and the CLI allow API designers to generate [GraphQL](https://graphql.org/) schema files out of MDSL. GraphQL is a query language for APIs. The generator creates one `*.graphql` file per MDSL endpoint. 
 
 ## Usage
-You can generate the GraphQL file out of an MDSL model by using the MDSL [Eclipse plugin](./../tools#eclipse-plugin) or our [CLI](./../tools#command-line-interface-cli-tools).
+You can generate the GraphQL file from an MDSL model by using the MDSL [Eclipse plugin](./../tools#eclipse-plugin) or our [CLI](./../tools#command-line-interface-cli-tools).
 
-In Eclipse, you find the generator in the MDSL context menu:
+In Eclipse, the generator resides in the MDSL context menu:
 
-<a href="./../media/eclipse-graphql-generator-context-menu.png">![GraphQL Generator Context Menu in Eclipse](./../media/eclipse-graphql-generator-context-menu.png)</a>
+<a href="./.../../media/eclipse-graphql-generator-context-menu.png">![GraphQL Generator Context Menu in Eclipse](./.../../media/eclipse-graphql-generator-context-menu.png)</a>
 
 If you work with the CLI, the following command generates the GraphQL specification:
 
@@ -26,7 +26,7 @@ If you work with the CLI, the following command generates the GraphQL specificat
 _Hint:_ Both tools generate the Graphql file into the `src-gen` folder which is located in the projects root directory (Eclipse) or the directory from which the `mdsl` command has been called (CLI). Both tools create the directory automatically in case it does not already exist.
 
 ## Example
-The following MDSL model was outcome of this [blogpost](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html):
+The following MDSL model is featured in this [blog post](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html):
 
 ```
 API description ReferenceManagementServiceAPI
@@ -57,7 +57,7 @@ endpoint type PaperArchiveFacade
         payload D<string>
 ```
 
-The generator produces the following GraphQL schema for the single endpoint in the above MDSL specification:
+The generator produces a GraphQL schema for the single endpoint in the above MDSL specification.
 
 
 ## Generated GraphQL 
@@ -139,19 +139,19 @@ scalar VoidResponse
 
 You can find the sources for this example [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/graphql-example).
 
-**Note:** The GraphQL generator is an experimental prototype and implemented in a straightforward fashion. We generate an "input" and an "output" type for all MDSL types available; not all of these generated types might not be required. We also wrap lists into objects, which could often be simplified after generation.
+**Note:** The GraphQL generator is an experimental prototype and implemented in a straightforward fashion. We generate an "input" and an "output" type for all MDSL types available; not all of these generated types might always be required. Furthermore, we wrap lists into objects, which could often be simplified after generation.
 
-**Note:** A GraphQL schema needs at least one query operation. The generator maps all MDSL operations with the responsibilities [_COMPUTATION_FUNCTION_](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/ComputationFunction) and [_RETRIEVAL_OPERATION_](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation) to queries; all other operations are mapped to mutations. Thus, please ensure that your MDSL endpoint contains at least one operation with one of the responsibilities above.
+**Note:** A GraphQL schema needs at least one query operation. The generator maps all MDSL operations with the responsibilities [_COMPUTATION_FUNCTION_](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/ComputationFunction) and [_RETRIEVAL_OPERATION_](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation) to queries; all other operations are mapped to mutations. Thus, please ensure that your MDSL endpoint contains at least one operation with one of these two responsibilities.
 
 ## Tools for Validation
-To validate whether the generated `*.graphql` file is valid, you can use IDE plugins/extensions or web tools. For example:
+To validate whether the generated `*.graphql` file, many IDE plugins/extensions or Web tools are available. For example:
 
- * [GraphQL extensions for VS Code](https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql)
+ * [GraphQL extensions for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql)
  * [graphqleditor.com](https://graphqleditor.com/)
 
-The [graphqleditor.com](https://graphqleditor.com/) online tool provides an editor that compiles the schema and features a graphical representation of the model:
+The [graphqleditor.com](https://graphqleditor.com/) online tool provides an editor that compiles the schema and features a graphical representation of the model (a login/account might be required):
 
-<a target="_blank" href="/media/graphqleditor.com-screenshot.png">![graphqleditor.com Screenshot](/media/graphqleditor.com-screenshot.png)</a>
+<a target="_blank" href="./../media/graphqleditor.com-screenshot.png">![graphqleditor.com Screenshot](./../media/graphqleditor.com-screenshot.png)</a>
 
 In addition to that, the tool allows you to run a fake/mock backend that serves generated test data. For example, we can write and execute the following query that returns paper items for the example schema above:
 
@@ -169,7 +169,7 @@ query {
 
 The tool generates corresponding test data:
 
-<a target="_blank" href="/media/graphqleditor.com-faker-screenshot.png">![graphqleditor.com Faker Screenshot](/media/graphqleditor.com-faker-screenshot.png)</a>
+<a target="_blank" href="./../media/graphqleditor.com-faker-screenshot.png">![graphqleditor.com Faker Screenshot](./../media/graphqleditor.com-faker-screenshot.png)</a>
 
 **Note:** The parameter names _anonymousInput_ and _anonymous1_ are generated that way because the MDSL model does not provide names for these parameters. Better names  would be _lookupQueryInput_ and _author_ in this case. However, we cannot derive the correct names automatically; you can of course change these names in the generated `*.graphql` schema file.
 
@@ -183,7 +183,7 @@ With the generated GraphQL schema, you can easily implement server and/or client
 #### Server
 apollo-server lets you create a backend that responds to GraphQL queries. The following steps are based on this basic [Apollo tutorial](https://www.apollographql.com/docs/apollo-server/getting-started/).
 
-First of all, you have to create and initialize a new Node.js project by executing the following steps on your terminal:
+First of all, create and initialize a new Node.js project by executing the following steps on your terminal:
 
 ```bash
 mkdir graphql-server-example
@@ -264,7 +264,7 @@ If everything is fine you will get the following output and can open the mention
 
 Vou can test your server by executing queries at that URL:
 
-<a target="_blank" href="/media/apollo-server-test-screenshot.png">![Locally test Apollo server](/media/apollo-server-test-screenshot.png)</a>
+<a target="_blank" href="./../media/apollo-server-test-screenshot.png">![Locally test Apollo server](./../media/apollo-server-test-screenshot.png)</a>
 
 In a second step you can implement a mutation. Enhance the resolvers implementation as follows:
 
@@ -304,7 +304,7 @@ mutation createPaper {
 }
 ```
 
-<a target="_blank" href="/media/apollo-server-test-mutation-screenshot.png">![Locally test mutation with Apollo server](/media/apollo-server-test-mutation-screenshot.png)</a>
+<a target="_blank" href="./../media/apollo-server-test-mutation-screenshot.png">![Locally test mutation with Apollo server](./../media/apollo-server-test-mutation-screenshot.png)</a>
 
 **Note:** The mutation implementation just returns a fake object and does not persist the new paper item. It can therefore not be queried after the insertion mutation has been executed.
 
@@ -320,7 +320,7 @@ npm init --yes
 npm install apollo-client graphql react react-dom react-scripts
 ```
 
-You have to create an `index.html` in the folder `public` as follows:
+Next, create an `index.html` in the folder `public` as follows:
 
 ```html
 <!DOCTYPE html>
@@ -415,7 +415,7 @@ When adding the following start scripts to your `package.json` file, you can sta
 
 You can now open the browser and `localhost:3000` will start the app and list our two papers returned by the Apollo server:
 
-<a target="_blank" href="/media/apollo-client-test-screenshot.png">![Locally test Apollo client](/media/apollo-client-test-screenshot.png)</a>
+<a target="_blank" href="./../media/apollo-client-test-screenshot.png">![Locally test Apollo client](./../media/apollo-client-test-screenshot.png)</a>
 
 Find the complete client example [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/graphql-example/apollo-client-example/).
 
@@ -427,14 +427,14 @@ In case you want to use your GraphQL schema to generate client and/or server cod
 
 An easy way to get an impression of how the code generator works is by using the live demo ([https://graphql-code-generator.com/#live-demo](https://graphql-code-generator.com/#live-demo)). In the following screenshot you can see that we generated Java code by pasting our Schema into the live demo of the code generator:
 
-<a target="_blank" href="/media/code-generator-live-demo.png">![Code Generator Live Demo](/media/code-generator-live-demo.png)</a>
+<a target="_blank" href="./../media/code-generator-live-demo.png">![Code Generator Live Demo](./../media/code-generator-live-demo.png)</a>
 
 We created an example Java (Spring Boot) application that uses the code generator. You find the complete example project [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/graphql-example/spring-boot-example/).
 
 #### Create Spring Boot (Java) Application
 First, we created a classic Spring Boot project with [Spring initializr](https://start.spring.io/) (Gradle project).
 
-In order to use the code generator, you have to add the following Gradle plugin... 
+In order to use the code generator, add the following Gradle plugin:
 
 ```gradle
 id "com.moowork.node" version "1.3.1"
@@ -459,7 +459,7 @@ With the following line in the `build.gradle` file, we ensure that the code gene
 build.dependsOn yarn
 ```
 
-Then, we have to create a `package.json` file for calling the generator via yarn:
+Then, create a `package.json` file for calling the generator via yarn:
 
 ```json
 {
@@ -476,7 +476,7 @@ Then, we have to create a `package.json` file for calling the generator via yarn
 }
 ```
 
-In addition, we have to create a `codegen.yml` file to configure the code generator:
+In addition, create a `codegen.yml` file to configure the code generator:
 
 ```yml
 schema: src/main/resources/schema.graphql
@@ -524,7 +524,7 @@ public class GraphQLDataFetchers implements Resolvers.Query {
 }
 ```
 
-Finally, we have to implement a `GraphQLProvider` that wires our data fetcher:
+Finally, implement a `GraphQLProvider` that wires our data fetcher:
 
 ```java
 @Component
@@ -571,9 +571,9 @@ public class GraphQLProvider {
 
 The Spring Boot application can now be started with `./gradlew clean bootRun` (please adopt the command invocation to your OS). As soon as the application is started, you can run the same query as we did before with Apollo. The following screenshot shows our test with Postman:
 
-<a target="_blank" href="/media/spring-boot-test-with-postman.png">![Test Spring Boot server with Postman](/media/spring-boot-test-with-postman.png)</a>
+<a target="_blank" href="./../media/spring-boot-test-with-postman.png">![Test Spring Boot server with Postman](./../media/spring-boot-test-with-postman.png)</a>
 
-That's it. This was a short introduction what you can do with the GraphQL schema's generated by the MDSL tool. Try it out with your own MDSL model, or let [Context Mapper](https://contextmapper.org/docs/mdsl/) generate one for your from your Domain-Driven Design [bounded contexts](https://contextmapper.org/docs/bounded-context/)!
+That's it. This was a short introduction what you can do with the GraphQL schemas generated by the MDSL tool. Try it out with your own MDSL model, or let [Context Mapper](https://contextmapper.org/docs/mdsl/) generate one for your from your Domain-Driven Design [bounded contexts](https://contextmapper.org/docs/bounded-context/)!
 
 
 # Other Generators
@@ -595,6 +595,6 @@ Also checkout our other generators:
     * [Bindings](./../bindings) and [instance-level concepts](./../optionalparts). 
 * Back to [MDSL homepage](./../index).
 
-*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2022. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

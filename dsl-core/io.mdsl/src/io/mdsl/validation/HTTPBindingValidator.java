@@ -20,6 +20,7 @@ import io.mdsl.apiDescription.EndpointContract;
 import io.mdsl.apiDescription.EndpointInstance;
 import io.mdsl.apiDescription.EndpointList;
 import io.mdsl.apiDescription.HTTPBinding;
+import io.mdsl.apiDescription.HTTPGlobalParameterBinding;
 import io.mdsl.apiDescription.HTTPOperationBinding;
 import io.mdsl.apiDescription.HTTPParameter;
 import io.mdsl.apiDescription.HTTPParameterBinding;
@@ -34,8 +35,6 @@ import io.mdsl.apiDescription.StatusReport;
 import io.mdsl.apiDescription.StatusReports;
 import io.mdsl.apiDescription.TechnologyBinding;
 import io.mdsl.apiDescription.TreeNode;
-import io.mdsl.apiDescription.impl.EndpointInstanceImpl;
-import io.mdsl.apiDescription.impl.EndpointListImpl;
 
 /**
  * This class contains custom validation rules.
@@ -51,52 +50,20 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 	public final static String ERROR_REPORT_UNBOUND = "ERROR_REPORT_UNBOUND";
 	public final static String ERROR_REPORT_NOT_FOUND = "ERROR_REPORT_NOT_FOUND";
 	
+	public final static String GLOBAL_PARAMETER_BINDING_FOUND = "GLOBAL_PARAMETER_BINDING_FOUND";
+	public final static String URI_TEMPLATE_FOR_PATH_PARAM_MISSING = "URI_TEMPLATE_FOR_PATH_PARAM_MISSING";
+	public static final String URI_TEMPLATE_MISSING_TEXT = "requires a URI template in resource URI";
+	
 	@Override
 	public void register(EValidatorRegistrar registrar) {
 		// not needed for classes used as ComposedCheck
 	}
 	
-	// TODO (M) some more checks missing:
+	// TODO (future work): more checks would be useful
 	
 	// * all link relations are bound and bound ones refer existing abstract ones?
 	// * location/(sub-)resource URIs must make sense
 	// * could also check MIME types etc., and offer quick fix to add JSON as content type
-	
-	/*
-	// old and replaced:
-	@Check 
-	void checkWhetherAllOperationsInContractAreBound(final HTTPResourceBinding httpResourceBinding) {
-		TechnologyBinding tp = (TechnologyBinding) httpResourceBinding.eContainer().eContainer().eContainer();
-		EndpointList eil = null;
-		
-		if(tp.eContainer().getClass()==EndpointInstanceImpl.class) {
-			EndpointInstance ei = (EndpointInstance) tp.eContainer();
-			if(ei.eContainer().getClass()==EndpointListImpl.class) {
-				eil = (EndpointList) ei.eContainer();
-			}
-			else {
-				return; // TODO check binding in gateway etc.
-			}
-		}
-		else { 
-			return; // TODO check binding in gateway etc.
-		}
-		
-		EndpointContract ec = eil.getContract();
-		
-		// is there a more efficient way? (direct access, name equality)
-		for (Operation operation : ec.getOps()) {
-			boolean found=false;
-			for(HTTPOperationBinding httpOperationBinding : httpResourceBinding.getOpsB())
-				if(operation.getName().equals(httpOperationBinding.getBoundOperation()))
-					found=true;
-			if(!found) 
-				warning("Operation " + operation.getName() + " from contract " + ec.getName() + " not bound, default verb POST assumed.", 
-					httpResourceBinding,
-					ApiDescriptionPackage.eINSTANCE.getHTTPResourceBinding_Name());
-		}
-	}
-	*/
 	
 	@Check 
 	void checkWhetherAllOperationsInContractAreBound(final HTTPBinding httpBinding) {
@@ -104,9 +71,9 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 		TechnologyBinding tp = (TechnologyBinding) httpBinding.eContainer().eContainer();
 		EndpointList eil = null;
 		
-		if(tp.eContainer().getClass()==EndpointInstanceImpl.class) {
+		if(tp.eContainer() instanceof EndpointInstance) {
 			EndpointInstance ei = (EndpointInstance) tp.eContainer();
-			if(ei.eContainer().getClass()==EndpointListImpl.class) {
+			if(ei.eContainer() instanceof EndpointList) {
 				eil = (EndpointList) ei.eContainer();
 			}
 			else {
@@ -135,6 +102,8 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 		}
 	}
 	
+	// TODO (M) offer quick fixes to correct errors? rename, add (as Eclipse Java does)
+	
 	@Check 
 	void operationsActuallyDefinedInEndpointType(final HTTPOperationBinding httpOperationBinding) {
 		if(httpOperationBinding.getMethod()==HTTPVerb.TRACE || httpOperationBinding.getMethod()==HTTPVerb.HEAD || httpOperationBinding.getMethod()==HTTPVerb.OPTIONS) {
@@ -143,11 +112,11 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 		}
 		
 		checkWhetherAllBoundOperationsAppearInContract(httpOperationBinding);
-		checkErrorReportBindings(httpOperationBinding);
-		checkSecurityPolicyBindings(httpOperationBinding);
+		lookForErrorReportBindings(httpOperationBinding);
+		lookForSecurityPolicyBindings(httpOperationBinding);
 	}
 	
-	private void checkSecurityPolicyBindings(HTTPOperationBinding httpOperationBinding) {
+	private void lookForSecurityPolicyBindings(HTTPOperationBinding httpOperationBinding) {
 
 		EList<SecurityBinding> sbl = httpOperationBinding.getSecurityBindings();
 		EndpointContract ec = findContract(httpOperationBinding);
@@ -178,9 +147,7 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 		}
 	}
 	
-	// TODO (M) offer quick fixes to correct errors? rename, add (see Eclipse Java)
-
-	private void checkErrorReportBindings(HTTPOperationBinding httpOperationBinding) {
+	private void lookForErrorReportBindings(HTTPOperationBinding httpOperationBinding) {
 
 		EList<ReportBinding> rpl = httpOperationBinding.getReportBindings();
 		EndpointContract ec = findContract(httpOperationBinding);
@@ -210,8 +177,6 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 					ERROR_REPORT_NOT_FOUND);
 		}
 	}
-	
-	// TODO (M) offer quick fixes to correct errors? rename, add (see Eclipse Java)
 
 	private boolean checkWhetherAllBoundOperationsAppearInContract(HTTPOperationBinding httpOperationBinding) {
 		
@@ -233,37 +198,6 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 		
 	}
 
-	private EndpointContract findContract(HTTPOperationBinding httpOperationBinding) {
-		TechnologyBinding tb = (TechnologyBinding) httpOperationBinding.eContainer().eContainer().eContainer().eContainer();
-		
-		if(tb.eContainer().getClass()==EndpointInstanceImpl.class) {
-			EndpointInstance ei = (EndpointInstance) tb.eContainer();
-			if(ei.eContainer().getClass()==EndpointListImpl.class) {
-				EndpointList eil = (EndpointList) ei.eContainer();
-				return eil.getContract();
-			}
-			else {
-				return null; // TODO check binding in gateway etc.
-			}
-		}
-		else { 
-			return null; // TODO check binding in gateway etc.
-		}
-	}
-
-	/*
-	private boolean checkWhetherAllOperationsInContractAreBound(HTTPOperationBinding httpOperationBinding) {
-		EndpointContract ec = findContract(httpOperationBinding);
-		
-		for (Operation operation : ec.getOps()) {
-			if(operation.getName().equals(httpOperationBinding.getBoundOperation())) 
-				return true;
-		}
-		
-		return true;
-	}
-	*/
-
 	@Check 
 	void elementsActuallyDefinedInRequestPayload(final HTTPParameterBinding parameterBinding) {
 
@@ -272,13 +206,11 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 		Operation op = findOperation(ec, httpOperationBinding.getBoundOperation());
 		
 		if(!isPresentInRequestPayload(parameterBinding.getBoundParameter(), op))
-			error("Bound parameter " + parameterBinding.getBoundParameter() + " is not defined in the bound operation " + op.getName() + ". Add it there or delete binding here.", parameterBinding,
-						ApiDescriptionPackage.eINSTANCE.getHTTPParameterBinding_BoundParameter());
-
+			error("Bound parameter " + parameterBinding.getBoundParameter() + " is not defined in the bound operation " + op.getName() + ". Add it there or delete binding here.", 
+					parameterBinding, ApiDescriptionPackage.eINSTANCE.getHTTPParameterBinding_BoundParameter());
 	}
 
 	private boolean isPresentInRequestPayload(String boundParameter, Operation op) {
-
 		DataTransferRepresentation rm = op.getRequestMessage();
 		ElementStructure structure = rm.getPayload(); // TODO look in header too?
 		
@@ -296,12 +228,24 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 		if (structure.getApl() != null) {
 			atomicParameterList.add(structure.getApl().getFirst());
 			atomicParameterList.addAll(structure.getApl().getNextap());
-		} else if (structure.getNp() != null && structure.getNp().getAtomP() != null) {
+		} 
+		else if (structure.getNp() != null && structure.getNp().getAtomP() != null) {
 			atomicParameterList.add(structure.getNp().getAtomP());
-		} else if (structure.getNp() != null && structure.getNp().getTr() != null) {
-			// find referenced explicit type and call same method again 
-			return checkElements(structure.getNp().getTr().getDcref().getStructure(), boundParameter);
-		} else if (structure.getPt() != null) {
+		} 
+		else if (structure.getNp() != null && structure.getNp().getTr() != null) {
+			// new QF creating element bindings and this validator must match (or be compatible)
+			if(structure.getNp().getTr().getName()!=null &&structure.getNp().getTr().getName().equals(boundParameter))
+				return true;
+			else { 
+				// find referenced explicit type and call same method again
+				return checkElements(structure.getNp().getTr().getDcref().getStructure(), boundParameter);
+			}
+		}
+		else if (structure.getNp().getGenP() != null) {
+			if(structure.getNp().getGenP().getName()!=null && structure.getNp().getGenP().getName().equals(boundParameter))
+				return true;
+		}
+		else if (structure.getPt() != null) {
 			// not the most efficient way to do this:
 			List<TreeNode> nodes = Lists.newLinkedList();
 			nodes.add(structure.getPt().getFirst());
@@ -309,10 +253,7 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 			for(TreeNode nextLevel1Node : nodes) 
 				if(nextLevel1Node.getPn()!=null && nextLevel1Node.getPn().getAtomP()!=null)
 					atomicParameterList.add(nextLevel1Node.getPn().getAtomP());
-		} else if (structure.getNp().getGenP() != null) {
-			if(structure.getNp().getGenP().getName()!=null && structure.getNp().getGenP().getName().equals(boundParameter))
-				return true;
-		}
+		} 
 		
 		for(AtomicParameter atomicParameter : atomicParameterList) 
 			if(atomicParameter.getRat()!=null && atomicParameter.getRat().getName()!=null && atomicParameter.getRat().getName().equals(boundParameter)) {
@@ -322,20 +263,19 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 		return false;
 	}
 	
-	private Operation findOperation(EndpointContract ec, String boundOperation) {
-		for(Operation operation : ec.getOps())
-			if(operation.getName().equals(boundOperation)) 
-				return operation;
-		return null;
-	}
-	
 	@Check
 	public void doNotAllowBODYMappingForGETsAndDELETEs(final HTTPOperationBinding httpOperationBinding) {
 		// element bindings to BODY is ok if operation method is not GET or DELETE (FORM deprecated)
 		if (!(httpOperationBinding.getMethod() == HTTPVerb.GET || httpOperationBinding.getMethod() == HTTPVerb.DELETE))
 			return;
 		
-		// TODO missing: check "all elements bound to" default (for GET and DELETE, BODY is not ok)
+		// check "all elements bound to" default (for GET and DELETE, BODY is not ok)
+		HTTPGlobalParameterBinding gb = httpOperationBinding.getGlobalBinding();
+		if(gb!=null && gb.getParameterMapping() == HTTPParameter.BODY) {
+			if(httpOperationBinding.getMethod() == HTTPVerb.GET || httpOperationBinding.getMethod() == HTTPVerb.DELETE)
+				error("HTTP operations using the verbs GET and DELETE must not contain BODY parameters.", gb,
+					ApiDescriptionPackage.eINSTANCE.getHTTPGlobalParameterBinding_ParameterMapping()); // Literals.HTTP_PARAMETER_BINDING__PARAMETER_MAPPING);
+		}
 
 		for (HTTPParameterBinding parameterBinding : EcoreUtil2.eAllOfType(httpOperationBinding, HTTPParameterBinding.class).stream()
 				.filter(pb -> pb.getParameterMapping() != null && pb.getParameterMapping() != null && (pb.getParameterMapping() == HTTPParameter.BODY /* || pb.getParameterMapping().getHttp() == HTTPParameter.FORM */))
@@ -356,8 +296,68 @@ public class HTTPBindingValidator extends AbstractMDSLValidator {
 		}
 		for(Entry<HTTPVerb, Integer> entry : verbCountMap.entrySet()) {
 			if(entry.getValue() > 1)
-				warning("Resource binds mulitple operations to the same HTTP verb. Split it or change the operation bindings.", httpResourceBinding,
+				warning("Resource binds multiple operations to the same HTTP verb. Split it or change the operation bindings.", httpResourceBinding,
 					ApiDescriptionPackage.eINSTANCE.getHTTPResourceBinding_Name(), RESOURCE_SHOULD_BE_SPLIT); // Literals.HTTP_BINDING__EB);
 		}
 	}
+	
+	@Check
+	public void reportMissingURITemplate(final HTTPResourceBinding httpResourceBinding) {
+		for (HTTPOperationBinding operationBinding : httpResourceBinding.getOpsB()) {
+			// check global binding first
+			HTTPGlobalParameterBinding gb = operationBinding.getGlobalBinding();
+			if(gb!=null) {
+				if(gb.getParameterMapping().toString().equals("PATH")) {
+					if(httpResourceBinding.getUri()==null || !httpResourceBinding.getUri().matches(".*\\{.*\\}.*")) // TODO not a complete check (but good enough)
+						error("PATH parameter(s) of " + operationBinding.getBoundOperation() + " " + URI_TEMPLATE_MISSING_TEXT + ": {id}", operationBinding,
+							ApiDescriptionPackage.eINSTANCE.getHTTPOperationBinding_BoundOperation(), URI_TEMPLATE_FOR_PATH_PARAM_MISSING);
+				}
+			}
+			else {
+				// next, check all individual element bindings
+				for(HTTPParameterBinding parameterBinding : operationBinding.getParameterBindings() ) {
+					if(parameterBinding.getParameterMapping().toString().equals("PATH")) {
+						if(httpResourceBinding.getUri()==null || !httpResourceBinding.getUri().contains("{" + parameterBinding.getBoundParameter() + "}")) {
+							error("PATH parameter of " + operationBinding.getBoundOperation() + " " + URI_TEMPLATE_MISSING_TEXT + ": {" + parameterBinding.getBoundParameter() + "}", 
+									operationBinding, ApiDescriptionPackage.eINSTANCE.getHTTPOperationBinding_BoundOperation(), URI_TEMPLATE_FOR_PATH_PARAM_MISSING);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@Check
+	public void reportGlobalParameterBindingForOperation(final HTTPGlobalParameterBinding globalParameterBinding) {
+		info("All elements bound to same HTTP parameter type.", globalParameterBinding.eContainer(),
+				ApiDescriptionPackage.eINSTANCE.getHTTPOperationBinding_BoundOperation(), GLOBAL_PARAMETER_BINDING_FOUND);
+	}
+
+	// ** helpers: 
+		
+	private EndpointContract findContract(HTTPOperationBinding httpOperationBinding) {
+		TechnologyBinding tb = (TechnologyBinding) httpOperationBinding.eContainer().eContainer().eContainer().eContainer();
+		
+		if(tb.eContainer() instanceof EndpointInstance) {
+			EndpointInstance ei = (EndpointInstance) tb.eContainer();
+			if(ei.eContainer() instanceof EndpointList) {
+				EndpointList eil = (EndpointList) ei.eContainer();
+				return eil.getContract();
+			}
+			else {
+				return null; // TODO check binding in gateway etc.
+			}
+		}
+		else { 
+			return null; // TODO check binding in gateway etc.
+		}
+	}
+
+	private Operation findOperation(EndpointContract ec, String boundOperation) {
+		for(Operation operation : ec.getOps())
+			if(operation.getName().equals(boundOperation)) 
+				return operation;
+		return null;
+	}
+	
 }

@@ -150,7 +150,7 @@ public class Java2MDSL {
 			Endpoint epForClass = new Endpoint(name, role.toString(), operations);
 			mdslDTO.getEndpoints().add(epForClass);
 				
-			// TODO (H) handle inherited methods (?)
+			// TODO (M) future work: handle inherited methods (?)
 			transformMethods(classToBeTransformed.getDeclaredMethods(), operations);
 		}
 	}
@@ -233,7 +233,7 @@ public class Java2MDSL {
 			return transformParameter(name, type.componentType()) + "*"; 
 		}
 		else {
-			// TODO (M) turn into explicit "data type" in MDSL
+			// TODO (M) future work: turn into explicit "data type" in MDSL
 			return '"' + name + "\":" + transformDataClass(type);
 		}
 	}
@@ -241,7 +241,7 @@ public class Java2MDSL {
 	private static String transformDataClass(Class<?> type) {
 		boolean first=true;
 		String result = "{";
-		// TODO (H) handle inherited attributes (?)
+		// TODO (M) future work: handle inherited attributes (?)
 		Field[] attrArray = type.getDeclaredFields();
 		for(int i=0;i<attrArray.length;i++) {
 			Field attr = attrArray[i];

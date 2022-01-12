@@ -1,0 +1,22 @@
+API description TestAPI
+
+data type VersionedType version "0.1"  "uri": Link<string> default is "http://localhost:8080"
+event type workTrigger
+command type work
+
+endpoint type TestEndpoint
+
+endpoint type S1RealizationEndpoint supports scenario S1
+exposes
+operation work expecting payload "in":ID<int> delivering payload {"data":MD<string>}
+
+API provider S1RealizationEndpointProvider offers S1RealizationEndpoint at endpoint location "http://localhost:8080"
+via protocol HTTP binding
+resource S1RealizationEndpointHome at "/s1RealizationEndpointHome"
+operation work to POST element "in" realized as BODY parameter
+
+flow S1Flow realizes S1
+event workTrigger triggers command work 
+
+scenario S1
+    a "user" wants to "work"

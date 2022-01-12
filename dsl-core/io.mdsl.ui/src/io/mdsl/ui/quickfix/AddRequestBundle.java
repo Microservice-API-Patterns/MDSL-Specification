@@ -2,31 +2,41 @@ package io.mdsl.ui.quickfix;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
-import org.eclipse.xtext.ui.editor.model.edit.ISemanticModification;
 
 import io.mdsl.apiDescription.ElementStructure;
-import io.mdsl.apiDescription.impl.ElementStructureImpl;
-import io.mdsl.exception.MDSLException;
+import io.mdsl.apiDescription.Operation;
 import io.mdsl.transformations.MessageTransformations;
+import io.mdsl.transformations.TransformationHelpers;
 
-class AddRequestBundle implements ISemanticModification {
-	private String type; // TODO use to define request or request/response bundle?
+class AddRequestBundle extends QuickfixSemanticModification {
+	private String type;
 
 	public AddRequestBundle(String string) {
 		type = string;
 	}
-	
-	// TODO (M) [R] the high-end version of the IR (from TRC repo) should not be a quick fix but a menu option
-	
+
 	@Override
-	public void apply(EObject element, IModificationContext context) throws Exception {
-	
-		// check that element actually always is a element structure
-		if(element.getClass()!=ElementStructureImpl.class) {
-			System.err.println("Internal error: Add Request Bundle Quick Fix can only be applied if an element structure is selected.");
-			throw new MDSLException("Internal error: Add Request Bundle Quick Fix can only be applied if an element structure is selected.");
+	public void performQuickfix(EObject element, IModificationContext context) {
+		if (type.equals("fromSterotype")) {
+			// check that element actually always is a element structure
+			if (!(element instanceof ElementStructure)) {
+				TransformationHelpers.reportError("Internal error: This type of Add Request Bundle Quick Fix can only be applied if an element structure is selected.");
+			}
+			MessageTransformations.addRequestBundle((ElementStructure) element, true); // not sure about 'true' (but not in use at present)
+		} else if (type.equals("fromOperationRequest")) {
+			if (!(element instanceof Operation)) {
+				TransformationHelpers.reportError("This type of Add Request Bundle Quick Fix can only be applied if an operation is selected.");
+			}
+			Operation operation = (Operation) element;
+			MessageTransformations.addRequestBundle(operation.getRequestMessage().getPayload(), true);
+		} else if (type.equals("fromOperationResponse")) {
+			if (!(element instanceof Operation)) {
+				TransformationHelpers.reportError("This type of Add Request Bundle Quick Fix can only be applied if an operation is selected.");
+			}
+			Operation operation = (Operation) element;
+			MessageTransformations.addRequestBundle(operation.getResponseMessage().getPayload(), false);
+		} else {
+			TransformationHelpers.reportError("Add Request Bundle Quick Fix of unknown type: " + type);
 		}
-		
-		MessageTransformations.addRequestBundle((ElementStructure)element);	
 	}
 }

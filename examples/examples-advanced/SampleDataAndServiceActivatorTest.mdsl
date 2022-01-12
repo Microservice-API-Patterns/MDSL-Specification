@@ -1,0 +1,22 @@
+API description SampleDataAndServiceActivatorTest
+
+data type SampleBaseType "myId": D<int>
+
+data type FlatTree {"anOffer":D<string>, "value2":D<long>}
+data type FlatTreeWithOptions {"HELLO":D<string>*, "p2":D<bool>?}
+
+data type NestedTree {"HELLO":D<string>*, "p2":D<bool>?, "subtree": {"p31":ID<int>, "p32":MD<raw>}}
+data type NestedTreeWithIncompleteTypes {"v1":D<string>, "v2":D<bool>, {ID, MD<int>, P, "idOnly"}}
+
+// TODO test type references, top level and in nested tree
+
+endpoint type ServiceActivatorDemo
+ exposes
+  operation testAPI
+    expecting payload "inData": FlatTreeWithOptions
+    delivering payload "outData": NestedTree
+
+API provider ServiceActivatorDemoProvider offers ServiceActivatorDemo at endpoint location "http://localhost:8080"
+ via protocol HTTP binding
+ resource ServiceActivatorDemoHome at "/serviceActivatorDemoHome"
+  operation testAPI to PUT element "inData" realized as BODY parameter

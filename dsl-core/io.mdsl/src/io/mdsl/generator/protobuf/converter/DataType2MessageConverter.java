@@ -30,7 +30,7 @@ import io.mdsl.apiDescription.ParameterTree;
 import io.mdsl.apiDescription.SingleParameterNode;
 import io.mdsl.apiDescription.TreeNode;
 import io.mdsl.generator.AnonymousFieldNameGenerator;
-import io.mdsl.generator.CardinalityHelper;
+import io.mdsl.utils.CardinalityHelper;
 
 /**
  * Converts MDSL data contracts to Protocol Buffer messages.

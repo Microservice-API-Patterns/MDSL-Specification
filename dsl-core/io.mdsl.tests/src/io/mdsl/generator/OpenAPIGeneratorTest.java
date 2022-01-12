@@ -50,7 +50,7 @@ public class OpenAPIGeneratorTest extends AbstractMDSLInputIntegrationTest {
 	}
 
 	@Test
-	public void canGenerateSchemaForParameterForrest() throws IOException {
+	public void canGenerateSchemaForParameterForest() throws IOException {
 		assertThatInputFileGeneratesExpectedOutput("datatype-test-parameter-forrest-type");
 	}
 
@@ -115,17 +115,17 @@ public class OpenAPIGeneratorTest extends AbstractMDSLInputIntegrationTest {
 	}
 	
 	@Test
-	public void canRespectMultiplePATHParameterInHttpBinding() throws IOException {
+	public void canRespectMultiplePATHParameterInHttpBinding2() throws IOException {
 		assertThatInputFileGeneratesExpectedOutput("endpoint-http-mapping-PATH-parameter-test-2");
 	}
 	
 	@Test
-	public void canRespectOnePATHParameterInHttpBinding2() throws IOException {
+	public void canRespectOnePATHParameterInHttpBinding3() throws IOException {
 		assertThatInputFileGeneratesExpectedOutput("endpoint-http-mapping-PATH-parameter-test-3");
 	}
 	
 	@Test
-	public void canRespectCOOKIEParameterInHttpBinding() throws IOException {
+	public void canRespectCOOKIEParameterInHttpBinding1() throws IOException {
 		assertThatInputFileGeneratesExpectedOutput("endpoint-http-mapping-COOKIE-parameter-test-1");
 	}
 	
@@ -154,7 +154,32 @@ public class OpenAPIGeneratorTest extends AbstractMDSLInputIntegrationTest {
 	@Test 
 	public void testHTTPBindingVerbsDatatypesInCRUDAPI() throws IOException {
 		// TODO add a test with `P`and `D<void>`
-		assertThatInputFileGeneratesExpectedOutput("http-binding-verbs-datatypes");
+		assertThatInputFileGeneratesExpectedOutput("http-binding-verbs-datatypes0");
+	}
+	
+	@Test 
+	public void testHTTPBindingVerbsDatatypesCase1() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("http-binding-verbs-datatypes1");
+	}
+	
+	@Test 
+	public void testHTTPBindingVerbsDatatypesCase2() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("http-binding-verbs-datatypes2");
+	}
+	
+	@Test 
+	public void testHTTPBindingVerbsDatatypesCase3() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("http-binding-verbs-datatypes3");
+	}
+	
+	@Test 
+	public void testHTTPBindingVerbsDatatypesCase4() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("http-binding-verbs-datatypes4");
+	}
+	
+	@Test 
+	public void testHTTPBindingVerbsDatatypesCase5() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("http-binding-verbs-datatypes5");
 	}
 	
 	@Test // 
@@ -173,10 +198,20 @@ public class OpenAPIGeneratorTest extends AbstractMDSLInputIntegrationTest {
 	}
 	
 	@Test
+	public void testHTTPBindingMultipleEndpointsAndProvider2() throws IOException {
+		// TODO re-validate test oracle:
+		assertThatInputFileGeneratesExpectedOutput("http-binding-multiple-endpoints-and-providers2");
+	}
+	
+	@Test
+	public void testHTTPBindingMultipleEndpointsAndProvider3() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("http-binding-verbs-datatypes-trees");
+	}
+
+	@Test
 	public void testHTTPBindingReportsPoliciesHeaders() throws IOException {
 		assertThatInputFileGeneratesExpectedOutput("http-binding-reports-policies-headers");
 	}
-	
 	
 	@Test
 	public void testHTTPBindingHypermediaURITemplates() throws IOException {
@@ -193,15 +228,18 @@ public class OpenAPIGeneratorTest extends AbstractMDSLInputIntegrationTest {
 		assertThatInputFileGeneratesExpectedOutput("http-binding-restbucks-ml3");
 	}
 	
+	@Test
+	public void testBoundMAPDecoratorOperations() throws IOException {
+		assertThatInputFileGeneratesExpectedOutput("map-all-role-decorators-bound");
+	}
+	
 	
 	/**
 	 * Allows testing whether a test input file ({baseFilename}.mdsl) leads to the
 	 * expected output ({baseFilename}.yaml).
 	 */
-	private void assertThatInputFileGeneratesExpectedOutput(String baseFilename) throws IOException {
-		
-		// System.out.println("[*** Next test ***]: " + baseFilename + ".mdsl");
-		
+	protected void assertThatInputFileGeneratesExpectedOutput(String baseFilename) throws IOException {
+	
 		// given
 		Resource inputModel = getTestResource(baseFilename + ".mdsl");
 		OpenAPIGenerator generator = new OpenAPIGenerator();
@@ -212,18 +250,20 @@ public class OpenAPIGeneratorTest extends AbstractMDSLInputIntegrationTest {
 		generator.doGenerate(inputModel, javaIoFileSystemAccess, new GeneratorContext());
 
 		// then
-		assertTrue(generator.getValidationMessages().isEmpty());
-		assertEquals(getTestFileContent(baseFilename + ".yaml"), getGeneratedFileContent(baseFilename + ".yaml"));
+		assertTrue(generator.getValidationMessages().isEmpty(), "OAS validation reports errors");
+		assertEquals(getExpectedTestResult(baseFilename + ".yaml"), getGeneratedFileContent(baseFilename + ".yaml"));
 		
-		// System.out.println("[*** Done testing ***]: " + baseFilename + ".mdsl");
 	}
 
-	private String getTestFileContent(String fileName) throws IOException {
+	protected String getExpectedTestResult(String fileName) throws IOException {
 		return FileUtils.readFileToString(getTestInputFile(fileName), "UTF-8");
 	}
 
-	private String getGeneratedFileContent(String fileName) throws IOException {
-		return FileUtils.readFileToString(new File(getGenerationDirectory(), fileName), "UTF-8");
+	@Override
+	protected String getGeneratedFileContent(String fileName) throws IOException {
+		String generatedFileContent = FileUtils.readFileToString(new File(getGenerationDirectory(), fileName), "UTF-8");
+		// remove the x-generated-on and its timestamp, along with the newline
+		return generatedFileContent.replaceFirst("  x-generated-on: .*?(\\r?\\n|\\r)", "");
 	}
 
 	@Override

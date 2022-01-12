@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) Bindings
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2019-2021. All rights reserved.
+copyright: Olaf Zimmermann, 2019-2022. All rights reserved.
 ---
 
 [Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Types](./datacontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Tutorial](./tutorial) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
@@ -10,12 +10,7 @@ copyright: Olaf Zimmermann, 2019-2021. All rights reserved.
 Protocol Bindings for HTTP, gRPC, Jolie, Java
 =============================================
 
-*Note:* The protocol bindings ("adapter") specifications are work in progress still, and therefore subject to change in future versions (grammar, linter, generator support).
-
-<!--
-TODO update (from other): 
-The language concepts described here can be used for context mapping, deployment modeling, and code generation (e.g., walking provider skeletons, test clients). Unlike endpoint types and data contracts, they play on the "instance" rather than the "class" level (just like ports in WSDL are instances of port types).
--->
+MDSL by design abstracts from and generalizes concepts in other API contract languages. This is rather straightforward for most of them (and has been done before). For HTTP resource APIs, additional concepts and an intermediate step are required because MDSL endpoints do not map to resources and their URIs one-to-one (what about dynamic addressing as promoted by URI templates/path parameters? how to map complex request payloads of retrieval operations, HTTP GET and request bodies do not go well together?). The HTTP Protocol Binding of MDSL realizes this intermediate step in a flexible way.
 
 ## Overview 
 
@@ -81,8 +76,16 @@ The information in the binding refers to and refines the operation- and message 
 * Not shown in the above example, but explained [here](./http-rest), links are mapped to OpenAPI [link objects](https://swagger.io/docs/specification/links/) and, in turn hypermedia links in response messages. 
 * Server instances are created for the endpoint addresses.
 
-*Status update*: This is the first complete version of the binding. It is implemented in the current [MDSL tools](./tools), but has not been fully validated yet. The tool implementation has some known limitations. 
+*Note:* The protocol bindings ("adapters") stand at an intermediate level of elaboration and validation. Grammar, linter, and generator support are rather stable, but might still change in future versions of MDSL and [MDSL Tools](./tools).
 
+<!-- *Status*: This is the first complete version of the binding. It is implemented in the current [MDSL Tools](./tools), but has not been fully validated yet. The tool implementation has some known limitations. -->
+
+<!--  TODO 
+feature 'with' clause of individual bindings (grammar rule 'HTTPParameterBinding'):
+```
+operation op1 to POST element "properties" realized as BODY parameter with SomeCommand // TODO
+```
+-->
 
 ## gRPC Protocol Buffers Binding
 
@@ -150,12 +153,21 @@ The "other" part of this grammar rule makes it possible to define `"AnyOtherProt
 
 # Site Navigation
 
+<!--
 Language specification pages:
 
 * Service [endpoint contract types](./servicecontract)
 * [Data contracts (schemas)](./datacontract)
 * Other [runtime concepts](./optionalparts)
+-->
 
-*Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+* Language specification:
+  * Service [endpoint contract types](./servicecontract) and [data contracts (schemas)](./datacontract).
+  * Advanced [REST binding concepts](./http-rest)
+  * [Providers, clients, gateways](./optionalparts) and [instance-level concepts](./optionalparts) (this page).
+* [Quick reference](./quickreference), [tutorial](./tutorial) and [tools](./tools)
+* Back to [MDSL homepage](./index).
+
+*Copyright: Olaf Zimmermann, 2018-2022. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

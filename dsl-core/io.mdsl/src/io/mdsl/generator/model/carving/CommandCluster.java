@@ -17,7 +17,7 @@ public class CommandCluster {
 	}
 
 	public void addConnectedCommand(String name, Command connectedCommand) {
-		System.out.println("Adding " + name + " to " + clusterName);
+		// System.out.println("Adding " + name + " to " + clusterName);
 		this.connectedCommands.put(name, connectedCommand);
 	} 
 	

@@ -27,5 +27,11 @@ public interface MDSLType {
 	 * @return name (string representation) of the type
 	 */
 	String getName();
+	
 	boolean isAtomic();
+	
+	// TODO (future work) add support for pattern classifier/stereotype (MAP decorators)
+	
+	String sampleJSON(int levelOfDetail);
+	String sampleJSONWithEscapedQuotes(int levelOfDetail);
 }

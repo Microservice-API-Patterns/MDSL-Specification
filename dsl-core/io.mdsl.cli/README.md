@@ -7,8 +7,8 @@ Once you built the project with Gradle by calling `./gradlew clean build` in the
 
 You can also download the CLI binaries here:
 
- * [mdsl-cli-5.3.3.tar](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases/download/v5.3.3/mdsl-cli-5.3.3.tar)
- * [mdsl-cli-5.3.3.zip](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases/download/v5.3.3/mdsl-cli-5.3.3.zip)
+ * [mdsl-cli-5.4.4.tar](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases/download/v5.4.4/mdsl-cli-5.4.4.tar)
+ * [mdsl-cli-5.4.4.zip](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases/download/v5.4.4/mdsl-cli-5.4.4.zip)
 
 1. Uncompress the ZIP or TAR file into a directory of your choice.
 2. Run the CLI by using the executable in the `bin` folder:
@@ -16,38 +16,39 @@ You can also download the CLI binaries here:
    * Windows users: `{dir}\bin\mdsl.bat`
 3. Optionally: add the extracted `bin` directory to you `PATH` variable, so that you can call the `mdsl` command from everywhere.
 
-<!--
-**TODO:** In addition to the local build we should provide a download of the CLI ZIP and TAR files with the next release.
--->
-
 ## Input / Usage
 When calling `./mdsl` (or `mdsl.bat` on Windows), the CLI shows you the available parameters:
 
 ```text
 usage: mdsl
- -f,--outputFile <arg>   The name of the file that shall be generated
-                         (only used by Freemarker generator, as we cannot
-                         know the file extension).
+ -f,--outputFile <arg>   The name of the file that shall be generated.
+                         This parameter is only used if you pass 'text' to
+                         the 'generator' (-g) parameter because the
+                         Freemarker generator does not guess any file name
+                         extension).
  -g,--generator <arg>    The generator you want to call. Use one of the
                          following values: oas (OpenAPI Specification),
-                         jolie (Jolie), text (arbitrary text file by using
-                         a Freemarker template), proto (Protocol Buffers),
-                         graphql (GraphQL Schemas), java (Java Modulith),
-                         gen-model-json (Generator model as JSON
-                         (exporter)), gen-model-yaml (Generator model as
-                         YAML (exporter))
+                         proto (Protocol Buffers), jolie (Jolie), graphql
+                         (GraphQL Schemas), java (Java Modulith), text
+                         (arbitrary text file by using a Freemarker
+                         template), soad (transformation chain to generate
+                         bound endpoint type from user story), storyoas
+                         (transformation chain to generate OpenAPI from
+                         scenario/story), gen-model-json (Generator model
+                         as JSON (exporter)), gen-model-yaml (Generator
+                         model as YAML (exporter))
  -h,--help               Prints this message.
  -i,--input <arg>        Path to the MDSL file for which you want to
                          generate output.
  -o,--outputDir <arg>    The output directory into which the generated
                          files shall be written. By default files are
                          generated into the execution directory.
+ -s,--standalone         Create output in main memory and write it to
+                         standard output console.
  -t,--template <arg>     Path to the Freemarker template you want to use.
                          This parameter is only used if you pass 'text' to
-                         the 'generator' (-g) parameter.
+                         the 'generator' (-g) parameter. 
 ```
-
-<!-- TODO document -s option introduced in V5.1.1 (?) -->
 
 You have to pass the parameter `-i` (`--input`) with a path to an MDSL file at least (required parameter). In this case you can just compile the MDSL file and ensure it is valid.
 

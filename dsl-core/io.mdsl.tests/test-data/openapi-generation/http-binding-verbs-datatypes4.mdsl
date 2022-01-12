@@ -1,0 +1,62 @@
+API description HTTPVerbAndDataTypeMappingTest4
+usage context PUBLIC_API for FRONTEND_INTEGRATION and BACKEND_INTEGRATION
+overview "API Test Case: HTTPVerbAndDataTypeMappingTest"
+
+data type FlatDTO4 "fDto": {"idKey":D<int>, "atLeastOneString":D<string>+, "value3":D<int>, "tree4":{"p1":D, "p2":MD}} // TODO adding a generic parameter
+data type NestedDTO4 "nDto": {"mdKey":MD<int>?, "innerDTO":FlatDTO4*, P} // adding a generic parameter
+
+// This file: deeper nesting (with level 1 tree binding)
+
+endpoint type SampleEntityInformationHolder serves as MASTER_DATA_HOLDER
+  exposes
+    operation testInlinedParameters with responsibility STATE_CREATION_OPERATION
+      expecting
+        payload "requestMessage": {"idKey":D<int>, "atLeastOneString":D<string>+, "value3":D<int>, "tree4":{"p1":D, "p2":MD}} // TODO adding a generic parameter
+      delivering
+        payload "responseMessage": {"mdKey":MD<int>?, "innerDTO":FlatDTO4*, P} // adding a generic parameter
+        
+    operation testExtractedParameters with responsibility STATE_TRANSITION_OPERATION
+      expecting
+        payload "requestMessageWithTypeReference": FlatDTO4 
+      delivering
+        payload "responseMessageWithTypeReference": NestedDTO4
+    
+    operation getInlinedParameters 
+      expecting 
+        payload "requestMessage": {"idKey":ID<int>, "atLeastOneString":D<string>+, "value3":D<int>, "tree4":{"p1":D, "p2":MD}} // TODO adding a generic parameter
+      delivering
+        payload "responseMessage": {"mdKey":MD<int>?, "innerDTO":FlatDTO4*, P} // adding a generic parameter
+        
+    operation deleteExtractedParameters 
+      expecting
+        payload "requestMessageWithTypeReference": FlatDTO4 
+      delivering
+        payload "primaryIntegerKey": NestedDTO4
+
+// generated and then patched (note that ID is mapped to PATH by default in QF)
+API provider SampleEntityInformationHolderProvider offers SampleEntityInformationHolder at endpoint location "http://localhost:8080"
+	via protocol HTTP binding
+resource SampleEntityInformationHolderHome at "/sampleEntityInformationHolderHome/{idKey}/{atLeastOneString}"
+    // order of operation binding should not matter
+	operation getInlinedParameters to GET 
+		element "idKey" realized as PATH parameter 
+		element "atLeastOneString" realized as COOKIE parameter 
+		element "value3" realized as QUERY parameter
+		element "tree4" realized as QUERY parameter
+	operation testInlinedParameters to PUT 
+		element "idKey" realized as PATH parameter 
+		element "atLeastOneString" realized as PATH parameter // would appear twice when bound to BODY here (in URI)
+		element "value3" realized as HEADER parameter
+		element "tree4" realized as BODY parameter
+	operation testExtractedParameters to POST 
+		// element "requestMessageWithTypeReference" realized as BODY parameter
+		element "idKey" realized as PATH parameter 
+		element "atLeastOneString" realized as BODY parameter // appears twice when bound to BODY here
+		element "value3" realized as BODY parameter
+		element "tree4" realized as BODY parameter
+	operation deleteExtractedParameters to DELETE 
+	    // order of element bindings should not matter
+		element "value3" realized as COOKIE parameter
+		element "atLeastOneString" realized as PATH parameter 
+		element "tree4" realized as HEADER parameter
+		element "idKey" realized as PATH parameter 

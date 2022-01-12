@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 
 import com.google.common.collect.Lists;
@@ -35,36 +35,37 @@ import io.mdsl.apiDescription.EndpointInstance;
 import io.mdsl.apiDescription.EndpointList;
 import io.mdsl.apiDescription.HTTPBinding;
 import io.mdsl.apiDescription.HTTPOperationBinding;
-import io.mdsl.apiDescription.HTTPParameter;
-import io.mdsl.apiDescription.HTTPParameterBinding;
-// import io.mdsl.apiDescription.HTTPParameterMapping;
 import io.mdsl.apiDescription.HTTPResourceBinding;
-import io.mdsl.apiDescription.HTTPTypeBinding;
-import io.mdsl.apiDescription.HTTPVerb;
-import io.mdsl.apiDescription.MediaTypeList;
 import io.mdsl.apiDescription.Operation;
 import io.mdsl.apiDescription.ParameterTree;
+import io.mdsl.apiDescription.PatternStereotype;
+import io.mdsl.apiDescription.ProtocolBinding;
+import io.mdsl.apiDescription.Provider;
 import io.mdsl.apiDescription.ReportBinding;
+import io.mdsl.apiDescription.RoleAndType;
 import io.mdsl.apiDescription.SecurityBinding;
 import io.mdsl.apiDescription.SecurityPolicy;
-import io.mdsl.apiDescription.StandardMediaType;
+import io.mdsl.apiDescription.ServiceSpecification;
 import io.mdsl.apiDescription.TechnologyBinding;
 import io.mdsl.apiDescription.TreeNode;
+import io.mdsl.apiDescription.TypeReference;
 import io.mdsl.dsl.ServiceSpecificationAdapter;
 import io.mdsl.exception.MDSLException;
+import io.mdsl.transformations.DataTypeTransformations;
+
 
 /**
- * Helper class to resolve specific objects in an MDSL model.
+ * Helper class to resolve specific objects in an MDSL model. TODO rename?
  *
  */
 public class MDSLSpecificationWrapper {
 	
-	// TODO move to utility class (violates SRP)
-
-	private int logLevel = 1; // -1= off, 0=errors, 1=warn, 2=log, 3=all (could use enum) 
-
-	private static final String DEFAULT_MEDIA_TYPE = "application/json"; 
-
+	private static final String OAS_CODE_X_742 = "x-742";
+	private static final String OAS_CODE_X_743 = "x-743";
+	private static final String OPEN_ID_CONNECT_URL = "openIdConnectUrl";
+	private static final String TOKEN_URL = "tokenUrl";
+	private static final String AUTHORIZATION_URL = "authorizationUrl";
+	private static final String SCOPE_PREFIX = "Scope";
 	private ServiceSpecificationAdapter mdslSpecification;
 
 	public MDSLSpecificationWrapper(ServiceSpecificationAdapter mdslSpecification) {
@@ -76,42 +77,108 @@ public class MDSLSpecificationWrapper {
 	}
 
 	public String getElementName(ElementStructure representationElement) {
-		// TODO implement
-		return "Default Element Name (Feature NYI)"; 
+		if(representationElement.getPt()!=null)
+			return representationElement.getPt().getName();
+		else if(representationElement.getNp()!=null) {
+			if(representationElement.getNp().getAtomP()!=null)
+				return representationElement.getNp().getAtomP().getRat().getName();
+			else if(representationElement.getNp().getTr()!=null)
+				return representationElement.getNp().getTr().getName();
+			else if(representationElement.getNp().getGenP()!=null)
+				return representationElement.getNp().getGenP().getName();
+		}
+		return "unnamedElement"; 
 	}
 		
-	// checkers:
+	// structure checkers:
 	
-	public boolean isAtomicOrIsFlatParameterTree(ElementStructure structure) {
+	public boolean isSimplePayload(ElementStructure structure) {
 		if(structure==null) {
-			throw new MDSLException("Empty structure type (?)"); 
+			throw new MDSLException("Unexpected input for atomicity check: empty structure type"); 
 		}
-		// find out whether we deal with a simple or a complex parameter
+		
+		// find out whether we deal with a simple or a complex parameter, starting with APL
 		if (structure.getApl() != null) {
-			// is not flat if cardinality is set to n (*, +)
-			return !isMultiplicity(structure.getApl().getCard());
-			//return true;
-		} else if (structure.getNp() != null && structure.getNp().getAtomP() != null) {
-			return !isMultiplicity(structure.getNp().getAtomP().getCard());
-			// return true;
-		} else if (structure.getNp() != null && structure.getNp().getTr() != null) {
-			// find referenced explicit type and call same method again 
-			// TODO test what about cardinality? (done 12/20)
-			if(isMultiplicity(structure.getNp().getTr().getCard()))
-				return false;
-			else
-				return isAtomicOrIsFlatParameterTree(structure.getNp().getTr().getDcref().getStructure());
-		} else if (structure.getPt() != null) {
-			if(isParameterTreeAtomic(structure.getPt()))
+			return !isMultiplicity(structure.getApl().getCard()); // is not flat if cardinality is set to n (*, +)
+		} 
+		
+		if(structure.getNp()!=null) {
+			if(structure.getNp().getAtomP() != null) {
+				return !isMultiplicity(structure.getNp().getAtomP().getCard());
+			} else if(structure.getNp().getTr() != null) {
+				if(isMultiplicity(structure.getNp().getTr().getCard())) {
+					return false;
+				}
+				else {
+					// find referenced explicit type and call same method again 
+					MDSLLogger.reportInformation("Checking structure of type reference " + structure.getNp().getTr().getName());
+					// return isSimplePayload(structure.getNp().getTr().getDcref().getStructure());
+					return true;
+				}
+			}
+			else if (structure.getNp().getGenP() != null) {
+				// what about cardinality (does not have one?) 
 				return true;
-			else 
-				return false;
-		} else if (structure.getNp().getGenP() != null) {
-			return true;
+			}
+			else {
+				MDSLLogger.reportWarning("Unkown/unsupported single parameter node structure");
+				return false; // other non-atomic structure type (?)
+			}
 		}
+		else if (structure.getPt() != null) {
+			if(isParameterTreeAtomic(structure.getPt())) {
+				return true;
+			}
+			else { 
+				return false;
+			}
+		} else if (structure.getPf() != null) {
+			return false;
+		}
+		
 		else {
+			MDSLLogger.reportWarning("Unkown/unsupported structure");
 			return false; // other non-atomic structure type (?)
 		}
+	}
+	
+	public boolean isParameterTreeAtomic(ParameterTree tree) {
+		if(isMultiplicity(tree.getCard()))
+			return false;
+		
+		List<TreeNode> nodes = collectTreeNodes(tree);
+		for (TreeNode node : nodes) {
+			if (node.getPn() != null && node.getPn().getAtomP() != null) {
+				continue;
+			}
+			else if (node.getPn() != null && node.getPn().getGenP() != null) {
+				continue;
+			}
+			else if (node.getPn() != null && node.getPn().getTr() != null) {
+				if(node.getPn().getTr().getDcref().getStructure().getNp()!=null) {
+					// catch false positive: tree in type reference (needs recursion for full solution):
+					if(node.getPn().getTr().getDcref().getStructure().getNp().getTr()!=null) {
+						return false;
+					}
+					else {
+						continue;
+					}
+				}
+				else {
+					return false;
+				}
+			}
+			else if (node.getApl() != null) {
+				continue;
+			}
+			else if(node.getChildren() != null) {
+				return false;
+			}
+			else {
+				MDSLLogger.reportWarning("Unknown/unexpected type of tree node");
+			}
+		}
+		return true;
 	}
 	
 	private boolean isMultiplicity(Cardinality card) {
@@ -121,19 +188,22 @@ public class MDSLSpecificationWrapper {
 		return card.getAtLeastOne()!=null || card.getZeroOrMore()!=null;
 	}
 	
-	public boolean isParameterTreeAtomic(ParameterTree tree) {
-		if(isMultiplicity(tree.getCard()))
+	public boolean treeHasMultiplicity(ParameterTree pt) {
+		if(pt==null || pt.getCard()==null) 
 			return false;
 		
-		List<TreeNode> nodes = collectTreeNodes(tree);
-		for (TreeNode node : nodes) {
-			if (node.getPn() != null && node.getPn().getAtomP() != null)
-				continue;
-			if (node.getApl() != null)
-				continue;
+		return pt.getCard().getZeroOrOne()!=null
+				|| pt.getCard().getAtLeastOne()!=null
+				|| pt.getCard().getZeroOrMore()!=null;
+	}
+	
+	public boolean referenceHasMultiplicity(TypeReference tr) {
+		if(tr==null || tr.getCard()==null) 
 			return false;
-		}
-		return true;
+					
+		return tr.getCard().getZeroOrOne()!=null
+				|| tr.getCard().getAtLeastOne()!=null
+				|| tr.getCard().getZeroOrMore()!=null;
 	}
 	
 	public boolean operationHasPayload(Operation mdslOperation) {
@@ -155,7 +225,7 @@ public class MDSLSpecificationWrapper {
 	
 	// collectors:
 	
-	public List<AtomicParameter> extractElements(ElementStructure structure) {
+	public List<AtomicParameter> extractAtomicElements(ElementStructure structure) {
 		List<AtomicParameter> atomicParameterList = Lists.newLinkedList();
 		
 		if (structure.getApl() != null) {
@@ -165,16 +235,19 @@ public class MDSLSpecificationWrapper {
 			atomicParameterList.add(structure.getNp().getAtomP());
 		} else if (structure.getNp() != null && structure.getNp().getTr() != null) {
 			// find referenced explicit type and call same method again 
-			return extractElements(structure.getNp().getTr().getDcref().getStructure());
+			return extractAtomicElements(structure.getNp().getTr().getDcref().getStructure());
 		} else if (structure.getPt() != null) {
-			if(this.isParameterTreeAtomic(structure.getPt()))
+			if(this.isParameterTreeAtomic(structure.getPt())) {
 				atomicParameterList.addAll(this.collectAtomicParameters(structure.getPt()));
+			}
 			else 
 				 throw new MDSLException("Cannot extract atoms from nested tree '"); // no PF, for instance
 		} else if (structure.getNp().getGenP() != null) {
-			// fill in a new AP, but how to create one?
-			this.log("[W] Known limitation: Cannot handle a top-level generic parameter, skipping it: " +  structure.getNp().getGenP().getName());
-			// throw new MDSLException("Would like to add the genP to the apl, NYI");
+			// simple workaround/solution, others are possible:
+			String name = structure.getNp().getGenP().getName(); // can be null
+			MDSLLogger.reportInformation("Adding a surrogate ap for generic parameter " + name);
+			AtomicParameter ap = DataTypeTransformations.createAtomicDataParameter(name, "string");
+			atomicParameterList.add(ap);
 		}
 		else {
 			throw new MDSLException("Cannot extract from this type of element.");
@@ -187,8 +260,16 @@ public class MDSLSpecificationWrapper {
 		List<AtomicParameter> list = Lists.newLinkedList();
 		List<TreeNode> nodes = collectTreeNodes(tree);
 		for (TreeNode node : nodes) {
-			if (node.getPn() != null && node.getPn().getAtomP() != null)
+			if (node.getPn() != null && node.getPn().getAtomP() != null) {
 				list.add(node.getPn().getAtomP());
+			}
+			// edge case (v545): type reference that points at an AP 
+			else if (node.getPn() != null && node.getPn().getTr() != null) {
+				ElementStructure referencedType = node.getPn().getTr().getDcref().getStructure();
+				if(referencedType.getNp()!=null&&referencedType.getNp().getAtomP()!=null) {
+					list.add(referencedType.getNp().getAtomP());
+				}
+			}
 			if (node.getApl() != null) {
 				list.add(node.getApl().getFirst());
 				list.addAll(node.getApl().getNextap());
@@ -197,26 +278,36 @@ public class MDSLSpecificationWrapper {
 		return list;
 	}
 
-	private List<TreeNode> collectTreeNodes(ParameterTree tree) {
+	public List<TreeNode> collectTreeNodes(ParameterTree tree) {
 		List<TreeNode> nodes = Lists.newLinkedList();
 		nodes.add(tree.getFirst());
 		nodes.addAll(tree.getNexttn());
 		return nodes;
 	}
-
+	
 	// finders:
 	
-	/*
-	public List<EndpointInstance> findEndpointInstancesForContract(EndpointContract endpointType) {
-		List<EndpointList> providers = EcoreUtil2.eAllOfType(mdslSpecification, EndpointList.class);
-		for(int i=0;i<providers.size();i++) {
-			if(providers.get(i).getContract().getName().equals(endpointType.getName())) {
-				return providers.get(i).getEndpoints();
+	public static String getClassifierAndElementStereotype(PatternStereotype classifier, RoleAndType roleAndType) {
+		String result = "";
+		if (classifier != null) {
+			String patternDecorator = classifier.getPattern();
+			if (patternDecorator != null && !patternDecorator.isEmpty())
+				result = "<<" + patternDecorator + ">>";
+			else {
+				patternDecorator = classifier.getEip();
+				if (patternDecorator != null && !patternDecorator.isEmpty())
+					result = "<<" + patternDecorator + ">>";
+				else {
+					String otherStereotype = classifier.getName();
+					if (otherStereotype != null && !otherStereotype.isEmpty())
+						result = "<<" + otherStereotype + "_Role>>"; // OAS ok, but Swagger tools need the "_" in the stereotype
+				}
 			}
+			result += " ";
 		}
-		return null;
+		result += MAPLinkResolver.mapParameterRoleAndType(roleAndType);
+		return result;
 	}
-	*/
 	
 	public List<EndpointInstance> findProviderEndpointInstancesFor(EndpointContract endpointType) {
 		List<EndpointList> endpoints = EcoreUtil2.eAllOfType(mdslSpecification, EndpointList.class);
@@ -236,7 +327,7 @@ public class MDSLSpecificationWrapper {
 							result.add(nextEndpoint);
 						}
 						else 
-							this.log("[EB] Non-HTTP binding found for " + nextEndpointList.getContract().getName());
+							this.logInformation("(EB]) Non-HTTP binding found for " + nextEndpointList.getContract().getName());
 					}
 				}
 			}
@@ -244,95 +335,84 @@ public class MDSLSpecificationWrapper {
 		
 		return result;
 	}
-
-	public EndpointInstance findFirstAndOnlyHttpBindingIfExisting(EndpointContract endpointType) {
-		List<TechnologyBinding> bindings = EcoreUtil2.eAllOfType(mdslSpecification, TechnologyBinding.class);
-		List<TechnologyBinding> httpBindings = bindings.stream()
-				.filter(b -> b.getProtBinding() != null && b.getProtBinding().getHttp() != null && b.getProtBinding().getHttp() instanceof HTTPBinding)
-				.collect(Collectors.toList());
-
-		if (httpBindings.size() == 1) // use HTTP binding, if there is only one
-		    return (EndpointInstance) httpBindings.get(0).eContainer();
-
-		return null;
+	
+	public EList<HTTPResourceBinding> getHTTPResourceBindings(EndpointInstance endpointInstance) {
+		EList<TechnologyBinding> protocolBindings = endpointInstance.getPb();
+		for(int i=0;i<protocolBindings.size();i++) {
+			ProtocolBinding pb = endpointInstance.getPb().get(i).getProtBinding(); 
+			HTTPBinding httpb = pb.getHttp();
+			if(httpb!=null) {
+				EList<HTTPResourceBinding> httprb = httpb.getEb();
+				if(httprb==null) { 
+					return null;
+				}
+				return httprb;
+ 			}
+		}
+		return null; 
 	}
 	
-	public HTTPVerb findVerbBindingFor(String operation, HTTPResourceBinding binding) {
-		HTTPOperationBinding opB = findOperationBindingFor(operation, binding);
-		if(opB!=null)
-			return opB.getMethod();
-		else 
-			return null;
-	}
-	
-	public HTTPTypeBinding findLinkTypeBindingFor(String name, HTTPResourceBinding binding) {
-		EList<HTTPTypeBinding> tps = binding.getTB();
-		for(HTTPTypeBinding tb : tps) {
-			if(tb.getLt()!=null && tb.getLt().getName().equals(name)) {
-				return tb;
+	public List<Provider> findProvidersFor(EndpointContract endpointType) {
+		EList<EObject> providers = ((ServiceSpecification) endpointType.eContainer()).getProviders();
+		List<Provider> result = new ArrayList<Provider>(); 
+		for(EObject provider : providers) {
+			if(provider instanceof Provider) {
+				// expecting 0 index here:
+				EList<EndpointList> epList = ((Provider) provider).getEpl();
+				if(epList.size()==0) {
+					MDSLLogger.reportError("No endpoint provider found for " + endpointType.getName());
+				}
+				
+				if (epList.size()>=1){
+					MDSLLogger.reportWarning("More than one provider instance found, using first.");
+				}
+				EndpointContract offeredContract = epList.get(0).getContract();
+				if(offeredContract.getName().equals(endpointType.getName())) {
+					providers.add(provider);
+				}
 			}
+			else
+				; // skip, must be AsyncAPI
 		}
-		return null;
+		return result;
 	}
-	
-	/*
-	public static HTTPOperationBinding findOperationBinding(String operationName, HTTPResourceBinding binding) {
-		EList<HTTPOperationBinding> opsBindings = binding.getOpsB();
-		for(int i=0;i<opsBindings.size(); i++) {
-			if(opsBindings.get(i).getBoundOperation().equals(operationName))
-				return opsBindings.get(i);
-		}
-		this.log("[E] No operation binding found for " + operationName);
-		return null;
-	}
-	*/
-	
-	public HTTPOperationBinding findOperationBindingFor(String operation, HTTPResourceBinding binding) {
-		if(binding==null)
-			return null;
-		
-		EList<HTTPOperationBinding> operationBindings = binding.getOpsB();
-		for(int i=0;i<operationBindings.size();i++) {
-			HTTPOperationBinding opB = operationBindings.get(i);
-			if(opB.getBoundOperation().equals(operation)) {
-				// this.log("[OB] Found an operation binding for " + operation + " in " + binding.getName() 
-				//	+ ": " + opB.getMethod().getName());
-				return opB;
-			}
-		}
-		// this.log("[I] No operation binding found for " + operation + " in " + binding.getName());
-		return null;
-	}
-	
-	public HTTPParameter findParameterBindingFor(String operation, String parameter, HTTPResourceBinding binding) {
-		if(binding==null)
-			return null;
-		
-		HTTPOperationBinding opB = findOperationBindingFor(operation, binding);
-		
-		if(opB==null)
-			return null; // no binding, so default mapping of "body" (?)
-		
-		if(opB.getGlobalBinding()!=null) {
-			this.log("[P] Found a global parameter mapping in " + operation);
-				return opB.getGlobalBinding().getParameterMapping();
-		}
 
-		EList<HTTPParameterBinding> parameterBindings = opB.getParameterBindings();
-		for(int i=0;i<parameterBindings.size();i++) {
-			HTTPParameterBinding pB = parameterBindings.get(i);
-			if(pB.getBoundParameter().equals(parameter)) {
-				this.log("[P] Found a parameter binding for " + operation + " in " + binding.getName());
-				return pB.getParameterMapping();
+	public EndpointInstance findFirstProviderAndHttpBindingFor(EndpointContract endpointType) {
+		EList<EObject> providers = ((ServiceSpecification) endpointType.eContainer()).getProviders();
+		for(EObject provider : providers) {
+			if(provider instanceof Provider) {
+				// expecting 0 index here:
+				EList<EndpointList> epList = ((Provider) provider).getEpl();
+				if(epList.size()==0) {
+					MDSLLogger.reportError("No endpoint provider found for " + endpointType.getName());
+				}
+				
+				if (epList.size()>=1){
+					MDSLLogger.reportWarning("More than one endpoint provider instance found, using first.");
+				}
+				EndpointContract offeredContract = epList.get(0).getContract();
+				if(offeredContract.getName().equals(endpointType.getName())) {
+					EList<EndpointInstance> eps = epList.get(0).getEndpoints();
+					if(eps.size()==0) {
+						MDSLLogger.reportWarning("No endpoint instance found for " + endpointType.getName());
+						return null;
+					}
+					if(eps.size()>1) {
+						MDSLLogger.reportWarning("Provider for " + endpointType.getName() + " has multiple endpoint instances, using first one.");
+					}
+					return eps.get(0); // TODO v55 collect in list rather than return first
+				}
 			}
+			else
+				; // skip, must be AsyncAPI
 		}
-		this.log("[P] No parameter binding found for " + parameter + " in " + binding.getName());
+		logInformation("Endpoint instance in provider for " + endpointType.getName() + " does not have an endpoint provider.");
 		return null;
 	}
-	
+		
 	public String findReportCodeInBinding(String operation, String reportNameInEndpointType, HTTPResourceBinding binding) {
 		if(binding==null)
-			return "x-742"; // OAS only accepts three-digit codes up to 500 and vendor extensions
+			return OAS_CODE_X_742; // OAS only accepts three-digit codes up to 500 and vendor extensions
 		
 		// TODO could move navigation to helper, used in several methods
 		EList<HTTPOperationBinding> operationBindings = binding.getOpsB();
@@ -340,22 +420,23 @@ public class MDSLSpecificationWrapper {
 			HTTPOperationBinding opB = operationBindings.get(i);
 			
 			if(opB.getBoundOperation().equals(operation)) {
-				this.logInformation("Found an operation binding for " + operation + " in " + binding.getName() 
+				MDSLLogger.reportInformation("Found an operation binding for " + operation + " in " + binding.getName() 
 					+ ": " + opB.getMethod().getName());
 				EList<ReportBinding> reports = opB.getReportBindings();
 
 				for(int j=0;j<reports.size();j++) {
 					ReportBinding report = reports.get(j);
-					this.logInformation("Processing a report binding: " + report.getName());
+					MDSLLogger.reportInformation("Processing a report binding: " + report.getName());
 					if(report.getName().equals(reportNameInEndpointType)) {
-						this.logInformation("Report binding found for " + operation + " in " + binding.getName());
+						MDSLLogger.reportInformation("Report binding found for " + operation + " in " + binding.getName());
 						return String.valueOf(report.getHttpStatusCode());
 					}
 				}
 			}
 		}
-		this.log("[W] No report binding found for " + operation + " in " + binding.getName());
-		return "x-743"; // handle contract inconsistency differently (validator)?
+		MDSLLogger.reportWarning("No report binding found for " + operation + " in " + binding.getName());
+		// TODO handle contract inconsistency differently (validator)?
+		return OAS_CODE_X_743; 
 	}
 
 	public String findReportTextInBinding(String operation, String reportNameInEndpointType,
@@ -368,20 +449,19 @@ public class MDSLSpecificationWrapper {
 		for(int i=0;i<operationBindings.size();i++) {
 			HTTPOperationBinding opB = operationBindings.get(i);
 			if(opB.getBoundOperation().equals(operation)) {
-				this.log("[OB] Found an operation binding for " + operation + " in " + binding.getName() 
-					+ ": " + opB.getMethod().getName());
 				EList<ReportBinding> reports = opB.getReportBindings();
 				for(int j=0;j<reports.size();j++) {
 					ReportBinding report = reports.get(j);
 					if(report.getName().equals(reportNameInEndpointType)) {
-						this.log("[RB] Report binding found for " + operation + " in " + binding.getName());
+						// this.log("[RB] Report binding found for " + operation + " in " + binding.getName());
 						return report.getDetails();
 					}
 				}
 			}
 		}
-		this.logWarning("No report binding found for " + operation + " in " + binding.getName());
-		return "n/a"; // TODO handle contract inconsistency differently (validator)?
+		MDSLLogger.reportWarning("No report binding found for " + operation + " in " + binding.getName());
+		// TODO handle contract inconsistency differently (validator)?
+		return "n/a"; 
 	}
 	
 	public SecurityBinding findPolicyInBinding(String operation, String policyNameInEndpointType, HTTPResourceBinding binding) {
@@ -398,57 +478,17 @@ public class MDSLSpecificationWrapper {
 				for(int j=0;j<policies.size();j++) {
 					SecurityBinding policy = policies.get(j);
 					if(policy.getName().equals(policyNameInEndpointType)) {
-						this.log("[PB] Policy binding found for " + operation + " in " + binding.getName());
+						MDSLLogger.reportInformation("(PB) Policy binding found for " + operation + " in " + binding.getName());
 						return policy;
 					}
 				}
 			}
 		}
-		this.logWarning("No policy binding found for " + operation + " in " + binding.getName() + ", skipping this one.");
-		return null; // TODO handle contract inconsistency differently (validator)?
+		MDSLLogger.reportWarning("No policy binding found for " + operation + " in " + binding.getName() + ", skipping this one.");
+		// TODO handle contract inconsistency differently (validator)?
+		return null; 
 	}
 
-	public List<String> findMediaTypeForRequest(Operation mdslOperation, HTTPResourceBinding binding) {
-		HTTPOperationBinding opB = findOperationBindingFor(mdslOperation.getName(), binding);
-		
-		if(opB==null || opB.getInContentTypes()==null) {
-			List<String> defaultTypeList = new ArrayList<String>();
-			defaultTypeList.add(DEFAULT_MEDIA_TYPE);
-			return defaultTypeList;
-		}
-		
-		// TODO also work with MIME type info in links (in endpoint type, in binding)
-
-		return findMediaTypes(opB.getInContentTypes());		
-	}
-	
-	public List<String> findMediaTypeForResponse(Operation mdslOperation, HTTPResourceBinding binding) {
-		HTTPOperationBinding opB = findOperationBindingFor(mdslOperation.getName(), binding);
-		
-		if(opB==null || opB.getOutContentTypes()==null) {
-			List<String> defaultTypeList = new ArrayList<String>();
-			defaultTypeList.add(DEFAULT_MEDIA_TYPE);
-			return defaultTypeList;
-		}
-		
-		return findMediaTypes(opB.getOutContentTypes());	
-	}
-
-	private List<String> findMediaTypes(MediaTypeList mimeTypes) {
-		List<String> result = new ArrayList<>();
-		if(mimeTypes.getCmt()!=null) {
-			EList<CustomMediaType> cmtl = mimeTypes.getCmt();
-			if(cmtl!=null) {
-				cmtl.forEach(cmt->result.add(cmt.getValue()));
-			}
-		}
-		if(mimeTypes.getSmt()!=null) {
-			EList<StandardMediaType> smtl = mimeTypes.getSmt();
-			if(smtl!=null&&smtl.size()>0)
-				smtl.forEach(smt->result.add(smt.getIanaName())); 
-		}
-		return result;
-	}
 
 	private String findKVPInPolicy(SecurityBinding spb, String key) {
 		EList<String> keys = spb.getKeys();
@@ -462,15 +502,15 @@ public class MDSLSpecificationWrapper {
 	}
 
 	public String findAuthorizationUrlInPolicy(SecurityBinding spb) {
-		return findKVPInPolicy(spb, "authorizationUrl"); 
+		return findKVPInPolicy(spb, AUTHORIZATION_URL); 
 	}
 
 	public String findTokenUrlInPolicy(SecurityBinding spb) {
-		return findKVPInPolicy(spb, "tokenUrl"); 
+		return findKVPInPolicy(spb, TOKEN_URL); 
 	}
 	
 	public String findOIDUrlInPolicy(SecurityBinding spb) {
-		return findKVPInPolicy(spb, "openIdConnectUrl"); 
+		return findKVPInPolicy(spb, OPEN_ID_CONNECT_URL); 
 	}
 	
 	public Map<String,String> findScopesInPolicyOrBinding(SecurityPolicy sp, SecurityBinding spb) {
@@ -481,29 +521,24 @@ public class MDSLSpecificationWrapper {
 			
 		for(int i=0;i<keys.size();i++) {
 			// TODO document, make more flexible/assertive 
-			if(keys.get(i).startsWith("Scope")) {
+			if(keys.get(i).startsWith(SCOPE_PREFIX)) {
 				result.put(keys.get(i), values.get(i));
 			}
 		}
 		return result;
 	}
-
-	public void logError(String string) {
-		if(logLevel>=0)
-			System.err.println("[E] " + string);
+	
+	// loggers
+	
+	public static void logError(String message) {
+		MDSLLogger.reportError(message);
 	}
 	
-	public void logWarning(String string) {
-		if(logLevel>=1)
-			this.log("[W] " + string);
+	public static void logWarning(String message) {
+		MDSLLogger.reportWarning(message);
 	}
 	
-	public void logInformation(String string) {
-		if(logLevel>=2)
-			this.log("[I] " + string);
-	}
-	
-	public void log(String string) {
-		System.out.println(string);
+	public static void logInformation(String message) {
+		MDSLLogger.reportInformation(message);
 	}
 }

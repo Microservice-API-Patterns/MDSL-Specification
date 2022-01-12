@@ -7,7 +7,7 @@ endpoint type TestEndpoint
   exposes
     operation getTest
       expecting
-        payload ("attr1":D<string>, "attr2":D<string>)
+        payload ("attr1":D<string>, "attr2":D<string>+)
       delivering
         payload Test
 

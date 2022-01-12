@@ -5,15 +5,42 @@ data type Test P
 endpoint type TestEndpoint
   serves as INFORMATION_HOLDER_RESOURCE
   exposes
-    operation doSomethingJust4Test
+    operation doSomething
       expecting
-        payload ("attr1":D<string>, "attr2":D<string>)
+        payload {"attr1":D<string>, "attr2":D<string>}
+      delivering
+        payload Test
+        
+// second endpoint and two providers added in V5.4 ("addPathItemIfPossible", "mergePathItems")
+
+endpoint type TestEndpoint2
+  serves as INFORMATION_HOLDER_RESOURCE
+  exposes
+    operation doSomethingElse
+      expecting
+        payload {"attr1":D<string>, "attr2":D<string>}
       delivering
         payload Test
 
 API provider TestEndpointProvider
 	offers TestEndpoint
-	at endpoint location "/endpoint"
-	via protocol HTTP binding resource Home at "/home" operation doSomethingJust4Test to GET
+	at endpoint location "http://tbc"
+	via protocol HTTP 
+	binding 
+	  resource Home at "/sharedrelpath" operation doSomething to POST
 
+API provider TestEndpointProvider2
+	offers TestEndpoint2
+	at endpoint location "http://tbc"
+	via protocol HTTP 
+	binding 
+	  resource Home at "/sharedrelpath" operation doSomethingElse to GET
+	  
+API provider TestEndpointProvider3
+	offers TestEndpoint
+	at endpoint location "http://tbc"
+	via protocol HTTP 
+	binding 
+	  // resource Home at "/sharedrelpath" operation doSomething to PUT // causes OAS not to validate (operationId not unique)
+	  resource Home3 at "/sharedrelpath" operation doSomething to PUT // causes OAS not to validate (ok)
 IPA

@@ -1,8 +1,7 @@
 API description HTTPBindingOptionsDemo
 
-// TODO re-validate generated OAS YAML
-
 data type GenericParameterP P
+// note: unlike PTs, APLs cannot yet participate in type referenced L1 bindings (and default/global binding not possible either):
 data type ListOfBasicAtomicParameterTypes ("dataString":D<string>, "metadataString":MD<string>, "intIdentifier":ID<int>, "stringLink":L<string>)
 data type PersonAsFlatParamaterTree {"person":D<string>, "street":D<string>, "zip":D<int>, "city":D<string>, "phoneNumbers":D<string>+}
 
@@ -11,7 +10,7 @@ endpoint type HeuristicEndpoint1
   exposes
     operation createSomething with responsibility "POST"
       expecting
-        payload ListOfBasicAtomicParameterTypes
+        payload "listOfBasicAtomicParameterTypes": ListOfBasicAtomicParameterTypes
       delivering
         payload GenericParameterP
     operation addSomething with responsibility "PUT"
@@ -89,17 +88,21 @@ endpoint type HeuristicEndpoint4
 API provider NameHeuristicEndpointProvider1
 offers HeuristicEndpoint1
 at endpoint location "/endpoint1"
-via protocol HTTP binding resource self1 at "" operation createSomething to GET
+via protocol HTTP binding resource self1 at "" 
+operation createSomething to GET
+element listOfBasicAtomicParameterTypes realized as QUERY parameter
 
 API provider NameHeuristicEndpointProvider21
 offers HeuristicEndpoint2
 at endpoint location "/endpoint21"
-via protocol HTTP binding resource self2 at "" operation readSomething to POST
+via protocol HTTP binding resource self2 at "" 
+operation readSomething to POST
 
 API provider NameHeuristicEndpointProvider22
 offers HeuristicEndpoint2
 at endpoint location "/endpoint22"
-via protocol HTTP binding resource self3 at "" operation readSomething to POST
+via protocol HTTP binding resource self3 at "" 
+operation readSomething to POST
 
 API provider NameHeuristicEndpointProvider3
 offers HeuristicEndpoint3
@@ -114,4 +117,5 @@ via protocol "OtherProtocol"
 API provider NameHeuristicEndpointProvider42
 offers HeuristicEndpoint3
 at endpoint location "/endpoint42"
-via protocol HTTP binding resource self at "" operation putSomething to GET // ignored (ok)
+via protocol HTTP binding resource self at "" 
+operation putSomething to GET // ignored (ok)

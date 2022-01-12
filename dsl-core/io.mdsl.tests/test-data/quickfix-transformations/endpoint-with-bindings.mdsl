@@ -1,0 +1,23 @@
+API description QuickFixTransformationTestAPI
+version "Since version 5.4.2"
+overview "Testing the SOAD transformations and API refactorings"
+
+data type SampleBusinessObjectDTO "sampleBusinessObject":D
+data type Sample_Scenario_1RealizationEndpointDTO "sample_Scenario_1RealizationEndpoint":D<string>
+
+endpoint type CRUSPlusOneEndpoint serves as PROCESSING_RESOURCE
+exposes
+  operation doSomething expecting payload {"sampleData":D} delivering payload "doSomethingResponseBody":D<string>
+  operation initializeResource with responsibility STATE_CREATION_OPERATION expecting payload "inDTO":Sample_Scenario_1RealizationEndpointDTO delivering payload "resourceId":ID<string>
+  operation getResourceState with responsibility RETRIEVAL_OPERATION expecting payload "resourceId":ID<string> delivering payload "currentState":Sample_Scenario_1RealizationEndpointDTO
+  operation updateResourceState with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Sample_Scenario_1RealizationEndpointDTO delivering payload "updateResult":Sample_Scenario_1RealizationEndpointDTO
+  operation deleteResourceState with responsibility STATE_DELETION_OPERATION expecting payload "resourceId":ID<string> delivering payload "successFlag":D<bool>
+
+API provider CRUSPlusOneEndpointProvider offers CRUSPlusOneEndpoint at endpoint location "http://localhost:8080"
+  via protocol HTTP binding
+  resource CRUSPlusOneEndpointHome at "/cRUSPlusOneEndpointHome"
+    operation doSomething to POST element "sampleData" realized as BODY parameter
+    operation initializeResource to PUT element "inDTO" realized as BODY parameter
+    operation getResourceState to GET element "resourceId" realized as PATH parameter
+    operation updateResourceState to POST element "changeRequest" realized as BODY parameter
+    operation deleteResourceState to DELETE element "resourceId" realized as PATH parameter

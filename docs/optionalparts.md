@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) Other Concepts (Provider, Client, Gateway)
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2019-2021. All rights reserved.
+copyright: Olaf Zimmermann, 2019-2022. All rights reserved.
 ---
 
 [Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Type](./datacontract) &mdash; [Bindings](./bindings) &mdash; [Tutorial](./tutorial) &mdash; [Cheat Sheet](./quickreference) &mdash; [Tools](./tools)
@@ -31,7 +31,7 @@ exposes
 An API provider exposes one or more endpoint contracts at an address that understands a particular platform-specific protocol:
 
 ~~~
-API provider sampleProvider
+API provider SampleProvider
 offers SomeDemoContract
 at endpoint location "http://www.tbc.io:80/path/subpath"
 via protocol HTTP binding resource Home // or other supported protocol
@@ -54,7 +54,7 @@ Optionally, providers can disclose terms and conditions for API usage or a [Serv
 A more complete example, also featuring an SLA and evolution governance information, looks like this:
 
 ~~~
-API provider SampleAPIProvider1 
+API provider SampleProvider 
   offers SomeDemoContract 
     at endpoint location "http://www.testdomain.io:80/path/subpath"
     via protocol HTTP binding resource SampleAPIProvider1Resource
@@ -77,7 +77,7 @@ The language elements in the endpoint and provider SLA sections model the elemen
 
 ### Protocol Bindings
 
-See [bindings](./bindings) page.
+A provider must provide at least oen binding. See [bindings](./bindings) page for further information.
 
 
 ## API Client
@@ -87,7 +87,7 @@ The consumers of endpoint contracts (API clients) are modeled according to the f
 ~~~
 API client SampleAPIClient
   consumes SomeDemoContract
-  from SampleAPIProvider1
+  from SampleProvider
   via protocol HTTP 
 ~~~
 
@@ -105,11 +105,12 @@ API gateway SampleAPIGatweway
   via protocol SOAP_HTTP
 
   consumes SomeDemoContract 
-  from SampleAPIProvider1
+  from SampleProvider
   via protocol gRPC
 ~~~
 
 ## API Provider Implementation 
+
 An API provider has an upstream interface (see [bindings](./bindings)), but also a downstream implementation (which is not visible to its external client, but still worth specifying internally): 
 
 ~~~
@@ -137,6 +138,7 @@ API provider implementation SampleAPIProvider1Impl
   // or: with binding SomeJavaBinding (if defined)
 ~~~
 
+These language concepts (provider bindings and their implementations) can be used for context mapping, deployment modeling, and code generation (e.g., walking provider skeletons and test clients). Unlike endpoint types and data contracts, they play on the "instance" rather than the "class" level (just like ports in WSDL are instances of port types).
 
 # Site Navigation
 
@@ -146,6 +148,6 @@ API provider implementation SampleAPIProvider1Impl
 * [Quick reference](./quickreference), [tutorial](./tutorial) and [tools](./tools)
 * Back to [MDSL homepage](./index).
 
-*Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2022. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

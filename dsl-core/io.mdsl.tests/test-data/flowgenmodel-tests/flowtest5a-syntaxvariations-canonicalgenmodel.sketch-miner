@@ -1,0 +1,557 @@
+# MDSL to Sketch Miner Converter Version 0.0.1 (Status: Demonstrator/Proof of Concept):
+
+/// Flow SampleFlowWithSyntaxVariations1
+
+/// Events: 
+/// Event0
+/// Event1
+/// Event2
+/// AND_Event1_Event2
+
+/// Commands:
+/// Command1
+/// Command2
+/// TerminateCommand
+
+
+/// Canonical/normalized flow model:
+Flow SampleFlowWithSyntaxVariations1
+Number of events: 4
+Number of commands: 3
+ Event: Event0 (Event) triggers 2 command(s): Command1 (Command) Command2 (Command) 
+ Event: Event1 (Event) triggers 0 command(s): 
+ Event: Event2 (Event) triggers 0 command(s): 
+ Event: AND_Event1_Event2 (JoinEvent) triggers 1 command(s): TerminateCommand (Command) 
+ Command Command1 emits 2 event(s): Event1 (Event) Event2 (Event) 
+ Command Command2 emits 2 event(s): Event1 (Event) Event2 (Event) 
+ Command TerminateCommand emits 0 event(s): 
+
+
+/// Paths dump:
+Event0->Command1;Event1->AND_Event1_Event2;AND_Event1_Event2->TerminateCommand;
+Event0->Command1;Event2->AND_Event1_Event2;AND_Event1_Event2->TerminateCommand;
+Event0->Command2;Event1->AND_Event1_Event2;AND_Event1_Event2->TerminateCommand;
+Event0->Command2;Event2->AND_Event1_Event2;AND_Event1_Event2->TerminateCommand;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+SampleFlowWithSyntaxVariations1:
+(Event0)
+Command1
+(Event1)
+AND_Event1_Event2
+(AND_Event1_Event2)
+TerminateCommand
+
+(Event0)
+Command1
+(Event2)
+AND_Event1_Event2
+(AND_Event1_Event2)
+TerminateCommand
+
+(Event0)
+Command2
+(Event1)
+AND_Event1_Event2
+(AND_Event1_Event2)
+TerminateCommand
+
+(Event0)
+Command2
+(Event2)
+AND_Event1_Event2
+(AND_Event1_Event2)
+TerminateCommand
+
+
+
+/// Flow SampleFlowWithSyntaxVariations2
+
+/// Events: 
+/// FlowInitiated
+/// Event1
+/// Event2
+/// AND_Event1_Event2
+/// AND_Command1Done_Command2Done
+/// AND_Event1_Event2_FlowTerminated
+
+/// Commands:
+/// StartFlowCommand
+/// Command1
+/// Command2
+/// AND_Command1_Command2
+/// JoinCommand
+/// TerminateCommand
+/// CleanupCommand
+/// AND_TerminateCommand_CleanupCommand
+
+
+/// Canonical/normalized flow model:
+Flow SampleFlowWithSyntaxVariations2
+Number of events: 6
+Number of commands: 8
+ Event: FlowInitiated (Event) triggers 1 command(s): StartFlowCommand (Command) 
+ Event: Event1 (Event) triggers 1 command(s): AND_Command1_Command2 (CompositeCommand) 
+ Event: Event2 (Event) triggers 4 command(s): Command1 (Command) Command2 (Command) Command1 (Command) Command2 (Command) 
+ Event: AND_Event1_Event2 (CompositeEvent) triggers 0 command(s): 
+ Event: AND_Command1Done_Command2Done (JoinEvent) triggers 1 command(s): JoinCommand (Command) 
+ Event: AND_Event1_Event2_FlowTerminated (JoinEvent) triggers 1 command(s): AND_TerminateCommand_CleanupCommand (CompositeCommand) 
+ Command StartFlowCommand emits 1 event(s): AND_Event1_Event2 (CompositeEvent) 
+ Command Command1 emits 2 event(s): Event1 (Event) Event2 (Event) 
+ Command Command2 emits 2 event(s): Event1 (Event) Event2 (Event) 
+ Command AND_Command1_Command2 emits 0 event(s): 
+ Command JoinCommand emits 0 event(s): 
+ Command TerminateCommand emits 0 event(s): 
+ Command CleanupCommand emits 0 event(s): 
+ Command AND_TerminateCommand_CleanupCommand emits 0 event(s): 
+
+
+/// Paths dump:
+FlowInitiated->StartFlowCommand;Event1->Command1;Command1->GOTO-Event1;
+FlowInitiated->StartFlowCommand;Event1->Command1;Event2->Command1;Command1->GOTO-Event1;
+FlowInitiated->StartFlowCommand;Event1->Command1;Event2->Command1;Command1->GOTO-Event2;
+FlowInitiated->StartFlowCommand;Event1->Command1;Event2->Command2;Command2->GOTO-Event1;
+FlowInitiated->StartFlowCommand;Event1->Command1;Event2->Command2;Command2->GOTO-Event2;
+FlowInitiated->StartFlowCommand;Event1->Command1;Event2->Command1;Command1->GOTO-Event1;
+FlowInitiated->StartFlowCommand;Event1->Command1;Event2->Command1;Command1->GOTO-Event2;
+FlowInitiated->StartFlowCommand;Event1->Command1;Event2->Command2;Command2->GOTO-Event1;
+FlowInitiated->StartFlowCommand;Event1->Command1;Event2->Command2;Command2->GOTO-Event2;
+FlowInitiated->StartFlowCommand;Event1->Command1;Event2->AND_Event1_Event2_FlowTerminated;AND_Event1_Event2_FlowTerminated->TerminateCommand;
+FlowInitiated->StartFlowCommand;Event1->Command1;Event2->AND_Event1_Event2_FlowTerminated;AND_Event1_Event2_FlowTerminated->CleanupCommand;
+FlowInitiated->StartFlowCommand;Event1->Command2;Command2->GOTO-Event1;
+FlowInitiated->StartFlowCommand;Event1->Command2;Event2->Command1;Command1->GOTO-Event1;
+FlowInitiated->StartFlowCommand;Event1->Command2;Event2->Command1;Command1->GOTO-Event2;
+FlowInitiated->StartFlowCommand;Event1->Command2;Event2->Command2;Command2->GOTO-Event1;
+FlowInitiated->StartFlowCommand;Event1->Command2;Event2->Command2;Command2->GOTO-Event2;
+FlowInitiated->StartFlowCommand;Event1->Command2;Event2->Command1;Command1->GOTO-Event1;
+FlowInitiated->StartFlowCommand;Event1->Command2;Event2->Command1;Command1->GOTO-Event2;
+FlowInitiated->StartFlowCommand;Event1->Command2;Event2->Command2;Command2->GOTO-Event1;
+FlowInitiated->StartFlowCommand;Event1->Command2;Event2->Command2;Command2->GOTO-Event2;
+FlowInitiated->StartFlowCommand;Event1->Command2;Event2->AND_Event1_Event2_FlowTerminated;AND_Event1_Event2_FlowTerminated->TerminateCommand;
+FlowInitiated->StartFlowCommand;Event1->Command2;Event2->AND_Event1_Event2_FlowTerminated;AND_Event1_Event2_FlowTerminated->CleanupCommand;
+FlowInitiated->StartFlowCommand;Event1->AND_Event1_Event2_FlowTerminated;AND_Event1_Event2_FlowTerminated->TerminateCommand;
+FlowInitiated->StartFlowCommand;Event1->AND_Event1_Event2_FlowTerminated;AND_Event1_Event2_FlowTerminated->CleanupCommand;
+FlowInitiated->StartFlowCommand;Event2->Command1;Command1->GOTO-Event1;
+FlowInitiated->StartFlowCommand;Event2->Command1;Command1->GOTO-Event2;
+FlowInitiated->StartFlowCommand;Event2->Command2;Command2->GOTO-Event1;
+FlowInitiated->StartFlowCommand;Event2->Command2;Command2->GOTO-Event2;
+FlowInitiated->StartFlowCommand;Event2->Command1;Command1->GOTO-Event1;
+FlowInitiated->StartFlowCommand;Event2->Command1;Command1->GOTO-Event2;
+FlowInitiated->StartFlowCommand;Event2->Command2;Command2->GOTO-Event1;
+FlowInitiated->StartFlowCommand;Event2->Command2;Command2->GOTO-Event2;
+FlowInitiated->StartFlowCommand;Event2->AND_Event1_Event2_FlowTerminated;AND_Event1_Event2_FlowTerminated->TerminateCommand;
+FlowInitiated->StartFlowCommand;Event2->AND_Event1_Event2_FlowTerminated;AND_Event1_Event2_FlowTerminated->CleanupCommand;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+SampleFlowWithSyntaxVariations2:
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Command1)
+GOTO-Event1
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Event2)
+Command1
+(Command1)
+GOTO-Event1
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Event2)
+Command1
+(Command1)
+GOTO-Event2
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Event2)
+Command2
+(Command2)
+GOTO-Event1
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Event2)
+Command2
+(Command2)
+GOTO-Event2
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Event2)
+Command1
+(Command1)
+GOTO-Event1
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Event2)
+Command1
+(Command1)
+GOTO-Event2
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Event2)
+Command2
+(Command2)
+GOTO-Event1
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Event2)
+Command2
+(Command2)
+GOTO-Event2
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Event2)
+AND_Event1_Event2_FlowTerminated
+(AND_Event1_Event2_FlowTerminated)
+TerminateCommand
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command1
+(Event2)
+AND_Event1_Event2_FlowTerminated
+(AND_Event1_Event2_FlowTerminated)
+CleanupCommand
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command2
+(Command2)
+GOTO-Event1
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command2
+(Event2)
+Command1
+(Command1)
+GOTO-Event1
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command2
+(Event2)
+Command1
+(Command1)
+GOTO-Event2
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command2
+(Event2)
+Command2
+(Command2)
+GOTO-Event1
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command2
+(Event2)
+Command2
+(Command2)
+GOTO-Event2
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command2
+(Event2)
+Command1
+(Command1)
+GOTO-Event1
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command2
+(Event2)
+Command1
+(Command1)
+GOTO-Event2
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command2
+(Event2)
+Command2
+(Command2)
+GOTO-Event1
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command2
+(Event2)
+Command2
+(Command2)
+GOTO-Event2
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command2
+(Event2)
+AND_Event1_Event2_FlowTerminated
+(AND_Event1_Event2_FlowTerminated)
+TerminateCommand
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+Command2
+(Event2)
+AND_Event1_Event2_FlowTerminated
+(AND_Event1_Event2_FlowTerminated)
+CleanupCommand
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+AND_Event1_Event2_FlowTerminated
+(AND_Event1_Event2_FlowTerminated)
+TerminateCommand
+
+(FlowInitiated)
+StartFlowCommand
+(Event1)
+AND_Event1_Event2_FlowTerminated
+(AND_Event1_Event2_FlowTerminated)
+CleanupCommand
+
+(FlowInitiated)
+StartFlowCommand
+(Event2)
+Command1
+(Command1)
+GOTO-Event1
+
+(FlowInitiated)
+StartFlowCommand
+(Event2)
+Command1
+(Command1)
+GOTO-Event2
+
+(FlowInitiated)
+StartFlowCommand
+(Event2)
+Command2
+(Command2)
+GOTO-Event1
+
+(FlowInitiated)
+StartFlowCommand
+(Event2)
+Command2
+(Command2)
+GOTO-Event2
+
+(FlowInitiated)
+StartFlowCommand
+(Event2)
+Command1
+(Command1)
+GOTO-Event1
+
+(FlowInitiated)
+StartFlowCommand
+(Event2)
+Command1
+(Command1)
+GOTO-Event2
+
+(FlowInitiated)
+StartFlowCommand
+(Event2)
+Command2
+(Command2)
+GOTO-Event1
+
+(FlowInitiated)
+StartFlowCommand
+(Event2)
+Command2
+(Command2)
+GOTO-Event2
+
+(FlowInitiated)
+StartFlowCommand
+(Event2)
+AND_Event1_Event2_FlowTerminated
+(AND_Event1_Event2_FlowTerminated)
+TerminateCommand
+
+(FlowInitiated)
+StartFlowCommand
+(Event2)
+AND_Event1_Event2_FlowTerminated
+(AND_Event1_Event2_FlowTerminated)
+CleanupCommand
+
+
+
+/// Flow SampleFlowWithSyntaxVariations3
+
+/// Events: 
+/// Event1
+/// Event2
+
+/// Commands:
+/// Command1
+
+
+/// Canonical/normalized flow model:
+Flow SampleFlowWithSyntaxVariations3
+Number of events: 2
+Number of commands: 1
+ Event: Event1 (Event) triggers 1 command(s): Command1 (Command) 
+ Event: Event2 (Event) triggers 0 command(s): 
+ Command Command1 emits 1 event(s): Event2 (Event) 
+
+
+/// Paths dump:
+Event1->Command1;Event2->done;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+SampleFlowWithSyntaxVariations3:
+(Event1)
+Command1
+(Event2)
+done
+
+
+
+/// Flow SampleFlowWithSyntaxVariations4
+
+/// Events: 
+/// Event1
+/// Command1Done
+/// FlowTerminated
+/// AND_Command1Done_FlowTerminated
+/// Event2
+
+/// Commands:
+/// Command1
+/// Command2
+/// AND_Command1_Command2
+
+
+/// Canonical/normalized flow model:
+Flow SampleFlowWithSyntaxVariations4
+Number of events: 5
+Number of commands: 3
+ Event: Event1 (Event) triggers 2 command(s): Command1 (Command) AND_Command1_Command2 (CompositeCommand) 
+ Event: Command1Done (Event) triggers 0 command(s): 
+ Event: FlowTerminated (Event) triggers 0 command(s): 
+ Event: AND_Command1Done_FlowTerminated (CompositeEvent) triggers 0 command(s): 
+ Event: Event2 (Event) triggers 1 command(s): AND_Command1_Command2 (CompositeCommand) 
+ Command Command1 emits 2 event(s): Event1 (Event) AND_Command1Done_FlowTerminated (CompositeEvent) 
+ Command Command2 emits 1 event(s): AND_Command1Done_FlowTerminated (CompositeEvent) 
+ Command AND_Command1_Command2 emits 0 event(s): 
+
+
+/// Paths dump:
+Event2->Command1;Event1->Command1;Command1->GOTO-Event1;
+Event2->Command1;Event1->Command1;
+Event2->Command1;Event1->AND_Command1_Command2;Command1->GOTO-Event1;
+Event2->Command1;Event1->AND_Command1_Command2;
+Event2->Command1;Event1->AND_Command1_Command2;Command1Done->done;
+Event2->Command1;Event1->AND_Command1_Command2;FlowTerminated->done;
+Event2->Command1;
+Event2->Command2;Command1Done->done;
+Event2->Command2;FlowTerminated->done;
+
+
+/// Story (copy-paste to <a href="https://www.bpmn-sketch-miner.ai/index.html#">Sketch Miner Web App</a>)
+SampleFlowWithSyntaxVariations4:
+(Event2)
+Command1
+(Event1)
+Command1
+(Command1)
+GOTO-Event1
+
+(Event2)
+Command1
+(Event1)
+Command1
+
+(Event2)
+Command1
+(Event1)
+AND_Command1_Command2
+(Command1)
+GOTO-Event1
+
+(Event2)
+Command1
+(Event1)
+AND_Command1_Command2
+
+(Event2)
+Command1
+(Event1)
+AND_Command1_Command2
+(Command1Done)
+done
+
+(Event2)
+Command1
+(Event1)
+AND_Command1_Command2
+(FlowTerminated)
+done
+
+(Event2)
+Command1
+
+(Event2)
+Command2
+(Command1Done)
+done
+
+(Event2)
+Command2
+(FlowTerminated)
+done
+
+
+
+ 

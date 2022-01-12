@@ -62,18 +62,6 @@ public class MDSLStandaloneUsageHelper implements MDSLStandaloneAPI {
 		return new MDSLResource(new ResourceSetImpl().getResource(URI.createFileURI(mdslFile.getAbsolutePath()), true));
 	}
 	
-	/*
-	@Override
-	public MDSLResource loadMDSL(InputStream mdslStream) {
-		try {
-			return createNewMDSLResource(mdslStream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	*/
-
 	@Override
 	public MDSLResource createMDSL(String filepath) {
 		return createNewMDSLResource(new File(filepath));
@@ -99,22 +87,6 @@ public class MDSLStandaloneUsageHelper implements MDSLStandaloneAPI {
 		resource.getContents().add(ApiDescriptionFactory.eINSTANCE.createServiceSpecification());
 		return new MDSLResource(resource);
 	}
-	
-	/*
-	// added in V5.1.1 (not working)
-	private MDSLResource createNewMDSLResource(InputStream istream) throws IOException {
-		if(istream==null) throw new IllegalArgumentException("Incoming istream is null!");
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = resourceSet.createResource(URI.createURI("http://dummy.inmemory.ext"));
-		if(resource==null) 
-			throw new IllegalArgumentException("Resource still is null.");		
-        resource.load(istream, resourceSet.getLoadOptions());
-		Attributes settings = new Attributes();
-		resource.load(istream, settings);
-		resource.getContents().add(ApiDescriptionFactory.eINSTANCE.createServiceSpecification());
-		return new MDSLResource(resource);
-	}
-	*/
 
 	@Override
 	public String callGeneratorInMemory(MDSLResource mdsl, IGenerator2 generator) {

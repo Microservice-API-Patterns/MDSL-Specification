@@ -17,7 +17,7 @@ package io.mdsl.generator.model.converter;
 
 import java.util.List;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Lists; // TODO replace with ArrayList
 
 import io.mdsl.apiDescription.DataContract;
 import io.mdsl.apiDescription.Orchestration;
@@ -29,11 +29,12 @@ import io.mdsl.generator.model.EndpointContract;
 import io.mdsl.generator.model.MDSLGeneratorModel;
 import io.mdsl.generator.model.Provider;
 import io.mdsl.generator.model.ProviderImplementation;
-import io.mdsl.generator.model.carving.ClusterCollection;
-import io.mdsl.generator.model.composition.OrchestrationFlow;
+// import io.mdsl.generator.model.carving.ClusterCollection;
+import io.mdsl.generator.model.composition.Flow;
+import io.mdsl.generator.model.composition.converter.OrchestrationConverter;
 
 /**
- * Converts MDSL (AST model) into our simpler generator model.
+ * Converts MDSL (AST model) into a simpler generator model.
  *
  */
 public class MDSL2GeneratorModelConverter {
@@ -86,19 +87,18 @@ public class MDSL2GeneratorModelConverter {
 			genModel.addProviderImplementation(providerImpl);
 		
 		// convert orchestration flows
-		for (OrchestrationFlow oFlow : convertOrchestrationFlows(serviceSpecification.getOrchestrations())) {
+		for (Flow oFlow : convertOrchestrationFlows(serviceSpecification.getOrchestrations())) {
 			genModel.addOrchestration(oFlow);
 		}
-		List<ClusterCollection> clusters = OrchestrationConverter.postprocessFlowConversions();
-		genModel.addAllClustersToCuts(clusters);
+		
+		// List<ClusterCollection> clusters = OrchestrationConverter.postprocessFlowConversions(); // NYI
+		// genModel.addAllClustersToCuts(clusters);
 
 		return genModel;
 	}
 	
-	// note: retrofit from stalled MDSL folder (V5.1) on June 11, 21
-	
-	private List<OrchestrationFlow> convertOrchestrationFlows(List<Orchestration> orchestrations) {
-		List<OrchestrationFlow> oFlows = Lists.newLinkedList();
+	private List<Flow> convertOrchestrationFlows(List<Orchestration> orchestrations) {
+		List<Flow> oFlows = Lists.newLinkedList();
 		for (Orchestration oFlow : orchestrations) {
 			oFlows.add(orchestrationConverter.convert(oFlow));
 		}

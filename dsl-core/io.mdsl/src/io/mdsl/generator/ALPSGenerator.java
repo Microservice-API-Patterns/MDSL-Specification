@@ -8,22 +8,14 @@ import java.util.Map;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
-import freemarker.template.DefaultObjectWrapperBuilder;
-import freemarker.template.SimpleHash;
 import io.mdsl.apiDescription.ServiceSpecification;
 import io.mdsl.generator.freemarker.FreemarkerEngineWrapper;
-import io.mdsl.generator.jolie.converter.MDSL2JolieConverter;
-import io.mdsl.generator.jolie.converter.OperationModel;
-import io.mdsl.generator.jolie.converter.TypeModel;
 
 /**
 * TODO
  */
 public class ALPSGenerator extends AbstractMDSLGenerator {
 	
-	// private String targetFileName;
 	private Map<String, Object> customDataMap = new HashMap<>();
 	
 	/**
@@ -44,7 +36,6 @@ public class ALPSGenerator extends AbstractMDSLGenerator {
 		registerCustomModelProperty("timeStamp", new SimpleDateFormat("dd.MM.YYYY HH:mm:ss z").format(new Date()));
 		registerCustomModelProperty("fileName", mdslSpecification.eResource().getURI().lastSegment().toString());
 		registerCustomModelProperty("apiName", mdslSpecification.getName());
-
 		
 		FreemarkerEngineWrapper freemarkerWrapper = new FreemarkerEngineWrapper(ALPSGenerator.class, "MDSLEndpointTypeToALPS.yaml.ftl");
 		for (Map.Entry<String, Object> customDataEntry : customDataMap.entrySet()) {

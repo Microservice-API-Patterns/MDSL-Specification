@@ -6,22 +6,31 @@ servers: []
 tags:
 - name: TestEndpoint
   externalDocs:
-    description: The role of this endpoint is Information Holder Resource pattern
+    description: TestEndpoint contract, Information Holder Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
+- name: TestEndpoint2
+  externalDocs:
+    description: TestEndpoint2 contract, Processing Resource role
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource.html
 paths:
   /TestEndpoint:
     summary: general data-oriented endpoint
     get:
       tags:
       - TestEndpoint
-      description: unspecified operation responsibility
+      summary: getTest
+      description: ""
       operationId: getTest
       parameters:
       - name: attr1
         in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
         required: true
         schema:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
       responses:
         "200":
           description: getTest successful execution
@@ -29,7 +38,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Test'
+  /TestEndpoint2:
+    summary: activity-oriented endpoint
+    post:
+      tags:
+      - TestEndpoint2
+      summary: testVoidSignature
+      description: ""
+      operationId: testVoidSignature
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: testVoidSignature successful execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoidType'
 components:
   schemas:
     Test:
+      type: object
+    VoidType:
       type: object

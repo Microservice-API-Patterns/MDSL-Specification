@@ -1,12 +1,15 @@
 package io.mdsl.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
-// import org.apache.commons.io.FileUtils;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -54,14 +57,8 @@ public abstract class AbstractMDSLInputIntegrationTest {
 	protected File getGenerationDirectory() {
 		return new File(Paths.get("").toAbsolutePath().toString(), "src-test-gen");
 	}
-
-	/**
-	 * Override this method to define test file directory. Example:
-	 * "/test-data/freemarker/"
-	 */
-	protected abstract String testDirectory();
-
-	protected static JavaIoFileSystemAccess getFileSystemAccess() {
+	
+	protected JavaIoFileSystemAccess getFileSystemAccess() {
 		JavaIoFileSystemAccess fsa = new JavaIoFileSystemAccess();
 		Guice.createInjector(new AbstractGenericModule() {
 			public Class<? extends IEncodingProvider> bindIEncodingProvider() {
@@ -71,4 +68,34 @@ public abstract class AbstractMDSLInputIntegrationTest {
 		return fsa;
 	}
 
+	protected boolean assertThatKeywordAppearsInExpectedNumberOfLines(String fileContent, String keyword, int expectedNumber) throws IOException {
+		Pattern pattern = Pattern.compile(Pattern.quote(keyword));
+		Matcher matcher = pattern.matcher(fileContent);
+		int occurrences = 0;
+		while (matcher.find()) {
+			occurrences +=1;
+		}
+		return occurrences==expectedNumber;
+	}
+
+	protected String getExpectedTestResult(String fileName) throws IOException {
+		return FileUtils.readFileToString(getTestInputFile(fileName), "UTF-8");
+	}
+
+	protected String getGeneratedFileContent(String fileName) throws IOException {
+		return FileUtils.readFileToString(new File(getGenerationDirectory(), fileName), "UTF-8");
+	}
+	
+	/**
+	 * Override this method to define test file directory. Example:
+	 * "/test-data/freemarker/"
+	 */
+	protected abstract String testDirectory();
+
+	/**
+	 * Allows testing whether a test input file leads to the expected output
+	 */
+	protected void assertThatGeneratedFileMatchesExpectations(String testOutputFileName) throws IOException {
+		assertEquals(getExpectedTestResult(testOutputFileName), getGeneratedFileContent(testOutputFileName));
+	}
 }

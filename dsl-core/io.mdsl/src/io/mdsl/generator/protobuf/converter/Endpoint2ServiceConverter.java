@@ -15,7 +15,7 @@ import io.mdsl.apiDescription.ElementStructure;
 import io.mdsl.apiDescription.EndpointContract;
 import io.mdsl.apiDescription.Operation;
 import io.mdsl.apiDescription.TypeReference;
-import io.mdsl.generator.CardinalityHelper;
+import io.mdsl.utils.CardinalityHelper;
 
 /**
  * Converts MDSL endpoints to Protocol Buffer services.

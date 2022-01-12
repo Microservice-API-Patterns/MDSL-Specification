@@ -10,12 +10,17 @@ tags:
     description: The role of this endpoint, offering a SampleIntegrationScenarioRealizationEndpoint
       contract, is Information Holder Resource pattern
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
-- name: SampleIntegrationScenarioRealizationEndpointProvider-SplitResource2
+- name: SampleIntegrationScenarioRealizationEndpointProvider-Home_deleteSomeBusinessObject
   externalDocs:
     description: The role of this endpoint, offering a SampleIntegrationScenarioRealizationEndpoint
       contract, is Information Holder Resource pattern
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
-- name: SampleIntegrationScenarioRealizationEndpointProvider-SplitResource3
+- name: SampleIntegrationScenarioRealizationEndpointProvider-Resource2
+  externalDocs:
+    description: The role of this endpoint, offering a SampleIntegrationScenarioRealizationEndpoint
+      contract, is Information Holder Resource pattern
+    url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
+- name: SampleIntegrationScenarioRealizationEndpointProvider-Resource3
   externalDocs:
     description: The role of this endpoint, offering a SampleIntegrationScenarioRealizationEndpoint
       contract, is Information Holder Resource pattern
@@ -66,7 +71,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  successFlag:
+                  resourceId:
                     type: string
     post:
       tags:
@@ -80,9 +85,7 @@ paths:
             schema:
               type: object
               properties:
-                location:
-                  type: string
-                actor:
+                dataTransferObject:
                   type: string
       responses:
         "200":
@@ -91,12 +94,17 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  doSomethingResponseBody:
+                    type: string
+  /{resourceId}:
+    summary: general data-oriented endpoint
     delete:
       tags:
-      - SampleIntegrationScenarioRealizationEndpointProvider-Home
+      - SampleIntegrationScenarioRealizationEndpointProvider-Home_deleteSomeBusinessObject
       summary: ""
       description: unspecified operation responsibility
-      operationId: Home-deleteSomeBusinessObject
+      operationId: Home_deleteSomeBusinessObject-deleteSomeBusinessObject
       parameters:
       - name: resourceId
         in: path
@@ -113,30 +121,43 @@ paths:
                 properties:
                   successFlag:
                     type: boolean
-  /SplitResource2:
+    parameters:
+    - name: resourceId
+      in: path
+      required: true
+      schema:
+        type: string
+  /Resource2:
     summary: general data-oriented endpoint
     get:
       tags:
-      - SampleIntegrationScenarioRealizationEndpointProvider-SplitResource2
+      - SampleIntegrationScenarioRealizationEndpointProvider-Resource2
       summary: read only
       description: This operation realizes the [Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html)
         pattern.
-      operationId: SplitResource2-findAll
-      parameters: []
+      operationId: Resource2-findAll
+      parameters:
+      - name: queryFilter
+        in: query
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: findAll successful execution
           content:
             application/json:
               schema:
-                type: object
+                type: array
+                items:
+                  $ref: '#/components/schemas/SampleIntegrationScenarioRealizationEndpointDTO'
     post:
       tags:
-      - SampleIntegrationScenarioRealizationEndpointProvider-SplitResource2
+      - SampleIntegrationScenarioRealizationEndpointProvider-Resource2
       summary: read and write
       description: This operation realizes the [State Transition Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/StateTransitionOperation.html)
         pattern.
-      operationId: SplitResource2-updateSomeBusinessObject
+      operationId: Resource2-updateSomeBusinessObject
       parameters: []
       requestBody:
         content:
@@ -150,78 +171,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SomeBusinessObjectDTO'
-  /SplitResource3:
+  /Resource3:
     summary: general data-oriented endpoint
     get:
       tags:
-      - SampleIntegrationScenarioRealizationEndpointProvider-SplitResource3
+      - SampleIntegrationScenarioRealizationEndpointProvider-Resource3
       summary: read only
       description: This operation realizes the [Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html)
         pattern.
-      operationId: SplitResource3-findById
-      parameters: []
+      operationId: Resource3-findById
+      parameters:
+      - name: resourceId
+        in: query
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: findById successful execution
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/SampleIntegrationScenarioRealizationEndpointDTO'
   /SampleIntegrationScenarioFlowEndpoint:
     summary: activity-oriented endpoint
-    get:
-      tags:
-      - SampleIntegrationScenarioFlowEndpoint
-      summary: read only
-      description: This operation realizes the [Retrieval Operation](https://microservice-api-patterns.org/patterns/responsibility/operationResponsibilities/RetrievalOperation.html)
-        pattern.
-      operationId: getResourceState
-      parameters: []
-      responses:
-        "200":
-          description: getResourceState successful execution
-          content:
-            application/json:
-              schema:
-                type: object
-    put:
-      tags:
-      - SampleIntegrationScenarioFlowEndpoint
-      summary: ""
-      description: unspecified operation responsibility
-      operationId: updateResourceState
-      parameters: []
-      responses:
-        "200":
-          description: updateResourceState successful execution
-          content:
-            application/json:
-              schema:
-                type: object
     post:
       tags:
       - SampleIntegrationScenarioFlowEndpoint
-      summary: POST
-      description: POST
-      operationId: initializeResource
-      parameters: []
-      responses:
-        "200":
-          description: initializeResource successful execution
-          content:
-            application/json:
-              schema:
-                type: object
-    delete:
-      tags:
-      - SampleIntegrationScenarioFlowEndpoint
       summary: ""
       description: unspecified operation responsibility
-      operationId: deleteResourceState
+      operationId: cRUDSomeBusinessObject
       parameters: []
       responses:
         "200":
-          description: deleteResourceState successful execution
+          description: cRUDSomeBusinessObject successful execution
           content:
             application/json:
               schema:
@@ -240,7 +223,7 @@ paths:
             schema:
               type: object
               properties:
-                doSomethinglocationRequestBody:
+                doSomethingRequestBody:
                   type: string
                 desiredElements:
                   type: array
@@ -253,15 +236,15 @@ paths:
             application/json:
               schema:
                 type: object
-                properties:
-                  key:
-                    type: string
-                  doSomethinglocationResponseBody:
-                    type: string
 components:
   schemas:
     SomeBusinessObjectDTO:
       type: object
       properties:
         someBusinessObject:
+          type: string
+    SampleIntegrationScenarioRealizationEndpointDTO:
+      type: object
+      properties:
+        sampleIntegrationScenarioRealizationEndpoint:
           type: string

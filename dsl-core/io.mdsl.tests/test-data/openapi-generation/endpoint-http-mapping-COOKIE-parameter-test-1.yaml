@@ -7,8 +7,7 @@ servers:
 tags:
 - name: TestEndpointProvider-Home
   externalDocs:
-    description: The role of this endpoint, offering a TestEndpoint contract, is Information
-      Holder Resource pattern
+    description: TestEndpoint contract, Information Holder Resource role
     url: https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource.html
 paths:
   /Home:
@@ -16,19 +15,28 @@ paths:
     get:
       tags:
       - TestEndpointProvider-Home
-      description: unspecified operation responsibility
+      summary: doSomethingJust4Test
+      description: ""
       operationId: Home-doSomethingJust4Test
       parameters:
       - name: attr1
         in: cookie
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
         required: true
         schema:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
       - name: attr2
         in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
         required: true
         schema:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
       responses:
         "200":
           description: doSomethingJust4Test successful execution

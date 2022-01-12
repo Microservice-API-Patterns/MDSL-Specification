@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) to Java Modulith Code
 author: Stefan Kapferer
-copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2021. All rights reserved.
+copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2022. All rights reserved.
 ---
 
 [Tools Overview](./../tools), [OpenAPI](./open-api), [Protocol Buffers](./protocol-buffers), [GraphQL](./graphql), [Jolie](./jolie), [Freemarker templating](./freemarker), [AsyncAPI](./async-api)
@@ -338,4 +338,4 @@ Also checkout our other generators:
     * [Bindings](./../bindings) and [instance-level concepts](./../optionalparts). 
 * Back to [MDSL homepage](./../index).
 
-*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2022. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*

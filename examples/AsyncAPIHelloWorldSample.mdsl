@@ -1,0 +1,18 @@
+API description HelloWorldAsyncAPI
+
+data type SampleDTO { "id": ID<int>, "message": D<string> }
+
+channel SayHello
+of type PUBLISH_SUBSCRIBE
+on path "/public/sayHelloZIO" 
+produces message HelloMessage
+	delivering payload SampleDTO
+
+message broker HelloWorldAmqpProvider 
+exposes SayHello
+at location "amqp.example.com"
+via protocol AMQP
+
+message endpoint HelloWorldAmqpClient
+uses from HelloWorldAmqpProvider:
+	SayHello

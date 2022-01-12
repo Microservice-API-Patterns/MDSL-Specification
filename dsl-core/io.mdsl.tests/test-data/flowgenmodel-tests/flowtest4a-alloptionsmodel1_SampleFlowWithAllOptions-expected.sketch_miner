@@ -1,0 +1,60 @@
+/// TODO provide generation statistics (source file name, time)
+SampleFlowWithAllOptions:
+
+(FlowInitiated)
+SampleFlowWithAllOptions: user StartFlowCommand
+(Event1)
+SampleFlowWithAllOptions: user Command1
+(Command1Done1)
+...
+
+...
+(Command3Done)|(Command4Done)|(Command5Done)
+SampleFlowWithAllOptions: user TerminateFlowCommand
+
+(FlowInitiated)
+SampleFlowWithAllOptions: user StartFlowCommand
+(Event2)
+SampleFlowWithAllOptions: user Command4
+(Command4Done)
+...
+
+(FlowInitiated)
+SampleFlowWithAllOptions: user StartFlowCommand
+(Event2)
+SampleFlowWithAllOptions: user Command3
+(Command3Done)
+...
+
+(FlowInitiated)
+SampleFlowWithAllOptions: user StartFlowCommand
+(Event3)
+SampleFlowWithAllOptions: user Command6
+(Command6Done)
+SampleFlowWithAllOptions: user TerminateFlowCommand
+
+(FlowInitiated)
+SampleFlowWithAllOptions: user StartFlowCommand
+(Event3)
+SampleFlowWithAllOptions: user Command5
+(Command5Done)
+...
+
+...
+(Command1Done1)|(Command2Done)|(Command1Done2)
+SampleFlowWithAllOptions: user TerminateFlowCommand
+
+(FlowInitiated)
+SampleFlowWithAllOptions: user StartFlowCommand
+(Event1)
+SampleFlowWithAllOptions: user Command2
+(Command2Done)
+...
+
+(FlowInitiated)
+SampleFlowWithAllOptions: user StartFlowCommand
+(Event1)
+SampleFlowWithAllOptions: user Command1
+(Command1Done2)
+...
+

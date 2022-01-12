@@ -1,0 +1,21 @@
+API description FlowTest5b
+
+event type FlowInitiated
+event type Event0, Event1, Event2
+event type FlowTerminated
+
+command type StartFlowCommand
+command type Command1, Command2, Command3
+command type StopFlowCommand
+
+flow SampleFlowWithLoop
+event Event0 triggers command Command1 emits event Event1
+event Event1 triggers command Command2 or Command3
+command Command2 emits event Event1
+command Command3 emits event FlowTerminated
+
+flow SampleFlowWithLoopInCisStep
+event Event0 triggers command Command1 emits event Event1
+event Event1 triggers command Command2  emits event Event2
+Event2 triggers command Command1 o StopFlowCommand
+

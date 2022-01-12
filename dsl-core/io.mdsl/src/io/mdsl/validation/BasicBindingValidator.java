@@ -7,14 +7,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
-// import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
 
 import io.mdsl.apiDescription.ApiDescriptionPackage;
 import io.mdsl.apiDescription.EndpointInstance;
 import io.mdsl.apiDescription.EndpointList;
-import io.mdsl.apiDescription.HTTPBinding;
+// import io.mdsl.apiDescription.HTTPBinding;
 import io.mdsl.apiDescription.JavaBinding;
+import io.mdsl.apiDescription.JavaOperationBinding;
 import io.mdsl.apiDescription.ProtocolBinding;
 import io.mdsl.apiDescription.Provider;
 import io.mdsl.apiDescription.ServiceSpecification;
@@ -29,19 +30,19 @@ import io.mdsl.apiDescription.TechnologyBinding;
 public class BasicBindingValidator extends AbstractMDSLValidator {
 
 	private static final String JAVA_BINDING_PACKAGE_REGEX = "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)*";
-
+	
 	@Override
 	public void register(EValidatorRegistrar registrar) {
 		// not needed for classes used as ComposedCheck
 	}
 
-	// @Check
+	@Check
 	public void bindingExistenceValidator(final ServiceSpecification specRoot) {
 		info("MDSL API Linter: only checking very few binding-related rules in " + specRoot.getName() + " in current version", specRoot,
 				ApiDescriptionPackage.eINSTANCE.getServiceSpecification_Name());
 				// ApiDescriptionPackage.Literals.SERVICE_SPECIFICATION__NAME);
 
-		// * gRPC: tbd (and no bindings exist for Jolie and GraphQL)
+		// gRPC binding not validated yet (no bindings exist for Jolie and GraphQL)
 
 		List<Provider> providers = specRoot.getProviders().stream().filter(p -> p instanceof Provider).map(p -> (Provider) p).collect(Collectors.toList());
 
@@ -56,15 +57,16 @@ public class BasicBindingValidator extends AbstractMDSLValidator {
 						TechnologyBinding techBinding = techBindings.get(i);
 						ProtocolBinding protBinding = techBinding.getProtBinding();
 						if (protBinding.getHttp() != null) {
-							checkHTTPBinding(specRoot, provider.getName(), endpoint.getLocation(), protBinding.getHttp());
+							// has its own validator
+							; 
 						} else if (protBinding.getJava() != null) {
 							checkJavaBinding(specRoot, provider.getName(), endpoint.getLocation(), protBinding.getJava());
 						} else if (protBinding.getGrpc() != null) {
-							; // info("Specification includes a provider endpoint binding of type gRPC", protBinding, ApiDescriptionPackage.eINSTANCE.getProtocolBinding_Grpc()); // // Literals.PROTOCOL_BINDING__GRPC);
+							; // info("Specification includes a provider endpoint binding of type gRPC", protBinding, ApiDescriptionPackage.eINSTANCE.getProtocolBinding_Grpc()); //
 						} else if (protBinding.getOther() != null) {
 							// TODO get value of "other" (utility method)
-							info("Specification includes a provider endpoint binding of other type " /* + protBinding.getOther().toString() */, protBinding,
-									ApiDescriptionPackage.eINSTANCE.getProtocolBinding_Other()); // Literals.PROTOCOL_BINDING__OTHER);
+							info("Specification includes a provider endpoint binding of other type ", protBinding,
+								ApiDescriptionPackage.eINSTANCE.getProtocolBinding_Other()); // Literals.PROTOCOL_BINDING__OTHER);
 						} else
 							throw new IllegalArgumentException("Unknown binding type."); // can't get here
 					}
@@ -81,11 +83,11 @@ public class BasicBindingValidator extends AbstractMDSLValidator {
 			error("The string '" + java.getPackage()
 					+ "' does not represent a proper Java package name. Please provide a correctly formatted Java package name (like 'io.mdsl.validator').", java,
 					ApiDescriptionPackage.eINSTANCE.getJavaBinding_Package()); // Literals.JAVA_BINDING__PACKAGE);
-		// TODO check class name? 
-	}
 
-	private void checkHTTPBinding(ServiceSpecification specRoot, String pName, String address, HTTPBinding http) {
-		// info("Specification " + specRoot.getName() + " includes a provider " + pName + " with endpoint binding of type HTTP, location is " + address, http,
-		//		ApiDescriptionPackage.eINSTANCE.getHTTPBinding_Http()); // Literals.HTTP_BINDING__HTTP);
+		// note: Java binding does not define a target Java class at present (generator has to catch invalid names) 
+		
+		// EList<JavaOperationBinding> operationBindings = java.getOpsBinding();
+		// TODO check operation names
+		// TODO method elements and data types per operation
 	}
 }

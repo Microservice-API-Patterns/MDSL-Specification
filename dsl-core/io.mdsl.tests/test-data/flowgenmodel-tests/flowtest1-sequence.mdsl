@@ -1,0 +1,27 @@
+API description FlowTest1
+version "MDSL 5.4 (and up)"
+overview "See http://www.workflowpatterns.com/patterns/control/"
+
+event type FlowInitiated
+event type FlowStep1Completed, FlowStep2Completed
+event type FlowTerminated
+
+command type FlowStep1
+command type FlowStep2
+command type FlowStep3
+
+flow SequentialFlowStartingWithEvent type APPLICATION_FLOW
+
+  event FlowInitiated triggers command FlowStep1
+  command FlowStep1 emits event FlowStep1Completed
+  event FlowStep1Completed triggers command FlowStep2
+  command FlowStep2 emits event FlowStep2Completed
+  event FlowStep2Completed triggers command FlowStep3
+  command FlowStep3 emits event FlowTerminated
+
+flow SequentialFlowStartingWithCommand type INTEGRATION_FLOW
+
+  command FlowStep1 emits event FlowStep1Completed
+  event FlowStep1Completed triggers command FlowStep2
+  command FlowStep2 emits event FlowStep2Completed
+  event FlowStep2Completed triggers command FlowStep3

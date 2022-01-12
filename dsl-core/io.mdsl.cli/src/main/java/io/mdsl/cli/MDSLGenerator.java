@@ -17,6 +17,7 @@ package io.mdsl.cli;
 
 import org.eclipse.xtext.generator.IGenerator2;
 
+import io.mdsl.generator.ALPSGenerator;
 import io.mdsl.generator.GenModelJSONExporter;
 import io.mdsl.generator.GenModelYAMLExporter;
 import io.mdsl.generator.GraphQLGenerator;
@@ -25,6 +26,9 @@ import io.mdsl.generator.JolieGenerator;
 import io.mdsl.generator.OpenAPIGenerator;
 import io.mdsl.generator.ProtocolBuffersGenerator;
 import io.mdsl.generator.TextFileGenerator;
+import io.mdsl.generator.asyncapi.AsyncApiGenerator;
+import io.mdsl.generator.refactorings.StoryToOpenAPIGenerator;
+import io.mdsl.generator.refactorings.TransformationChainAllInOneRefactoring;
 
 /**
  * Enum representing the generators that are available in the CLI.
@@ -34,13 +38,21 @@ import io.mdsl.generator.TextFileGenerator;
 public enum MDSLGenerator {
 
 	OPEN_API_SPEC("oas", "OpenAPI Specification"), 
-	JOLIE("jolie", "Jolie"), 
-	ARBITRARY_TEXT_BY_TEMPLATE("text", "arbitraty text file by using a Freemarker template"),
 	PROTOCOL_BUFFERS("proto", "Protocol Buffers"), 
-	GRAPHQL("graphql", "GraphQL Schemas"), JAVA("java", "Java Modulith"),
+	JOLIE("jolie", "Jolie"), 
+	GRAPHQL("graphql", "GraphQL Schemas"), 
+	JAVA("java", "Java Modulith"),
+	ALPS("alps", " Application-Level Profile Semantics"),
+	ASYNC_API("asyncapi", "AsyncAPI Specification"),
+	ARBITRARY_TEXT_BY_TEMPLATE("text", "arbitrary text file by using a Freemarker template"),
+	SOAD("soad", "transformation chain to generate bound endpoint type from user story"),
+	STORY_TO_OAS("storyoas", "transformation chain to generate OpenAPI from scenario/story"),
 	GEN_MODEL_JSON_EXPORT("gen-model-json", "Generator model as JSON (exporter)"), 
 	GEN_MODEL_YAML_EXPORT("gen-model-yaml", "Generator model as YAML (exporter)");
 
+	// TODO (future work) add more QFs (parameterized); add CLI version information to help message
+	
+	private static final String DESIRED_QUALITY = "desiredQuality"; // TODO tbc
 	private String name;
 	private String description;
 
@@ -80,19 +92,28 @@ public enum MDSLGenerator {
 	public IGenerator2 getGenerator() {
 		if (this == OPEN_API_SPEC)
 			return new OpenAPIGenerator();
-		if (this == JOLIE)
-			return new JolieGenerator();
 		if (this == PROTOCOL_BUFFERS)
 			return new ProtocolBuffersGenerator();
+		if (this == JOLIE)
+			return new JolieGenerator();
 		if (this == GRAPHQL)
 			return new GraphQLGenerator();
 		if (this == JAVA)
 			return new JavaGenerator();
+		if (this == ALPS)
+			return new ALPSGenerator();
+		if (this == ASYNC_API)
+			return new AsyncApiGenerator(); // TODO v55 not working yet (Xtend dependency?)
+		if (this == SOAD)
+			return new TransformationChainAllInOneRefactoring(DESIRED_QUALITY); 
+		if (this == STORY_TO_OAS)
+			return new StoryToOpenAPIGenerator("n/a"); // TODO tbc
 		if (this == GEN_MODEL_JSON_EXPORT)
 			return new GenModelJSONExporter();
 		if (this == GEN_MODEL_YAML_EXPORT)
 			return new GenModelYAMLExporter();
+		
+		// default:
 		return new TextFileGenerator();
 	}
-
 }

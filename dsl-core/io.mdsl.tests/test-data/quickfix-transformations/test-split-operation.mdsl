@@ -1,0 +1,15 @@
+API description MoveOperationTest
+
+data type SampleEntityDTO {"sampleEntity":D}
+
+endpoint type SourceEndpoint
+ exposes
+  operation operationToSplit
+    expecting payload {"task1":D<double>, "task2":{"innerPT1":D<string>, "innerPT2"}, "task3": SampleEntityDTO, "task4":P}
+    delivering payload "sameResult":SampleEntityDTO // not touched by refactoring
+
+endpoint type SourceEndpointSaved
+ exposes
+  operation operationToSplit
+    expecting payload {"task1":D<double>, "task2":{"innerPT1":D<string>, "innerPT2"}, "task3": SampleEntityDTO, "task4":P}
+    delivering payload "sameResult":SampleEntityDTO // not touched by refactoring

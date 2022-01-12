@@ -52,14 +52,18 @@ public class OperationParameter {
 	public MDSLType getType() {
 		return type;
 	}
+	
+	// TODO v55 add isTypeReference indicator? impact on Java generator, gRPC, GraphQL?
 
 	/**
 	 * Returns the type of the represented operation parameter as a String.
 	 * 
 	 * @return the type of the operation parameter as a String
 	 */
-	public String getTypeAsString() {
+	/*
+	public String getTypeName() {
 		return type.getName();
 	}
+	*/
 
 }

@@ -1,0 +1,48 @@
+
+API description HTTPMultipleBindingsTest
+
+data type FlatParameterTree {"id":ID<string>, "md":MD<string>, "dInt": D<int>, "lString": L<string>, "dLong": D<long>, D<bool>}
+data type NestedParameterTree {"npt1":D<string>, "npt2":FlatParameterTree}
+data type FlatResponseDTR {"fr1":D<string>, "fr2":MD<string>}
+data type NestedResponseDTR {"r1":ID<string>, "r2":L<string>, FlatResponseDTR}
+data type AtomicParameter "abc":D<int>
+data type AtomicParameterListAsTree {"abc":D<int> , "def":D<int>}
+
+endpoint type HTTPSampleContract1
+  exposes
+    operation createOperation 
+      expecting
+        payload NestedParameterTree
+      delivering
+        payload FlatResponseDTR
+    operation getOperation 
+      expecting
+        payload {"aQueryParameter":D<string> , "abc":D<int>}
+      delivering
+        payload "queryResponse": NestedResponseDTR
+  
+  endpoint type HTTPSampleContract2
+  exposes
+    operation createOperation 
+      expecting
+        payload NestedParameterTree
+      delivering
+        payload FlatResponseDTR
+    operation getOperation 
+      expecting
+        payload {"aQueryParameter":D<string> , "abc":D<int>}
+      delivering
+        payload "queryResponse": NestedResponseDTR
+   
+API provider HTTPSampleContract1Provider1 offers HTTPSampleContract1 at endpoint location "http://localhost:8080"
+via protocol HTTP binding
+resource HTTPSampleResource1 at "/home"
+operation createOperation to POST element "anonymousNode" realized as BODY parameter
+operation getOperation to GET element "aQueryParameter" realized as QUERY parameter element "abc" realized as QUERY parameter
+
+API provider HTTPSampleContract1Provider2 offers HTTPSampleContract2 at endpoint location "http://localhost:8080"
+via protocol HTTP binding
+resource HTTPSampleResource21 at "/home" // same as above!
+operation createOperation to PUT element "anonymousNode" realized as BODY parameter
+resource HTTPSampleResource22 at "/home2"
+operation getOperation to GET element "aQueryParameter" realized as QUERY parameter element "abc" realized as QUERY parameter

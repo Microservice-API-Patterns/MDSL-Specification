@@ -1,6 +1,7 @@
 package io.mdsl.generator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,12 +20,7 @@ public class GenModelJSONExporterTest extends AbstractMDSLInputIntegrationTest {
 	public void canExportGenModelAsJSON() throws IOException {
 		// given
 		Resource inputModel = getTestResource("simple-generation-input-1.mdsl");
-		GenModelJSONExporter generator = new GenModelJSONExporter();
-
-		// when
-		JavaIoFileSystemAccess javaIoFileSystemAccess = getFileSystemAccess();
-		javaIoFileSystemAccess.setOutputPath(getGenerationDirectory().getAbsolutePath());
-		generator.doGenerate(inputModel, javaIoFileSystemAccess, new GeneratorContext());
+		generateJSONExport(inputModel);
 
 		// then
 		assertEquals(
@@ -43,13 +39,51 @@ public class GenModelJSONExporterTest extends AbstractMDSLInputIntegrationTest {
 				"  \"providers\" : [ ]," + System.lineSeparator() + 
 				"  \"clients\" : [ ]," + System.lineSeparator() + 
 				"  \"providerImplementations\" : [ ]," + System.lineSeparator() + 
-				"  \"orchestrationFlows\" : [ ]," + System.lineSeparator() + // new in V5.2
-				"  \"cuts\" : [ ]" + System.lineSeparator() + // new in V5.2
+				"  \"orchestrationFlows\" : [ ]," + System.lineSeparator() + 
+				"  \"cuts\" : [ ]" + System.lineSeparator() + 
 				"}",
 				FileUtils.readFileToString(new File(getGenerationDirectory(), "simple-generation-input-1_GeneratorModel.json"),
 						"UTF-8"));
 	}
+	
+	@Test
+	public void canExportSimpleFlowAndBindingInGenModelAsJSON() throws IOException {
+		// given
+		String testCaseName = "simple-generation-input-2";
+		Resource inputModel = getTestResource(testCaseName + ".mdsl");
 
+		// when
+		generateJSONExport(inputModel);
+
+		// then
+		assertThatGeneratedFileMatchesExpectations(testCaseName + "_GeneratorModel.json");
+		
+		// assert with string-based helpers (also used in Camel tests)
+		// String fileContent = getGeneratedFileContent("simple-generation-input-2_GeneratorModel.json");
+		// assertTrue(assertThatKeywordAppearsInExpectedNumberOfLines(fileContent, "\"name\" : \"S1RealizationEndpointHome\"", 2), "Expected 2 resource entries");
+	}
+	
+	@Test
+	public void canExportComplexFlowsInGenModelAsJSON() throws IOException {
+		// given
+		String testCaseName = "flowvariations";
+		Resource inputModel = getTestResource(testCaseName + ".mdsl");
+
+		// when
+		generateJSONExport(inputModel);
+
+		// then
+		assertThatGeneratedFileMatchesExpectations(testCaseName + "_GeneratorModel.json");
+	}
+
+	private void generateJSONExport(Resource inputModel) {
+		GenModelJSONExporter generator = new GenModelJSONExporter();
+		// TODO move next three lines to method in superclass
+		JavaIoFileSystemAccess javaIoFileSystemAccess = getFileSystemAccess();
+		javaIoFileSystemAccess.setOutputPath(getGenerationDirectory().getAbsolutePath());
+		generator.doGenerate(inputModel, javaIoFileSystemAccess, new GeneratorContext());
+	}
+	
 	@Override
 	protected String testDirectory() {
 		return "/test-data/exporter/";

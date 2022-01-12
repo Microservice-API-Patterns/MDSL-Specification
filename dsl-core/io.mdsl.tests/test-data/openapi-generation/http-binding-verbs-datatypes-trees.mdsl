@@ -1,0 +1,58 @@
+API description ExplicitTreeBindingTest 
+
+data type DTOFlat "flatPT": {"leaf1":ID<int>, "leaf2":D<string>?, "leaf3":D<string>+}
+// "required=true" does not appear in OAS due to type referencing:
+data type DTONested "nestedPT": {"tree1":DTOFlat, "tree2":DTOFlat?, "tree3":DTOFlat*, "tree4":DTOFlat+, "tree5":DTOFlat!}
+
+endpoint type SampleEntityInformationHolder
+  exposes
+    operation sampleMethodWithEmbeddedTypes
+      expecting
+        payload "expecting": {"tree1":DTOFlat, "tree2":DTOFlat?, "tree3":DTOFlat*, "tree4":DTOFlat+, "tree5":DTOFlat!}
+      delivering
+        payload "delivering":{"tree1":DTOFlat, "tree2":DTOFlat?, "tree3":DTOFlat*, "tree4":DTOFlat+, "tree5":DTOFlat!}
+        
+    operation sampleMethodWithTypeReference
+      expecting
+        payload "requestTypeReference": DTONested // TODO add cardinality
+      delivering
+        payload "responseTypeReference": DTONested // TODO add cardinality
+
+// TODO also test GET and DELETE (other defaults)
+
+API provider SampleEntityInformationHolderProvider offers SampleEntityInformationHolder at endpoint location "http://localhost:8080"
+via protocol HTTP binding
+resource SampleEntityInformationHolderHome at "/sampleEntityInformationHolderHome"
+  operation sampleMethodWithEmbeddedTypes to PUT 
+
+  	element "tree1" realized as BODY parameter 
+	element "tree2" realized as BODY parameter 
+	element "tree3" realized as QUERY parameter 
+	element "tree4" realized as QUERY parameter 
+	element "tree5" realized as COOKIE parameter
+
+/*
+    // works:
+	element "tree1" realized as BODY parameter 
+	element "tree2" realized as BODY parameter 
+	element "tree3" realized as BODY parameter 
+	element "tree4" realized as BODY parameter 
+	element "tree5" realized as BODY parameter
+*/
+
+resource SampleEntityInformationHolderHome2 at "/sampleEntityInformationHolderHome2/{tree2}" // tref name vs. type name?
+  operation sampleMethodWithTypeReference to POST 
+    // QF "Add HTTP Binding" always picks top-level element(s), here: L1 trees vs. TR (this can be changed manually) 
+	element "tree1" realized as QUERY parameter 
+	element "tree2" realized as PATH parameter 
+	element "tree3" realized as COOKIE parameter 
+	element "tree4" realized as HEADER parameter 
+	element "tree5" realized as BODY parameter
+
+/*
+resource SampleEntityInformationHolderHome2 at "/sampleEntityInformationHolderHome2/{requestTypeReference}" 
+  // bug 4: tref name vs. type name?
+  operation sampleMethodWithTypeReference to POST 
+    // QF "Add HTTP BInding" always picks top-level element(s), here: L1 trees vs. TR (this can be changed manually) 
+    element "requestTypeReference" realized as PATH parameter
+*/

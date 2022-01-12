@@ -7,22 +7,26 @@ servers:
 tags:
 - name: HelloHTTPEndpointNoBinding2-Home
   externalDocs:
-    description: The role of this endpoint, offering a ReportAndPolicyEnabledPortType
-      contract, is not specified.
+    description: ReportAndPolicyEnabledPortType contract
     url: ""
 paths:
   /Home:
     get:
       tags:
       - HelloHTTPEndpointNoBinding2-Home
-      description: unspecified operation responsibility
+      summary: getOperation
+      description: ""
       operationId: Home-getOperation
       parameters:
       - name: aQueryParameter
         in: query
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
         required: true
         schema:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
       responses:
         "200":
           description: getOperation successful execution
@@ -39,13 +43,15 @@ paths:
                 properties:
                   e500:
                     type: integer
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+                      target="_blank">Metadata Element</a>
                     format: int32
     put:
       tags:
       - HelloHTTPEndpointNoBinding2-Home
-      description: unspecified operation responsibility
+      summary: putOperation
+      description: ""
       operationId: Home-putOperation
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -67,13 +73,16 @@ paths:
                 properties:
                   e502:
                     type: integer
+                    description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+                      target="_blank">Metadata Element</a>
                     format: int32
       security:
       - BasicAuthenticationSample2: []
     post:
       tags:
       - HelloHTTPEndpointNoBinding2-Home
-      description: unspecified operation responsibility
+      summary: createOperation
+      description: ""
       operationId: Home-createOperation
       requestBody:
         content:
@@ -92,9 +101,28 @@ paths:
     patch:
       tags:
       - HelloHTTPEndpointNoBinding2-Home
-      description: unspecified operation responsibility
+      summary: patchOperation
+      description: ""
       operationId: Home-patchOperation
-      parameters: []
+      parameters:
+      - name: customHeader1
+        in: header
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
+      - name: customHeader2
+        in: header
+        description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+          target="_blank">Data Element</a>
+        required: true
+        schema:
+          type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
       requestBody:
         content:
           application/json:
@@ -114,22 +142,36 @@ components:
       properties:
         id:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
         md:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
         dInt:
           type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           format: int32
         lString:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/LinkElement"
+            target="_blank">Link Element</a>
         dLong:
           type: number
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         anonymous1:
           type: boolean
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
     NestedParameterTree:
       type: object
       properties:
         npt1:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         npt2:
           $ref: '#/components/schemas/FlatParameterTree'
     FlatResponseDTR:
@@ -137,15 +179,23 @@ components:
       properties:
         fr1:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
         fr2:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
     NestedResponseDTR:
       type: object
       properties:
         r1:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
         r2:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/LinkElement"
+            target="_blank">Link Element</a>
         anonymous2:
           $ref: '#/components/schemas/FlatResponseDTR'
     ErrorReport:
@@ -153,25 +203,31 @@ components:
       properties:
         code:
           type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement"
+            target="_blank">Data Element</a>
           format: int32
         message:
           type: integer
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
           format: int32
     Credentials:
       type: object
       properties:
         user:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/IdElement"
+            target="_blank">Id Element</a>
         password:
           type: string
+          description: <a href="https://microservice-api-patterns.org/patterns/structure/elementStereotypes/MetadataElement"
+            target="_blank">Metadata Element</a>
           format: binary
   securitySchemes:
     BasicAuthenticationSample:
       type: apiKey
-      description: Default Element Name (Feature NYI)
       name: api_key
       in: header
     BasicAuthenticationSample2:
       type: openIdConnect
-      description: Default Element Name (Feature NYI)
       openIdConnectUrl: http://tbc.tbc

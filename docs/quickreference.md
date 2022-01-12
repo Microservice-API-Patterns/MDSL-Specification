@@ -1,7 +1,7 @@
 ---
 title: Microservice Domain Specific Language (MDSL) Quick Reference
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2019-2021. All rights reserved.
+copyright: Olaf Zimmermann, 2019-2022. All rights reserved.
 ---
 
 [Home](./index) &mdash; [Endpoint Type](./servicecontract) &mdash; [Data Type](./datacontract) &mdash; [Provider and Client](./optionalparts) &mdash; [Bindings](./bindings) &mdash; [Tutorial](./tutorial) &mdash; [Tools](./tools)
@@ -48,13 +48,21 @@ The API type or *direction* can be:
 
 ### Roles and Responsibilities 
 MAP defines the following *roles* (of endpoint types): 
-> PROCESSING_RESOURCE | INFORMATION_HOLDER_RESOURCE | DATA_TRANSFER_RESOURCE | LINK_LOOKUP_RESOURCE 
+> PROCESSING_RESOURCE | INFORMATION_HOLDER_RESOURCE  
 > OPERATIONAL_DATA_HOLDER | MASTER_DATA_HOLDER | REFERENCE_DATA_HOLDER
+> DATA_TRANSFER_RESOURCE | LINK_LOOKUP_RESOURCE 
+> COLLECTION_RESOURCE | MUTABLE_COLLECTION_RESOURCE
+> VALIDATION_RESOURCE | TRANSFORMATION_RESOURCE
+
+
+<!-- STATEFUL_PROCESSING_RESOURCE | STATELESS_PROCESSING_RESOURCE --> 
 
 And the *responsibilities* (of operations) can be: 
-> COMPUTATION_FUNCTION | STATE_CREATION_OPERATION | RETRIEVAL_OPERATION | STATE_TRANSITION_OPERATION | STATE_REPLACEMENT_OPERATION | STATE_DELETION_OPERATION
+> COMPUTATION_FUNCTION | RETRIEVAL_OPERATION 
+> STATE_CREATION_OPERATION | STATE_TRANSITION_OPERATION
+> STATE_REPLACEMENT_OPERATION | STATE_DELETION_OPERATION
 
-All these enum values correspond to Microservice API Patterns (MAP); go to the [pattern index](https://microservice-api-patterns.org/patterns/index) for quick access.
+All these enum values correspond to Microservice API Patterns (MAP) or their variants; please refer to the [pattern index](https://microservice-api-patterns.org/patterns/index) for more information.
 
 
 ## Data Contract Skeletons (for Operation Signatures)
@@ -73,7 +81,7 @@ Skeleton data contracts for `headers` and `payload` elements and `data type` def
 * [Parameter Forest](https://microservice-api-patterns.org/patterns/structure/representationElements/ParameterForest.html) (pforest): `[ {ptree1}; {ptree2}; ... ]`, can only appear on top level of operation signature
 
 
-### Atomic Parameter syntax
+### Atomic Parameter Syntax
 
 The `ap` from the above contract skeleton resolves to `<<pattern>>"name": Role<Type>`. A first example featuring all parts hence is `<<API_Key>>"accessToken1":D<string>`. 
 
@@ -90,7 +98,7 @@ The `<<pattern>>` stereotype can take one of the following values from the [Micr
 > Data_Element | Metadata_Element | Identifier_Element | Link_ELement
 > Control_Metadata | Aggregated_Metadata | Provenance_Metadata 
 
-`Data_Element` is the default; `L` is a shorthand for `<<Link_ELement>> D`, `ID` is short for `<<Identifier_ELement>> D`, and `MD` is short for `<<Metadata_ELement>> D`. 
+`Data_Element` is the default; `L` is a shorthand for `<<Link_ELement>> D`, `ID` is short for `<<Identifier_ELement>> D` (or `<<Id_ELement>> D`), and `MD` is short for `<<Metadata_ELement>> D`. 
 
 A pattern stereotype can also be assigned to other tree nodes (apls and ptrees). This is optional.
 
@@ -111,6 +119,11 @@ Finally, the base types are:
 
 <!-- You can also use any `STRING`, but in that case MDSL tools cannot do much with the specification (this might, for instance, be useful in early conceptualization work). -->
  
+A default value (plain text) can be specified for explicitly modeled data types:
+
+~~~
+data type StatusCode "success": MD<bool> default is "true"
+~~~
 
 ### Cardinalities (Multiplicity)
 
@@ -139,7 +152,6 @@ An example is `data type AnIntegerOrAString {D<int> | D<string>}`.
 ### Reporting 
 MDSL has an specific construct for error handling such as fault elements or response codes (still *experimental*):
 
-
 Add the following snippet to the specification of response messages (behind `delivering`):
 
 ~~~
@@ -160,7 +172,7 @@ The placeholder `[...]` resolves to a data contract (see above). The simplest on
 
 The report elements can be modeled as data types as described under [data contracts (schemas)](./datacontract). Examples are: 
 
-* `error sampleErrorReport "soapFault": SOAPFaultElement`, with a previous definition:
+* `reporting error sampleErrorReport "soapFault": SOAPFaultElement`, with a previous definition:
 * `data type SOAPFaultElement {"code":D<int>, "string": D<string>, "actor":D<string>, "detail":D<string>}`
 
 Note that the `"soapFault":` identifier is optional.
@@ -174,29 +186,43 @@ Note that the `"UserIdPassword":` identifier is optional.
 
 The policy elements can be modeled as data types as described under [data contracts (schemas)](./datacontract) as well.
 
-<!-- 
 ### State Transitions
+State transitions may optionally be defined on operation level: 
 
-TODO (M)
--->
+* `transitions from "State1" to "State2"`
+
+They appear after the `delivering` and `reporting` parts of the operation contract. 
 
 ### Compensation
+One operation may be defined to undo another: 
+
+* `compensated by undoOp1`
+
+This optional specification element has to be the last one in an operation contract. 
+
+### Example 
 
 ~~~
 endpoint type HelloWorldEndpoint
+data type SomeAtomicParameter D
 exposes 
   operation op1 
     expecting payload D<string>
-    delivering payload "some_data_type":Some_data_type 
-	compensated by undoOp1
+    delivering payload "some_data_type":SomeAtomicParameter
+    reporting error sampleErrorReport "soapFault": SOAPFaultElement
+    transitions from "State1" to "State2"
+	  compensated by undoOp1
+
   operation undoOp1
     expecting payload "correlationIdentifier":D<int>  
-    delivering payload D<boolean> 
+    delivering payload D<bool> 
 ~~~
 
-## Requirements and Integration/Testing Scenarios and Flows
+## Requirements and Orchestration
 
 ### Stories 
+
+Stories have up to five parts; only role and activity are mandatory:
 
 ~~~
 scenario ScenarioNN
@@ -207,11 +233,12 @@ scenario ScenarioNN
    yielding "a result" // outcome
    so that "both actors are satisfied and profit is made" // goal 
 ~~~
- 
 
-### Orchestration/Integration Flows 
+See the page [Integration Scenarios and User/Job Stories](./scenarios) for more modeling options. 
 
-<!-- TODO feature branching, forking, joining (V5.4) -->
+### Integration Flows 
+
+A basic flow looks like this:
 
 ~~~
 flow FlowMM realizes ScenarioNN
@@ -219,19 +246,41 @@ event something_has_happened triggers command startProcess
 command startProcess emits event startProcessCompleted
 ~~~
 
+Branching, forking, and joining is also supported:
+
+~~~
+event type FlowInitiated
+event type Event0, Event1, Event2
+event type FlowTerminated
+
+command type StartFlowCommand
+command type Command1, Command2, Command3, Command4
+command type TerminateCommand
+
+flow SampleFlow
+event FlowInitiated triggers command Command1 or Command2
+command Command1 emits event Event1 
+command Command2 emits event Event2
+event Event1 and Event2 trigger commands Command3 and Command4
+command Command3 emits event FlowTerminated
+command Command4 emits event FlowTerminated
+~~~
+
+See the page [Orchestration Flows](./flows) for more modeling options.
+
 <!--
 
-### MOM/AsyncMDSL
+### AsyncMDSL for Messaging APIs
 
-TODO
+TODO (future work)
 -->
 
 ## Site Navigation
 
-* [MDSL homepage](./index)
-* [Tutorial](./tutorial) and [tools](./tools)
+* [Home](./index), [Primer](./primer), [Tutorial](./tutorial)
+* [Transformations](./soad) and [tools](./tools)
 * Language specification: service [endpoint contract types](./servicecontract) and [data contracts (schemas)](./datacontract), [bindings](./bindings), [instance-level constructs](./optionalparts), [scenarios and stories](scenarios.md), [flows](flows.md)
 
-*Copyright: Olaf Zimmermann, 2018-2021. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
+*Copyright: Olaf Zimmermann, 2018-2022. All rights reserved. See [license information](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/LICENSE).*
 
 <!-- *EOF* -->

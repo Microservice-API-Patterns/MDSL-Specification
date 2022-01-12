@@ -8,9 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import io.mdsl.apiDescription.ServiceSpecification;
-import io.mdsl.exception.MDSLException;
 import io.mdsl.generator.model.MDSLGeneratorModel;
 import io.mdsl.generator.model.converter.MDSL2GeneratorModelConverter;
+import io.mdsl.utils.MDSLLogger;
 
 /**
  * Exports the generator model as JSON file.
@@ -27,7 +27,7 @@ public class GenModelJSONExporter extends AbstractMDSLGenerator {
 			fsa.generateFile(inputFileURI.trimFileExtension().lastSegment() + "_GeneratorModel.json",
 					objectMapper.writeValueAsString(genModel));
 		} catch (JsonProcessingException e) {
-			throw new MDSLException("Could not serialize generator model as JSON.", e);
+			MDSLLogger.reportError("Could not serialize generator model as JSON: " + e.getOriginalMessage());
 		}
 	}
 }

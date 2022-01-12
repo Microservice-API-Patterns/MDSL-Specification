@@ -1,0 +1,19 @@
+API description QuickFixTransformationTestAPI
+version "Since version 5.4.2"
+overview "Testing the SOAD transformations and API refactorings"
+
+data type SampleBusinessObjectDTO "sampleBusinessObjectKeyValueMap":{"key":ID<string> , "sampleBusinessObject":D}
+data type Sample_Scenario_1RealizationEndpointDTO "sample_Scenario_1RealizationEndpoint":D<string>
+
+endpoint type Sample_Scenario_1RealizationEndpoint supports scenario Sample_Scenario_1
+serves as PROCESSING_RESOURCE
+exposes
+operation doSomething expecting payload {"sampleData":D , "requestedPageSize":MD<int> , <<Wish_List>> "desiredElements":MD<string>*} delivering payload <<Pagination>> "doSomethingResponseBodyWrapper":{"doSomethingResponseBody":D<string> , "pageSize":MD<int> , "self":L<string> , "nextCursor":L<string>}
+operation initializeResource with responsibility STATE_CREATION_OPERATION expecting payload "inDTO":Sample_Scenario_1RealizationEndpointDTO delivering payload "resourceId":ID<string>
+operation updateResourceState with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Sample_Scenario_1RealizationEndpointDTO delivering payload "updateResult":Sample_Scenario_1RealizationEndpointDTO
+operation deleteResourceState with responsibility STATE_DELETION_OPERATION expecting payload "resourceId":ID<string> delivering payload "successFlag":D<bool>
+operation getResourceState with responsibility RETRIEVAL_OPERATION expecting payload "resourceId":ID<string> delivering payload "currentState":Sample_Scenario_1RealizationEndpointDTO
+
+scenario Sample_Scenario_1
+  story Sample_Story_1 
+    a "SampleUser" wants to "doSomething" in "SampleData" and "s" and "do"

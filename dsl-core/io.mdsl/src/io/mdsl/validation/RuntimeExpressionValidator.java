@@ -39,14 +39,12 @@ public class RuntimeExpressionValidator extends AbstractMDSLValidator {
 					ApiDescriptionPackage.eINSTANCE.getConsumptionWhereClauses_LeftExp()); // Literals.CONSUMPTION_WHERE_CLAUSES__LEFT_EXP);
 
 		}
-
 //		if (!clausole.getRightExpr().matches(this.runtimeExpressionRegex)) {
 //
 //			error("Incorrect format for the right expression. Format is $message.(payload | header)#/<path>.", clausole,
 //					ApiDescriptionPackage.Literals.CONSUMPTION_WHERE_CLAUSES__RIGHT_EXPR);
 //
 //		}
-
 	}
 
 	@Check
@@ -77,5 +75,4 @@ public class RuntimeExpressionValidator extends AbstractMDSLValidator {
 		}
 
 	}
-
 }

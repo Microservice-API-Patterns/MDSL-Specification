@@ -1,11 +1,13 @@
-Microservice Domain-Specific Language (MDSL) 5.3
-================================================
+Microservice Domain-Specific Language (MDSL)
+============================================
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+<!--
 [![Build Status](https://travis-ci.com/Microservice-API-Patterns/MDSL-Specification.svg?branch=master)](https://travis-ci.com/Microservice-API-Patterns/MDSL-Specification)
+-->
 
-
-Author: Olaf Zimmermann, (c) 2018-2021. All rights reserved.
+Author: Olaf Zimmermann, (c) 2018-2022. All rights reserved.
 
 ## What is MDSL?
 
@@ -50,13 +52,17 @@ These two languages can be used independently of each other; for instance, data 
 
 ## Language Specification 
 
-* [Primer](https://microservice-api-patterns.github.io/MDSL-Specification/primer)
-* [Endpoint types](https://microservice-api-patterns.github.io/MDSL-Specification/servicecontract) (a.k.a. ports)
-* [Bindings](https://microservice-api-patterns.github.io/MDSL-Specification/bindings) (a.k.a. adapters)
-* [Data types](https://microservice-api-patterns.github.io/MDSL-Specification/datacontract) (a.k.a. published language)
-* [Instance-level concepts](https://microservice-api-patterns.github.io/MDSL-Specification/optionalparts) (provider, client, gateway)
+The [Primer](https://microservice-api-patterns.github.io/MDSL-Specification/primer) is a good starting point. Detailed are explained on reference pages:
 
-<!-- A language extension supporting queue-based messaging endpoints is [AsyncMDSL](https://github.com/giacomodeliberali/MDSL/tree/master/examples/asyncMDSL).-->
+* [Data types](https://microservice-api-patterns.github.io/MDSL-Specification/datacontract) (a.k.a. published language)
+* [Endpoint types](https://microservice-api-patterns.github.io/MDSL-Specification/servicecontract) (a.k.a. ports)
+* [Protocol bindings](https://microservice-api-patterns.github.io/MDSL-Specification/bindings) (a.k.a. adapters)
+* [Instance-level concepts](https://microservice-api-patterns.github.io/MDSL-Specification/optionalparts) (provider, client, gateway)
+* Integration [scenarios and stories](https://microservice-api-patterns.github.io/MDSL-Specification/scenarios.html)
+* Orchestration [flows](https://microservice-api-patterns.github.io/MDSL-Specification/flows.html)
+* A language extension supporting queue-based messaging endpoints is [AsyncMDSL](https://microservice-api-patterns.github.io/MDSL-Specification/async-mdsl).
+
+A [Quick Reference](https://microservice-api-patterns.github.io/MDSL-Specification/quickreference) providing reusable snippets is available as well.
 
 
 ## Repository Structure 
@@ -64,14 +70,13 @@ These two languages can be used independently of each other; for instance, data 
 This repository contains:
 
 * [dsl-core](dsl-core), the DSL project, Xtext grammar and everything else needed to build an Eclipse plugin providing a MDSL editor.
-<!-- * An older, not fully equivalent version of the grammar in [this folder](antlr4). -->
 * Various [examples](examples).
 * The [sources of the GitHub pages](docs) for MDSL.
-* Some [background information](background) on other IDLs and related projects.
+* [Background information](background): papers and presentations as well as information on relation to other IDLs and on related projects.
 
 If you want to contribute to MDSL, you have to clone this repo and generate the required Xtext files.
 
-*Note:* Setup and build process have been improved recently to ease integration with [Context Mapper](https://contextmapper.org/). As a consequence, the project has to be imported as an existing Maven project, and an adjustment of the IDE setup is required. The [readme](dsl-core/README.md) of the main project contains detailed instructions.
+*Note:* The project has to be imported as an existing Maven project, and an adjustment of the IDE setup is required. The [readme](dsl-core/README.md) of the main project contains detailed instructions. This setup and build process eases integration with [Context Mapper](https://contextmapper.org/).
 
 
 ## Change Log
@@ -80,7 +85,7 @@ The latest version of the MDSL language MDSL version extends service contracts w
 
 Since Version 5.2, MDSL supports true REST level 3 concepts both on the abstract endpoint type level and in the redesigned bindings and comes with additional Freemarker generators (Markdown reports, ALPS).
 
-See [change log](changelog.md) for an evolution history; see GitHub [release notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases) for additional update information.
+The [Change Log](changelog.md) provides an evolution history; the GitHub [Release Notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases) also contain update information.
 
 
 ## Context Information: MAP and Xtext
@@ -91,9 +96,9 @@ All [Microservice API Patterns (MAP)](https://microservice-api-patterns.org/) ar
 * As enums for roles and responsibilities
 * As stereotypes annotating representation elements
 
-See ["MAP Decorators" section of the MDSL tutorial](https://microservice-api-patterns.github.io/MDSL-Specification/tutorial) for more information. <!-- TODO copy one-pager in SummerSoC paper to GitHub pages or elsewhere in repo -->
+See ["MAP Decorators" section of the MDSL tutorial](https://microservice-api-patterns.github.io/MDSL-Specification/tutorial) for more information. 
 
-The MDSL grammar, to be found in src folder of the `dsl-core/io.mdsl` project, was originally developed with Eclipse Photon (4.8.0) and Xtext (2.14) as provided by the Eclipse Modeling Platform. MDSL makes use of the referencing feature in Xtext ('name' attribute). Future work is required to also support  this technology in other IDEs (such as Visual Studio Code).
+The MDSL grammar, located in the `src` folder of the `dsl-core/io.mdsl` project, was originally developed with Eclipse Photon (4.8.0) and Xtext (2.14) as provided by the Eclipse Modeling Platform. MDSL makes use of the referencing feature in Xtext ('name' attribute).
 
 Feedback and contributions welcome!
 
@@ -122,11 +127,11 @@ We are happy to welcome new contributors who want to help improve MDSL language 
 * Submit pull requests. If you do so, we assume that you comply with this [Developer Certificate of Origin](https://developercertificate.org/).
 * Contact us to discuss collaboration and integration opportunities.
 
-<!-- Please review our contribution rules/code of conduct upfront. Thank you! 
-https://github.com/cloudevents/spec/blob/master/CONTRIBUTING.md
-
+<!-- 
+Please review our contribution rules/code of conduct upfront. Thank you! 
+https://github.com/TODO/blob/master/CONTRIBUTING.md
 -->
 
 -- [Olaf Zimmermann (ZIO)](https://ozimmer.ch)
 
-*Copyright: The author, 2019-2021. All rights reserved. See [license information](/LICENSE).*
+*Copyright: The author, 2019-2022. All rights reserved. See [license information](/LICENSE).*
