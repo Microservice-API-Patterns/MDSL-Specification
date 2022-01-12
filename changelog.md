@@ -21,15 +21,6 @@ V5.4.4 (and V5.4.3.1), December 2021
 * Analytics message improved in CLI/MDSL Web interface
 * New tests for new and fixed features
 
-* Bug fixes and extended mapping support in OpenAPI generation (L0, L1 tree bindings, type references; most cardinalities) 
-* Extended genmodel export with HTTP protocol binding details and full flow supported
-* Made genmodel export Java bean compliant
-* Parameter trees mapped to HEADER are simple object again, not deep objects (oas validation pb)
-* Refactored flow gen model, path finder, tests
-* CLI can now trigger demo transformation chain on a scenario story
-* Analytics message improved in CLI/MDSL Web interface
-* New tests for new and fixed features 
-
 V5.4.3, December 2021
 
 * Many more quick fix transformations, transformation chaining
