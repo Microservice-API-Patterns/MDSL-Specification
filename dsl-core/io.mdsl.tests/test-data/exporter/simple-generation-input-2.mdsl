@@ -1,6 +1,13 @@
 API description TestAPI
 
+data type TestType0 P
+data type TestType1 "nameOnly"
+data type TestType2 D
+data type TestType3 D<string> 
+data type TestType4 "aNumber": D<int> 
+
 data type VersionedType version "0.1"  "uri": Link<string> default is "http://localhost:8080"
+
 event type workTrigger
 command type work
 

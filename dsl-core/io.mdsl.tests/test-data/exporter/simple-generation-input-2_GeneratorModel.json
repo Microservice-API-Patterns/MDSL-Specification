@@ -1,6 +1,54 @@
 {
   "apiName" : "TestAPI",
   "dataTypes" : [ {
+    "name" : "TestType0",
+    "fields" : [ ],
+    "version" : "N/A",
+    "defaultValue" : null,
+    "atomic" : false
+  }, {
+    "name" : "TestType1",
+    "fields" : [ ],
+    "version" : "N/A",
+    "defaultValue" : null,
+    "atomic" : false
+  }, {
+    "name" : "TestType2",
+    "fields" : [ {
+      "name" : "anonymous1",
+      "type" : "VOID",
+      "list" : false,
+      "nullable" : false,
+      "typeAsString" : "void"
+    } ],
+    "version" : "N/A",
+    "defaultValue" : null,
+    "atomic" : true
+  }, {
+    "name" : "TestType3",
+    "fields" : [ {
+      "name" : "anonymous2",
+      "type" : "STRING",
+      "list" : false,
+      "nullable" : false,
+      "typeAsString" : "string"
+    } ],
+    "version" : "N/A",
+    "defaultValue" : null,
+    "atomic" : true
+  }, {
+    "name" : "TestType4",
+    "fields" : [ {
+      "name" : "aNumber",
+      "type" : "INTEGER",
+      "list" : false,
+      "nullable" : false,
+      "typeAsString" : "int"
+    } ],
+    "version" : "N/A",
+    "defaultValue" : null,
+    "atomic" : true
+  }, {
     "name" : "VersionedType",
     "fields" : [ {
       "name" : "uri",

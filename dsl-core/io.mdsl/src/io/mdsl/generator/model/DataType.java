@@ -90,9 +90,11 @@ public class DataType implements MDSLType {
 		if(fields.size()>1) {
 			return false;
 		}
-		
-		if(fields.get(0).getType() instanceof BasicType) {
-			return true;
+		// bug fix in v546:
+		else if (fields.size()==1) {
+			if(fields.get(0).getType() instanceof BasicType) {
+				return true;
+			}
 		}
 		
 		return false;
