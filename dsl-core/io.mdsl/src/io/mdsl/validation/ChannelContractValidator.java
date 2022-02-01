@@ -181,7 +181,7 @@ public class ChannelContractValidator extends AbstractMDSLValidator {
 	@Check
 	public void checkDeliveryGuaranteeConsistency(ChannelContract channel){
 		
-		// https://github.com/Microservice-API-Patterns/MDSL-Specification/issues/65
+		// https://github.com/socadk/MDSL/issues/65
 		// GUARANTEED_DELIVERY is only used in combination with the delivery guarantee set to AT_LEAST_ONCE or EXACTLY_ONCE
 		
 		List<ChannelType> channelTypes = channel.getTypes();

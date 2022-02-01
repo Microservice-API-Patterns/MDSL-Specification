@@ -218,8 +218,9 @@ public class SequentialFlowStartingWithCommand extends RouteBuilder {
         // create a producer to send all initial events to the process flow
         ProducerTemplate template = camelContext.createProducerTemplate();
         String testMessage = "Test message for flow SequentialFlowStartingWithCommand in FlowTest1";
-        // flow might start with command (the ones coming from miro via CML do):
         template.sendBody("direct:FlowStep1", testMessage);
+        // TODO add header to testMessage if flow contains a choice, example (replace "choice-nn" with names from flow):
+        // template.sendBodyAndHeader("direct:FlowStep1", testMessage, "ChoiceCondition", "choiceValue");
         camelContext.stop();
         camelContext.close();
     }

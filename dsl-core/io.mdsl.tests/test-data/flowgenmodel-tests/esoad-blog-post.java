@@ -333,8 +333,9 @@ public class Write_Paper_WithInitCommand extends RouteBuilder {
         // create a producer to send all initial events to the process flow
         ProducerTemplate template = camelContext.createProducerTemplate();
         String testMessage = "Test message for flow Write_Paper_WithInitCommand in EventStormingBoardContextAPI";
-        // flow might start with command (the ones coming from miro via CML do):
         template.sendBody("direct:Conduct_Research_Command", testMessage);
+        // TODO add header to testMessage if flow contains a choice, example (replace "choice-nn" with names from flow):
+        // template.sendBodyAndHeader("direct:Conduct_Research_Command", testMessage, "ChoiceCondition", "choiceValue");
         camelContext.stop();
         camelContext.close();
     }
@@ -495,7 +496,6 @@ public class Write_Paper_NoInitEventOrCommand extends RouteBuilder {
         // create a producer to send all initial events to the process flow
         ProducerTemplate template = camelContext.createProducerTemplate();
         String testMessage = "Test message for flow Write_Paper_NoInitEventOrCommand in EventStormingBoardContextAPI";
-        // flow might start with command (the ones coming from miro via CML do):
         camelContext.stop();
         camelContext.close();
     }

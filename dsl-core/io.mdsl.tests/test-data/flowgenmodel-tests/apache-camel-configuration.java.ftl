@@ -88,21 +88,16 @@ public class ${oflow.name} extends RouteBuilder {
         // create a producer to send all initial events to the process flow
         ProducerTemplate template = camelContext.createProducerTemplate();
         String testMessage = "Test message for flow ${oflow.name} in ${genModel.apiName}";
-        <#if oflow.initEvents()??>
-        <#assign iecount=0>
         <#list oflow.initEvents() as ename, event>
-        <#assign iecount=iecount+1>
 		template.sendBody("direct:${ename}", testMessage);
         // TODO add header to message if flow contains a choice, example (replace "choice-nn" with names from flow):
         // template.sendBodyAndHeader("direct:${ename}", testMessage, "ChoiceCondition", "choiceValue"); 
     	</#list>
-        <#if iecount==0>
-        // flow might start with command (the ones coming from miro via CML do):
         <#list oflow.initCommands() as command>
         template.sendBody("direct:${command.name}", testMessage);
+        // TODO add header to testMessage if flow contains a choice, example (replace "choice-nn" with names from flow):
+        // template.sendBodyAndHeader("direct:${command.name}", testMessage, "ChoiceCondition", "choiceValue");
         </#list>
-        <#assign firstEndpoint=oflow.commands[0]>
-        <#else><#assign firstEndpoint=oflow.initEvents()?values[0]></#if></#if>
         camelContext.stop();
         camelContext.close();
     }
