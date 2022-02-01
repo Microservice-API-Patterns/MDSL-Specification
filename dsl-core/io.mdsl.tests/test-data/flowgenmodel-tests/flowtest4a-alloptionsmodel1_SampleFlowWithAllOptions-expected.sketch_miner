@@ -4,8 +4,7 @@ SampleFlowWithAllOptions:
 (FlowInitiated)
 SampleFlowWithAllOptions: user StartFlowCommand
 (Event1)
-SampleFlowWithAllOptions: user Command1
-(Command1Done1)
+SampleFlowWithAllOptions: user Command1|user Command2
 ...
 
 ...
@@ -41,20 +40,24 @@ SampleFlowWithAllOptions: user Command5
 ...
 
 ...
+SampleFlowWithAllOptions: user Command1
+(Command1Done1)|(Command1Done2)
+...
+
+...
+(Command1Done1)
+...
+
+...
 (Command1Done1)|(Command2Done)|(Command1Done2)
 SampleFlowWithAllOptions: user TerminateFlowCommand
 
-(FlowInitiated)
-SampleFlowWithAllOptions: user StartFlowCommand
-(Event1)
-SampleFlowWithAllOptions: user Command2
-(Command2Done)
+...
+(Command1Done2)
 ...
 
-(FlowInitiated)
-SampleFlowWithAllOptions: user StartFlowCommand
-(Event1)
-SampleFlowWithAllOptions: user Command1
-(Command1Done2)
+...
+SampleFlowWithAllOptions: user Command2
+(Command2Done)
 ...
 

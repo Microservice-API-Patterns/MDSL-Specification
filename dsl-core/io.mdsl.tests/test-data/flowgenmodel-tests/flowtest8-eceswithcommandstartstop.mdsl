@@ -1,0 +1,19 @@
+API description FlowTest8b
+
+event type FlowInitiated
+event type Event1, Event2a, Event2, Event3a, Event3b
+event type Command1Done, Command2Done
+event type FlowTerminated
+event type TerminateCommandChoice1
+event type TerminateCommandChoice2
+
+command type StartFlowCommand
+command type Command1, Command2
+command type TerminateFlowCommand
+
+flow SampleFlowWithEceStepStartingAndEndingWithCommand
+command StartFlowCommand emits event Event1
+event Event1 triggers command Command1 emits event Event2
+event Event2 triggers command Command2
+command Command2 emits event Event3a + Event3b
+event Event3a + Event3b triggers command TerminateFlowCommand

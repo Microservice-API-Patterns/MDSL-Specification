@@ -21,10 +21,10 @@ In Eclipse, the generator is available in the MDSL context menu:
 The following command generates a specification in case you work with the CLI:
 
 ```bash
-./mdsl -i model.mdsl -g proto
+mdsl -i model.mdsl -g proto
 ```
 
-_Hint:_ Both tools generate the output into the `src-gen` folder which is located in the projects root directory (Eclipse) or the directory from which the `mdsl` command has been called (CLI). Both tools create the directory automatically in case it does not already exist.
+_Hint:_ Both plugin and CLI generate the output into the `src-gen` folder that is located in the project root directory (Eclipse plugin) or the directory from which the `mdsl` command has been called (CLI). The folder is created automatically if it does not exist yet.
 
 ## Generator Output / Mapping
 The generator maps the MDSL concepts to `*.proto` files as follows:
@@ -36,7 +36,7 @@ The generator maps the MDSL concepts to `*.proto` files as follows:
 ## Example
 The following example illustrates what the generator produces for an exemplary MDSL contract.
 
-We use the following MDSL model, created during this [tools demo](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html) to illustrate our generator outputs:
+We use the following MDSL model, created in this [tools demo](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html), to illustrate our generator outputs:
 
 ```
 API description ReferenceManagementServiceAPI
@@ -114,6 +114,14 @@ You find the complete sources (incl. generated `*.proto` file) of this example [
 
 You can use the generated `*.proto` files to implement a [gRPC](https://grpc.io/) interface.
 
+<!-- 
+Standalone protoc usage: 
+
+* Get executable via via https://developers.google.com/protocol-buffers/docs/downloads#release-packages and unzip (or use other documented installation option)
+* Run `protoc --java_out . [mdsloutput].proto`
+* Add grpc and com.google.protobuf to project dependencies
+-->
+
 ## Java Client/Server Sample
 We explain how you can start implementing server and client code in Java with the following steps.
 
@@ -150,9 +158,9 @@ protobuf {
 }
 ```
 
-Now we are already ready to integrate our `*.proto` file into the project. We copy the file that we have generated above into the `src/main/proto` directory.
+Now we are ready to integrate our `*.proto` file into the project. Copy the file that we  generated above to the `src/main/proto` directory.
 
-Once we copied the `*.proto` file we can run `./gradlew clean build` and the sources will be generated into `build/generated/source/proto/main/grpc` and `build/generated/source/proto/main/java`. To let your IDE know that the generated source are there, you have to adjust the `build.gradle` file a bit. Just add the following code block:
+Once we copied the `*.proto` file, we can run `gradlew clean build`. The sources will be generated into `build/generated/source/proto/main/grpc` and `build/generated/source/proto/main/java`. To let your IDE know that the generated source are there, you have to adjust the `build.gradle` file a bit. Just add the following code block:
 
 ```gradle
 sourceSets {
@@ -181,7 +189,7 @@ public class ReferenceManagementServer {
 }
 ```
 
-As you can see in the generated `*.proto` file above, this RPC shall respond with a `PaperItemDTO`. A simple implementation, sufficient for this tutorial, merely constructs such an object and returns it:
+The generated `*.proto` file above specifies that this RPC shall respond with a `PaperItemDTO`. A simple implementation, sufficient for this tutorial, merely constructs such an object and returns it:
 
 ```java
 public class ReferenceManagementServer {
@@ -362,7 +370,7 @@ public class ReferenceManagementClient {
 }
 ```
 
-That's it. We can now run the servers and the clients `main` methods and get the following output on the clients terminal:
+We can now run the servers and the clients `main` methods and get the following output on the clients terminal:
 
 ```bash
 Nov 26, 2020 2:01:49 PM io.mdsl.samples.grpc.reference_management.ReferenceManagementClient createPaperItem

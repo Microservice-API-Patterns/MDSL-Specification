@@ -249,8 +249,8 @@ public class TestFlowUsingAllOperators extends RouteBuilder {
         .when(simple("${header.e1CommandInvocationCondition} == 'choiceOfc1'")).to("direct:c1") 
         .when(simple("${header.e1CommandInvocationCondition} == 'choiceOfc2'")).to("direct:c2")
         .otherwise().to("mock:bye").stop();
-        // note: e2 does not invoke any commands 
-        // note: e3 does not invoke any commands 
+        // note: e2 is part of AND_e2_e3 which does not invoke any commands
+        // note: e3 is part of AND_e2_e3 which does not invoke any commands
         // note: AND_e2_e3 does not invoke any commands 
         // note: e4 does not invoke any commands 
         // note: e5 does not invoke any commands 

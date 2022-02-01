@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature id="io.mdsl.feature"
 	label="MDSL Editor Feature"
-	version="5.4.5.qualifier">
+	version="5.4.6.qualifier">
 	
 	<description url="https://microservice-api-patterns.github.io/MDSL-Specification/">
 		Eclipse Plugin for the Microservices Domain-Specific Language (MDSL)

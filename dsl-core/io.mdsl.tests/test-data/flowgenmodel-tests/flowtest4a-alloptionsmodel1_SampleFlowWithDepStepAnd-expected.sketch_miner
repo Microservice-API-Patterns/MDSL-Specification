@@ -3,18 +3,20 @@ SampleFlowWithDepStepAnd:
 
 (FlowInitiated)
 SampleFlowWithDepStepAnd: user StartFlowCommand
+(Event1)|(Event3)|(Event2)
+...
+
+...
 (Event1)
 SampleFlowWithDepStepAnd: user Command1
 (FlowTerminated)
 
-(FlowInitiated)
-SampleFlowWithDepStepAnd: user StartFlowCommand
+...
 (Event2)
 SampleFlowWithDepStepAnd: user Command2
 (FlowTerminated)
 
-(FlowInitiated)
-SampleFlowWithDepStepAnd: user StartFlowCommand
+...
 (Event3)
 SampleFlowWithDepStepAnd: user Command3
 (FlowTerminated)

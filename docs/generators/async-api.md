@@ -275,7 +275,13 @@ More information on the `asyncapi-generator` that we used in this example can be
 
 - The generator does not support security policies.
 - A channel can only transfer messages of one data type.
-- The generator is not yet supported in the CLI.
+- The generator does not work when invoked in the Command Line Interface (CLI). 
+
+<!-- 
+Xtext/Xtend problem: generated class experiences NullPointer exception in 
+io.mdsl.generator.asyncapi.AsyncApiGenerator.compile(AsyncApiGenerator.java:160), line is: 
+QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(serviceSpecificationInstance);
+-->
 
 # Other Generators
 Also checkout our other generators:

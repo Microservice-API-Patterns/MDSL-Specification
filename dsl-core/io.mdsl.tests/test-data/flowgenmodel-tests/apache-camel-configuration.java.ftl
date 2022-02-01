@@ -41,8 +41,11 @@ public class ${oflow.name} extends RouteBuilder {
         public void process(Exchange exchange) throws Exception {
     	    String message = exchange.getIn().getBody().toString();
     	    System.out.println("Command processor " + this.getClass().getSimpleName() + " activated, processing message: " + message);
+            <#--
+            // steer choices via condition headers as this (exchange is for instance used here: process(Exchange exchange)):
+            // exchange.getIn().setHeader("ChoiceCondition", "choiceValue");
+            -->
             exchange.getIn().setBody(message + ", processed by " + this.getClass().getSimpleName()); 
-            <#-- TODO provide sample for condition header setting (see "big" example) -->
         }
     }
     </#list>
@@ -92,7 +95,6 @@ public class ${oflow.name} extends RouteBuilder {
 		template.sendBody("direct:${ename}", testMessage);
         // TODO add header to message if flow contains a choice, example (replace "choice-nn" with names from flow):
         // template.sendBodyAndHeader("direct:${ename}", testMessage, "ChoiceCondition", "choiceValue"); 
-        <#-- // template.sendBodyAndHeader("direct:${firstEndpoint}", testMessage, "${command.name}EventEmissionCondition", "${alternativeEvent.getOptionValue()}"); -->
     	</#list>
         <#if iecount==0>
         // flow might start with command (the ones coming from miro via CML do):
@@ -128,7 +130,7 @@ public class ${oflow.name} extends RouteBuilder {
         <#else>
         // TODO define route for trigger event ${event.name} manually <#-- default case, should not get here -->
         </#if>
-        <#else>
+        <#else><#-- handling join event of different types (of right hand side of flow step) done, handling single left hand event now -->
         <#if event.triggersAndCommandComposition()>
         <#list event.triggeredCommands() as command>
         <#-- // case 2: generate Recipient List to trigger parallel execution of ANDed commands -->
@@ -146,7 +148,17 @@ public class ${oflow.name} extends RouteBuilder {
         .when(simple("${oflow.camelUtils().headerPrefix()}${event.name}CommandInvocationCondition} == '${alternativeCommand.optionValue()}'")).to("direct:${alternativeCommand.name}")</#list>
         .otherwise().to("mock:bye").stop();
         <#else>
-        // note: ${event.name} does not invoke any commands <#-- default case, termination events handled separately (below) -->
+        <#if oflow.processView().participatesInAnd(event)>
+        <#list oflow.processView().getCompositeEventsWith(event) as compositeEvent>
+        <#if compositeEvent.getTriggeredCommands()??&&compositeEvent.getTriggeredCommands()?size gt 0>
+        from("direct:${event.name}").to("direct:${compositeEvent.name}"); // edge case: single AND event to join
+        <#else>
+        // note: ${event.name} is part of ${compositeEvent.name} which does not invoke any commands
+        </#if>
+        </#list>
+        <#else>
+        // note: ${event.name} does not invoke any commands <#-- termination events are handled separately (below) -->
+        </#if>    
         </#if>
         </#if>
         </#list>
@@ -154,7 +166,7 @@ public class ${oflow.name} extends RouteBuilder {
         // routes for domain event production steps
     	<#list oflow.commands as command>
         <#if command.emitsSingleEvent()>
-        <#if command.emitsSingleCompositeEvent()>
+        <#if command.emitsSingleCompositeEvent()&&command.singleCompositeEvent().composedEvents()?size gt 1>
         <#-- case 5: trigger parallelProcessing() via a recipientList endpoint --> 
         from("direct:${command.name}").process(new ${command.name}Processor("${command.name}")).recipientList(constant("${command.multipleConcurrentEventsAsCommaSeparatedList("direct:")}")).parallelProcessing(); 
         <#else>
@@ -175,13 +187,19 @@ public class ${oflow.name} extends RouteBuilder {
         </#if>
         </#list>
         
-        <#if oflow.terminationEvents()??>
+        <#assign terminationEvents=oflow.terminationEvents()>
+        <#if terminationEvents??&&terminationEvents?size gt 0>
         // routes to terminate flow
-        <#list oflow.terminationEvents() as ename, event>
+        <#list terminationEvents as ename, event>
         from("direct:${event.name}").to("mock:bye").stop();
         </#list>
-        <#else>
-        // TODO (optional): add routes from commands not emitting events to "mock:bye" to terminate flow
+        </#if>
+        <#assign terminationCommands=oflow.processView().getTerminationCommands()>
+        <#if terminationCommands??&&terminationCommands?size gt 0>
+        // routes to terminate flow via terminating command
+        <#list terminationCommands as command>
+        from("direct:${command.name}").process(new ${command.name}Processor("${command.name}")).to("mock:bye").stop();
+        </#list>
         </#if>
     }
 }

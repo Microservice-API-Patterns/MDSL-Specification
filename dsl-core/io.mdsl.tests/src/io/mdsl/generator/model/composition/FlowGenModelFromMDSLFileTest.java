@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,14 +16,152 @@ import io.mdsl.apiDescription.ServiceSpecification;
 import io.mdsl.generator.model.MDSLGeneratorModel;
 import io.mdsl.generator.model.composition.views.PathCollection;
 import io.mdsl.generator.model.composition.views.Process;
+import io.mdsl.generator.model.composition.views.jaamsim.Branch;
+import io.mdsl.generator.model.composition.views.jaamsim.Combine;
+import io.mdsl.generator.model.composition.views.jaamsim.Duplicate;
+import io.mdsl.generator.model.composition.views.jaamsim.JaamSimView;
+import io.mdsl.generator.model.composition.views.jaamsim.Queue;
+import io.mdsl.generator.model.composition.views.jaamsim.Server;
+import io.mdsl.generator.model.composition.views.jaamsim.Statistics;
 import io.mdsl.generator.model.converter.MDSL2GeneratorModelConverter;
 import io.mdsl.tests.AbstractMDSLInputIntegrationTest;
-import io.mdsl.transformations.TransformationHelpers;
 import io.mdsl.utils.MDSLLogger;
 
 public class FlowGenModelFromMDSLFileTest extends AbstractMDSLInputIntegrationTest {
 	
 	private static final int INDEX_OF_FIRST_FLOW = 0;
+	
+	// ** jaamsim view tests
+	
+	@Test
+	public void canCreateJaamSimViewForBasicFlow() throws IOException {
+		// given
+		ServiceSpecification mdsl = new MDSLResource(getTestResource("flowtest1-sequence.mdsl")).getServiceSpecification();
+		MDSL2GeneratorModelConverter converter = new MDSL2GeneratorModelConverter(mdsl);
+
+		// when
+		MDSLGeneratorModel mdslGenModel = converter.convert();
+		Flow flow1 = mdslGenModel.getOrchestrationFlows().get(0);
+		dumpFlow(mdslGenModel, 0); // there are two in this test file, taking first
+		JaamSimView jsh = flow1.jaamSimHelper();
+		List<Server> servers = jsh.getServers();
+		List<Queue> queues = jsh.getQueues();
+		List<Branch> branches = jsh.getBranches();
+		List<Duplicate> duplicates = jsh.getDuplicates();
+		List<Combine> combines = jsh.getCombines();
+		List<Statistics> statistics = jsh.getStatistics();
+		
+		// then
+		System.out.println(jsh.dump());
+		assertEquals("FlowTest1", mdslGenModel.getApiName());
+		assertEquals(3, queues.size()); // verified
+		assertEquals(3, servers.size()); // verified 
+		assertEquals(" FlowStep1 FlowStep2 FlowStep3", jsh.getServerNamesAsString());
+		assertEquals(0, branches.size());
+		assertEquals(0, duplicates.size());
+		assertEquals(0, combines.size());
+		assertEquals(1, statistics.size()); // verified 
+	}
+
+	@Test
+	public void canCreateJaamSimViewForParallelSplitFlow() throws IOException {
+		// given
+		ServiceSpecification mdsl = new MDSLResource(getTestResource("flowtest2-parallelsplitwithsynchronization.mdsl")).getServiceSpecification();
+		MDSL2GeneratorModelConverter converter = new MDSL2GeneratorModelConverter(mdsl);
+
+		// when
+		MDSLGeneratorModel mdslGenModel = converter.convert();
+		
+		/*
+		Flow flow1 = mdslGenModel.getOrchestrationFlows().get(0);
+		dumpFlow(mdslGenModel, 0); // there are two in this test file, taking first
+		*/ 
+		
+		Flow flow2 = mdslGenModel.getOrchestrationFlows().get(1);
+		dumpFlow(mdslGenModel, 1); // there are two in this test file, taking second
+		
+		JaamSimView jsh = flow2.jaamSimHelper();
+		List<Server> servers = jsh.getServers();
+		List<Queue> queues = jsh.getQueues();
+		List<Duplicate> duplicates = jsh.getDuplicates();
+		List<Combine> combines = jsh.getCombines();
+		List<Statistics> statistics = jsh.getStatistics();
+		
+		// then
+		System.out.println(jsh.dump());
+		
+		assertEquals("ParallelSplitWithSynchronization", flow2.getName());
+		assertEquals(4, queues.size()); 
+		assertEquals(4, servers.size());
+		assertEquals(1, duplicates.size()); 
+		assertEquals(1, combines.size()); 
+		assertEquals(1, statistics.size());
+		
+		// TODO assert special queues and servers
+	}
+	
+	@Test
+	public void canCreateJaamSimViewForChoiceFlow() throws IOException {
+		// given
+		ServiceSpecification mdsl = new MDSLResource(getTestResource("flowtest3b-inclusivechoice-andmerge.mdsl")).getServiceSpecification();
+		MDSL2GeneratorModelConverter converter = new MDSL2GeneratorModelConverter(mdsl);
+
+		// when
+		MDSLGeneratorModel mdslGenModel = converter.convert();
+		
+
+		Flow flow = mdslGenModel.getOrchestrationFlows().get(0);
+		dumpFlow(mdslGenModel, 0); 
+		
+		JaamSimView jsh = flow.jaamSimHelper();
+		List<Server> servers = jsh.getServers();
+		List<Queue> queues = jsh.getQueues();
+		List<Branch> branches = jsh.getBranches();
+		List<Combine> combines = jsh.getCombines();
+		List<Statistics> statistics = jsh.getStatistics();
+		
+		// then
+		System.out.println(jsh.dump());		
+		assertEquals("InclusiveChoiceWithAndMerge", flow.getName());
+		assertEquals(5, queues.size());
+		assertEquals(3, servers.size()); // first step is a branch
+		assertEquals(1, branches.size()); 
+		assertEquals(1, combines.size()); 
+		assertEquals(1, statistics.size());
+	}
+	
+	@Test
+	public void canCreateJaamSimViewForAllOptionsFlow() throws IOException {
+		// given
+		ServiceSpecification mdsl = new MDSLResource(getTestResource("flowtest4a-alloptionsmodel1.mdsl")).getServiceSpecification();
+		MDSL2GeneratorModelConverter converter = new MDSL2GeneratorModelConverter(mdsl);
+
+		// when
+		MDSLGeneratorModel mdslGenModel = converter.convert();
+		
+		Flow flow = mdslGenModel.getOrchestrationFlows().get(4);
+		dumpFlow(mdslGenModel, 4); 
+		
+		JaamSimView jsh = flow.jaamSimHelper();
+		List<Server> servers = jsh.getServers();
+		List<Queue> queues = jsh.getQueues();
+		List<Branch> branches = jsh.getBranches();
+		List<Combine> combines = jsh.getCombines();
+		List<Statistics> statistics = jsh.getStatistics();
+		
+		// then
+		System.out.println(jsh.dump());		
+		assertEquals("SampleFlowWithAllOptions", flow.getName());
+		assertEquals(9, queues.size());
+		// TODO look into split/choice and aggregator queues; guard servers
+		assertEquals(7, servers.size()); 
+		assertEquals(2, jsh.getDuplicates().size());
+		assertEquals(3, branches.size());
+		assertEquals(2, combines.size());
+		assertEquals(1, statistics.size());
+	}
+	
+	// TODO test E-SOAD (original, modified a) start step, b) explicit join)
 
 	// ** flow gen model construction and access tests 
 	
@@ -1032,6 +1171,29 @@ public class FlowGenModelFromMDSLFileTest extends AbstractMDSLInputIntegrationTe
 		(FlowTerminated)
 		done
  		*/
+	}
+	
+	@Test 
+	public void canWorkWithProcessViewOfModel8() throws IOException {
+		// given
+		ServiceSpecification mdsl = new MDSLResource(getTestResource("flowtest8-eceswithcommandstartstop.mdsl")).getServiceSpecification();
+		MDSL2GeneratorModelConverter converter = new MDSL2GeneratorModelConverter(mdsl);
+
+		// when
+		MDSLGeneratorModel mdslGenModel = converter.convert();
+		dumpFlow(mdslGenModel, 0);
+		Process processViewOnGenModel = mdslGenModel.getOrchestrationFlows().get(0).processView();
+
+		// then
+		assertEquals("FlowTest8b", mdslGenModel.getApiName());
+		String result = processViewOnGenModel.dumpAllPaths();
+		PathCollection pc = processViewOnGenModel.getAllPaths();
+		assertEquals(1, pc.size()); // was 2, bug fix Feb 1
+		Event event = mdslGenModel.getOrchestrationFlows().get(0).getEvents().get("Event3a");
+		assertEquals(false, processViewOnGenModel.participatesInJoin(event));
+		// special case: join events identical to AND events 
+		assertEquals(true, processViewOnGenModel.participatesInAnd(event));
+		dumpPathCollection(pc);
 	}
 
 	private void dumpFlow(MDSLGeneratorModel flogenmodel, int index) {

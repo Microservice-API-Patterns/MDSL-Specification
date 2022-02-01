@@ -234,6 +234,7 @@ public class SequentialFlowStartingWithCommand extends RouteBuilder {
         from("direct:FlowStep1").process(new FlowStep1Processor("FlowStep1")).to("direct:FlowStep1Completed"); // command to single event
         from("direct:FlowStep2").process(new FlowStep2Processor("FlowStep2")).to("direct:FlowStep2Completed"); // command to single event
         
-        // routes to terminate flow
+        // routes to terminate flow via terminating command
+        from("direct:FlowStep3").process(new FlowStep3Processor("FlowStep3")).to("mock:bye").stop();
     }
 }

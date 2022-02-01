@@ -11,7 +11,7 @@
  * Port from original JavaScript version by pieroxy 
  * https://github.com/pieroxy/lz-string
  */
-package io.mdsl.generator.model.composition.sketchminer;
+package io.mdsl.generator.model.composition.views.sketchminer;
 
 import java.util.HashMap;
 import java.util.HashSet;

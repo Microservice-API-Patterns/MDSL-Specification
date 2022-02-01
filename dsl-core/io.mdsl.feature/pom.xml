@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.mdsl</groupId>
 		<artifactId>io.mdsl.parent</artifactId>
-		<version>5.4.5-SNAPSHOT</version>
+		<version>5.4.6-SNAPSHOT</version>
 	</parent>
 	<artifactId>io.mdsl.feature</artifactId>
 	<packaging>eclipse-feature</packaging>

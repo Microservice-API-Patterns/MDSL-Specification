@@ -9,7 +9,9 @@ copyright: Olaf Zimmermann, 2019-2022. All rights reserved.
 ## Overview
 Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as OpenAPI/Swagger, WSDL, and <!-- gRPC --> Protocol Buffers. 
 
+<!--
 > If the URI of this page is `https://socadk.github.io/MDSL/index`, you are looking at the GitHub pages of the next version (technology preview)! Please refer to [https://microservice-api-patterns.github.io/MDSL-Specification/index](https://microservice-api-patterns.github.io/MDSL-Specification/index) for the latest public open source version.
+-->
 
 ### A First Example 
 
@@ -39,7 +41,9 @@ API client HelloWorldAPIClient
   via protocol HTTP 
 ~~~
 
-`sayHello` accepts a single scalar string value `D<string>` as input. This operation returns a Data Transfer Object (DTO) called `SampleDTO` as output, which is modeled explicitly so that its specification can be reused. `SampleDTO` is specified incompletely as an identifier-data pair `{ID, D}`: the two elements in the pair are an identifier `ID` and some data (`D`). The names of these two "parameters" have not been specified yet (unlike `"in"`, the data send in the request message of `sayHello`). The [data element](https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement) in the pair is a string; type of the `ID` parameter is yet unspecified. In addition to the endpoint type (a.k.a. service contract) `HelloWorldEndpoint`, an API client and an API provider working with this contract are defined (and [bound](./bindings) to HTTP, a single home resource in this simple case). 
+`sayHello` accepts a single scalar string value `D<string>` as input. This operation returns a Data Transfer Object (DTO) called `SampleDTO` as output, which is modeled explicitly so that its specification can be reused. This `SampleDTO` is specified incompletely as an identifier-data pair `{ID, D}`. Its two elements are an identifier `ID` and some data `D`. The names of these two "parameters" have not been specified yet. The [data element](https://microservice-api-patterns.org/patterns/structure/elementStereotypes/DataElement) `D` is a string; the type of the `ID` parameter is not unspecified. This is different from `"in": D<int>`,  the data send in the request message of `sayHello`, which gives its single parameter a name, a role, and a type. 
+
+In addition to the endpoint type (a.k.a. service contract) `HelloWorldEndpoint`, an API client and an API provider working with this contract are defined (and [bound](./bindings) to HTTP, a single home resource in this simple case). 
 
 Take a look at Hello World in [Swagger/OpenAPI Specification](https://swagger.io/blog/api-development/getting-started-with-swagger-i-what-is-swagger/) in comparison. You can find such contract specification example [here](./HelloWorldWebsitePrimer.yaml) (note: this OpenAPI specification contains a few more details about the HTTP [binding](./bindings) of the abstract contract). 
 
@@ -70,7 +74,7 @@ An advanced example showing more contract feature appears in the [MDSL Primer](.
 
 ## Next Steps
 
-### MDSL Tools
+### MDSL Tools and Their Application
 
 The following tools already support MDSL:
 
@@ -78,14 +82,19 @@ The following tools already support MDSL:
 * A [Command-Line Interface (CLI)](./tools#command-line-interface-cli-tools) makes contract validation and generators available outside any IDE. <!-- https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/dsl-core/io.mdsl.cli --> *Work in progress:* [MDSL Web](https://mdsl-web.herokuapp.com/) Tools.
 * [Context Mapper](https://contextmapper.org/docs/mdsl/) can generate MDSL.
 
-See MDSL [Tools](./tools) page for more information.
-
+See MDSL [Tools](./tools) page for more information. Two blog posts, ["Story-Driven Service Design: From Feature Story to Minimum Viable API Product"](https://ozimmer.ch/practices/2022/01/20/StoryDrivenServiceDesignDemo.html)
+and ["Event-Driven Service Design: Five Steps from Whiteboard to OpenAPI and Camel Flow"](https://ozimmer.ch/practices/2022/01/13/EventDrivenServiceDesignDemo.html) feature MDSL these tools in action.
 
 ### MDSL Documentation (this website)
 
-* Language reference and "getting started" resources: [Endpoint Type](./servicecontract), [Data Types](./datacontract), [API Provider and Client](./optionalparts), [Technology Bindings](./bindings) with [HTTP/REST specifics](./http-rest), [Scenarios and stories](./scenarios), [Orchestration flows](./flows), (experimental) [AsyncMDSL](./async-mdsl) 
-* Service-oriented [quick fixes and model transformations](./soad.md) supporting "API First" and IDL/code generators
- [OpenAPI generator](./generators/open-api), [Protocol buffers generator](./generators/protocol-buffers), [Graphql generator](./generators/graphql), [Jolie generator](./generators/jolie), [Java "Modulith" generator](./generators/java), [Arbitrary textual generation with Freemarker](./generators/freemarker)
+* Language reference: 
+  * [Endpoint Type](./servicecontract), [Data Types](./datacontract)
+  * [API Provider and Client](./optionalparts), [Technology Bindings](./bindings) with [HTTP/REST specifics](./http-rest) 
+  * [Scenarios and stories](./scenarios), [Orchestration flows](./flows), (experimental) [AsyncMDSL](./async-mdsl) 
+* Service-oriented [quick fixes and model transformations](./soad.md) supporting "API First" 
+* IDL/code generators: 
+  * [OpenAPI generator](./generators/open-api), [Protocol buffers generator](./generators/protocol-buffers), [Graphql generator](./generators/graphql), [Jolie generator](./generators/jolie) 
+  * [Java "Modulith" generator](./generators/java), [Arbitrary textual generation with Freemarker](./generators/freemarker)
 * Language and tools repository (GitHub): [XText grammar](https://github.com/Microservice-API-Patterns/MDSL-Specification/blob/master/dsl-core/io.mdsl/src/io/mdsl/APIDescription.xtext), [examples](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples) folder
 
 

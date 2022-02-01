@@ -1,0 +1,28 @@
+API description FlowTest4a
+
+event type FlowInitiated
+event type Event1, Event2, Event3
+event type Command1Done1, Command1Done2, Command2Done, Command3Done, Command4Done, Command5Done, Command6Done
+event type FlowTerminated
+
+command type StartFlowCommand
+command type Command1, Command2, Command3, Command4, Command5, Command6
+command type TerminateFlowCommand
+
+flow SampleFlowWithAllOptionsEndingWithEvent type APPLICATION_FLOW
+event FlowInitiated triggers command StartFlowCommand
+command StartFlowCommand emits event Event1 o Event2 o Event3
+event Event1 triggers command Command1 + Command2
+event Event2 triggers command Command3 o Command4
+event Event3 triggers command Command5 x Command6
+command Command1 emits event Command1Done1 + Command1Done2
+command Command2 emits event Command2Done
+command Command3 emits event Command3Done
+command Command4 emits event Command4Done
+command Command5 emits event Command5Done
+command Command6 emits event Command6Done
+event Command1Done1 + Command1Done2 + Command2Done triggers command TerminateFlowCommand
+event Command3Done + Command4Done + Command5Done triggers command TerminateFlowCommand
+event Command6Done triggers command TerminateFlowCommand
+command TerminateFlowCommand emits event FlowTerminated
+

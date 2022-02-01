@@ -18,7 +18,7 @@ This is the "hello world" of cross-platform service contracting, specified in MD
 ~~~
 API description HelloWorldAPI
 
-data type SampleDTO {ID, D} 
+data type SampleDTO {ID, "someData": D<string>} 
 
 endpoint type HelloWorldEndpoint
 exposes 
@@ -26,17 +26,15 @@ exposes
     expecting payload D<string>  
     delivering payload SampleDTO
 
-API provider HelloWorldAPIProvider1
-  offers HelloWorldEndpoint
-
-API client HelloWorldAPIClient1
-  consumes HelloWorldEndpoint
+API provider HelloWorldAPIProvider
+  offers HelloWorldEndpoint at endpoint location "http://localhost:8080"
+  via protocol HTTP binding resource Home at "/hello"
 ~~~
 
 As the example shows, the MDSL grammar defines two related specification languages:
 
 1. An *API description language*: API `endpoints type`s (a.k.a. service contracts types) can be defined, including their operations; API client and providers of instances of these endpoint types can be specified elaborately, including Service Level Agreements (SLAs).
-2. A *data contract language* providing a type system for DTRs in request and response messages (which is very compact): `data type SampleDTO {ID, D}`.
+2. A *data contract language* providing a type system for DTRs in request and response messages (which is very compact): `data type SampleDTO {ID, "someData": D<string>}`. This type definition pairs an ID (without a name) with some string data.
 
 These two languages can be used independently of each other; for instance, data contracts for operations in contract types can also be specified in JSON Schema (or XML Schema). Specifications do not have to be complete to be useful (e.g., in early stages of service design); tools will be expected to check that, use defaults, etc. 
 

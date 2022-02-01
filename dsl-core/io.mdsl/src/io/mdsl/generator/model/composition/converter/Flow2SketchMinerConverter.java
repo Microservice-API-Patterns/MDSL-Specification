@@ -43,12 +43,12 @@ import io.mdsl.apiDescription.InclusiveAlternativeCommandInvokation;
 import io.mdsl.apiDescription.InclusiveAlternativeEventProduction;
 import io.mdsl.apiDescription.MultipleEventProduction;
 import io.mdsl.apiDescription.Orchestration;
-import io.mdsl.generator.model.composition.sketchminer.SimplifiedFlowStep;
-import io.mdsl.generator.model.composition.sketchminer.SketchMinerModel;
-import io.mdsl.generator.model.composition.sketchminer.Task;
-import io.mdsl.generator.model.composition.sketchminer.TaskSequence;
-import io.mdsl.generator.model.composition.sketchminer.TaskType;
-import io.mdsl.generator.model.composition.sketchminer.SimplifiedFlowStep.ToType;
+import io.mdsl.generator.model.composition.views.sketchminer.SimplifiedFlowStep;
+import io.mdsl.generator.model.composition.views.sketchminer.SketchMinerModel;
+import io.mdsl.generator.model.composition.views.sketchminer.Task;
+import io.mdsl.generator.model.composition.views.sketchminer.TaskSequence;
+import io.mdsl.generator.model.composition.views.sketchminer.TaskType;
+import io.mdsl.generator.model.composition.views.sketchminer.SimplifiedFlowStep.ToType;
 import io.mdsl.utils.MDSLLogger;
 
 import com.google.common.collect.Lists;
@@ -207,10 +207,26 @@ public class Flow2SketchMinerConverter {
 		froms.add(createTask4EventProduction(eventStep));
 		EList<EventType> events = getEvents(eventStep.getEventProduction());
 		tos.addAll(events.stream().map(e -> getOrCreateTask(e.getName(), TaskType.EVENT)).collect(Collectors.toList()));
+		/*
 		if (eventStep.getEventProduction() instanceof MultipleEventProduction)
 			toType = ToType.AND;
 		if (eventStep.getEventProduction() instanceof InclusiveAlternativeEventProduction)
 			toType = ToType.OR;
+		*/
+		// bug fix Jan 25
+		if(eventStep.getEventProduction().getMep() != null) {
+			toType = ToType.AND;
+		}
+		else if (eventStep.getEventProduction().getIaep() != null) {
+			toType = ToType.OR;
+		}
+		else if (eventStep.getEventProduction().getEaep() != null) {
+			toType = ToType.XOR;
+		}
+		else {
+			; // must be simple step // MDSLLogger.reportError("Unknown type of DEP step.");
+		}
+		
 		this.simplifiedSteps.add(new SimplifiedFlowStep(froms, tos, toType));
 	}
 
@@ -221,10 +237,25 @@ public class Flow2SketchMinerConverter {
 			CommandInvokation commandInvocation = cisStep.getAction().getCi(); 
 			EList<CommandType> commands = getCommands(commandInvocation);
 			tos.addAll(commands.stream().map(c -> getOrCreateTask(c.getName(), TaskType.COMMAND)).collect(Collectors.toList()));
+			/*
 			if (commandInvocation instanceof ConcurrentCommandInvokation)
 				toType = ToType.AND;
 			if (commandInvocation instanceof InclusiveAlternativeCommandInvokation)
 				toType = ToType.OR;
+			*/
+			// bug fix Jan 25
+			if(commandInvocation.getCci() != null) {
+				toType = ToType.AND;
+			}
+			else if (commandInvocation.getIaci() != null) {
+				toType = ToType.OR;
+			}
+			else if (commandInvocation.getEaci() != null) {
+				toType = ToType.XOR;
+			}
+			else {
+				; // must be simple step // MDSLLogger.reportError("Unknown type of CIS step.");
+			}
 			this.simplifiedSteps.add(new SimplifiedFlowStep(froms, tos, toType));
 		}
 		else {

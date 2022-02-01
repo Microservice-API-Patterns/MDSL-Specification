@@ -48,8 +48,8 @@ The current version is inspired by MAP Tutorial 2 and the CEL/REL tables in DPR
 
 <#list genModel.providers as provider>
 <#if provider?has_content>
-${provider.name} offers the following endpoint types:<#list provider.offeredEndpoints as contract> ${contract.name}</#list>
-<#-- ${provider.bindings} TODO missing in genmodel (!) -->
+${provider.name} offers the following endpoint types:<#list provider.offeredEndpoints() as contract> ${contract.name}</#list>
+<#-- ${provider.bindings} TODO get from genmodel -->
 </#if>
 </#list>
 

@@ -22,9 +22,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import io.mdsl.exception.MDSLException;
-import io.mdsl.generator.model.composition.camel.CamelUtils;
+// import io.mdsl.exception.MDSLException;
 import io.mdsl.generator.model.composition.views.Process;
+import io.mdsl.generator.model.composition.views.camel.CamelUtils;
+import io.mdsl.generator.model.composition.views.jaamsim.JaamSimView;
 import io.mdsl.transformations.TransformationHelpers;
 
 // import io.mdsl.generator.model.carving.ClusterCollection;
@@ -148,6 +149,14 @@ public class Flow {
 					result.remove(event.getName());
 				}
 			}
+			// bug fix Feb 1, 2022:
+			if(eventEntry.getValue().isComposite()) {
+				for(Event composedEvent : eventEntry.getValue().composedEvents()) {
+					if(eventEntry.getValue().getTriggeredCommands().size()>=1) {
+						result.remove(composedEvent.getName());
+					}
+				}
+			}
 		}
 
 		return result;
@@ -208,6 +217,10 @@ public class Flow {
 	public CamelUtils camelUtils() {
 		// easier to do in here because $ and { are used both by Camel and by Freemarker:
 		return new CamelUtils();
+	}
+	
+	public JaamSimView jaamSimHelper() {
+		return new JaamSimView(this);
 	}
 
 	// ** coupling and carving related (future work)

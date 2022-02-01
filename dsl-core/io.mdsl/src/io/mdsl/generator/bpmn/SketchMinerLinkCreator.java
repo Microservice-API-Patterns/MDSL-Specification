@@ -16,7 +16,7 @@
 package io.mdsl.generator.bpmn;
 
 import io.mdsl.apiDescription.Orchestration;
-import io.mdsl.generator.model.composition.sketchminer.LZString;
+import io.mdsl.generator.model.composition.views.sketchminer.LZString;
 import io.mdsl.utils.MDSLLogger;
 
 import org.eclipse.emf.ecore.EObject;

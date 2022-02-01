@@ -181,6 +181,15 @@ public class Event {
 			return null;
 		}
 	}
+	
+	public Command firstAndComposedCommand() {
+		return getAndComposedCommands().get(0);
+	}
+	
+	public List<Command> remainingAndComposedCommands() {
+		List<Command> andedCommands = getAndComposedCommands();
+		return andedCommands.subList(1, andedCommands.size());
+	}
 
 	public List<String> getComposedEvents() {
 		// TODO Auto-generated method stub

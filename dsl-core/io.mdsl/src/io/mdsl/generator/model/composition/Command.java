@@ -77,9 +77,12 @@ public class Command {
 		return this.emittedAlternativeEvents.size()==1;
 	}
 	
-	// renamed 
 	public List<Event> emits() {
 		return emittedAlternativeEvents;
+	}
+	
+	public List<Event> emits(int index) {
+		return emittedAlternativeEvents.subList(index, emittedAlternativeEvents.size());
 	}
 	
 	// this is a bean property, used by JSON/YAML export:
@@ -187,9 +190,10 @@ public class Command {
 	}
 
 	public List<String> getComposedEvents() {
+		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	// ** cohesion and carving related (future work)
 
 	/*

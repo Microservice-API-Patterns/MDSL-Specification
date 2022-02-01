@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mdsl.generator.model.composition.sketchminer;
+package io.mdsl.generator.model.composition.views.sketchminer;
 
 import java.util.Collections;
 import java.util.List;

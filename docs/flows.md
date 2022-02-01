@@ -9,7 +9,7 @@ copyright: Olaf Zimmermann, 2021.  All rights reserved.
 Orchestration Flows
 ===================
 
-_Note:_ The status of the language concepts specified here is [*Experimental Preview*](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview.html). Concepts and their tool support might still change in future versions of MDSL.
+_Note:_ The status of the language concepts specified here is [*Experimental Preview*](https://microservice-api-patterns.org/patterns/evolution/ExperimentalPreview.html). Concepts and their tool support have been validated, for instance via code generation to multiple target languages (see below). They are rather stable now; many examples and test cases exist. However, they might still change in future versions of MDSL.
 
 ## Use Cases (When to Specify)
 
@@ -22,11 +22,13 @@ _Note:_ The status of the language concepts specified here is [*Experimental Pre
 <!-- 
 Early "E-SOAD":
 
-* Application flows in inside a service
+* Application flows inside a service
 * Service orchestration, API operation call sequencing
 * EIP-style integration flows (asynch., pipes and filters)
 * Testing (mocking, staging)
 -->
+
+*News (Jan 13, 2022)*: The blog post and demo script ["Event-Driven Service Design: Five Steps from Event Storming to OpenAPI and Camel Flow"](https://ozimmer.ch/practices/2022/01/13/EventDrivenServiceDesignDemo.html) features the MDSL flow modeling concepts in action.
 
 ## Simple Flow Steps 
 
@@ -73,21 +75,29 @@ command Command1 emits event Event1 o Event2
 command Command2 emits event Event1 x Event2
 ~~~
 
-Two or more events may be part of a join/aggregate step:
+Two or more events may be part of a join, modeling the [Aggregator](https://www.enterpriseintegrationpatterns.com/Aggregator.html) pattern:
 
 ~~~
-event Command1Done + Command2Done triggers command JoinCommand
-event Event1 + Event2 + FlowTerminated trigger command TerminateCommand + CleanupCommand
+event Command1Done + Command2Done trigger command JoinedContinuationCommand
 ~~~
 
-Note that commands cannot be joined in a single rule. To express alternative event emission (by different commands), it is possible to write:
+Event joining *may* express that something can only happen when two (or more) commands have been executed previously.
+
+Unlike events, commands cannot be joined in a single rule. Alternative event emission (by two or more commands) can be expressed:
 
 ~~~
 command Command1 emits event Event1
 command Command2 emits event Event1
 ~~~
 
-Event joining is required to express that something can only happen when two commands have been executed. 
+The same works for events:
+
+~~~
+event Event 1 triggers Command1
+event Event 2 triggers Command1
+~~~
+
+Either Event1 or Event2 (or both) trigger Command1.
 
 ## Versioning 
 
@@ -105,7 +115,7 @@ The [Version Identifier](https://microservice-api-patterns.org/patterns/evolutio
 
 ## Grammar Excerpts 
 
-*Note:* This is an optional language concept. The flow grammar is subject to change still.
+<!-- *Note:* This is an optional language concept. The flow grammar is subject to change still. -->
 
 ### Flow and flow steps (with technology binding)
 

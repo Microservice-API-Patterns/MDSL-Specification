@@ -20,20 +20,20 @@ In Eclipse, you find the generator in the MDSL context menu:
 
 <a href="./../media/eclipse-jolie-generator-context-menu.png">![Jolie Generator Context Menu in Eclipse](./../media/eclipse-jolie-generator-context-menu.png)</a>
 
-If you work with the CLI, the following command generates the Jolie specification:
+When working with the CLI, the following command generates the Jolie specification:
 
 ```bash
-./mdsl -i model.mdsl -g jolie
+mdsl -i model.mdsl -g jolie
 ```
 
-_Hint:_ Both tools generate the Graphql file into the `src-gen` folder which is located in the projects root directory (Eclipse) or the directory from which the `mdsl` command has been called (CLI). Both tools create the directory automatically in case it does not already exist.
+_Hint:_ Both plugin and CLI generate the file into the `src-gen` folder located in the project root directory (Eclipse plugin) or the directory from which the `mdsl` command has been called (CLI). The directory is created automatically in case it does not already exist.
 
 ## Example
 The following example illustrates what the generator produces for an exemplary MDSL contract.
 
 You find the complete sources (incl. generated `*.ol` (Jolie) file) of this example [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/jolie-example).
 
-We use the following MDSL model which was an outcome of this [blogpost](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html) to illustrate our generator outputs:
+We use the following MDSL model, featured in this [blog post](https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html), to illustrate our generator outputs:
 
 ```
 API description ReferenceManagementServiceAPI

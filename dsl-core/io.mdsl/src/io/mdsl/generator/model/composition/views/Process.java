@@ -10,12 +10,10 @@ import io.mdsl.generator.model.composition.Flow;
 import io.mdsl.transformations.TransformationHelpers;
 import io.mdsl.utils.MDSLLogger;
 import io.mdsl.generator.model.composition.Event;
-import io.mdsl.exception.MDSLException;
 import io.mdsl.generator.model.composition.Command;
 
 public class Process {
 
-	private static final String LOOP_INDICATOR = "-REPEAT";
 	private static final String TERMINATION_STEP = "done";
 
 	private Flow flow;
@@ -212,6 +210,36 @@ public class Process {
 		return false;
 	}
 	
+	public boolean participatesInAnd(Event event) {
+		// TODO use getCompositeEventsWith here and check size of returned set
+		for(Event eventSetItem : flow.eventsAsSet()) {
+			if(eventSetItem.isComposite()) {
+				List<Event> composedEvents = eventSetItem.composedEvents();
+				for(Event composedEvent : composedEvents) {
+					if(composedEvent.getName().equals(event.getName())) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public List<Event> getCompositeEventsWith(Event event) {
+		List<Event> result = new ArrayList<Event>();
+		for(Event eventSetItem : flow.eventsAsSet()) {
+			if(eventSetItem.isComposite()) {
+				List<Event> composedEvents = eventSetItem.composedEvents();
+				for(Event composedEvent : composedEvents) {
+					if(composedEvent.getName().equals(event.getName())) {
+						result.add(eventSetItem);
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
 	public List<Event> getCompositeCommandTriggerFor(Command command) {
 		List<Event> result = new ArrayList<Event>();
 		for(Event event : flow.eventsAsSet()) {
@@ -250,10 +278,10 @@ public class Process {
 
 	private List<Event> getAllJoinEventsWith(Event event) {
 		List<Event> result = new ArrayList<Event>();
-		for(Entry<String, Event> nextEvent : this.flow.getEvents().entrySet()) {
-			if(nextEvent.getValue().isJoin()) {
-				if(nextEvent.getValue().joinedEvents().contains(event)) {
-					result.add(nextEvent.getValue());
+		for(Entry<String, Event> joinEventCandidate : this.flow.getEvents().entrySet()) {
+			if(joinEventCandidate.getValue().isJoin()) {
+				if(joinEventCandidate.getValue().joinedEvents().contains(event)) {
+					result.add(joinEventCandidate.getValue());
 				}
 			}
 		}

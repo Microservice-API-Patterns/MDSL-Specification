@@ -21,6 +21,8 @@ We assume a basic understanding of MDSL on this reference page. [Primer](./prime
 * Stepwise service design as featured in [DPR](https://socadk.github.io/design-practice-repository/activities/SDPR-StepwiseServiceDesign.html) and other API design processes <!-- such as ADDR --> 
 * Support for [API refactoring](https://interface-refactoring.github.io/)
 
+*News (Jan 20, 2022)*: The blog post and demo script ["Story-Driven Service Design: From Feature Request to Minimum Viable API Product"](https://ozimmer.ch/practices/2022/01/20/StoryDrivenServiceDesignDemo.html) features the MDSL scenario, data, and API contract modeling concepts and the supporting transformation in the MDSL tools.
+
 ### Analysis and Orchestration Steps
 
 The available analysis transformations supporting early steps of service/API design (on scenario/story level) are:
@@ -49,7 +51,7 @@ The following table lists and specifies the transformations supporting intermedi
 |-|-|-|-|
 |[Endpoint type](./servicecontract)|*Turn into [Processing Resource](https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/ProcessingResource)*|CRUD operations added|Other supported patterns: `VALIDATION_RESOURCE`,  `TRANSFORMATION_RESOURCE`, `STATELESS_PROCESSING_RESOURCE` |
 | Endpoint type |*Turn into [Information Holder Resource](https://microservice-api-patterns.org/patterns/responsibility/endpointRoles/InformationHolderResource)*| Lookup/finder operations added|Other patterns also supported: `COLLECTION_RESOURCE` (as other responsibility), `DATA_TRANSFER_RESOURCE`, `LINK_LOOKUP_RESOURCE`, `OPERATIONAL_DATA_HOLDER`, `MASTER_DATA_HOLDER`, `REFERENCE_DATA_HOLDER` <!-- `MUTABLE_COLLECTION_RESOURCE` --> |
-|Endpoint type|*Add operations common/typical for this role stereotype*|CRUD operations and/or retrieval operations added | Specific operations: state-oriented CRUD ones for Processing Resources, retrieval operations for Information Holder Resources, Data Transfer Resource, Link Lookup Resource, set-oriented dones for Collection Resource |
+|Endpoint type|*Add operations common/typical for this role stereotype*|CRUD operations and/or retrieval operations added | Specific operations: state-oriented CRUD ones for Processing Resources, retrieval operations for Information Holder Resources, Data Transfer Resource, Link Lookup Resource, set-oriented ones for Collection Resource |
 |Event in endpoint type|*Introduce event management*|Adds suited operations to endpoint|Requires a `receives` event reference to be present|
 
 Operation design is also supported by a number of transformations:

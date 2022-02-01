@@ -13,7 +13,7 @@ MDSL Tools: Users Guide
 At present, the following types of MDSL Tools are available: 
 
 * *Command Line Interface (CLI)* tools: API Linter (validation), technology-specific contract generation 
-* *MDSL Web Application*, try it [here](https://mdsl-web.herokuapp.com/)  (ork in progress).
+* *MDSL Web Application*, try it [here](https://mdsl-web.herokuapp.com/)  (work in progress).
 * *Eclipse Plugin*: editor, API Linter (validation), technology-specific contract generation
 
 [Context Mapper](https://contextmapper.org/) has its own website.

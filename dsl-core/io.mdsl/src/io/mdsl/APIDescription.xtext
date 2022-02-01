@@ -274,7 +274,7 @@ Operation:
 // note: CML is more expressive here, see https://contextmapper.org/docs/aggregate/
 // methods can define read, read-write, etc. (done via MAP role decorators here); state machine is on Aggregate level in CML
 StateTransition:
-	'from' from=STRING 'to' to=STRING
+	'from' from=STRING 'to' to=STRING // TODO v55 make 'from' part optional
 ;
 
 RelationshipLink:

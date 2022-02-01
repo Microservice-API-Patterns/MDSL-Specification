@@ -17,10 +17,10 @@ In Eclipse, the generator resides in the MDSL context menu:
 
 <a href="./.../../media/eclipse-graphql-generator-context-menu.png">![GraphQL Generator Context Menu in Eclipse](./.../../media/eclipse-graphql-generator-context-menu.png)</a>
 
-If you work with the CLI, the following command generates the GraphQL specification:
+The following CLI command generates the GraphQL specification:
 
 ```bash
-./mdsl -i model.mdsl -g graphql
+mdsl -i model.mdsl -g graphql
 ```
 
 _Hint:_ Both tools generate the Graphql file into the `src-gen` folder which is located in the projects root directory (Eclipse) or the directory from which the `mdsl` command has been called (CLI). Both tools create the directory automatically in case it does not already exist.
@@ -149,7 +149,7 @@ To validate whether the generated `*.graphql` file, many IDE plugins/extensions 
  * [GraphQL extensions for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql)
  * [graphqleditor.com](https://graphqleditor.com/)
 
-The [graphqleditor.com](https://graphqleditor.com/) online tool provides an editor that compiles the schema and features a graphical representation of the model (a login/account might be required):
+[graphqleditor.com](https://graphqleditor.com/) provides an editor that compiles the schema and features a graphical representation of the model (an account might be required):
 
 <a target="_blank" href="./../media/graphqleditor.com-screenshot.png">![graphqleditor.com Screenshot](./../media/graphqleditor.com-screenshot.png)</a>
 
@@ -223,7 +223,7 @@ server.listen().then(({ url }) => {
 
 ```
 
-Finally, you just have to implement some resolvers that actually return some data. For our example above, we implemented the following resolver that answers the _lookupPapersFromAuthor_ query:
+Finally, implement some resolvers that actually return some data. For our example above, we implemented the following resolver that answers the _lookupPapersFromAuthor_ query:
 
 ```js
 const papers = {
@@ -309,7 +309,7 @@ mutation createPaper {
 **Note:** The mutation implementation just returns a fake object and does not persist the new paper item. It can therefore not be queried after the insertion mutation has been executed.
 
 #### Client
-Based on [this tutorial](https://www.apollographql.com/docs/react/get-started/) we can now also create a simple React client that calls the query implemented above.
+Based on [this tutorial](https://www.apollographql.com/docs/react/get-started/), we can now also create a simple React client that calls the query implemented above.
 
 Just create a project and initialize it with the following commands:
 
@@ -400,7 +400,7 @@ function App() {
 render(<App />, document.getElementById("root"));
 ```
 
-**Note** that we used the URL `localhost:4000` to connect to our Apollo server started above.
+Note that we used the URL `localhost:4000` to connect to our Apollo server started above.
 
 When adding the following start scripts to your `package.json` file, you can start the client with `npm start`:
 
@@ -429,10 +429,10 @@ An easy way to get an impression of how the code generator works is by using the
 
 <a target="_blank" href="./../media/code-generator-live-demo.png">![Code Generator Live Demo](./../media/code-generator-live-demo.png)</a>
 
-We created an example Java (Spring Boot) application that uses the code generator. You find the complete example project [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/graphql-example/spring-boot-example/).
+There is an example Java (Spring Boot) application that uses the code generator. You find the complete example project [here](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/graphql-example/spring-boot-example/).
 
 #### Create Spring Boot (Java) Application
-First, we created a classic Spring Boot project with [Spring initializr](https://start.spring.io/) (Gradle project).
+Start with a classic Spring Boot project with [Spring Initializr](https://start.spring.io/) (Gradle project).
 
 In order to use the code generator, add the following Gradle plugin:
 
@@ -476,6 +476,8 @@ Then, create a `package.json` file for calling the generator via yarn:
 }
 ```
 
+Note that the dependencies might been updated when you read this; use a version that suits you. <!-- TODO v55 use latest ones (see https://github.com/Microservice-API-Patterns/MDSL-Specification/security/dependabot) -->
+
 In addition, create a `codegen.yml` file to configure the code generator:
 
 ```yml
@@ -491,7 +493,15 @@ generates:
 
 As you can see, we expect the GraphQL schema under `src/main/resources/schema.graphql`. We copied our example schema from the top of this page into the corresponding folder.
 
-Now we can call `./gradlew yarn` to call the generator for the first time. From this time on, `./gradlew clean build` will always generate the sources into the `io.mdsl.graphql.javaexampleapp.generated` package.
+Now we can call 
+
+> `gradlew yarn` <!-- TODO v55 not working, lock file needs to be crated first (manual step) -->
+
+to invoke the generator for the first time. From now on, 
+
+> `gradlew clean build` 
+
+will always generate the sources into the `io.mdsl.graphql.javaexampleapp.generated` package.
 
 Based on the generated types we implemented one of the resolver interfaces. Again, the _lookupPapersFromAuthor_ operation: 
 
@@ -567,13 +577,24 @@ public class GraphQLProvider {
 }
 ```
 
-**Note** that we had to provide implementations for our custom scalars (_Void_ and _Raw_). You find it in our [example project](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/graphql-example/spring-boot-example/).
+Note that we had to provide implementations for our custom scalars (_Void_ and _Raw_). You find it in our [example project](https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master/examples/graphql-example/spring-boot-example/).
 
-The Spring Boot application can now be started with `./gradlew clean bootRun` (please adopt the command invocation to your OS). As soon as the application is started, you can run the same query as we did before with Apollo. The following screenshot shows our test with Postman:
+The Spring Boot application can now be started with `gradlew clean bootRun` (please adopt the command invocation to your OS). As soon as the application is started, you can run the same query as we did before with Apollo. The following screenshot shows our test with Postman:
 
 <a target="_blank" href="./../media/spring-boot-test-with-postman.png">![Test Spring Boot server with Postman](./../media/spring-boot-test-with-postman.png)</a>
 
-That's it. This was a short introduction what you can do with the GraphQL schemas generated by the MDSL tool. Try it out with your own MDSL model, or let [Context Mapper](https://contextmapper.org/docs/mdsl/) generate one for your from your Domain-Driven Design [bounded contexts](https://contextmapper.org/docs/bounded-context/)!
+<!-- 
+    query {
+      lookupPapersFromAuthor(anonymousInput: {anonymous1: "Olaf Zimmermann"}) {
+        entries {
+          title
+          authors
+          venue
+        }
+      }
+-->
+
+This was a short introduction what you can do with the GraphQL schemas generated by the MDSL tool. Try it out with your own MDSL model, or let [Context Mapper](https://contextmapper.org/docs/mdsl/) generate one for your from your Domain-Driven Design [bounded contexts](https://contextmapper.org/docs/bounded-context/)!
 
 
 # Other Generators

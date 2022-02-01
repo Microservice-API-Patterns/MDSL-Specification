@@ -3,7 +3,10 @@ package io.mdsl.generator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.GeneratorContext;
 import org.eclipse.xtext.generator.JavaIoFileSystemAccess;
@@ -28,7 +31,7 @@ public class ProcessFlowFreemarkerTemplateTest extends AbstractMDSLInputIntegrat
 
 		String fileContent = getGeneratedFileContent("flowtest1-sequence-out.java");
 		assertEquals(getExpectedTestResult("flowtest1-sequence.java"), fileContent);
-		assertTrue(this.assertThatKeywordAppearsInExpectedNumberOfLines(fileContent, "from(\"direct:", 11)); // two flows, 7 and 4 routes
+		assertTrue(this.assertThatKeywordAppearsInExpectedNumberOfLines(fileContent, "from(\"direct:", 12)); // two flows, 7 and 4 routes
 	}
 	
 	@Test
@@ -295,6 +298,49 @@ public class ProcessFlowFreemarkerTemplateTest extends AbstractMDSLInputIntegrat
 		fileContent = getGeneratedFileContent("flowtest4a-alloptionsmodel1_SampleFlowWithAllOptions.sketch_miner");
 		assertEquals(getExpectedTestResult("flowtest4a-alloptionsmodel1_SampleFlowWithAllOptions-expected.sketch_miner"), fileContent);
 	}
+	
+	@Test
+	public void canGenerateJaamSimConfiguarationForAllOptionsFlowTestCase4a() throws IOException {
+		// given
+		Resource inputModel = getTestResource("flowtest4a-alloptionsinsingleflow.mdsl");
+		TextFileGenerator generator = new TextFileGenerator();
+		generator.setFreemarkerTemplateFile(getTestInputFile("jaamsim-processmodel.cfg.ftl"));
+		generator.setTargetFileName("flowtest4a-alloptionsinsingleflow-jaamsim-out.cfg");
+
+		// when
+		JavaIoFileSystemAccess javaIoFileSystemAccess = getFileSystemAccess();
+		javaIoFileSystemAccess.setOutputPath(getGenerationDirectory().getAbsolutePath());
+		generator.doGenerate(inputModel, javaIoFileSystemAccess, new GeneratorContext());
+
+		// then
+		String fileContent = getGeneratedFileContent("flowtest4a-alloptionsinsingleflow-jaamsim-out.cfg");
+		assertEquals(getExpectedTestResult("flowtest4a-alloptionsinsingleflow-jaamsim.cfg"), fileContent);
+	}
+	
+	@Test
+	public void canGenerateJaamSimConfiguarationForPSOADDemo() throws IOException {
+		// given
+		Resource inputModel = getTestResource("process-driven-SOAD-final.mdsl");
+		TextFileGenerator generator = new TextFileGenerator();
+		generator.setFreemarkerTemplateFile(getTestInputFile("jaamsim-processmodel.cfg.ftl"));
+		generator.setTargetFileName("process-driven-SOAD-final-jaamsim-out.cfg");
+
+		// when
+		JavaIoFileSystemAccess javaIoFileSystemAccess = getFileSystemAccess();
+		javaIoFileSystemAccess.setOutputPath(getGenerationDirectory().getAbsolutePath());
+		generator.doGenerate(inputModel, javaIoFileSystemAccess, new GeneratorContext());
+
+		// then
+		String fileContent = getGeneratedFileContent("process-driven-SOAD-final-jaamsim-out.cfg");
+		assertEquals(getExpectedTestResult("process-driven-SOAD-final-jaamsim.cfg"), fileContent);
+	}
+	
+	@Override
+	protected String getGeneratedFileContent(String fileName) throws IOException {
+		String generatedFileContent = FileUtils.readFileToString(new File(getGenerationDirectory(), fileName), "UTF-8");
+		return generatedFileContent.replaceFirst("# Generation metadata: .*?(\\r?\\n|\\r)", "");
+	}
+	
 	
 	@Override
 	protected String testDirectory() {

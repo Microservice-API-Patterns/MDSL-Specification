@@ -1,5 +1,19 @@
 ## MDSL Change Log (and Release Notes)
 
+V5.4.6, February 2022
+
+* Blog posts featuring quick fixes and flow modeling extensions in action: 
+    * <https://ozimmer.ch/practices/2022/01/20/StoryDrivenServiceDesignDemo.html>
+    * <https://ozimmer.ch/practices/2022/01/13/EventDrivenServiceDesignDemo.html>
+    * (from 2021) <https://medium.com/olzzio/domain-driven-service-design-with-context-mapper-and-mdsl-d5a0fc6091c2>
+* MDSL2JaamSim and JaamSim2MDSL transformations/template-based generation and supporting genmodel extensions
+    * <https://ozimmer.ch//practices/2022/02/01/ProcessOrientedServiceDesignDemo.html>
+* Documentation enhancements
+* Bug fix AND SketchMiner generation (getter for case check, not instanceof)
+* bug fix fgm process view: AND->JOIN events do not terminate flow
+* JaamSim layout improvements (FTL template V2.4.2)
+* Sample model for P-SOAD blog post
+
 V5.4.5, January 2022
 
 * Improved quick fixes (INFORMATION_HOLDER_RESOURCE operation generation, addWishList for AP and TR requests)

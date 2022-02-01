@@ -1,0 +1,43 @@
+API description ResearchPublicationDemo version "1.0"
+overview "Step 5 of https://ozimmer.ch/practices/2022/01/13/EventDrivenServiceDesignDemo.html"
+
+event type Start_Researching
+event type Paper_Submitted_for_Review
+event type Paper_Will_Be_Revised
+event type Acceptance_Decision_Made
+event type Feedback_Sent
+event type Proceedings_Available
+event type Paper_Available_Online
+event type Collaborators_Informed
+event type Paper_Read_And_Cited
+event type This_Research_Done
+
+command type Write_Paper
+command type Review_Paper
+command type Review_Feedback
+command type Accept_Paper
+command type Reject_Paper
+command type Publish_Authors_Copy
+command type Inform_Collaborators
+command type Advertise_On_Social_Media
+command type MoveOnToNextPaper
+
+flow Write_Paper type APPLICATION_FLOW
+  event Start_Researching triggers command Write_Paper
+  command Write_Paper emits event Paper_Submitted_for_Review
+  event Paper_Submitted_for_Review triggers command Review_Paper
+  command Review_Feedback emits event Paper_Will_Be_Revised
+  event Paper_Will_Be_Revised triggers command Write_Paper
+  command Review_Paper emits event Acceptance_Decision_Made
+  event Acceptance_Decision_Made triggers command Accept_Paper x Reject_Paper
+  command Reject_Paper emits event Feedback_Sent
+  event Feedback_Sent triggers command Review_Feedback
+  command Accept_Paper emits event Proceedings_Available
+  event Proceedings_Available triggers command Publish_Authors_Copy
+  command Publish_Authors_Copy emits event Paper_Available_Online
+  event Paper_Available_Online triggers command Inform_Collaborators + Advertise_On_Social_Media
+  command Inform_Collaborators emits event Collaborators_Informed
+  command Advertise_On_Social_Media emits event Paper_Read_And_Cited
+  event Collaborators_Informed + Paper_Read_And_Cited triggers command MoveOnToNextPaper
+  command MoveOnToNextPaper emits event This_Research_Done
+  

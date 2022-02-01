@@ -4,6 +4,10 @@ SampleFlowWithCisStepAnd:
 (FlowInitiated)
 SampleFlowWithCisStepAnd: user StartFlowCommand
 (Event1)
+SampleFlowWithCisStepAnd: user Command1|user Command3|user Command2
+...
+
+...
 SampleFlowWithCisStepAnd: user Command1
 (Command1Done1)
 ...
@@ -13,16 +17,12 @@ SampleFlowWithCisStepAnd: user Command1
 SampleFlowWithCisStepAnd: user TerminateFlowCommand
 (FlowTerminated)
 
-(FlowInitiated)
-SampleFlowWithCisStepAnd: user StartFlowCommand
-(Event1)
+...
 SampleFlowWithCisStepAnd: user Command2
 (Command2Done)
 ...
 
-(FlowInitiated)
-SampleFlowWithCisStepAnd: user StartFlowCommand
-(Event1)
+...
 SampleFlowWithCisStepAnd: user Command3
 (Command3Done)
 ...

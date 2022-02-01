@@ -17,5 +17,5 @@ command Command3 emits event FlowTerminated
 flow SampleFlowWithLoopInCisStep
 event Event0 triggers command Command1 emits event Event1
 event Event1 triggers command Command2  emits event Event2
-Event2 triggers command Command1 o StopFlowCommand
+event Event2 triggers command Command1 o StopFlowCommand
 
