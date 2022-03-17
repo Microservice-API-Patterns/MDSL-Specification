@@ -1,0 +1,123 @@
+API description Simulation_process_model_for_ResearchPublicationDemoContract overview "Simulate ResearchPublicationDemo"
+
+// TODO let these standard types match those found in default JaamSim setup (distributions?)
+
+data type SimPartAttributesDTO {
+	"description": D<string>, 
+	"defaultStateList": D<string>*,
+	"initialState": D<string>}
+data type SampleEntityDataDTO {"value1": D<string>, "value2": D<int>}
+data type Write_PaperSimEntityDTO "Write_PaperSimEntityType":D<int>
+data type Write_PaperServerDTO "placeholder":D<string>
+data type Review_PaperDTO "placeholder":D<string>
+data type Review_FeedbackDTO "placeholder":D<string>
+data type Accept_PaperDTO "placeholder":D<string>
+data type Reject_PaperDTO "placeholder":D<string>
+data type Publish_Authors_CopyDTO "placeholder":D<string>
+data type Inform_CollaboratorsDTO "placeholder":D<string>
+data type Advertise_On_Social_MediaDTO "placeholder":D<string>
+data type MoveOnToNextPaperDTO "placeholder":D<string>
+data type Start_ResearchingAggregationInputDTO "placeholder":D<string>
+data type Paper_Will_Be_RevisedAggregationInputDTO "placeholder":D<string>
+data type Paper_Available_OnlineGuardServerDTO "placeholder":D<string>
+data type This_Research_DoneDataDTO "This_Research_DoneType":D<int>
+
+event type SampleEvent {"when":D<string>, "where":D<string>, "what":D<string>}
+event type Simulation_process_model_for_ResearchPublicationDemoInitiated "eventDetails":MD<string>
+event type Start_Researching
+event type Write_PaperGuardQueue
+event type Paper_Submitted_for_Review
+event type Acceptance_Decision_Made
+event type Feedback_Sent
+event type Paper_Will_Be_Revised
+event type Accept_PaperChoiceQueue
+event type Proceedings_Available
+event type Reject_PaperChoiceQueue
+event type Paper_Available_Online
+event type Inform_CollaboratorsSplitQueue
+event type Collaborators_Informed
+event type Advertise_On_Social_MediaSplitQueue
+event type Paper_Read_And_Cited
+event type AND_Collaborators_Informed_Paper_Read_And_CitedAggregationQueue
+event type This_Research_DoneInitiated
+event type AND_Inform_Collaborators_Advertise_On_Social_Media
+event type Write_PaperEntitySink
+
+command type SampleCommand
+command type Start_ResearchingEntityGenerator
+command type Write_PaperServer
+command type Review_Paper
+command type Review_Feedback
+command type Accept_Paper
+command type Reject_Paper
+command type Publish_Authors_Copy
+command type Inform_Collaborators
+command type Advertise_On_Social_Media
+command type MoveOnToNextPaper
+command type This_Research_Done
+command type Start_ResearchingAggregationInput
+command type Paper_Will_Be_RevisedAggregationInput
+command type Paper_Available_OnlineGuardServer
+command type Acceptance_Decision_Made
+command type AND_Inform_Collaborators_Advertise_On_Social_Media
+command type AND_Collaborators_Informed_Paper_Read_And_CitedAggregationQueue
+
+endpoint type Simulation_process_model_for_ResearchPublicationDemoEndpoint supports flow Simulation_process_model_for_ResearchPublicationDemo serves as PROCESSING_RESOURCE
+exposes
+operation runWrite_PaperServer with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Write_PaperServerDTO delivering payload "updateResult":Write_PaperServerDTO transitions from "anyState" to "Write_PaperServerFinished" emitting event Paper_Submitted_for_Review
+operation runReview_Paper with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Review_PaperDTO delivering payload "updateResult":Review_PaperDTO transitions from "anyState" to "Review_PaperFinished"
+operation runReview_Feedback with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Review_FeedbackDTO delivering payload "updateResult":Review_FeedbackDTO transitions from "anyState" to "Review_FeedbackFinished" emitting event Paper_Will_Be_Revised
+operation runAccept_Paper with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Accept_PaperDTO delivering payload "updateResult":Accept_PaperDTO transitions from "anyState" to "Accept_PaperFinished" emitting event Proceedings_Available
+operation runReject_Paper with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Reject_PaperDTO delivering payload "updateResult":Reject_PaperDTO transitions from "anyState" to "Reject_PaperFinished" emitting event Feedback_Sent
+operation runPublish_Authors_Copy with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Publish_Authors_CopyDTO delivering payload "updateResult":Publish_Authors_CopyDTO transitions from "anyState" to "Publish_Authors_CopyFinished" emitting event Paper_Available_Online
+operation runInform_Collaborators with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Inform_CollaboratorsDTO delivering payload "updateResult":Inform_CollaboratorsDTO transitions from "anyState" to "Inform_CollaboratorsFinished" emitting event Collaborators_Informed
+operation runAdvertise_On_Social_Media with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Advertise_On_Social_MediaDTO delivering payload "updateResult":Advertise_On_Social_MediaDTO transitions from "anyState" to "Advertise_On_Social_MediaFinished" emitting event Paper_Read_And_Cited
+operation runMoveOnToNextPaper with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":MoveOnToNextPaperDTO delivering payload "updateResult":MoveOnToNextPaperDTO transitions from "anyState" to "MoveOnToNextPaperFinished"
+operation runStart_ResearchingAggregationInput with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Start_ResearchingAggregationInputDTO delivering payload "updateResult":Start_ResearchingAggregationInputDTO emitting event Write_PaperGuardQueue
+operation runPaper_Will_Be_RevisedAggregationInput with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Paper_Will_Be_RevisedAggregationInputDTO delivering payload "updateResult":Paper_Will_Be_RevisedAggregationInputDTO emitting event Write_PaperGuardQueue
+operation runPaper_Available_OnlineGuardServer with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Paper_Available_OnlineGuardServerDTO delivering payload "updateResult":Paper_Available_OnlineGuardServerDTO
+operation calculateThis_Research_Done with responsibility COMPUTATION_FUNCTION expecting payload "flowEntitities":ID<int>+ delivering payload "this_Research_DoneData":This_Research_DoneDataDTO
+receives event Simulation_process_model_for_ResearchPublicationDemoInitiated
+
+endpoint type Write_PaperSimEntityResource serves as INFORMATION_HOLDER_RESOURCE and COLLECTION_RESOURCE
+exposes
+operation createWrite_PaperSimEntity with responsibility STATE_CREATION_OPERATION expecting payload Write_PaperSimEntityDTO delivering payload "resourceId":ID<int>
+operation readWrite_PaperSimEntity with responsibility RETRIEVAL_OPERATION expecting payload "entityId":ID<int> delivering payload Write_PaperSimEntityDTO
+operation udpateWrite_PaperSimEntity with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Write_PaperSimEntityDTO delivering payload "updateResult":Write_PaperSimEntityDTO
+operation deleteWrite_PaperSimEntity with responsibility STATE_DELETION_OPERATION expecting payload "resourceId":ID<string> delivering payload "success":MD<bool> 
+
+flow Simulation_process_model_for_ResearchPublicationDemo
+realizes Simulation_process_model_for_ResearchPublicationDemoScenario
+command Start_ResearchingEntityGenerator emits event Start_Researching
+event Write_PaperGuardQueue triggers command Write_PaperServer
+command Write_PaperServer emits event Paper_Submitted_for_Review
+event Paper_Submitted_for_Review triggers command Review_Paper
+command Review_Paper emits event Acceptance_Decision_Made
+event Feedback_Sent triggers command Review_Feedback
+command Review_Feedback emits event Paper_Will_Be_Revised
+event Accept_PaperChoiceQueue triggers command Accept_Paper
+command Accept_Paper emits event Proceedings_Available
+event Reject_PaperChoiceQueue triggers command Reject_Paper
+command Reject_Paper emits event Feedback_Sent
+event Proceedings_Available triggers command Publish_Authors_Copy
+command Publish_Authors_Copy emits event Paper_Available_Online
+event Inform_CollaboratorsSplitQueue triggers command Inform_Collaborators
+command Inform_Collaborators emits event Collaborators_Informed
+event Advertise_On_Social_MediaSplitQueue triggers command Advertise_On_Social_Media
+command Advertise_On_Social_Media emits event Paper_Read_And_Cited
+event AND_Collaborators_Informed_Paper_Read_And_CitedAggregationQueue triggers command MoveOnToNextPaper
+command MoveOnToNextPaper emits event This_Research_DoneInitiated
+event This_Research_DoneInitiated triggers command This_Research_Done
+event Start_Researching triggers command Start_ResearchingAggregationInput
+command Start_ResearchingAggregationInput emits event Write_PaperGuardQueue
+event Paper_Will_Be_Revised triggers command Paper_Will_Be_RevisedAggregationInput
+command Paper_Will_Be_RevisedAggregationInput emits event Write_PaperGuardQueue
+event Paper_Available_Online triggers command Paper_Available_OnlineGuardServer
+command Paper_Available_OnlineGuardServer emits event AND_Inform_Collaborators_Advertise_On_Social_Media
+command Acceptance_Decision_Made emits event Accept_PaperChoiceQueue o Reject_PaperChoiceQueue
+command AND_Inform_Collaborators_Advertise_On_Social_Media emits event Advertise_On_Social_MediaSplitQueue + Inform_CollaboratorsSplitQueue
+event Collaborators_Informed + Paper_Read_And_Cited triggers command AND_Collaborators_Informed_Paper_Read_And_CitedAggregationQueue
+command This_Research_Done emits event Write_PaperEntitySink
+
+scenario Simulation_process_model_for_ResearchPublicationDemoScenario
+story Simulation_process_model_for_ResearchPublicationDemoStory when "SimulationInputsArrive" a "SimulationModeller" wants to "run Simulate ResearchPublicationDemo for" "Write_PaperSimEntity" yielding "SimulationOutputs"

@@ -1,0 +1,140 @@
+API description Simulation_process_model_for_FlowTest4aContract overview "Simulate FlowTest4a"
+
+// TODO let these standard types match those found in default JaamSim setup (distributions?)
+
+data type SimPartAttributesDTO {
+	"description": D<string>, 
+	"defaultStateList": D<string>*,
+	"initialState": D<string>}
+data type SampleEntityDataDTO {"value1": D<string>, "value2": D<int>}
+data type SampleFlowWithAllOptionsSimEntityDTO "SampleFlowWithAllOptionsSimEntityType":D<int>
+data type Command1DTO "placeholder":D<string>
+data type Command2DTO "placeholder":D<string>
+data type Command3DTO "placeholder":D<string>
+data type Command4DTO "placeholder":D<string>
+data type Command5DTO "placeholder":D<string>
+data type Command6DTO "placeholder":D<string>
+data type TerminateFlowCommandServerDTO "placeholder":D<string>
+data type Command6DoneAggregationInputDTO "placeholder":D<string>
+data type AND_Command1Done1_Command1Done2_Command2DoneAggregationInputDTO "placeholder":D<string>
+data type AND_Command3Done_Command4Done_Command5DoneAggregationInputDTO "placeholder":D<string>
+data type Event1GuardServerDTO "placeholder":D<string>
+data type FlowInitiatedGuardServerDTO "placeholder":D<string>
+data type TerminateFlowCommandStatisticsDataDTO "TerminateFlowCommandStatisticsType":D<int>
+
+event type SampleEvent {"when":D<string>, "where":D<string>, "what":D<string>}
+event type Simulation_process_model_for_FlowTest4aInitiated "eventDetails":MD<string>
+event type FlowInitiated
+event type Command1SplitQueue
+event type AND_Command1Done1_Command1Done2
+event type Command2SplitQueue
+event type Command2Done
+event type Command3ChoiceQueue
+event type Command3Done
+event type Command4ChoiceQueue
+event type Command4Done
+event type Command5ChoiceQueue
+event type Command5Done
+event type Command6ChoiceQueue
+event type Command6Done
+event type TerminateFlowCommandGuardQueue
+event type TerminateFlowCommandStatisticsInitiated
+event type AND_Command1Done1_Command1Done2_Command2DoneAggregationQueue
+event type AND_Command3Done_Command4Done_Command5DoneAggregationQueue
+event type Event1
+event type AND_Command1_Command2
+event type StartFlowCommand
+event type Event2Chosen
+event type Event3Chosen
+event type Command1Done2
+event type Command1Done1
+event type SampleFlowWithAllOptionsEntitySink
+
+command type SampleCommand
+command type FlowInitiatedEntityGenerator
+command type Command1
+command type Command2
+command type Command3
+command type Command4
+command type Command5
+command type Command6
+command type TerminateFlowCommandServer
+command type TerminateFlowCommandStatistics
+command type Command6DoneAggregationInput
+command type AND_Command1Done1_Command1Done2_Command2DoneAggregationInput
+command type AND_Command3Done_Command4Done_Command5DoneAggregationInput
+command type Event1GuardServer
+command type FlowInitiatedGuardServer
+command type Event2
+command type Event3
+command type StartFlowCommand
+command type AND_Command1Done1_Command1Done2
+command type AND_Command1_Command2
+command type AND_Command1Done1_Command1Done2_Command2DoneAggregationQueue
+command type AND_Command3Done_Command4Done_Command5DoneAggregationQueue
+
+endpoint type Simulation_process_model_for_FlowTest4aEndpoint supports flow Simulation_process_model_for_FlowTest4a serves as PROCESSING_RESOURCE
+exposes
+operation runCommand1 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Command1DTO delivering payload "updateResult":Command1DTO transitions from "anyState" to "Command1Finished"
+operation runCommand2 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Command2DTO delivering payload "updateResult":Command2DTO transitions from "anyState" to "Command2Finished" emitting event Command2Done
+operation runCommand3 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Command3DTO delivering payload "updateResult":Command3DTO transitions from "anyState" to "Command3Finished" emitting event Command3Done
+operation runCommand4 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Command4DTO delivering payload "updateResult":Command4DTO transitions from "anyState" to "Command4Finished" emitting event Command4Done
+operation runCommand5 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Command5DTO delivering payload "updateResult":Command5DTO transitions from "anyState" to "Command5Finished" emitting event Command5Done
+operation runCommand6 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Command6DTO delivering payload "updateResult":Command6DTO transitions from "anyState" to "Command6Finished" emitting event Command6Done
+operation runTerminateFlowCommandServer with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":TerminateFlowCommandServerDTO delivering payload "updateResult":TerminateFlowCommandServerDTO transitions from "anyState" to "TerminateFlowCommandServerFinished"
+operation runCommand6DoneAggregationInput with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Command6DoneAggregationInputDTO delivering payload "updateResult":Command6DoneAggregationInputDTO emitting event TerminateFlowCommandGuardQueue
+operation runAND_Command1Done1_Command1Done2_Command2DoneAggregationInput with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":AND_Command1Done1_Command1Done2_Command2DoneAggregationInputDTO delivering payload "updateResult":AND_Command1Done1_Command1Done2_Command2DoneAggregationInputDTO emitting event TerminateFlowCommandGuardQueue
+operation runAND_Command3Done_Command4Done_Command5DoneAggregationInput with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":AND_Command3Done_Command4Done_Command5DoneAggregationInputDTO delivering payload "updateResult":AND_Command3Done_Command4Done_Command5DoneAggregationInputDTO emitting event TerminateFlowCommandGuardQueue
+operation runEvent1GuardServer with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":Event1GuardServerDTO delivering payload "updateResult":Event1GuardServerDTO
+operation runFlowInitiatedGuardServer with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowInitiatedGuardServerDTO delivering payload "updateResult":FlowInitiatedGuardServerDTO
+operation calculateTerminateFlowCommandStatistics with responsibility COMPUTATION_FUNCTION expecting payload "flowEntitities":ID<int>+ delivering payload "terminateFlowCommandStatisticsData":TerminateFlowCommandStatisticsDataDTO
+receives event Simulation_process_model_for_FlowTest4aInitiated
+
+endpoint type SampleFlowWithAllOptionsSimEntityResource serves as INFORMATION_HOLDER_RESOURCE and COLLECTION_RESOURCE
+exposes
+operation createSampleFlowWithAllOptionsSimEntity with responsibility STATE_CREATION_OPERATION expecting payload SampleFlowWithAllOptionsSimEntityDTO delivering payload "resourceId":ID<int>
+operation readSampleFlowWithAllOptionsSimEntity with responsibility RETRIEVAL_OPERATION expecting payload "entityId":ID<int> delivering payload SampleFlowWithAllOptionsSimEntityDTO
+operation udpateSampleFlowWithAllOptionsSimEntity with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":SampleFlowWithAllOptionsSimEntityDTO delivering payload "updateResult":SampleFlowWithAllOptionsSimEntityDTO
+operation deleteSampleFlowWithAllOptionsSimEntity with responsibility STATE_DELETION_OPERATION expecting payload "resourceId":ID<string> delivering payload "success":MD<bool> 
+
+flow Simulation_process_model_for_FlowTest4a
+realizes Simulation_process_model_for_FlowTest4aScenario
+command FlowInitiatedEntityGenerator emits event FlowInitiated
+event Command1SplitQueue triggers command Command1
+command Command1 emits event AND_Command1Done1_Command1Done2
+event Command2SplitQueue triggers command Command2
+command Command2 emits event Command2Done
+event Command3ChoiceQueue triggers command Command3
+command Command3 emits event Command3Done
+event Command4ChoiceQueue triggers command Command4
+command Command4 emits event Command4Done
+event Command5ChoiceQueue triggers command Command5
+command Command5 emits event Command5Done
+event Command6ChoiceQueue triggers command Command6
+command Command6 emits event Command6Done
+event TerminateFlowCommandGuardQueue triggers command TerminateFlowCommandServer
+command TerminateFlowCommandServer emits event TerminateFlowCommandStatisticsInitiated
+event TerminateFlowCommandStatisticsInitiated triggers command TerminateFlowCommandStatistics
+event Command6Done triggers command Command6DoneAggregationInput
+command Command6DoneAggregationInput emits event TerminateFlowCommandGuardQueue
+event AND_Command1Done1_Command1Done2_Command2DoneAggregationQueue triggers command AND_Command1Done1_Command1Done2_Command2DoneAggregationInput
+command AND_Command1Done1_Command1Done2_Command2DoneAggregationInput emits event TerminateFlowCommandGuardQueue
+event AND_Command3Done_Command4Done_Command5DoneAggregationQueue triggers command AND_Command3Done_Command4Done_Command5DoneAggregationInput
+command AND_Command3Done_Command4Done_Command5DoneAggregationInput emits event TerminateFlowCommandGuardQueue
+event Event1 triggers command Event1GuardServer
+command Event1GuardServer emits event AND_Command1_Command2
+event FlowInitiated triggers command FlowInitiatedGuardServer
+command FlowInitiatedGuardServer emits event StartFlowCommand
+command Event2 emits event Command3ChoiceQueue o Command4ChoiceQueue
+command Event3 emits event Command5ChoiceQueue o Command6ChoiceQueue
+event Event2Chosen triggers command Event2
+event Event3Chosen triggers command Event3
+command StartFlowCommand emits event Event1 o Event2Chosen o Event3Chosen
+command AND_Command1Done1_Command1Done2 emits event Command1Done2 + Command1Done1
+command AND_Command1_Command2 emits event Command2SplitQueue + Command1SplitQueue
+event Command1Done1 + Command1Done2 + Command2Done triggers command AND_Command1Done1_Command1Done2_Command2DoneAggregationQueue
+event Command3Done + Command4Done + Command5Done triggers command AND_Command3Done_Command4Done_Command5DoneAggregationQueue
+command TerminateFlowCommandStatistics emits event SampleFlowWithAllOptionsEntitySink
+
+scenario Simulation_process_model_for_FlowTest4aScenario
+story Simulation_process_model_for_FlowTest4aStory when "SimulationInputsArrive" a "SimulationModeller" wants to "run Simulate FlowTest4a for" "SampleFlowWithAllOptionsSimEntity" yielding "SimulationOutputs"

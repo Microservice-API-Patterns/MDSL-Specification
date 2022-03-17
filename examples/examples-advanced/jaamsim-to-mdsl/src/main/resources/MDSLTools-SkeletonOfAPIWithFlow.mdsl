@@ -1,0 +1,15 @@
+API description SampleAPI
+
+// TODO let these standard types match those found in default JaamSim setup (distributions?)
+
+data type SimPartAttributesDTO {
+	"description": D<string>, 
+	"defaultStateList": D<string>*,
+	"initialState": D<string>}
+data type SampleEntityDataDTO {"value1": D<string>, "value2": D<int>}
+
+event type SampleEvent {"when":D<string>, "where":D<string>, "what":D<string>}
+
+command type SampleCommand 
+
+flow FlowPlaceholder
