@@ -1,0 +1,80 @@
+API description Simulation_process_model_for_FlowTest3aContract overview "Simulate FlowTest3a"
+
+// TODO let these standard types match those found in default JaamSim setup (distributions?)
+
+data type SimPartAttributesDTO {
+	"description": D<string>, 
+	"defaultStateList": D<string>*,
+	"initialState": D<string>}
+data type SampleEntityDataDTO {"value1": D<string>, "value2": D<int>}
+data type ExclusiveChoiceWithImplicitMergeSimEntityDTO "ExclusiveChoiceWithImplicitMergeSimEntityType":D<int>
+data type FlowStep2DTO "placeholder":D<string>
+data type FlowStep3DTO "placeholder":D<string>
+data type FlowStep4ServerDTO "placeholder":D<string>
+data type FlowStep2CompletedAggregationInputDTO "placeholder":D<string>
+data type FlowStep3CompletedAggregationInputDTO "placeholder":D<string>
+data type FlowInitiatedGuardServerDTO "placeholder":D<string>
+data type FlowTerminatedDataDTO "FlowTerminatedType":D<int>
+
+event type SampleEvent {"when":D<string>, "where":D<string>, "what":D<string>}
+event type Simulation_process_model_for_FlowTest3aInitiated "eventDetails":MD<string>
+event type FlowInitiated
+event type FlowStep1CompletedOptionA
+event type FlowStep2Completed
+event type FlowStep1CompletedOptionB
+event type FlowStep3Completed
+event type FlowStep4GuardQueue
+event type FlowTerminatedInitiated
+event type FlowStep1
+event type ExclusiveChoiceWithImplicitMergeEntitySink
+
+command type SampleCommand
+command type FlowInitiatedEntityGenerator
+command type FlowStep2
+command type FlowStep3
+command type FlowStep4Server
+command type FlowTerminated
+command type FlowStep2CompletedAggregationInput
+command type FlowStep3CompletedAggregationInput
+command type FlowInitiatedGuardServer
+command type FlowStep1
+
+endpoint type Simulation_process_model_for_FlowTest3aEndpoint supports flow Simulation_process_model_for_FlowTest3a serves as PROCESSING_RESOURCE
+exposes
+operation runFlowStep2 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowStep2DTO delivering payload "updateResult":FlowStep2DTO transitions from "anyState" to "FlowStep2Finished" emitting event FlowStep2Completed
+operation runFlowStep3 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowStep3DTO delivering payload "updateResult":FlowStep3DTO transitions from "anyState" to "FlowStep3Finished" emitting event FlowStep3Completed
+operation runFlowStep4Server with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowStep4ServerDTO delivering payload "updateResult":FlowStep4ServerDTO transitions from "anyState" to "FlowStep4ServerFinished"
+operation runFlowStep2CompletedAggregationInput with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowStep2CompletedAggregationInputDTO delivering payload "updateResult":FlowStep2CompletedAggregationInputDTO emitting event FlowStep4GuardQueue
+operation runFlowStep3CompletedAggregationInput with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowStep3CompletedAggregationInputDTO delivering payload "updateResult":FlowStep3CompletedAggregationInputDTO emitting event FlowStep4GuardQueue
+operation runFlowInitiatedGuardServer with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowInitiatedGuardServerDTO delivering payload "updateResult":FlowInitiatedGuardServerDTO
+operation calculateFlowTerminated with responsibility COMPUTATION_FUNCTION expecting payload "flowEntitities":ID<int>+ delivering payload "flowTerminatedData":FlowTerminatedDataDTO
+receives event Simulation_process_model_for_FlowTest3aInitiated
+
+endpoint type ExclusiveChoiceWithImplicitMergeSimEntityResource serves as INFORMATION_HOLDER_RESOURCE and COLLECTION_RESOURCE
+exposes
+operation createExclusiveChoiceWithImplicitMergeSimEntity with responsibility STATE_CREATION_OPERATION expecting payload ExclusiveChoiceWithImplicitMergeSimEntityDTO delivering payload "resourceId":ID<int>
+operation readExclusiveChoiceWithImplicitMergeSimEntity with responsibility RETRIEVAL_OPERATION expecting payload "entityId":ID<int> delivering payload ExclusiveChoiceWithImplicitMergeSimEntityDTO
+operation udpateExclusiveChoiceWithImplicitMergeSimEntity with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":ExclusiveChoiceWithImplicitMergeSimEntityDTO delivering payload "updateResult":ExclusiveChoiceWithImplicitMergeSimEntityDTO
+operation deleteExclusiveChoiceWithImplicitMergeSimEntity with responsibility STATE_DELETION_OPERATION expecting payload "resourceId":ID<string> delivering payload "success":MD<bool> 
+
+flow Simulation_process_model_for_FlowTest3a
+realizes Simulation_process_model_for_FlowTest3aScenario
+command FlowInitiatedEntityGenerator emits event FlowInitiated
+event FlowStep1CompletedOptionA triggers command FlowStep2
+command FlowStep2 emits event FlowStep2Completed
+event FlowStep1CompletedOptionB triggers command FlowStep3
+command FlowStep3 emits event FlowStep3Completed
+event FlowStep4GuardQueue triggers command FlowStep4Server
+command FlowStep4Server emits event FlowTerminatedInitiated
+event FlowTerminatedInitiated triggers command FlowTerminated
+event FlowStep2Completed triggers command FlowStep2CompletedAggregationInput
+command FlowStep2CompletedAggregationInput emits event FlowStep4GuardQueue
+event FlowStep3Completed triggers command FlowStep3CompletedAggregationInput
+command FlowStep3CompletedAggregationInput emits event FlowStep4GuardQueue
+event FlowInitiated triggers command FlowInitiatedGuardServer
+command FlowInitiatedGuardServer emits event FlowStep1
+command FlowStep1 emits event FlowStep1CompletedOptionA o FlowStep1CompletedOptionB
+command FlowTerminated emits event ExclusiveChoiceWithImplicitMergeEntitySink
+
+scenario Simulation_process_model_for_FlowTest3aScenario
+story Simulation_process_model_for_FlowTest3aStory when "SimulationInputsArrive" a "SimulationModeller" wants to "run Simulate FlowTest3a for" "ExclusiveChoiceWithImplicitMergeSimEntity" yielding "SimulationOutputs"

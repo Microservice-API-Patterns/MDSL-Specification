@@ -1,0 +1,79 @@
+// Generated with MDSL2JaamSim on 2022-03-17, at 11:36:32.714393600
+API description Simulation_process_model_for_MDSLToJaamSimPaperExampleContract overview "Simulate MDSLToJaamSimPaperExample"
+
+// TODO let these standard types match those found in default JaamSim setup (distributions?)
+
+data type SimPartAttributesDTO {
+	"description": D<string>, 
+	"defaultStateList": D<string>*,
+	"initialState": D<string>}
+data type SampleEntityDataDTO {"value1": D<string>, "value2": D<int>}
+data type ParallelSplitWithSynchronizationSimEntityDTO {"SampleCustomVariable":D<int>} default is "{ SampleCustomVariable: 0 }"
+data type FlowStep1DTO "placeholder":D<string>
+data type FlowStep2DTO "placeholder":D<string>
+data type FlowStep3DTO "placeholder":D<string>
+data type FlowStep4DTO "placeholder":D<string>
+data type FlowStep1CompletedGuardServerDTO "placeholder":D<string>
+data type FlowTerminatedDataDTO "FlowTerminatedType":D<int>
+
+event type SampleEvent {"when":D<string>, "where":D<string>, "what":D<string>}
+event type Simulation_process_model_for_MDSLToJaamSimPaperExampleInitiated "eventDetails":MD<string>
+event type FlowInitiated
+event type FlowStep1Completed
+event type FlowStep2SplitQueue
+event type FlowStep2Completed
+event type FlowStep3SplitQueue
+event type FlowStep3Completed
+event type AND_FlowStep2Completed_FlowStep3CompletedAggregationQueue
+event type FlowTerminatedInitiated
+event type AND_FlowStep2_FlowStep3
+event type ParallelSplitWithSynchronizationEntitySink
+
+command type SampleCommand
+command type FlowInitiatedEntityGenerator
+command type FlowStep1
+command type FlowStep2
+command type FlowStep3
+command type FlowStep4
+command type FlowTerminated
+command type FlowStep1CompletedGuardServer
+command type AND_FlowStep2_FlowStep3
+command type AND_FlowStep2Completed_FlowStep3CompletedAggregationQueue
+
+endpoint type Simulation_process_model_for_MDSLToJaamSimPaperExampleEndpoint supports flow Simulation_process_model_for_MDSLToJaamSimPaperExample serves as PROCESSING_RESOURCE
+exposes
+operation runFlowStep1 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowStep1DTO delivering payload "updateResult":FlowStep1DTO transitions from "anyState" to "FlowStep1Finished" emitting event FlowStep1Completed
+operation runFlowStep2 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowStep2DTO delivering payload "updateResult":FlowStep2DTO transitions from "anyState" to "FlowStep2Finished" emitting event FlowStep2Completed
+operation runFlowStep3 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowStep3DTO delivering payload "updateResult":FlowStep3DTO transitions from "anyState" to "FlowStep3Finished" emitting event FlowStep3Completed
+operation runFlowStep4 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowStep4DTO delivering payload "updateResult":FlowStep4DTO transitions from "anyState" to "FlowStep4Finished"
+operation runFlowStep1CompletedGuardServer with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowStep1CompletedGuardServerDTO delivering payload "updateResult":FlowStep1CompletedGuardServerDTO
+operation calculateFlowTerminated with responsibility COMPUTATION_FUNCTION expecting payload "flowEntitities":ID<int>+ delivering payload "flowTerminatedData":FlowTerminatedDataDTO
+receives event Simulation_process_model_for_MDSLToJaamSimPaperExampleInitiated
+
+endpoint type ParallelSplitWithSynchronizationSimEntityResource serves as INFORMATION_HOLDER_RESOURCE and COLLECTION_RESOURCE
+exposes
+operation createParallelSplitWithSynchronizationSimEntity with responsibility STATE_CREATION_OPERATION expecting payload ParallelSplitWithSynchronizationSimEntityDTO delivering payload "resourceId":ID<int>
+operation readParallelSplitWithSynchronizationSimEntity with responsibility RETRIEVAL_OPERATION expecting payload "entityId":ID<int> delivering payload ParallelSplitWithSynchronizationSimEntityDTO
+operation udpateParallelSplitWithSynchronizationSimEntity with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":ParallelSplitWithSynchronizationSimEntityDTO delivering payload "updateResult":ParallelSplitWithSynchronizationSimEntityDTO
+operation deleteParallelSplitWithSynchronizationSimEntity with responsibility STATE_DELETION_OPERATION expecting payload "resourceId":ID<string> delivering payload "success":MD<bool> 
+
+flow Simulation_process_model_for_MDSLToJaamSimPaperExample
+realizes Simulation_process_model_for_MDSLToJaamSimPaperExampleScenario
+command FlowInitiatedEntityGenerator emits event FlowInitiated
+event FlowInitiated triggers command FlowStep1
+command FlowStep1 emits event FlowStep1Completed
+event FlowStep2SplitQueue triggers command FlowStep2
+command FlowStep2 emits event FlowStep2Completed
+event FlowStep3SplitQueue triggers command FlowStep3
+command FlowStep3 emits event FlowStep3Completed
+event AND_FlowStep2Completed_FlowStep3CompletedAggregationQueue triggers command FlowStep4
+command FlowStep4 emits event FlowTerminatedInitiated
+event FlowTerminatedInitiated triggers command FlowTerminated
+event FlowStep1Completed triggers command FlowStep1CompletedGuardServer
+command FlowStep1CompletedGuardServer emits event AND_FlowStep2_FlowStep3
+command AND_FlowStep2_FlowStep3 emits event FlowStep3SplitQueue + FlowStep2SplitQueue
+event FlowStep2Completed + FlowStep3Completed triggers command AND_FlowStep2Completed_FlowStep3CompletedAggregationQueue
+command FlowTerminated emits event ParallelSplitWithSynchronizationEntitySink
+
+scenario Simulation_process_model_for_MDSLToJaamSimPaperExampleScenario
+story Simulation_process_model_for_MDSLToJaamSimPaperExampleStory when "SimulationInputsArrive" a "SimulationModeller" wants to "run Simulate MDSLToJaamSimPaperExample for" "ParallelSplitWithSynchronizationSimEntity" yielding "SimulationOutputs"

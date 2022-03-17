@@ -1,0 +1,59 @@
+API description Simulation_process_model_for_FlowTest1Contract overview "Simulate FlowTest1"
+
+// TODO let these standard types match those found in default JaamSim setup (distributions?)
+
+data type SimPartAttributesDTO {
+	"description": D<string>, 
+	"defaultStateList": D<string>*,
+	"initialState": D<string>}
+data type SampleEntityDataDTO {"value1": D<string>, "value2": D<int>}
+data type SequentialFlowStartingWithEventSimEntityDTO "SequentialFlowStartingWithEventSimEntityType":D<int>
+data type FlowStep1DTO "placeholder":D<string>
+data type FlowStep2DTO "placeholder":D<string>
+data type FlowStep3DTO "placeholder":D<string>
+data type FlowTerminatedDataDTO "FlowTerminatedType":D<int>
+
+event type SampleEvent {"when":D<string>, "where":D<string>, "what":D<string>}
+event type Simulation_process_model_for_FlowTest1Initiated "eventDetails":MD<string>
+event type FlowInitiated
+event type FlowStep1Completed
+event type FlowStep2Completed
+event type FlowTerminatedInitiated
+event type SequentialFlowStartingWithEventEntitySink
+
+command type SampleCommand
+command type FlowInitiatedEntityGenerator
+command type FlowStep1
+command type FlowStep2
+command type FlowStep3
+command type FlowTerminated
+
+endpoint type Simulation_process_model_for_FlowTest1Endpoint supports flow Simulation_process_model_for_FlowTest1 serves as PROCESSING_RESOURCE
+exposes
+operation runFlowStep1 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowStep1DTO delivering payload "updateResult":FlowStep1DTO transitions from "anyState" to "FlowStep1Finished" emitting event FlowStep1Completed
+operation runFlowStep2 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowStep2DTO delivering payload "updateResult":FlowStep2DTO transitions from "anyState" to "FlowStep2Finished" emitting event FlowStep2Completed
+operation runFlowStep3 with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":FlowStep3DTO delivering payload "updateResult":FlowStep3DTO transitions from "anyState" to "FlowStep3Finished"
+operation calculateFlowTerminated with responsibility COMPUTATION_FUNCTION expecting payload "flowEntitities":ID<int>+ delivering payload "flowTerminatedData":FlowTerminatedDataDTO
+receives event Simulation_process_model_for_FlowTest1Initiated
+
+endpoint type SequentialFlowStartingWithEventSimEntityResource serves as INFORMATION_HOLDER_RESOURCE and COLLECTION_RESOURCE
+exposes
+operation createSequentialFlowStartingWithEventSimEntity with responsibility STATE_CREATION_OPERATION expecting payload SequentialFlowStartingWithEventSimEntityDTO delivering payload "resourceId":ID<int>
+operation readSequentialFlowStartingWithEventSimEntity with responsibility RETRIEVAL_OPERATION expecting payload "entityId":ID<int> delivering payload SequentialFlowStartingWithEventSimEntityDTO
+operation udpateSequentialFlowStartingWithEventSimEntity with responsibility STATE_TRANSITION_OPERATION expecting payload "changeRequest":SequentialFlowStartingWithEventSimEntityDTO delivering payload "updateResult":SequentialFlowStartingWithEventSimEntityDTO
+operation deleteSequentialFlowStartingWithEventSimEntity with responsibility STATE_DELETION_OPERATION expecting payload "resourceId":ID<string> delivering payload "success":MD<bool> 
+
+flow Simulation_process_model_for_FlowTest1
+realizes Simulation_process_model_for_FlowTest1Scenario
+command FlowInitiatedEntityGenerator emits event FlowInitiated
+event FlowInitiated triggers command FlowStep1
+command FlowStep1 emits event FlowStep1Completed
+event FlowStep1Completed triggers command FlowStep2
+command FlowStep2 emits event FlowStep2Completed
+event FlowStep2Completed triggers command FlowStep3
+command FlowStep3 emits event FlowTerminatedInitiated
+event FlowTerminatedInitiated triggers command FlowTerminated
+command FlowTerminated emits event SequentialFlowStartingWithEventEntitySink
+
+scenario Simulation_process_model_for_FlowTest1Scenario
+story Simulation_process_model_for_FlowTest1Story when "SimulationInputsArrive" a "SimulationModeller" wants to "run Simulate FlowTest1 for" "SequentialFlowStartingWithEventSimEntity" yielding "SimulationOutputs"

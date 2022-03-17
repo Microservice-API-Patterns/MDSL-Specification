@@ -116,6 +116,8 @@ public class JaamSimView {
 		if(command.emitsSingleSimpleEvent()) {
 			MDSLLogger.reportDetailedInformation("Processing command " + command.getName() + ": case 1.");
 			handleCase1AndCase4(command);
+			// new March 7, 2022:
+			return;
 		}
 		
 		// case 2a: single command emitting multiple composed events (DEP step AND)
