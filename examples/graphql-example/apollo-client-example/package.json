@@ -1,5 +1,5 @@
 {
-  "name": "graphql-client-example",
+  "name": "apollo-client-example-2022",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,11 +13,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@apollo/client": "^3.6.9",
     "apollo-client": "^2.6.10",
-    "graphql": "^15.3.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.3"
+    "graphql": "^15.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1"
   },
   "browserslist": {
     "production": [
