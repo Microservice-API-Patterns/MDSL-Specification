@@ -180,6 +180,10 @@ With the generated GraphQL schema, you can easily implement server and/or client
 ### Apollo
 [Apollo](https://www.apollographql.com) is a popular GraphQL implementation in JavaScript. In the following, we explain how you can create an Apollo server and client based on the generated GraphQL schema in just a few minutes.
 
+*Important note 1:* The following examples have quite a few dependencies, for instance on Node.js and `npm`. They assume you have an up-to-date installation of these JavaScript technologies that meets your current security and other operational requirements (e.g., development-level proof-of-concept or learning environment?). 
+
+*Important note 2:* The instructions in this page were created in the fall of 2020, so some of the screen captions, code snippets, and instructions might contain information that was current at that time. The same holds for the examples in the repository. We recommend to always start from a stable and supported version of Node.js and the other dependencies, and bring in the code snippets and examples from this page step by step. We cannot guarantee that they will always work in future versions. 
+
 #### Server
 apollo-server lets you create a backend that responds to GraphQL queries. The following steps are based on this basic [Apollo tutorial](https://www.apollographql.com/docs/apollo-server/getting-started/).
 
@@ -317,7 +321,7 @@ Just create a project and initialize it with the following commands:
 mkdir graphql-client-example
 cd graphql-client-example
 npm init --yes
-npm install apollo-client graphql react react-dom react-scripts
+npm install @apollo/client graphql react react-dom react-scripts
 ```
 
 Next, create an `index.html` in the folder `public` as follows:

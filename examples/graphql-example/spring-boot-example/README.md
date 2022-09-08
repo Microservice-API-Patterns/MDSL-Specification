@@ -1,0 +1,5 @@
+# spring-boot-example
+
+*Important note 1:* The example has quite a few dependencies, for instance on yarn. It assumes you have an up-to-date installation of these technologies that meets your current security and other operational requirements (e.g., development-level proof-of-concept or learning environment?). 
+
+*Important note 2:* The instructions in this page were created in the fall of 2020, so some of the screen captions, code snippets, and instructions might contain information that was current at that time. The same holds for the examples in the repository. We recommend to always start from a stable and supported version of the other dependencies, and bring in the code snippets and examples from this page step by step. We cannot guarantee that they will always work unmodified in future versions of MDSL and the dependencies in this example. 
