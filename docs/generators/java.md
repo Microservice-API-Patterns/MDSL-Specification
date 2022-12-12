@@ -8,7 +8,7 @@ copyright: Stefan Kapferer and Olaf Zimmermann, 2020-2022. All rights reserved.
 
 Java Generator
 ==============
-The MDSL Eclipse plugin and the CLI allow API designers to generate Java code out of MDSL. The code can then be used to implement modular monoliths ("moduliths"), (micro-)services, or any other decomposition style (as long as you use Java for its implementation). If a modular monolith approach is chosen, the [Spring Boot extension "Moduliths"](https://github.com/odrotbohm/moduliths](https://github.com/odrotbohm/moduliths) can be used to verify the modular structure, to bootstrap a subset of the modules and to derive PlantUML documentation about the modules.
+The MDSL Eclipse plugin and the CLI allow API designers to generate Java code out of MDSL. The code can then be used to implement modular monoliths ("moduliths"), (micro-)services, or any other decomposition style (as long as you use Java for its implementation). <!-- If a modular monolith approach is chosen, the Spring Boot extension [Moduliths](https://github.com/odrotbohm/moduliths) can be used to verify the modular structure, to bootstrap a subset of the modules and to derive PlantUML documentation about the modules. -->
 
 ## Usage
 You can generate Java code out of an MDSL model by using the MDSL [Eclipse plugin](./../tools#eclipse-plugin) or our [CLI](./../tools#command-line-interface-cli-tools).
