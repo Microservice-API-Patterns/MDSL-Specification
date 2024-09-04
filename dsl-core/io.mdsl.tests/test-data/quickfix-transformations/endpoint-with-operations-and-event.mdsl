@@ -6,7 +6,7 @@ data type SampleBusinessObjectDTO "sampleBusinessObjectKeyValueMap":{"key":ID<st
 data type Sample_Scenario_1RealizationEndpointDTO "sample_Scenario_1RealizationEndpoint":D<string>
 event type SampleEvent {"when", "what"}
 
-endpoint type Sample_Scenario_1RealizationEndpoint supports scenario Sample_Scenario_1
+endpoint type Sample_Scenario_1RealizationEndpoint // supports scenario Sample_Scenario_1
 serves as PROCESSING_RESOURCE
  exposes
   operation doSomething expecting payload {"sampleData":D , "requestedPageSize":MD<int> , <<Wish_List>> "desiredElements":MD<string>*} delivering payload <<Pagination>> "doSomethingResponseBodyWrapper":{"doSomethingResponseBody":D<string> , "pageSize":MD<int> , "self":L<string> , "nextCursor":L<string>}

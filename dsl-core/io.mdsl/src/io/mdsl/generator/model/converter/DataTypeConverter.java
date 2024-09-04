@@ -36,6 +36,7 @@ import io.mdsl.generator.model.DataType;
 import io.mdsl.generator.model.DataTypeField;
 import io.mdsl.generator.model.MDSLGeneratorModel;
 import io.mdsl.utils.CardinalityHelper;
+import io.mdsl.utils.MDSLLogger;
 
 /**
  * Converts MDSL data types (AST model) into data types of our generator model.
@@ -70,6 +71,16 @@ public class DataTypeConverter {
 			// is surrounded by double quotes
 			dataType.setVersion(version.substring(1, version.length()-1)); 
 		}
+		/*
+		 *  TODO just a PoC 2024!
+		// String stereotype = "n/a";
+		ElementStructure es = dataContract.getStructure();
+		if(es.getPt()!=null&&es.getPt().getClassifier().getPattern()!=null)
+		{
+			dataType.setStereotype(es.getPt().getClassifier().getPattern());
+		}
+		*/
+		
 		if(dataContract.getDefault()!=null ) {
 			currentDefaultValue = dataContract.getDefault().getDefault();
 			dataType.setDefaultValue(currentDefaultValue); // no quotes
@@ -193,7 +204,24 @@ public class DataTypeConverter {
 			field.isNullable(CardinalityHelper.isOptional(spn.getTr().getCard()));
 			dataType.addField(field);
 		} else if (spn.getGenP() != null) {
-			// nothing to do in this case; we just create empty data type without fields
+			// do nothing
+			MDSLLogger.reportInformation("Not adding field for generic parameter");
+			/*
+			// would change various generator outputs (v546):
+			String name;
+			if(spn.getGenP().getName()!=null&&!spn.getGenP().getName().equals("")) {
+				name = fieldNameGenerator.getUniqueName(spn.getGenP().getName());
+			}
+			else {
+				name = "placeholder";
+			}
+			DataTypeField field = new DataTypeField(name);
+			field.setType(BasicType.VOID);
+			field.isList(false);
+			field.isNullable(false);
+			// field.setDefaultValue(currentDefaultValue);
+			dataType.addField(field);
+			*/
 		}
 	}
 

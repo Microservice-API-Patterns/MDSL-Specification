@@ -5,7 +5,7 @@ import io.mdsl.exception.MDSLException;
 public class MDSLLogger {
 	
 	// TODO (future work) set from outside (Eclipse preference, CLI parameter, tbd for MDSL Web)
-	public static int logLevel = 1; // -1= off, 0=errors, 1=warn, 2=inform, 3=all (could use enum) 
+	public static int logLevel = 1; // -1=off, 0=errors, 1=warn, 2=inform, 3=all (could use enum) 
 	public static boolean reportPatternUsage = true;
 	
 	public static void reportError(String message) {		

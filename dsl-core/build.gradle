@@ -1,106 +1,88 @@
 buildscript {
-        repositories {
-                mavenCentral()
-                jcenter()
-        }
-        dependencies {
-                classpath 'org.xtext:xtext-gradle-plugin:2.0.8'
-        }
+	repositories {
+		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath 'org.xtext:xtext-gradle-plugin:4.0.0'
+	}
 }
+
+
 
 def pomXml = new XmlSlurper().parse('pom.xml')
 
 subprojects {
-        ext.xtextVersion = '2.21.0'
-        repositories {
-                jcenter()
-        }
+		ext.xtextVersion = '2.35.0'
 
-        apply plugin: 'java'
-        apply plugin: 'maven-publish'
-        apply plugin: 'org.xtext.xtend'
-        apply from: "${rootDir}/gradle/maven-deployment.gradle"
-        apply plugin: 'eclipse'
-        apply plugin: 'jacoco'
-        apply plugin: 'signing'
+		apply plugin: 'java-library'
+		apply plugin: 'maven-publish'
+		apply plugin: 'org.xtext.xtend'
+		apply plugin: 'eclipse'
+		apply plugin: 'jacoco'
+		apply plugin: 'signing'
 
-        group = 'io.mdsl'
-        version = pomXml.version
+		dependencies {
+			implementation platform("org.eclipse.xtext:xtext-dev-bom:${xtextVersion}")
+		}
 
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
+		group = 'io.mdsl'
+		version = pomXml.version
 
-        configurations.all {
-                exclude group: 'asm'
-        }
-	
-	/*
-	// causes my local build to fail:
-	signing {
-    		sign configurations.archives
-	}
-	*/
+		java {
+			sourceCompatibility = JavaVersion.VERSION_17
+			targetCompatibility = JavaVersion.VERSION_17
+		}
 
-	uploadArchives {
+		configurations.all {
+				exclude group: 'asm'
+		}
+
 		repositories {
-			mavenDeployer {
-				beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+			mavenCentral()
+			maven {
+				url "https://plugins.gradle.org/m2/"
+			}
+		}
 
-      				repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {	
-      				// needed, from https://github.com/NeuronRobotics/nrjavaserial/issues/123
-					authentication(userName: hasProperty('ossrhUsername')?ossrhUsername:'', password: hasProperty('ossrhPassword')?ossrhPassword:'')
+	// causes my local build to fail:
+	// signing {
+	//		sign configurations.archives
+	// }
+
+	publishing {
+		repositories {
+			maven {
+				def releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+				def snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+				url = "${project.version}".endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+				credentials {
+					username = project.findProperty('ossrhTokenUsername') ?: ""
+					password = project.findProperty('ossrhTokenPassword') ?: ""
 				}
-
-				snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
-					// needed, from https://github.com/NeuronRobotics/nrjavaserial/issues/123
-					authentication(userName: hasProperty('ossrhUsername')?ossrhUsername:'', password: hasProperty('ossrhPassword')?ossrhPassword:'')
-				}
-
-
-                                pom.project {
-                                        name 'io.mdsl:io.mdsl.parent'
-                                        description 'A domain-specific language to specify (micro-)service contracts, data representations and endpoints.'
-                                        url 'https://microservice-api-patterns.github.io/MDSL-Specification/'
-
-                                        scm {
-                                                connection 'scm:git:https://github.com/Microservice-API-Patterns/MDSL-Specification.git'
-                                                developerConnection 'scm:git:ssh://github.com:Microservice-API-Patterns/MDSL-Specification.git'
-                                                url 'https://github.com/Microservice-API-Patterns/MDSL-Specification/tree/master'
-                                        }
-
-                                        licenses {
-                                                license {
-                                                        name 'The Apache License, Version 2.0'
-                                                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                                                }
-                                        }
-
-                                        developers {
-                                                developer {
-                                                        name 'socadk'
-                                                        email 'info@microservice-api-patterns.org'
-                                                }
-                                        }
-                                }
 			}
 		}
 	}
+
+
 // workaround for XText+Gradle build problems: https://github.com/eclipse/xtext/issues/1976#issuecomment-862141814
-    configurations.all {
-	    resolutionStrategy {
-	        eachDependency { DependencyResolveDetails details ->
-	            if (details.requested.group == 'org.eclipse.platform' && details.requested.name == 'org.eclipse.core.runtime') {
-	                details.useVersion "3.19.0"
-	            }
-	            if (details.requested.group == 'org.eclipse.platform' && details.requested.name == 'org.eclipse.equinox.common') {
-	                details.useVersion("3.13.0")
-	            }
-	        }
-	    }
+	configurations.all {
+		resolutionStrategy {
+			eachDependency { DependencyResolveDetails details ->
+				if (details.requested.group == 'org.eclipse.platform' && details.requested.name == 'org.eclipse.core.runtime') {
+					details.useVersion "3.19.0"
+				}
+				if (details.requested.group == 'org.eclipse.platform' && details.requested.name == 'org.eclipse.equinox.common') {
+					details.useVersion("3.13.0")
+				}
+			}
+		}
 	}
 }
 
 
 configure(subprojects.findAll {it.name != 'mdsl-cli'}) {
-        apply from: "${rootDir}/gradle/source-layout.gradle"
+		apply from: "${rootDir}/gradle/source-layout.gradle"
 }

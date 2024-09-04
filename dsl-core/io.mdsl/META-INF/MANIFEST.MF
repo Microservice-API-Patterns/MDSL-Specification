@@ -2,34 +2,32 @@ Manifest-Version: 1.0
 Automatic-Module-Name: io.mdsl
 Bundle-ManifestVersion: 2
 Bundle-Name: io.mdsl
-Bundle-Vendor: MDSL Project
-Bundle-Version: 5.4.6.qualifier
+Bundle-Vendor: My Company
+Bundle-Version: 6.0.0.qualifier
 Bundle-SymbolicName: io.mdsl; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xbase,
- org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.equinox.common;bundle-version="3.16.0",
  org.eclipse.emf.ecore,
- org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
- org.eclipse.xtext.util,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.35.0",
  org.eclipse.emf.common,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
- org.freemarker.freemarker;bundle-version="2.3.30",
- io.swagger.core.v3.swagger-core;bundle-version="2.1.2",
- io.swagger.core.v3.swagger-models;bundle-version="2.1.2",
- com.fasterxml.jackson.core.jackson-core;bundle-version="2.10.1",
- com.fasterxml.jackson.core.jackson-databind;bundle-version="2.10.1",
- com.fasterxml.jackson.dataformat.jackson-dataformat-yaml;bundle-version="2.10.1",
- com.fasterxml.jackson.datatype.jackson-datatype-jsr310;bundle-version="2.10.1",
- com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.10.1",
- org.yaml.snakeyaml;bundle-version="1.24.0",
- io.swagger.parser.v3.swagger-parser-v3;bundle-version="2.0.20",
- io.swagger.parser.v3.swagger-parser-core;bundle-version="2.0.20",
- org.apache.commons.lang;bundle-version="2.6.0",
- org.apache.commons.lang3;bundle-version="3.7.0",
- io.github.microservice-api-patterns.protobufgen;bundle-version="1.2.0",
- org.slf4j.api
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+ com.fasterxml.jackson.core.jackson-databind,
+ com.fasterxml.jackson.core.jackson-core,
+ com.fasterxml.jackson.dataformat.jackson-dataformat-yaml,
+ org.freemarker.freemarker,
+ io.swagger.parser.v3.swagger-parser-core,
+ io.swagger.parser.v3.swagger-parser-v3,
+ io.swagger.core.v3.swagger-models,
+ io.swagger.core.v3.swagger-core,
+ org.apache.commons.lang,
+ org.apache.commons.lang3,
+ com.fasterxml.jackson.core.jackson-annotations,
+ io.github.microservice-api-patterns.protobufgen,
+ com.google.guava,
+ org.eclipse.xtext.util
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: io.mdsl,
  io.mdsl.apiDescription,
  io.mdsl.apiDescription.impl,
@@ -56,9 +54,4 @@ Export-Package: io.mdsl,
  io.mdsl.transformations,
  io.mdsl.utils,
  io.mdsl.validation
-Import-Package: io.mdsl.formatting2,
- org.apache.log4j,
- org.eclipse.core.resources,
- org.eclipse.jface.text,
- org.eclipse.xtext.ui.editor
-Bundle-ClassPath: .
+Import-Package: org.apache.log4j

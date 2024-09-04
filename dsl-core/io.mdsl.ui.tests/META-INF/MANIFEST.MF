@@ -3,7 +3,7 @@ Automatic-Module-Name: io.mdsl.ui.tests
 Bundle-ManifestVersion: 2
 Bundle-Name: io.mdsl.ui.tests
 Bundle-Vendor: MDSL Project
-Bundle-Version: 5.4.6.qualifier
+Bundle-Version: 6.0.0.qualifier
 Bundle-SymbolicName: io.mdsl.ui.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: io.mdsl.ui,
@@ -13,6 +13,7 @@ Require-Bundle: io.mdsl.ui,
  org.eclipse.xtext.xbase.junit,
  org.eclipse.core.runtime,
  org.eclipse.xtext.ui.testing,
- org.eclipse.ui.workbench;resolution:=optional
+ org.eclipse.ui.workbench;resolution:=optional,
+ org.eclipse.xtext.xbase.ui.testing
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: io.mdsl.ui.tests;x-internal=true

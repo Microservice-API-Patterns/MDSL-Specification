@@ -7,7 +7,7 @@ Microservice Domain-Specific Language (MDSL)
 [![Build Status](https://travis-ci.com/Microservice-API-Patterns/MDSL-Specification.svg?branch=master)](https://travis-ci.com/Microservice-API-Patterns/MDSL-Specification)
 -->
 
-Author: Olaf Zimmermann, (c) 2018-2022. All rights reserved.
+Author: Olaf Zimmermann, (c) 2018-2024. All rights reserved.
 
 ## What is MDSL?
 
@@ -76,12 +76,22 @@ If you want to contribute to MDSL, you have to clone this repo and generate the 
 
 *Note:* The project has to be imported as an existing Maven project, and an adjustment of the IDE setup is required. The [readme](dsl-core/README.md) of the main project contains detailed instructions. This setup and build process eases integration with [Context Mapper](https://contextmapper.org/).
 
+## Latest Features and Status
 
-## Change Log
+*Important note:* All MDSL tools, including validators, quick fix transformations, Freemarker templates, IDL and Java generators, etc. are the output of research projects with limited budgets; at present, resources to continue development and reduce technical debt are sparse. The MDSL tools should be viewed and positioned as **technology demonstrators** that show how production-ready API-first design tools *could* look like.   
 
-The latest version of the MDSL language MDSL version extends service contracts with support for events, states, compensation as well as integration scenarios as stories(as experimental technology previews). These concepts are featured in a number of model transformations that support rapid "API First" development.
+The core MDSL language (data types, endpoint types, protocol bindings) is stable now; a language reference and primer can be found in ["Patterns for API Design"](https://api-patterns.org/book/). Features auch as user stories and flow modeling remain [experimental previews](https://api-patterns.org/patterns/evolution/ExperimentalPreview.html). The [Interface Refactoring Catalog (IRC)](https://interface-refactoring.github.io/) and publications about it feature MDSL snippets.
 
-Since Version 5.2, MDSL supports true REST level 3 concepts both on the abstract endpoint type level and in the redesigned bindings and comes with additional Freemarker generators (Markdown reports, ALPS).
+MDSL Version 6 maintains the Version 5 feature set and is designed to work with the 2024 versions of Eclipse. The standalone Commain Line (CLI) interface and MDSL-Web continue to be available (no changes). 
+
+Version 5 of the MDSL language extended service contracts with support for events, states, compensation as well as integration scenarios/stories and event-command flows. These concepts are featured in a number of model transformations that support rapid "API First" development:
+
+* <https://ozimmer.ch/practices/2022/01/20/StoryDrivenServiceDesignDemo.html>
+* <https://ozimmer.ch/practices/2022/01/13/EventDrivenServiceDesignDemo.html>
+* <https://ozimmer.ch//practices/2022/02/01/ProcessOrientedServiceDesignDemo.html>
+* <https://medium.com/olzzio/domain-driven-service-design-with-context-mapper-and-mdsl-d5a0fc6091c2>
+
+Since Version 5.2, MDSL supports true REST level 3 concepts both on the abstract endpoint type level and in the redesigned bindings and comes with additional Freemarker generators (Markdown reports, ALPS). Many API refactorings from IRC and other API-first [transformations](https://microservice-api-patterns.github.io/MDSL-Specification/soad.html) are supported.
 
 The [Change Log](changelog.md) provides an evolution history; the GitHub [Release Notes](https://github.com/Microservice-API-Patterns/MDSL-Specification/releases) also contain update information.
 

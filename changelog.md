@@ -1,5 +1,13 @@
 ## MDSL Change Log (and Release Notes)
 
+V6.0.0, August/September 2024
+
+* Upgrade to Xtext Version 2.35.0, which requires newer version of other bundles (see [target definition](dsl-core/io.mdsl.target/io.mdsl.target.target) and [`category.cml`](dsl-core/io.mdsl.repository/category.xml) as well as `MANIFEST.MF` files in projects)
+* No new features, transformations and generators unchanged 
+* No changes to CLI
+* Developed with Eclipse DSL 2024-03 and 2024-06, plugin tested with Eclipse 2024-06
+* Maven dependency tested with [MDSL-Web](https://github.com/Microservice-API-Patterns/MDSL-Web) main 
+
 V5.4.6, February 2022
 
 * Blog posts featuring quick fixes and flow modeling extensions in action: 
