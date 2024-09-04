@@ -48,9 +48,9 @@ subprojects {
 		}
 
 	// causes my local build to fail:
-	// signing {
-	//		sign configurations.archives
-	// }
+	signing {
+			sign configurations.archives
+	}
 
 	publishing {
 		repositories {
