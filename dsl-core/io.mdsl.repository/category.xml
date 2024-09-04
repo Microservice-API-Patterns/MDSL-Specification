@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature id="io.mdsl.feature" version="0.0.0">
-      <category name="main"/>
-   </feature>
-   <feature id="io.mdsl.feature.source" version="0.0.0">
-      <category name="main"/>
-   </feature>
-   <feature id="contextmapper.swagger.core">
-      <category name="main"/>
-   </feature>
-   <feature id="contextmapper.swagger.parser">
-      <category name="main"/>
-   </feature>
-   <feature id="contextmapper.freemarker">
-      <category name="main"/>
-   </feature>
-   <feature id="contextmapper.protobufgen">
-      <category name="main"/>
-   </feature>
-   <category-def name="main" label="Microservices Domain-Specific Language (MDSL)"/>
-   <repository-reference location="https://contextmapper.jfrog.io/artifactory/context-mapper-osgi-bundles/updatesites/1.3.0/" enabled="true" />
+	<feature id="io.mdsl.feature" version="0.0.0">
+		<category name="main"/>
+	</feature>
+	<feature id="io.mdsl.feature.source" version="0.0.0">
+		<category name="main.source"/>
+	</feature>
+	<category-def name="main" label="APIDescription"/>
+	<category-def name="main.source" label="APIDescription (Sources)"/>
+	<repository-reference location="https://contextmapper.org/p2-repos/context-mapper-osgi-bundles/1.3.0/" enabled="true" />
 </site>

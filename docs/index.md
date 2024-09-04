@@ -9,9 +9,11 @@ copyright: Olaf Zimmermann, 2019-2022. All rights reserved.
 ## Overview
 Microservice Domain-Specific Language (MDSL) abstracts from technology-specific interface description languages such as OpenAPI/Swagger, WSDL, and <!-- gRPC --> Protocol Buffers. 
 
-<!--
-> If the URI of this page is `https://socadk.github.io/MDSL/index`, you are looking at the GitHub pages of the next version (technology preview)! Please refer to [https://microservice-api-patterns.github.io/MDSL-Specification/index](https://microservice-api-patterns.github.io/MDSL-Specification/index) for the latest public open source version.
--->
+*Important note:* All MDSL tools, including validators, quick fix transformations, Freemarker templates, IDL and Java generators, etc. are the output of research projects with limited budgets; at present, resources to continue development and reduce technical debt are sparse. The MDSL tools should be viewed and positioned as **technology demonstrators** that show how production-ready API-first design tools *could* look like.   
+
+*Status*: The core MDSL language (data types, endpoint types, protocol bindings) is stable now; a language reference and primer can be found in ["Patterns for API Design"](https://api-patterns.org/book/). Features such as user stories and flow modeling remain [experimental previews](https://api-patterns.org/patterns/evolution/ExperimentalPreview.html). 
+
+The ["Interface Refactoring Catalog (IRC)"](https://interface-refactoring.github.io/) and publications about it feature MDSL snippets.
 
 ### A First Example 
 

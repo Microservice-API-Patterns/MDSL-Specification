@@ -18,5 +18,5 @@ endpoint type Sample_Scenario_1RealizationEndpoint
     operation doSomething3 expecting payload "inp": TestType5 delivering payload "outp": SampleBusinessObjectDTO
     operation doSomething4 expecting payload {TestType1 , TestType2} delivering payload {TestType3 , TestType4}
     
-    operation doSomethingInContext expecting payload {"p1":TestType1 , "p2": TestType2*} delivering "outp": SampleBusinessObjectDTO
+    operation doSomethingInContext expecting payload {"p1":TestType1 , "p2": TestType2*} delivering payload "outp": SampleBusinessObjectDTO
 

@@ -20,8 +20,8 @@ grammar io.mdsl.APIDescription with org.eclipse.xtext.common.Terminals
 ---
 title: Microservices Domain Specific Language (MDSL) Language Specification
 author: Olaf Zimmermann
-copyright: Olaf Zimmermann, 2018-2022. All rights reserved.
-version: "5.4.5"
+copyright: Olaf Zimmermann, 2018-2024. All rights reserved.
+version: "6.0.0"
 ---
 */ 
 
@@ -121,14 +121,14 @@ ParameterForest:
 // Common parts:
 
 ParameterTreeList:
-	first=ParameterTree (';' next+=ParameterTree)*
+	first=ParameterTree (';' next+=ParameterTree)* // limitation: no external type reference allowed here
 ;
 
 ParameterTree:
 	classifier=PatternStereotype? 
 	(name=STRING':')?
 	'{' 
-	  first=TreeNode ((','|'|') nexttn+=TreeNode)* 
+	  first=TreeNode ((','|'|') nexttn+=TreeNode)* // limitation: no difference between ',' and '|'
 	'}' 
 	card=Cardinality? 
 ;
@@ -636,6 +636,8 @@ SLO:
 Measurement:
 	sm=SimpleMeasurement | lz=LandingZone
 ;
+
+// TODO could work with data types here, e.g., PT for three targets 
 
 SimpleMeasurement:
 	value=INT

@@ -28,7 +28,9 @@ public class DataType implements MDSLType {
 
 	private String name;
 	private List<DataTypeField> fields;
+	
 	// TODO v55 role (basic types) and element stereotype (all types)
+	// private String stereotype = "none";
 
 	private String version = "N/A";
 	private String defaultValue;
@@ -126,7 +128,7 @@ public class DataType implements MDSLType {
 	public String getVersion() {
 		return this.version;
 	}
-	
+		
 	public String getDefaultValue() {
 		return this.defaultValue;
 	}
@@ -138,4 +140,14 @@ public class DataType implements MDSLType {
 	public void setVersion(String svi) {
 		this.version = svi;
 	}
+	
+	/*
+	public String getStereotype() {
+		return this.stereotype;
+	}
+	
+	public void setStereotype(String st) {
+		this.stereotype = st;
+	}
+	*/
 }

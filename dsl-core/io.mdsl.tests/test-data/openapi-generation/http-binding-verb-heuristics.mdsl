@@ -90,7 +90,7 @@ offers HeuristicEndpoint1
 at endpoint location "/endpoint1"
 via protocol HTTP binding resource self1 at "" 
 operation createSomething to GET
-element listOfBasicAtomicParameterTypes realized as QUERY parameter
+element "listOfBasicAtomicParameterTypes" realized as QUERY parameter
 
 API provider NameHeuristicEndpointProvider21
 offers HeuristicEndpoint2

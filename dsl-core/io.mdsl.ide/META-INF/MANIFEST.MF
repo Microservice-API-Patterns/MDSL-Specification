@@ -2,14 +2,14 @@ Manifest-Version: 1.0
 Automatic-Module-Name: io.mdsl.ide
 Bundle-ManifestVersion: 2
 Bundle-Name: io.mdsl.ide
-Bundle-Vendor: MDSL Project
-Bundle-Version: 5.4.6.qualifier
+Bundle-Vendor: My Company
+Bundle-Version: 6.0.0.qualifier
 Bundle-SymbolicName: io.mdsl.ide; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: io.mdsl,
  org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: io.mdsl.ide.contentassist.antlr.internal,
  io.mdsl.ide.contentassist.antlr
