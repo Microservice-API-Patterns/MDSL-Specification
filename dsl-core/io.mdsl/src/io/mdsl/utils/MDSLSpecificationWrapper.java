@@ -43,6 +43,7 @@ import io.mdsl.apiDescription.ProtocolBinding;
 import io.mdsl.apiDescription.Provider;
 import io.mdsl.apiDescription.ReportBinding;
 import io.mdsl.apiDescription.RoleAndType;
+import io.mdsl.apiDescription.RoleTypeAndDesc;
 import io.mdsl.apiDescription.SecurityBinding;
 import io.mdsl.apiDescription.SecurityPolicy;
 import io.mdsl.apiDescription.ServiceSpecification;
@@ -287,7 +288,7 @@ public class MDSLSpecificationWrapper {
 	
 	// finders:
 	
-	public static String getClassifierAndElementStereotype(PatternStereotype classifier, RoleAndType roleAndType) {
+	public static String getClassifierAndElementStereotype(PatternStereotype classifier, RoleTypeAndDesc roleAndType) {
 		String result = "";
 		if (classifier != null) {
 			String patternDecorator = classifier.getPattern();

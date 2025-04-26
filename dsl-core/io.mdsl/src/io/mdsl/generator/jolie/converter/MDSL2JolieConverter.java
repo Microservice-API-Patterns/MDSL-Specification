@@ -19,6 +19,7 @@ import io.mdsl.apiDescription.OperationResponsibility;
 import io.mdsl.apiDescription.ParameterForest;
 import io.mdsl.apiDescription.ParameterTree;
 import io.mdsl.apiDescription.RoleAndType;
+import io.mdsl.apiDescription.RoleTypeAndDesc;
 import io.mdsl.apiDescription.ServiceSpecification;
 import io.mdsl.apiDescription.SingleParameterNode;
 import io.mdsl.apiDescription.TreeNode;
@@ -192,7 +193,7 @@ public class MDSL2JolieConverter {
 	}
 
 	private void convertAtomicParameter(AtomicParameter ap, StringBuffer result) {
-		RoleAndType rat = ap.getRat();
+		RoleTypeAndDesc rat = ap.getRat();
 		String name = rat.getName();
 		name = createNameIfEmpty(name);
 

@@ -14,6 +14,7 @@ import io.mdsl.apiDescription.HTTPParameter;
 import io.mdsl.apiDescription.ParameterTree;
 import io.mdsl.apiDescription.PatternStereotype;
 import io.mdsl.apiDescription.RoleAndType;
+import io.mdsl.apiDescription.RoleTypeAndDesc;
 import io.mdsl.apiDescription.SingleParameterNode;
 import io.mdsl.apiDescription.TypeReference;
 import io.mdsl.dsl.ServiceSpecificationAdapter;
@@ -101,11 +102,13 @@ public class DataType2ParameterConverter {
 	} 
 	
 	private Parameter convertAtomicParameter(AtomicParameter atomicParameter, HTTPParameter parameterType) {
-		RoleAndType roleAndType = atomicParameter.getRat();
+		RoleTypeAndDesc roleAndType = atomicParameter.getRat();
 		PatternStereotype classifier = atomicParameter.getClassifier(); // MAP decorator or other 
 		
-		String parameterDescription;  
-		parameterDescription = MDSLSpecificationWrapper.getClassifierAndElementStereotype(classifier, roleAndType);
+		String parameterDescription = MDSLSpecificationWrapper.getClassifierAndElementStereotype(classifier, roleAndType);
+		if (roleAndType.getDescription()!=null) {
+			parameterDescription = roleAndType.getDescription();
+		}
 		
 		// check and respect '?' cardinality (as well as '*' and '+')
 		boolean required = findOutWhetherParameterIsRequired(atomicParameter);

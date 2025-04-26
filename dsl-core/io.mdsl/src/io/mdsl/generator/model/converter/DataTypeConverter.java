@@ -182,6 +182,7 @@ public class DataTypeConverter {
 		for (AtomicParameter ap : parameters) {
 			DataTypeField field = new DataTypeField(fieldNameGenerator.getUniqueName(ap.getRat().getName()));
 			field.setType(BasicType.byName(ap.getRat().getBtype()));
+			field.setDescription(ap.getRat().getDescription());
 			field.isList(CardinalityHelper.isList(ap.getCard()));
 			field.isNullable(CardinalityHelper.isOptional(ap.getCard()));
 			dataType.addField(field);
@@ -196,6 +197,7 @@ public class DataTypeConverter {
 			field.isList(CardinalityHelper.isList(spn.getAtomP().getCard()));
 			field.isNullable(CardinalityHelper.isOptional(spn.getAtomP().getCard()));
 			field.setDefaultValue(currentDefaultValue);
+			field.setDescription(spn.getAtomP().getRat().getDescription());
 			dataType.addField(field);
 		} else if (spn.getTr() != null) {
 			DataTypeField field = new DataTypeField(fieldNameGenerator.getUniqueName(spn.getTr().getName()));

@@ -28,6 +28,7 @@ public class DataTypeField {
 	private MDSLType type;
 	private boolean list = false;
 	private boolean nullable = false;
+	private String description;
 	
 	private String defaultValue;
 
@@ -115,6 +116,14 @@ public class DataTypeField {
 
 	public void setDefaultValue(String defaultValue) {
 		this.defaultValue = defaultValue;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	/**
