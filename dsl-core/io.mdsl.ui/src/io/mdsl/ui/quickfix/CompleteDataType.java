@@ -4,6 +4,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 
 import io.mdsl.apiDescription.RoleAndType;
+import io.mdsl.apiDescription.RoleTypeAndDesc;
 import io.mdsl.transformations.DataTypeTransformations;
 
 class CompleteDataType extends QuickfixSemanticModification {
@@ -15,7 +16,7 @@ class CompleteDataType extends QuickfixSemanticModification {
 
 	@Override
 	public void performQuickfix(EObject element, IModificationContext context) {
-		RoleAndType rat = (RoleAndType) element;
+		RoleTypeAndDesc rat = (RoleTypeAndDesc) element;
 		DataTypeTransformations.completeDataType(rat, type);
 	}
 }

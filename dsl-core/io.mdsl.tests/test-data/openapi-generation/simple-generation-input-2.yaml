@@ -1,0 +1,20 @@
+openapi: 3.0.1
+info:
+  title: TestAPI
+  version: "1.0"
+servers: []
+tags:
+- name: TestEndpoint
+  externalDocs:
+    description: TestEndpoint contract
+    url: ""
+paths:
+  /TestEndpoint: {}
+components:
+  schemas: {}
+    Description:
+      type: object
+      properties:
+        doi:
+          type: string
+          description: Test

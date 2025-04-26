@@ -16,6 +16,7 @@ import io.mdsl.apiDescription.GenericParameter;
 import io.mdsl.apiDescription.ParameterForest;
 import io.mdsl.apiDescription.ParameterTree;
 import io.mdsl.apiDescription.RoleAndType;
+import io.mdsl.apiDescription.RoleTypeAndDesc;
 import io.mdsl.apiDescription.SingleParameterNode;
 import io.mdsl.apiDescription.TreeNode;
 import io.mdsl.apiDescription.TypeReference;
@@ -76,7 +77,7 @@ public class DataType2SchemaConverter {
 	}
 
 	public Schema convert(AtomicParameter atomicParameter) {
-		RoleAndType rat = atomicParameter.getRat();
+		RoleTypeAndDesc rat = atomicParameter.getRat();
 		Schema schema = getSchema4ParameterType(atomicParameter);
 		if(schema!=null) {
 			schema.setName(fieldNameGenerator.getUniqueName(rat.getName()));
@@ -85,6 +86,10 @@ public class DataType2SchemaConverter {
 			}
 			String description = MDSLSpecificationWrapper.getClassifierAndElementStereotype(atomicParameter.getClassifier(), rat);
 			schema.setDescription(description);
+			if (rat.getDescription()!=null) {
+				schema.setDescription(rat.getDescription());
+			}
+			
 		}
 		return schema;
 	}

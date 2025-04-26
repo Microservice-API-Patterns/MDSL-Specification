@@ -1,0 +1,7 @@
+API description TestAPI
+
+data type Description { "doi":D<string>:"Test" }
+
+endpoint type TestEndpoint // MDSL compiles only with at least one endpoint
+
+IPA

@@ -11,6 +11,7 @@ import io.mdsl.apiDescription.ElementStructure;
 import io.mdsl.apiDescription.GenericParameter;
 import io.mdsl.apiDescription.ParameterTree;
 import io.mdsl.apiDescription.RoleAndType;
+import io.mdsl.apiDescription.RoleTypeAndDesc;
 import io.mdsl.apiDescription.ServiceSpecification;
 import io.mdsl.apiDescription.SingleParameterNode;
 import io.mdsl.apiDescription.TreeNode;
@@ -104,7 +105,7 @@ public class DataTypeTransformations {
 	}
 
 	public static AtomicParameter createAtomicDataParameter(String name, String role, String dataType) {
-		RoleAndType newRaT = ApiDescriptionFactory.eINSTANCE.createRoleAndType();
+		RoleTypeAndDesc newRaT = ApiDescriptionFactory.eINSTANCE.createRoleTypeAndDesc();
 		newRaT.setName(name);
 		newRaT.setRole(role); 
 		if(!DataTypeTransformationHelpers.isValidTypeRole(role)) {
@@ -132,7 +133,7 @@ public class DataTypeTransformations {
 		if (!DataTypeTransformationHelpers.isValidBaseType(dataType)) {
 			MDSLLogger.reportError("Can't use " + dataType + " as type of " + name + ": not a valid MDSL base type.");
 		}
-		RoleAndType newRaT = ApiDescriptionFactory.eINSTANCE.createRoleAndType();
+		RoleTypeAndDesc newRaT = ApiDescriptionFactory.eINSTANCE.createRoleTypeAndDesc();
 		newRaT.setName(name);
 		newRaT.setRole(DataTypeTransformationHelpers.METADATA_ROLE);
 		newRaT.setBtype(dataType);
@@ -143,7 +144,7 @@ public class DataTypeTransformations {
 
 	public static AtomicParameter createIDParameter(String name) {
 		AtomicParameter ap = ApiDescriptionFactory.eINSTANCE.createAtomicParameter();
-		RoleAndType rat = ApiDescriptionFactory.eINSTANCE.createRoleAndType();
+		RoleTypeAndDesc rat = ApiDescriptionFactory.eINSTANCE.createRoleTypeAndDesc();
 		if (name != null) {
 			rat.setName(name);
 		}
@@ -154,7 +155,7 @@ public class DataTypeTransformations {
 	}
 
 	public static AtomicParameter createLinkParameter(String name) {
-		RoleAndType newRaT = ApiDescriptionFactory.eINSTANCE.createRoleAndType();
+		RoleTypeAndDesc newRaT = ApiDescriptionFactory.eINSTANCE.createRoleTypeAndDesc ();
 		newRaT.setName(name);
 		newRaT.setRole(DataTypeTransformationHelpers.LINK_ROLE);
 		newRaT.setBtype(DataTypeTransformationHelpers.STRING); // no string ranges yet ([O] Spring SPeL?)
@@ -179,11 +180,12 @@ public class DataTypeTransformations {
 		return tn;
 	}
 
-	public static RoleAndType createRoleAndType(String name, String role, String type) {
-		RoleAndType rat = ApiDescriptionFactory.eINSTANCE.createRoleAndType();
+	public static RoleTypeAndDesc createRoleTypeAndDesc(String name, String role, String type, String desc) {
+		RoleTypeAndDesc rat = ApiDescriptionFactory.eINSTANCE.createRoleTypeAndDesc();
 		rat.setName(name);
 		rat.setRole(role);
 		rat.setBtype(type);
+		rat.setDescription(desc);
 		return rat;
 	}
 
@@ -238,10 +240,11 @@ public class DataTypeTransformations {
 			gpn = DataTypeTransformationHelpers.ANONYMOUS;
 		}
 
-		RoleAndType newRaT = ApiDescriptionFactory.eINSTANCE.createRoleAndType();
+		RoleTypeAndDesc newRaT = ApiDescriptionFactory.eINSTANCE.createRoleTypeAndDesc();
 		newRaT.setName(gpn);
 		newRaT.setRole(DataTypeTransformationHelpers.DATA_ROLE);
 		newRaT.setBtype(DataTypeTransformationHelpers.STRING);
+		newRaT.setDescription(DataTypeTransformationHelpers.STRING);
 		AtomicParameter newAP = ApiDescriptionFactory.eINSTANCE.createAtomicParameter();
 		newAP.setRat(newRaT);
 
@@ -251,7 +254,7 @@ public class DataTypeTransformations {
 		spn.setAtomP(newAP);
 	}
 
-	public static void completeDataType(RoleAndType rat, String type) {
+	public static void completeDataType(RoleTypeAndDesc rat, String type) {
 		rat.setBtype(type);
 	}
 

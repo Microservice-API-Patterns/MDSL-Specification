@@ -6,6 +6,7 @@ import io.mdsl.apiDescription.EndpointContract;
 import io.mdsl.apiDescription.Operation;
 import io.mdsl.apiDescription.OperationResponsibility;
 import io.mdsl.apiDescription.RoleAndType;
+import io.mdsl.apiDescription.RoleTypeAndDesc;
 
 public class MAPLinkResolver {
 	public static String unquoteString(String string) {
@@ -167,7 +168,7 @@ public class MAPLinkResolver {
 			return ""; // unknown or not yet supported responsibility
 	}
 	
-	public static String mapParameterRoleAndType(RoleAndType roleAndType) {
+	public static String mapParameterRoleAndType(RoleTypeAndDesc roleAndType) {
 		if(roleAndType==null) {
 			return "";
 		}

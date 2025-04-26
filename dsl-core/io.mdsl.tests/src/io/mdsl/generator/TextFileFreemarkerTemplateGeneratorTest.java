@@ -54,6 +54,31 @@ public class TextFileFreemarkerTemplateGeneratorTest extends AbstractMDSLInputIn
 				FileUtils.readFileToString(new File(getGenerationDirectory(), "output.txt"), "UTF-8"));
 	}
 	
+	@Test
+	public void canGenerateWithDataTypeWithDesc() throws IOException {
+		// given
+		Resource inputModel = getTestResource("simple-generation-input-2.mdsl");
+		TextFileGenerator generator = new TextFileGenerator();
+		generator.setFreemarkerTemplateFile(getTestInputFile("simple-test-with-genmodel-with-desc-template.ftl"));
+		generator.setTargetFileName("output.txt");
+
+		// when
+		JavaIoFileSystemAccess javaIoFileSystemAccess = getFileSystemAccess();
+		javaIoFileSystemAccess.setOutputPath(getGenerationDirectory().getAbsolutePath());
+		generator.doGenerate(inputModel, javaIoFileSystemAccess, new GeneratorContext());
+
+		// then
+		assertEquals(
+				"TestAPI specified in simple-generation-input-2.mdsl" + System.lineSeparator() + System.lineSeparator()
+						+ "endpoints:" + System.lineSeparator() + "TestEndpoint" + System.lineSeparator() + System.lineSeparator() + 
+						"datatypes:" + System.lineSeparator() + 
+						"name:Description " + System.lineSeparator() + 
+						"doi: string (required, single) " + System.lineSeparator() + 
+						"description: Test" + System.lineSeparator() + ""
+						,
+				FileUtils.readFileToString(new File(getGenerationDirectory(), "output.txt"), "UTF-8"));
+	}
+	
 	private File getTestFile(String testMDSLName) {
 		return new File(Paths.get("").toAbsolutePath().toString(), testDirectory() + testMDSLName);
 	}

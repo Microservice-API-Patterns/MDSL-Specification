@@ -170,7 +170,7 @@ AtomicParameterList:
 
 AtomicParameter: 
 	classifier=PatternStereotype? 
-	rat=RoleAndType
+	rat=RoleTypeAndDesc
 	card=Cardinality?
 ;
 
@@ -179,6 +179,10 @@ RoleAndType:
     (name=STRING':')? role=ParameterRole ('<'btype=BasicDataType'>' )? 
 ;
 
+RoleTypeAndDesc:
+	// experimental  |'->' ec=[EndpointContract] taken out again
+	(name=STRING':')? role=ParameterRole ('<'btype=BasicDataType'>' )? (':'description=STRING)?
+;
 
 DefaultValue:
 	'default' 'is' default=STRING

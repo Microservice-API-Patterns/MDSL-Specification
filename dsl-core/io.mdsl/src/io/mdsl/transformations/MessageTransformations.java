@@ -16,6 +16,7 @@ import io.mdsl.apiDescription.Operation;
 import io.mdsl.apiDescription.ParameterTree;
 import io.mdsl.apiDescription.PatternStereotype;
 import io.mdsl.apiDescription.RoleAndType;
+import io.mdsl.apiDescription.RoleTypeAndDesc;
 import io.mdsl.apiDescription.ServiceSpecification;
 import io.mdsl.apiDescription.SingleParameterNode;
 import io.mdsl.apiDescription.TreeNode;
@@ -363,7 +364,7 @@ public class MessageTransformations {
 
 		ParameterTree pt = ApiDescriptionFactory.eINSTANCE.createParameterTree();
 		AtomicParameter key = ApiDescriptionFactory.eINSTANCE.createAtomicParameter();
-		RoleAndType rat = DataTypeTransformations.createRoleAndType("key", "ID", STRING_TYPE);
+		RoleTypeAndDesc rat = DataTypeTransformations.createRoleTypeAndDesc("key", "ID", STRING_TYPE, STRING_TYPE);
 		key.setRat(rat);
 
 		TreeNode tn = DataTypeTransformations.turnAtomicParameterIntoTreeNode(key);
@@ -374,7 +375,7 @@ public class MessageTransformations {
 		pt.setClassifier(EcoreUtil.copy(ap.getClassifier()));
 		pt.setCard(EcoreUtil.copy(ap.getCard()));
 		pt.getNexttn().add(tn2);
-
+		
 		EObject containingElement = ap.eContainer().eContainer(); // SPN -> TN or ES
 
 		MessageTransformationHelpers.wrapParameterTreeInTreeNodeOrElementStructure(containingElement, pt);
